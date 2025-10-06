@@ -1,0 +1,16 @@
+package it.finmatica.de4gsdzk.statocivile
+
+import it.finmatica.de4gsdzk.CivVerbaleBaseDomain
+
+import javax.persistence.Entity
+import javax.persistence.Table
+
+@Entity
+@Table(name = "CIVPVU_V_UCI")
+class CivProcessoVerbaleSelect extends CivVerbaleBaseDomain{
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// GENERALI/////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+
+}

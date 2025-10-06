@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox closable="false">
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="@load(vm.ricercaAtto.hasParte()?'50px':(vm.ricercaAtto.hasSerie()?'50px':'70px'))">
+						<label value="@load(vm.etichette['Ufficio'])"/>
+					</cell>
+					<cell width="60px">
+						<combobox model="@load(vm.listaUffici)" readonly="true" hflex="1"
+								  selectedItem="@bind(vm.ricercaAtto.ufficio)" onChange="@command('onRicerca')">
+							<template name="model">
+								<comboitem label="@load(each)" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+					<cell align="right" width="@load(vm.ricercaAtto.hasParte()?'40px':(vm.ricercaAtto.hasSerie()?'40px':'60px'))">
+						<label value="@load(vm.etichette['Anno'])"/>
+					</cell>
+					<cell width="40px">
+						<intbox value="@bind(vm.ricercaAtto.anno)" onOK="@command('onRicerca')" maxlength="4" hflex="1"/>
+					</cell>
+					<zk if="${vm.ricercaAtto.hasParte()}">
+						<cell align="right" width="35px">
+							<label value="@load(vm.etichette['Parte'])"/>
+						</cell>
+						<cell width="30px">
+							<intbox value="@bind(vm.ricercaAtto.parte)" onOK="@command('onRicerca')" hflex="1"/>
+						</cell>
+					</zk>
+					<zk if="${vm.ricercaAtto.hasSerie()}">
+						<cell align="right" width="35px">
+							<label value="@load(vm.etichette['Serie'])"/>
+						</cell>
+						<cell width="30px">
+							<textbox value="@bind(vm.ricercaAtto.serie)" style="text-transform:uppercase" onOK="@command('onRicerca')" hflex="1"/>
+						</cell>
+					</zk>
+					<cell align="right" width="@load(vm.ricercaAtto.hasParte()?'45px':(vm.ricercaAtto.hasSerie()?'45px':'65px'))">
+						<label value="@load(vm.etichette['Numero_Atto'])"/>
+					</cell>
+					<cell width="70px">
+						<intbox value="@bind(vm.ricercaAtto.atto)" onOK="@command('onRicerca')" hflex="1"/>
+					</cell>
+					<cell align="right" width="@load(vm.ricercaAtto.hasParte()?'80px':(vm.ricercaAtto.hasSerie()?'80px':'150px'))">
+						<label value="@load(vm.etichetteCustom['DataEvento'])"/>
+					</cell>
+					<cell width="96px">
+						<datebox format="dd/MM/yyyy" value="@bind(vm.ricercaAtto.dataEvento)" width="95px"/>
+					</cell>
+					<zk if="${vm.ricercaAtto.isAttoAnsc()}">
+						<cell align="right" width="72px">
+							<label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+						</cell>
+						<cell>
+							<textbox value="@bind(vm.ricercaAtto.idAttoAnsc)"
+									 onOK="@command('onRicerca')" hflex="1"/>
+						</cell>
+					</zk>
+					<cell align="right" width="75px">
+						<label value="@load(vm.etichette['Comunicazioni_pendenti'])"/>
+					</cell>
+					<cell width="50px">
+						<combobox model="@load(vm.listaSiNo)" readonly="true" hflex="1"
+								  selectedItem="@bind(vm.ricercaAtto.comunicazioniPendenti) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+								  onChange="@command('onRicerca')">
+							<template name="model">
+								<comboitem label="@load(empty each?'- -':vm.etichette[each.name()])" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Cognome'])"/>
+					</cell>
+					<cell colspan="@load(vm.ricercaAtto.isAttoAnsc()?(vm.ricercaAtto.hasParte()?(vm.ricercaAtto.hasSerie()?14:12):(vm.ricercaAtto.hasSerie()?12:10)):(vm.ricercaAtto.hasParte()?(vm.ricercaAtto.hasSerie()?12:10):(vm.ricercaAtto.hasSerie()?10:8)))">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.ricercaAtto.cognome)" onOK="@command('onRicerca')" hflex="1"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+								<custom-attributes proprieta="cognome"/>
+							</button>
+							<space/>
+						</hlayout>
+					</cell>
+					<cell/>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Nome'])"/>
+					</cell>
+					<cell colspan="@load(vm.ricercaAtto.isAttoAnsc()?(vm.ricercaAtto.hasParte()?(vm.ricercaAtto.hasSerie()?14:12):(vm.ricercaAtto.hasSerie()?12:10)):(vm.ricercaAtto.hasParte()?(vm.ricercaAtto.hasSerie()?12:10):(vm.ricercaAtto.hasSerie()?10:8)))">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.ricercaAtto.nome)" onOK="@command('onRicerca')" hflex="1"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+								<custom-attributes proprieta="nome"/>
+							</button>
+							<space/>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<hlayout valign="middle">
+							<button image="/images/icon/action/16x16/search.png"
+									tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

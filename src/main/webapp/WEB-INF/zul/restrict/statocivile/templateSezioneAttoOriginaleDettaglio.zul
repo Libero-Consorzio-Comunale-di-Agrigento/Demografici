@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- ATTO ORIGINALE (TRASCRITTI) -->
+	<groupbox mold="3d" hflex="1" open="false" visible="@load(vm.dettaglio.natura.name() eq 'T')">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_ATTO_ORIGINALE'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="165px">
+						<label value="@load(vm.etichette['Numero_Atto'])" />
+					</cell>
+					<cell width="80px">
+						<intbox value="@bind(vm.datiProvenienza.attoAttoOriginale)" maxlength="4" width="60px" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+					</cell>
+					<zk if="${vm.dettaglio.hasParte()}">
+						<cell align="right" width="40px">
+							<label value="@load(vm.etichette['Parte'])"/>
+						</cell>
+						<cell width="50px">
+							<intbox value="@bind(vm.datiProvenienza.parteAttoOriginale)" width="45px"
+									disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+						</cell>
+					</zk>
+					<zk if="${vm.dettaglio.hasSerie()}">
+						<cell align="right" width="40px">
+							<label value="@load(vm.etichette['Serie'])"/>
+						</cell>
+						<cell width="50px">
+							<textbox value="@bind(vm.datiProvenienza.serieAttoOriginale)" width="45px"
+									 style="text-transform:uppercase" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+						</cell>
+					</zk>
+					<cell align="right" width="40px">
+						<label value="@load(vm.etichette['Ufficio'])" />
+					</cell>
+					<cell width="50px">
+						<intbox value="@bind(vm.datiProvenienza.ufficioAttoOriginale)"
+								maxlength="2" width="45px" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+					</cell>
+					<cell align="right" width="40px">
+						<label value="@load(vm.etichette['Anno'])" />
+					</cell>
+					<cell width="50px">
+						<intbox value="@bind(vm.datiProvenienza.annoAttoOriginale)" maxlength="4" width="45px"
+								disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+					</cell>
+					<cell align="right" width="75px">
+						<label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+					</cell>
+					<cell>
+						<textbox value="@bind(vm.datiProvenienza.idAttoAnscAttoOriginale)" hflex="1"/>
+					</cell>
+					<zk if="${not vm.dettaglio.hasParte()}">
+						<cell colspan="2"/>
+					</zk>
+					<zk if="${not vm.dettaglio.hasSerie()}">
+						<cell colspan="2"/>
+					</zk>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Comune'])"/>
+					</cell>
+					<cell colspan="10">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.datiProvenienza.comuneAttoOriginale.descrizione)"
+										   dataRiferimento="@load(vm.datiProvenienza.dataAttoOriginale)"
+										   disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"
+										   onSelect="@command('onSelectComune', campoRiferimento='CA_ORIG')"/>
+							<button image="/images/icon/action/16x16/cancel.png" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_ORIG')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.datiProvenienza.comuneAttoOriginale.siglaProvincia)" hflex="1" readonly="true"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Data_Redazione_Atto_Originale'])" />
+					</cell>
+					<cell colspan="6">
+						<hlayout valign="middle" hflex="1" spacing="10px">
+							<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoOriginale)" width="100px" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+							<label value="@load(vm.etichette['Ore'])"/>
+							<textbox value="@bind(vm.datiProvenienza.oraAttoOriginale)" maxlength="2" width="28px" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+							<label value="@load(vm.etichette['Minuti'])"/>
+							<textbox value="@bind(vm.datiProvenienza.minutoAttoOriginale)" maxlength="2" width="28px" disabled="@load(empty vm.dettaglio.natura or (vm.dettaglio.natura ne 'T'))"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataAttoOriginale,oraAttoOriginale,minutoAttoOriginale"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell colspan="5"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

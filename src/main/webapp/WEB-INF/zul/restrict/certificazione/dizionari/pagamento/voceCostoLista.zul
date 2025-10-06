@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.certificazione.dizionari.pagamento.VoceCostoListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <totalSizeBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <listheader label="@load(vm.etichette['Codice_diritto'])"/>
+                    <listheader label="@load(vm.etichette['Fascia_tariffaria'])"/>
+                    <listheader label="@load(vm.etichette['Descrizione'])"/>
+                    <listheader label="@load(vm.etichette['Voce_costo_1_codice'])"/>
+                    <listheader label="@load(vm.etichette['Voce_costo_2_codice'])"/>
+                    <zk if="${vm.showDepagColumns}">
+                        <listheader label="@load(vm.etichette['Anno_accertamento'])"/>
+                        <listheader label="@load(vm.etichette['Numero_accertamento'])"/>
+                    </zk>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem onDoubleClick="@command('onModifica')">
+                        <listcell label="@load(c:cat3(item.tariffaDiritto.diritto.id, ' - ', vm.getEtichettaEnum(item.tariffaDiritto.diritto)))"/>
+                        <listcell label="@load(item.tariffaDiritto.fasciaTariffaria)"/>
+                        <listcell label="@load(item.tariffaDiritto.descrizione)"/>
+                        <listcell label="@load(item.voceCosto1)"/>
+                        <listcell label="@load(item.voceCosto2)"/>
+                        <zk if="${vm.showDepagColumns}">
+                            <listcell label="@load(item.annoAccertamento)"/>
+                            <listcell label="@load(item.numeroAccertamento)"/>
+                        </zk>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/edit.png"
+                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                    visible="@load(not empty item.id)"
+                                    onClick="@command('onModifica')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

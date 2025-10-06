@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- BENEFICIARIO -->
+	<groupbox mold="3d" hflex="1">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_BENEFICIARIO'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+                    <cell>
+                        <groupbox closable="false">
+                            <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell align="right" width="160px">
+                                            <label value="@load(vm.etichette['Codice_Fiscale'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox value="@bind(vm.beneficiarioState.codiceFiscale)" hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoBeneficiario')">
+                                                    <custom-attributes proprieta="codiceFiscale"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell colspan="3"/>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span>
+                                            <label value="@load(vm.etichette['Cognome'])"/>
+                                        </cell>
+                                        <cell colspan="6">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox value="@bind(vm.beneficiarioState.cognome)" hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoBeneficiario')">
+                                                    <custom-attributes proprieta="cognome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span>
+                                            <label value="@load(vm.etichette['Nome'])"/>
+                                        </cell>
+                                        <cell colspan="6">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox value="@bind(vm.beneficiarioState.nome)" hflex="1"/>
+                                                <button image="/images/icon/action/16x16/search.png"
+                                                        tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='BENEFICIARIO_CERTIFICATO')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoBeneficiario')">
+                                                    <custom-attributes proprieta="nome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Sesso'])"/>
+                                        </cell>
+                                        <cell>
+                                            <combobox model="@load(vm.listaSesso)" readonly="true" width="115px"
+                                                      selectedItem="@bind(vm.beneficiarioState.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Data_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="4">
+                                            <hlayout valign="middle" hflex="1" spacing="9px">
+                                                <datebox format="dd/MM/yyyy"
+                                                         value="@bind(vm.beneficiarioState.dataNascita)"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoBeneficiario')">
+                                                    <custom-attributes proprieta="dataNascita"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Comune_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1"
+                                                               value="@load(vm.beneficiarioState.comuneNascita.descrizione)"
+                                                               dataRiferimento="@load(vm.beneficiarioState.dataNascita)"
+                                                               onSelect="@command('onSelectComune', campoRiferimento='CN_BEN')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaComune', campoRiferimento='CN_BEN')"
+                                                />
+                                            </hlayout>
+                                        </cell>
+                                        <cell>
+                                            <customTextbox value="@load(vm.beneficiarioState.comuneNascita.siglaProvincia)"
+                                                     hflex="1" readonly="true"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Nazionalita'])"/>
+                                        </cell>
+                                        <cell>
+                                            <customTextbox hflex="1" disabled="true"
+                                                     value="@load(empty vm.beneficiarioState.nazionalita?'- -':vm.beneficiarioState.nazionalita.descrizione)"/>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Matricola'])"/>
+                                        </cell>
+                                        <cell colspan="1">
+                                            <label value="@load(vm.beneficiarioState.anagrafe.matricola)"
+                                                   style="font-weight:bold;"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Id_scheda_ANPR'])"/>
+                                        </cell>
+                                        <cell>
+                                            <label value="@load(vm.beneficiarioState.anagrafe.idSoggettoAnpr)"
+                                                   style="font-weight:bold;"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Id_unico_nazionale'])"/>
+                                        </cell>
+                                        <cell colspan="2">
+                                            <label value="@load(vm.beneficiarioState.anagrafe.idUnicoAnpr)"
+                                                   style="font-weight:bold;"/>
+                                        </cell>
+                                    </row>
+                                    <!--<row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Id_unico_nazionale'])"/>
+                                        </cell>
+                                        <cell colspan="5">
+                                            <hlayout valign="middle"  hflex="1">
+                                                <customTextbox value="@bind(vm.beneficiarioState.idUnicoAnpr)"/>
+                                                 <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoBeneficiario')">
+                                                    <custom-attributes proprieta="idUnicoAnpr"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>-->
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+                    <cell hflex="min">
+                        <hlayout valign="middle" hflex="min">
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaAnagrafica', tipoSoggetto='BENEFICIARIO_CERTIFICATO')"/>
+                            <button image="/images/icon/action/16x16/info.png"
+                                    tooltiptext="@load(vm.etichette['Messaggi_Individuo'])"
+                                    disabled="@load(empty vm.beneficiarioState.messaggioList)"
+                                    onClick="@command('onOpenMessaggiIndividuo')"/>
+                        </hlayout>
+                    </cell>
+                </row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

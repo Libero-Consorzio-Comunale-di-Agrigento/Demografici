@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>myaddon</addon-name>
+	<language-name>xul/html</language-name>
+
+	<!--
+		  Custom Component extending ZK components
+	-->
+
+	<component>
+		<component-name>customLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.CustomLabel</component-class>
+		<extends>hlayout</extends>
+	</component>
+
+	<component>
+		<component-name>customTextbox</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.CustomTextbox</component-class>
+		<extends>textbox</extends>
+	</component>
+
+	<component>
+		<component-name>currencybox</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.CurrencyBox</component-class>
+		<extends>decimalbox</extends>
+	</component>
+
+	<component>
+		<component-name>currencylabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.CurrencyLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>dateLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.DateLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>estremiAttoLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.EstremiAttoLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>estremiAnagrafeLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.EstremiAnagrafeLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>comuneLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.ComuneLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>controlBar</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.controlbar.ControlBar</component-class>
+		<extends>hlayout</extends>
+	</component>
+
+	<component>
+		<component-name>groupboxupdownimage</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.GroupboxUpDownImage</component-class>
+		<extends>groupbox</extends>
+	</component>
+
+	<component>
+		<component-name>updownbutton</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.UpDownButton</component-class>
+		<extends>button</extends>
+	</component>
+
+	<component>
+		<component-name>scanButton</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.ScanButton</component-class>
+		<extends>button</extends>
+	</component>
+
+	<component>
+		<component-name>customlistheader</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.CustomListheader</component-class>
+		<extends>listheader</extends>
+	</component>
+
+	<component>
+		<component-name>groupboxIndirizzo</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.GroupboxIndirizzo</component-class>
+		<extends>groupbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxComuni</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxComuni</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxVia</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxVia</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxConsolati</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxConsolati</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxAutorita</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxAutorita</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxUfficiale</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxUfficiale</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxQualifica</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxQualifica</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxTipoCertificato</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxTipoCertificato</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxTipoCertificatoEsterno</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxTipoCertificatoEsterno</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxMotivoEsenzioneBollo</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxMotivoEsenzioneBollo</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxTerminalista</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxTerminalista</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxTerminalistaInStampa</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxTerminalistaInStampa</component-class>
+		<extends>bandboxTerminalista</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxAnnotazioni</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxAnnotazioni</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxFormule</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxFormule</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxDecessi</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxDecessi</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxTipoDocumentoAnagrafe</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxTipoDocumentoAnagrafe</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxEnteAnagrafe</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxEnteAnagrafe</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxModalitaRilascio</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxModalitaRilascio</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxModalitaRilascioEmissioneCertificato</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxModalitaRilascioEmissioneCertificato</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxDiritto</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxDiritto</component-class>
+		<extends>div</extends>
+	</component>
+
+	<!--
+		  Macro Component reused across the app
+	-->
+
+	<component>
+		<component-name>controlBarLista</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarLista.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarComunicazioni</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarComunicazioni.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarFrammenti</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarFrammenti.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarAnnotazioni</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarAnnotazioni.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+    <component>
+        <component-name>controlBarFascicolo</component-name>
+        <macro-uri>/restrict/afc/controlbar/controlBarFascicolo.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
+	<component>
+		<component-name>controlBarANSC</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarANSC.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarTipoDocumentoFascicolo</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarTipoDocumentoFascicolo.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarMotivoRichiesta</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarMotivoRichiesta.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarStampa</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarStampa.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarDocumenti</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarDocumenti.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarDettaglio</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarAtto</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarAtto.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarTesto</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarTesto.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarRichiamo</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarRichiamo.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>controlBarCertificatoEmesso</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarCertificatoEmesso.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>totalSizeBlock</component-name>
+		<macro-uri>/restrict/afc/totalSizeBlock.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>orderByBlock</component-name>
+		<macro-uri>/restrict/afc/orderByBlock.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateIdDomain</component-name>
+		<macro-uri>/restrict/afc/templateIdDomain.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateLogoLista</component-name>
+		<macro-uri>/restrict/afc/templateLogoLista.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>estremiAttoFormLabel</component-name>
+		<macro-uri>/restrict/statocivile/estremiAttoFormLabel.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>estremiIndividuoFormLabel</component-name>
+		<macro-uri>/restrict/anagrafe/visualizzazione/estremiIndividuoFormLabel.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateEstremiAttoLabel</component-name>
+		<macro-uri>/restrict/statocivile/templateEstremiAttoLabel.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateEstremiAttoOriginaleLabel</component-name>
+		<macro-uri>/restrict/statocivile/templateEstremiAttoOriginaleLabel.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateTestoA4</component-name>
+		<macro-uri>/restrict/statocivile/templateTestoA4.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowRicercaAtto</component-name>
+		<macro-uri>/restrict/statocivile/templateRowRicercaAtto.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowTipoAttoRicerca</component-name>
+		<macro-uri>/restrict/statocivile/templateRowTipoAttoRicerca.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneInformazioniDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneInformazioniDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneInformazioniNasMatDecUciCitPregressoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneInformazioniNasMatDecUciCitPregressoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneInformazioniPubPvuDivScioPregressoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneInformazioniPubPvuDivScioPregressoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneAttoOriginaleDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneAttoOriginaleDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneAnnotazioniDaAttoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneAnnotazioniDaAttoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowRiepilogoAttoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateRowRiepilogoAttoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneRowRedazioneDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneRowRedazioneDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneAccessoComposizioneDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneAccessoComposizioneDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneAccessoComposizionePregressoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneAccessoComposizionePregressoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneEstremiTrasporto</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneEstremiTrasporto.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateSezioneEstremiCremazione</component-name>
+		<macro-uri>/restrict/statocivile/templateSezioneEstremiCremazione.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateListaStringhe</component-name>
+		<macro-uri>/restrict/statocivile/templateListaStringhe.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowDatiMatUciModelloSDSU</component-name>
+		<macro-uri>/restrict/statocivile/templateRowDatiMatUciModelloSDSU.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowGDI_PNP_CNP_RDA_1</component-name>
+		<macro-uri>/restrict/statocivile/templateRowGDI_PNP_CNP_RDA_1.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowGDI_PNP_CNP_RDA_2</component-name>
+		<macro-uri>/restrict/statocivile/templateRowGDI_PNP_CNP_RDA_2.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowIntestatario1ModelloSDSU</component-name>
+		<macro-uri>/restrict/statocivile/templateRowIntestatario1ModelloSDSU.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowCIT_1</component-name>
+		<macro-uri>/restrict/statocivile/templateRowCIT_1.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowIntestatario2ModelloSDSU</component-name>
+		<macro-uri>/restrict/statocivile/templateRowIntestatario2ModelloSDSU.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowCIT_2</component-name>
+		<macro-uri>/restrict/statocivile/templateRowCIT_2.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowInterpreteDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateRowInterpreteDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowTrascrizioneEsteroPrivatoDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateRowTrascrizioneEsteroPrivatoDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>templateRowTrascrizioneEsteroAutoritaDettaglio</component-name>
+		<macro-uri>/restrict/statocivile/templateRowTrascrizioneEsteroAutoritaDettaglio.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonBack</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonBack.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<!-- TODO: remove in favor of non-record version-->
+	<component>
+		<component-name>toolbarbuttonBackFromList</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonBackFromList.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<!-- TODO: remove in favor of non-record version-->
+	<component>
+		<component-name>toolbarbuttonBackFromRecord</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonBackFromRecord.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonAdd</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonAdd.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<!-- TODO: remove in favor of add-->
+	<component>
+		<component-name>toolbarbuttonInsFromList</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonInsFromList.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonEdit</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonEdit.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonDelete</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonDelete.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<!-- TODO: remove in favor of non-fromList version-->
+	<component>
+		<component-name>toolbarbuttonDeleteFromList</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonDeleteFromList.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonExportXls</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonExportXls.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonExportCsv</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonExportCsv.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonBloccoSbloccoTesto</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonBloccoSbloccoTesto.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonSave</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonSave.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<!-- TODO: remove in favor of non-record version-->
+	<component>
+		<component-name>toolbarbuttonSaveRecord</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonSaveRecord.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonGoToFascicolo</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonGoToFascicolo.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonAddPlus</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonAddPlus.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonAllegati</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonAllegati.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonUploadAllegato</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonUploadAllegato.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonDownloadAllegato</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonDownloadAllegato.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonDocumenti</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonDocumenti.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonUploadDocumento</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonUploadDocumento.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>toolbarbuttonStorico</component-name>
+		<macro-uri>/restrict/afc/controlbar/toolbarbuttonStorico.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+	<component>
+		<component-name>dateLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.DateLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>estremiAttoLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.EstremiAttoLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>comuneLabel</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.ComuneLabel</component-class>
+		<extends>customLabel</extends>
+	</component>
+
+	<component>
+		<component-name>passwordTextbox</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.PasswordTextbox</component-class>
+		<extends>hlayout</extends>
+	</component>
+
+</language-addon>

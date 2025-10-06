@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="getAttoCellSclass" class="it.finmatica.de4gsdzk.utils.FormUtils" signature="java.lang.String getAttoCellSclass(it.finmatica.de4gsdzk.CivAttoBaseDomain)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.unione.unione.UnioneCivileListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+			<hlayout valign="middle">
+				<controlBarLista/>
+
+				<label value="@load(vm.formLabel)" sclass="formTitle"/>
+			</hlayout>
+
+			<templateRowRicercaAtto/>
+
+			<orderByBlock/>
+
+			<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead>
+					<listheader label="@load(vm.etichette['Tipo_Atto'])" 				width="100px"/>
+					<listheader label="@load(vm.etichette['Cognome_Contraente_1'])" 	width="15%"/>
+					<listheader label="@load(vm.etichette['Nome_Contraente_1'])"		width="15%"/>
+					<listheader label="@load(vm.etichette['Sesso'])"					width="3%"/>
+					<listheader label="@load(vm.etichette['Cognome_Contraente_2'])"		width="15%"/>
+					<listheader label="@load(vm.etichette['Nome_Contraente_2'])"		width="15%"/>
+					<listheader label="@load(vm.etichette['Sesso'])"					width="3%"/>
+                    <listheader label="@load(vm.etichetteCustom['DataEvento'])" 		width="7%"/>
+					<listheader label="@load(vm.etichette['Anno'])" 					width="4%"/>
+					<listheader label="@load(vm.etichette['Numero_Atto'])" 				width="5%"/>
+					<listheader label="@load(vm.etichette['Parte'])" 					width="4%"/>
+					<listheader label="@load(vm.etichette['Ufficio'])" 					width="4%"/>
+					<zk if="${vm.anscOn}">
+						<listheader label="@load(vm.etichette['Id_Atto_Ansc'])" 		width="160px"/>
+					</zk>
+					<listheader label="@load(vm.etichette['Comunicazioni_pendenti'])"	width="4%"/>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem onDoubleClick="@command('onModifica')">
+						<listcell>
+							<label value="@load(item.divorzio?vm.etichette['Atto_Scioglimento']:vm.getEtichettaEnum(item.getTipoAttoEnum()) )"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.cognome1Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.nome1Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.sesso1Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.cognome2Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.nome2Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.sesso2Lista)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(empty item.dataEventoLista? null:(c:formatDate(item.dataEventoLista, 'dd/MM/yyyy')))"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.anno)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.atto lt 0? vm.etichette['Provvisorio']: item.atto)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.parte)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<label value="@load(item.ufficio)"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<zk if="${vm.anscOn}">
+							<listcell>
+								<label value="@load(item.idAttoAnsc)"
+									   sclass="@load(c:getAttoCellSclass(item))"/>
+							</listcell>
+						</zk>
+						<listcell>
+							<label value="@load(item.comunicazioniPendenti.name())"
+								   sclass="@load(c:getAttoCellSclass(item))"/>
+						</listcell>
+						<listcell>
+							<button image="/images/icon/action/18x18/edit.png"
+								   tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+								   visible="@load(not empty item.id)"
+								   onClick="@command('onModifica')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+	</window>
+
+</zk>

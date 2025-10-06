@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout style="text-align: center; padding-top: 80px;" width="100%">
+		<vlayout spacing="10px" class="de4gsdzk-group-button">
+			<hlayout spacing="10px" children="@load(vm.moduliTop)">
+				<template name="children" var="m">
+					<button label="@load(vm.etichette[m.name()])" image="@load(c:cat('/images/icon/presentation/36x36/', m.img))"
+							disabled="@load(not vm.moduliEnabled[m])"
+							width="160px" height="180px" orient="vertical"
+							class="de4gsdzk-button hovicon effect-3 sub-a"
+							style="color:#354358;font-family:Arial;font-size:14px;font-weight:bold;"
+							href="@load(m.uri)" target="_blank"/>
+				</template>
+			</hlayout>
+			<hlayout spacing="10px" children="@load(vm.moduliBot)">
+				<template name="children" var="m">
+					<button label="@load(vm.etichette[m.name()])" image="@load(c:cat('/images/icon/presentation/36x36/', m.img))"
+							disabled="@load(not vm.moduliEnabled[m])"
+							width="160px" height="180px" orient="vertical"
+							class="de4gsdzk-button hovicon effect-3 sub-a"
+							style="color:#354358;font-family:Arial;font-size:14px;font-weight:bold;"
+							href="@load(m.uri)" target="_blank"/>
+				</template>
+			</hlayout>
+		</vlayout>
+	</hlayout>
+
+</zk>

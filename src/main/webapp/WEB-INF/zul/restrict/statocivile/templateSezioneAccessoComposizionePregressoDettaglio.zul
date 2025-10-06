@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox closable="true" visible="@load(vm.composizioneTestoAttiva and (vm.statoFrammenti lt 2))">
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell colspan="10">
+						<hlayout hflex="1" sclass="testo-al-centro">
+							<button label="@load(vm.etichette['Accedi_Composizione'])"
+									height="35px" width="150px"
+									style="font-size:12px; font-weight: bold;"
+									disabled="@load(not vm.composizioneTestoAttiva or (vm.statoFrammenti eq 2))"
+									onClick="@command('onAttivaComposizionePregresso')" />
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

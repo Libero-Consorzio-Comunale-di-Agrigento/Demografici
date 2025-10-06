@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?component name="buttonRicercaAnagrafe" macroURI="/restrict/afc/buttonRicercaAnagrafe.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <grid sclass="form">
+        <columns>
+            <column width="120px"/>
+            <column/>
+            <column width="180px"/>
+            <column/>
+            <column width="180px"/>
+            <column/>
+            <column width="220px"/>
+        </columns>
+        <rows>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Codice_Fiscale'])"/>
+                </cell>
+                <cell colspan="3">
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaIndividuo.codiceFiscale)" maxlength="16" hflex="1"
+                                 style="text-transform:uppercase"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="codiceFiscale"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell colspan="2"/>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Cognome'])"/>
+                </cell>
+                <cell colspan="5">
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaIndividuo.cognome)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="cognome"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Nome'])"/>
+                </cell>
+                <cell colspan="5">
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaIndividuo.nome)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="nome"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Sesso'])"/>
+                </cell>
+                <cell colspan="5">
+                    <combobox model="@load(vm.listaSesso)" readonly="true" width="100px"
+                              selectedItem="@bind(vm.ricercaIndividuo.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                              disabled="@load(not vm.ricercaIndividuo.sessoEnabled)">
+                        <template name="model">
+                            <comboitem
+                                    label="@load(empty each?'- -':vm.getEtichettaEnum(each))"
+                                    value="@load(each)"/>
+                        </template>
+                    </combobox>
+                </cell>
+                <cell>
+                    <zk if="${vm.ricercaIndividuo.ricercaRettificatiEnabled}">
+                        <buttonRicercaAnagrafe/>
+                    </zk>
+                </cell>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Data_Nascita'])"/>
+                </cell>
+                <cell colspan="3">
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaIndividuo.dataNascitaDal)"
+                                 mold="rounded"
+                                 width="110px" onOK="@command('onRicerca')"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaIndividuo.dataNascitaAl)"
+                                 mold="rounded"
+                                 width="110px" onOK="@command('onRicerca')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="dataNascitaDal,dataNascitaAl"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell colspan="2"/>
+                <cell>
+                    <zk if="${vm.ricercaIndividuo.ricercaRettificatiEnabled}">
+                        <button label="@load(vm.etichette['Ricerca_movimenti_rettificati'])"
+                                onClick="@command('onRicercaRettificati')"
+                                image="/images/icon/action/16x16/search_special.png"
+                                hflex="1"/>
+                    </zk>
+                    <zk if="${!vm.ricercaIndividuo.ricercaRettificatiEnabled}">
+                        <buttonRicercaAnagrafe/>
+                    </zk>
+                </cell>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Matricola'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaIndividuo.matricola)"
+                                onOK="@command('onRicerca')"
+                                hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="matricola"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Id_scheda_ANPR'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaIndividuo.idSoggettoAnpr)"
+                                onOK="@command('onRicerca')"
+                                hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="idSoggettoAnpr"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Id_unico_nazionale'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaIndividuo.idUnicoAnpr)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="idUnicoAnpr"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell>
+                    <button label="@load(vm.etichette['Ricerca_in_ANPR'])"
+                            onClick="@command('onRicercaANP')"
+                            image="/images/de4gsdzk/16x16/anpr.png"
+                            hflex="1"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.visualizzazione.FamigliaAllegatiListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+            <hlayout sclass="navigazione" valign="middle">
+                <controlBar value="@load(vm.controlBarAttributes)">
+                    <toolbarbuttonUploadAllegato/>
+                </controlBar>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+                <estremiIndividuoFormLabel/>
+            </hlayout>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Codice_Famiglia'])"/>
+                        </cell>
+                        <cell>
+                            <customLabel value="@load(vm.famiglia.codice)" bold="true"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Intestatario_Convivenza'])"/>
+                        </cell>
+                        <cell>
+                            <customLabel value="@load(c:cat3(vm.famiglia.cognomeIntestatario, '  ', vm.famiglia.nomeIntestatario))" bold="true"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <listheader label="@load(vm.etichette['Allegato'])"/>
+                    <listheader label="@load(vm.etichette['Data_Registrazione'])"/>
+                    <listheader width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.nome)"/>
+                        <listcell>
+                            <dateLabel value="@load(item.dataRegistrazione)"/>
+                        </listcell>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/import.png"
+                                    tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
+                                    onClick="@command('onDownloadAllegato', allegato=item)"
+                                    disabled="@load(not item.canDownload())"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </vlayout>
+
+    </window>
+
+</zk>

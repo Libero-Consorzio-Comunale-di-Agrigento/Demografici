@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.dizionari.tipoAtto.TipoAttoDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1" sclass="scroll">
+
+			<hlayout valign="middle">
+				<controlBarDettaglio/>
+
+				<label value="@load(vm.formLabel)" sclass="formTitle"/>
+			</hlayout>
+
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="170px">
+							<label value="@load(vm.msgTitle)"/>
+						</cell>
+						<cell width="450px">
+							<label value="@load(vm.dettaglio.divorzio?vm.etichetteCustom['AttoDivorzio']:vm.getEtichettaEnum(vm.getTipoAttoEnum()))" hflex="1"/>
+						</cell>
+						<cell width="100px"/>
+						<cell/>
+					</row>
+					<row>
+						<cell align="right" width="150px">
+							<label value="@load(vm.etichette['Sequenza'])"/>
+						</cell>
+						<cell colspan="3">
+							<intbox value="@bind(vm.dettaglio.sequenza)"/>
+						</cell>
+					</row>
+					<zk if="${vm.tipoAttoEnum.hasParte()}">
+						<row>
+							<cell align="right" width="150px">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Parte'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.parte)" onChange="@command('onSelectParteSerie')"/>
+							</cell>
+						</row>
+					</zk>
+					<zk if="${vm.tipoAttoEnum.hasSerie()}">
+						<row>
+							<cell align="right" width="150px">
+								<label value="@load(vm.etichette['Serie'])"/>
+							</cell>
+							<cell colspan="3">
+								<textbox value="@bind(vm.dettaglio.serie)" onChange="@command('onSelectParteSerie')" style="text-transform:uppercase"/>
+							</cell>
+						</row>
+					</zk>
+					<row>
+						<cell align="right" width="150px">
+							<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Descrizione'])"/>
+						</cell>
+						<cell colspan="3">
+							<textbox value="@bind(vm.dettaglio.descrizione)" hflex="1" rows="2"/>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Natura_Atto'])"/>
+						</cell>
+						<cell colspan="3">
+							<radiogroup model="@load(vm.listaNatura)" onCheck="@command('onSelectNatura')"
+										selectedItem="@bind(vm.dettaglio.natura) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</cell>
+					</row>
+					<zk if="${vm.tipoAttoEnum.isMatrimonio() and vm.dettaglio.divorzio}">
+						<row visible="@load(vm.tipoAttoEnum.isMatrimonio() and vm.dettaglio.divorzio)">
+							<cell align="right">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Tipo_Divorzio'])"/>
+							</cell>
+							<cell>
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaTipiDivorzio)"
+									            onCheck="@command('onSelectTipoDivorzio')"
+												selectedItem="@bind(vm.dettaglio.tipoDivorzio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.getEtichettaCustomEnum(each))"
+												   value="@load(each)" style="padding-left:10px"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+                            <cell align="right">
+								<label value="@load(vm.etichette['Caso_specifico'])" visible="@bind(vm.dettaglio.tipoDivorzio eq 'A')"/>
+							</cell>
+							<cell>
+                                <radiogroup model="@load(vm.listaTipiDivorzioAltro)" orient="vertical"
+                                            visible="@bind(vm.dettaglio.tipoDivorzio eq 'A')"
+                                            selectedItem="@bind(vm.dettaglio.tipoDivorzioAltro) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <radio label="@load(empty each?'Altro':vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+                                    </template>
+                                </radiogroup>
+							</cell>
+						</row>
+					</zk>
+					<row>
+						<cell align="right">
+							<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Categoria'])"/>
+						</cell>
+						<cell colspan="3">
+							<combobox model="@load(vm.listaCategoria)" readonly="true" width="550px"
+							          onChange="@command('onSelectCategoria')"
+									  selectedItem="@bind(vm.dettaglio.categoriaDomain) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<comboitem label="@load(empty each? '- -':each.descrizione)" value="@load(each)"/>
+								</template>
+							</combobox>
+						</cell>
+					</row>
+					<row visible="@load(c:length(vm.listaMinuta) gt 0)">
+						<cell align="right">
+							<label value="@load(vm.etichette['Minuta'])"/>
+						</cell>
+						<cell colspan="3">
+							<combobox model="@load(vm.listaMinuta)" readonly="true" width="450px"
+									  selectedItem="@bind(vm.dettaglio.codiceMinuta) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+								<template name="model">
+									<comboitem label="@load(empty each? '- -':each.codiceDescrizione)" value="@load(each.codice)"/>
+								</template>
+							</combobox>
+						</cell>
+					</row>
+					<row visible="@load(vm.dettaglio.natura eq 'O')">
+						<cell align="right">
+							<label value="@load(vm.etichette['Tipo_Documento_CIA_Fascicolo'])"/>
+						</cell>
+						<cell colspan="3">
+							<combobox model="@load(vm.listaTipoDocumento)" readonly="true" width="350px"
+									  selectedItem="@bind(vm.dettaglio.tipoDocumentoFascicoloCia) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+								</template>
+							</combobox>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Dismesso'])"/>
+						</cell>
+						<cell colspan="3">
+							<checkbox checked="@bind(vm.dettaglio.flagDismesso)"/>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Note'])"/>
+						</cell>
+						<cell colspan="3">
+							<textbox value="@bind(vm.dettaglio.note)" hflex="1" rows="5"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+
+			<templateIdDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

@@ -1,0 +1,7 @@
+package it.finmatica.de4gsdzk.pagamento.nextstep
+
+
+import it.finmatica.de4gsdzk.pagamento.WspaPagamentoDaInviareCustomRepository
+
+interface NextStepPagamentoDaInviareCustomRepository extends WspaPagamentoDaInviareCustomRepository {
+}

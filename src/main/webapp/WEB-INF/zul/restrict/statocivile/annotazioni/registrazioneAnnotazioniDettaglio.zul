@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.annotazioni.RegistrazioneAnnotazioniDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarAnnotazioni/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<groupbox mold="3d" closable="false" visible="@load(vm.tipoOperazione.isUpdate())">
+				<caption label="@load(vm.etichette['SEZIONE_ESTREMI_ATTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<zk if="${vm.soggettoAnnotazione.tipoComune eq 0}">
+							<row>
+								<cell>
+									<hlayout>
+										<label value="@load(vm.etichette['Generata_su'])"/>
+										<label value="@load(vm.labelAttoAltroComune)" sclass="grassetto"/>
+									</hlayout>
+								</cell>
+							</row>
+						</zk>
+						<row>
+							<cell>
+								<hlayout spacing="40px">
+                                    <zk if="${vm.soggettoAnnotazione.tipoComune eq 0}">
+                                        <hlayout valign="middle" spacing="8px" visible="@load(vm.soggettoAnnotazione.tipoComune eq 0)">
+                                            <label value="@load(vm.etichette['Generata_da'])" />
+                                            <label value="@load(vm.getEtichettaEnum(vm.soggettoAnnotazione.getTipoAttoRifEnum()))" sclass="grassetto"/>
+                                        </hlayout>
+                                    </zk>
+
+                                    <zk if="${vm.soggettoAnnotazione.tipoComune eq 1}">
+                                        <hlayout valign="middle" spacing="8px" visible="@load(vm.soggettoAnnotazione.tipoComune eq 1)">
+                                            <label value="@load(vm.etichette['Generata_su'])" />
+                                            <label value="@load(vm.getEtichettaEnum(vm.atto.tipoAttoEnum) )" sclass="grassetto" visible="@load(vm.soggettoAnnotazione.tipoComune eq 1)"/>
+                                        </hlayout>
+                                    </zk>
+
+									<hlayout valign="middle" spacing="8px">
+										<label value="@load(vm.etichette['Ufficio'])"/>
+										<label value="@load(vm.atto.ufficio)" sclass="grassetto"/>
+									</hlayout>
+
+									<hlayout valign="middle" spacing="8px">
+										<label value="@load(vm.etichette['Anno'])"/>
+										<label value="@load(vm.atto.anno)" sclass="grassetto"/>
+									</hlayout>
+
+									<hlayout valign="middle" spacing="8px">
+										<label value="@load(vm.etichette['Numero_Atto'])"/>
+										<label value="@load(vm.atto.atto)" sclass="grassetto" visible="@load(vm.atto.atto gt 0)" />
+										<label value="@load(vm.etichette['Provvisorio'])" sclass="grassetto" visible="@load(vm.atto.atto le 0)"/>
+									</hlayout>
+
+									<zk if="${vm.atto.hasParte()}">
+										<hlayout valign="middle" spacing="8px">
+											<label value="@load(vm.etichette['Parte'])"/>
+											<label value="@load(vm.atto.parte)" sclass="grassetto"/>
+										</hlayout>
+									</zk>
+
+									<zk if="${vm.atto.hasSerie()}">
+										<hlayout valign="middle" spacing="8px">
+											<label value="@load(vm.etichette['Serie'])"/>
+											<label value="@load(vm.atto.serie)" sclass="grassetto"/>
+										</hlayout>
+									</zk>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell>
+								<hlayout>
+									<!--<label value="@load(vm.etichette['Cognome_Nome'])"/> -->
+									<label value="@load(vm.nominativoAtto)" sclass="grassetto"/>
+								</hlayout>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" hflex="1" visible="@load(vm.tipoOperazione.isInsert())">
+				<caption label="@load(vm.etichette['SEZIONE_ESTREMI_ATTO'])"/>
+				<grid sclass="form" visible="@load(vm.soggettoAnnotazione.tipoComune eq 0)">
+					<rows>
+						<row>
+							<cell colspan="11" width="195px">
+								<hlayout>
+									<label value="@load(vm.etichette['Generata_su'])"/>
+									<label value="@load(vm.labelAttoAltroComune)" sclass="grassetto" visible="@load(vm.soggettoAnnotazione.tipoComune eq 0)"/>
+								</hlayout>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell width="195px">
+
+                                <hlayout valign="middle" spacing="8px" visible="@load(vm.soggettoAnnotazione.tipoComune eq 0)">
+                                    <label value="@load(vm.etichette['Generata_da'])" />
+                                    <label value="@load(vm.getEtichettaEnum(vm.soggettoAnnotazione.getTipoAttoRifEnum()))" sclass="grassetto"/>
+                                </hlayout>
+
+                                <hlayout valign="middle" spacing="8px" visible="@load(vm.soggettoAnnotazione.tipoComune eq 1)">
+                                    <label value="@load(vm.etichette['Generata_su'])" />
+                                    <label value="@load(vm.getEtichettaEnum(vm.atto.tipoAttoEnum) )" sclass="grassetto" visible="@load(vm.soggettoAnnotazione.tipoComune eq 1)"/>
+                                </hlayout>
+
+							</cell>
+							<cell align="right" width="70px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Ufficio'])"/>
+							</cell>
+							<cell width="70px">
+								<combobox model="@load(vm.listaUffici)" readonly="true" hflex="1"
+										  disabled="@load(vm.tipoOperazione.isUpdate())" visible="@load(vm.tipoOperazione.isInsert())"
+										  selectedItem="@bind(vm.atto.ufficio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+										  onChange="@command('onSelectUfficio')">
+									<template name="model">
+										<comboitem label="@load(each)" value="@load(each)"/>
+									</template>
+								</combobox>
+								<intbox value="@load(vm.atto.ufficio)" hflex="1" visible="@load(vm.tipoOperazione.isUpdate())" disabled="true"/>
+							</cell>
+							<cell align="right" width="70px">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Anno'])"/>
+							</cell>
+							<cell width="70px">
+								<intbox value="@bind(vm.atto.anno)" maxlength="4" disabled="@load(vm.tipoOperazione.isUpdate())"
+										onChange="@command('onSelectAnno')" width="45px"/>
+							</cell>
+							<zk if="${vm.atto.hasParte()}">
+								<cell align="right" width="70px">
+									<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Parte'])"/>
+								</cell>
+								<cell width="70px">
+									<intbox value="@bind(vm.atto.parte)" width="30px"/>
+								</cell>
+							</zk>
+							<zk if="${vm.atto.hasSerie()}">
+								<cell align="right" width="70px">
+									<label value="@load(vm.etichette['Serie'])"/>
+								</cell>
+								<cell width="70px">
+									<textbox value="@bind(vm.atto.serie)" style="text-transform:uppercase" width="30px"/>
+								</cell>
+							</zk>
+							<cell align="right" width="70px">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Numero_Atto'])"/>
+							</cell>
+							<cell>
+								<hlayout>
+									<intbox value="@bind(vm.atto.atto)" maxlength="6" disabled="@load(vm.tipoOperazione.isUpdate())" width="70px"/>
+									<zk if="${vm.soggettoAnnotazione.tipoComune eq 0}">
+										<button image="/images/icon/action/16x16/search.png"
+												tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onCheckAtto')"/>
+									</zk>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell colspan="@load(vm.atto.hasParte()?(vm.atto.hasSerie()?11:9):(vm.atto.hasSerie()?9:7))">
+								<hlayout>
+									<!--<label value="@load(vm.etichette['Cognome_Nome'])"/> -->
+									<label value="@load(vm.nominativoAtto)" sclass="grassetto"/>
+								</hlayout>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" hflex="1">
+			<caption label="@load(vm.etichette['SEZIONE_ANNOTAZIONE_ATTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="120px">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Formula'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<bandboxAnnotazioni hflex="1"
+														value="@load(vm.dettaglio.formulaDfa.descrizioneEstesa)"
+														disabled="@load(vm.atto.hasParte()?(empty vm.atto.ufficio or empty vm.atto.anno or empty vm.atto.parte or empty vm.atto.atto):(empty vm.atto.ufficio or empty vm.atto.anno or empty vm.atto.atto))"
+														tipoAtto="@load(vm.soggettoAnnotazione.tipoAttoAnnotazione)"
+														listaTipoAnnotazione="@load(vm.listaTipoAnnotazione)"
+														tipoOrdinamentoDefaultValue="@load(vm.tipoOrdinamentoDefaultValue)"
+														onSelect="@command('onSelectFormulaAnnotazione')"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaFormulaAnnotazione')"/>
+								</hlayout>
+							</cell>
+							<cell colspan="2"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Registrazione'])"/>
+							</cell>
+							<cell>
+								<datebox value="@bind(vm.dettaglio.dataRegistrazione)" width="100px" format="dd/MM/yyyy"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Sequenza'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.sequenza)" />
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stampa_Su_Estratto'])"/>
+							</cell>
+							<cell>
+								<checkbox checked="@bind(vm.dettaglio.stampaSuEstratto)" />
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stampa_Su_Atto'])"/>
+							</cell>
+							<cell colspan="3">
+								<checkbox checked="@bind(vm.dettaglio.stampaSuAtto)" />
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stato'])"/>
+							</cell>
+							<cell colspan="5">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaStatoAnnotazione)"
+												selectedItem="@bind(vm.dettaglio.stato) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Testo'])"/>
+							</cell>
+							<cell colspan="5">
+								<textbox value="@bind(vm.dettaglio.testo)" hflex="1" rows="10"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+		</vlayout>
+
+	</window>
+
+</zk>

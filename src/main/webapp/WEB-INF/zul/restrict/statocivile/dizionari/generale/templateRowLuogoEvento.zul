@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox closable="false">
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="72px">
+						<label value="@load(vm.etichette['Luogo'])"/>
+					</cell>
+					<cell colspan="9">
+						<hlayout hflex="1">
+							<radiogroup model="@load(vm.sezioniLuogo)" onCheck="@command('onSelectLuogo')"
+										selectedItem="@bind(vm.selectedSezioneLuogo) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+								<template name="model">
+									<radio label="@load(each.label)" value="@load(each)" style="padding:20px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+					<!--<cell width="40px">
+                        <hlayout valign="middle">
+                            <button image="/images/icon/action/16x16/search.png"
+                                    tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                        </hlayout>
+                    </cell> -->
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

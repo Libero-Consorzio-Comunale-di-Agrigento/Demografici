@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.afc.InformazioniUtenteViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			position="center,middle"
+			closable="false"
+			width="500px"
+			height="370px"
+			border="normal">
+
+		<style>
+			.meter {
+				font-size: 1px;
+				height: 3px;
+			}
+			.meter-inner {
+				width: 0px;
+				height: 3px;
+			}
+			.meter-red .meter-inner{
+				background: red;
+			}
+			.meter-orange .meter-inner{
+				background: orange;
+			}
+			.meter-green .meter-inner{
+				background: green;
+			}
+		</style>
+
+		<script type="text/javascript"><![CDATA[
+			function meterUpdate(psw) {
+				var score = strengthMeasure(psw),
+					desc = [ "", "Molto debole", "Debole", "Media", "Media", "Forte", "Molto Forte" ],
+					meter = $("$meter"),
+					meterWidget = zk.Widget.$(meter);
+
+				switch (score) {
+					case 1:
+					case 2:
+						meterWidget.setSclass("meter meter-red");
+						break;
+					case 3:
+					case 4:
+						meterWidget.setSclass("meter meter-orange");
+						break;
+					case 5:
+					case 6:
+						meterWidget.setSclass("meter meter-green");
+						break;
+					default:
+						meterWidget.setSclass("meter");
+				}
+
+				//Get ZK Widget through jQuery selector
+				zk.Widget.$($(".meter-inner")).setWidth(score * meter.width() / desc.length + "px");
+
+				//Get ZK Widget through ID
+				zk.Widget.$("$msg").setValue(desc[score]);
+			}
+
+			/* Simple Rule */
+			function strengthMeasure(text) {
+				var score = 0;
+				if (text.length > 0)
+					score++;
+
+				if (text.length > 6)
+					score++;
+
+				if ((text.match(/[a-z]/)) && (text.match(/[A-Z]/)))
+					score++;
+
+				if (text.match(/\d+/))
+					score++;
+
+				if (text.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/))
+					score++;
+
+				if (text.length > 12)
+					score++;
+
+				if (text.length == 0)
+					score = 0;
+
+				return score;
+			}
+		]]></script>
+
+		<grid sclass="documentoBandaTitolo">
+	 		<rows>
+	 			<row>
+	 				<cell width="50px">
+	 					<image src="/images/de4gsdzk/48x48/user.png" />
+	 				</cell>
+	 				<cell>
+	 					<!-- titolo della pagina -->
+	 					<label class="documentoTitolo" value="@load(vm.nominativo)"/>
+	 					<label class="documentoSottoTitolo" />
+	 				</cell>
+	 			</row>
+	 		</rows>
+	 	</grid>
+	 	
+	 	<tabbox vflex="1" style="margin-top: 10px">
+	 		<tabs>
+				<tab label="@load(vm.etichette['Cambio_Password'])" />
+				<!--<tab label="@load(vm.etichette['Informazioni'])" />
+				<tab label="@load(vm.etichette['Preferenze'])" />-->
+	 		</tabs>
+	 		<tabpanels>
+				<!-- Cambio Password -->
+				<tabpanel vflex="1">
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell colspan="2">
+									<label value="@load(vm.etichette['Password_Corrente'])"/>
+								</cell>
+								<cell colspan="3">
+									<passwordTextbox value="@bind(vm.vecchiaPassword)"/>
+								</cell>
+								<cell/>
+							</row>
+<!--							<row>-->
+<!--								<cell colspan="2">-->
+<!--									<label value="@load(vm.etichette['Password_Corrente'])" />-->
+<!--								</cell>-->
+<!--								<cell colspan="3">-->
+<!--									<textbox value="@bind(vm.vecchiaPassword)" type="password" hflex="1"/>-->
+<!--								</cell>-->
+<!--								<cell/>-->
+<!--							</row>-->
+							<row>
+								<cell colspan="2">
+									<label value="@load(vm.etichette['Nuova_Password'])" />
+								</cell>
+								<cell colspan="3">
+									<passwordTextbox value="@bind(vm.nuovaPassword)"
+													 onChanging="@command('onNuovaPasswordChanging')"/>
+								</cell>
+								<cell align="center">
+									<div id="meter" sclass="meter">
+										<div sclass="meter-inner"></div>
+									</div>
+									<label id="msg" />
+								</cell>
+							</row>
+							<row>
+								<cell colspan="2">
+									<label value="@load(vm.etichette['Conferma_Password'])" />
+								</cell>
+								<cell colspan="3">
+									<passwordTextbox value="@bind(vm.confermaPassword)"
+													 onChanging="@command('onConfermaPasswordChanging')"/>
+								</cell>
+								<cell align="center">
+									<image src="@load(vm.passwordVerificata ? '/images/icon/show/16x16/view_green.png' : '/images/icon/show/16x16/viewcancel.png')"
+										   tooltiptext="@load(vm.passwordVerificata ? vm.etichette['Password_Coincidono_tooltip'] : vm.etichette['Password_Diverse_tooltip'])" />
+								</cell>
+							</row>
+							<row>
+								<cell  colspan="6" align="right">
+									<button label="@load(vm.etichette['Cambio_Password'])" onClick="@command('onCambiaPassword')" disabled="@load(not vm.passwordVerificata)"  mold="trendy" image="/images/icon/action/16x16/save.png" />
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+	 			<!--&lt;!&ndash; Informazioni &ndash;&gt;
+	 			<tabpanel>
+	 				<grid sclass="form">
+						<rows>
+							&lt;!&ndash;<row>
+								<cell width="150px">
+									<label value="@load(vm.etichette['Ruolo_di_Accesso'])" />
+								</cell>
+								<cell>
+									<label value="@load(vm.ruoloAccesso)" />
+								</cell>
+							</row>
+							
+							<row>
+								<cell width="150px">
+									<label value="Amministrazione:" />
+								</cell>
+								<cell>
+
+								</cell>
+							</row>
+							
+							<row>
+								<cell width="150px">
+									<label value="Ottica:" />
+								</cell>
+								<cell>
+
+								</cell>
+							</row> &ndash;&gt;
+						</rows>
+					</grid>
+					
+	 			</tabpanel>
+	 			
+	 			&lt;!&ndash; Preferenze &ndash;&gt;
+ 	 			<tabpanel> 
+					<grid sclass="form" >
+					    <columns>
+					        <column label="@load(vm.etichette['Codice'])" width="30%"/>
+					        <column label="@load(vm.etichette['Valore'])" width="70%"/>
+					    </columns>
+					    <template name="model">
+					        <row>
+					            <label />
+					            <label />
+					        </row>
+					    </template>
+					</grid>	 	 			
+ 	 			</tabpanel>-->
+	 		</tabpanels>
+	 	</tabbox>
+	 	
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="@load(vm.etichette['Chiudi'])"		onClick="@command('onChiudi')" 		image="/images/icon/action/16x16/close.png"/>
+			</h:div>
+		</h:div>
+	</window>
+</zk>

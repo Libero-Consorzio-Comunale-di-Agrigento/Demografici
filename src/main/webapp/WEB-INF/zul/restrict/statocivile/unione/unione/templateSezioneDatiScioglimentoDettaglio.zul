@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoMatrimonioDivScio" macroURI="/restrict/statocivile/templateRowEstremiAttoMatrimonioDivScio.zul" inline="true"?>
+<?component name="templateRowEstremiAccordoUfficialeDettaglio" macroURI="/restrict/statocivile/templateRowEstremiAccordoUfficialeDettaglio.zul" inline="true"?>
+<?component name="templateRowEstremiAccordoAvvocatiDettaglio" macroURI="/restrict/statocivile/templateRowEstremiAccordoAvvocatiDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- DATI SCIOGLIMENTO -->
+	<groupbox mold="3d" hflex="1" open="false">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_DATI_ATTO'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="135px">
+						<label value="@load(vm.dettaglio.isUfficialeAccordo()?vm.etichette['Data_Accordo']:(vm.dettaglio.isUfficialeConferma()?vm.etichette['Data_Conferma']:(vm.dettaglio.isAvvocati()?vm.etichette['Data_Trascrizione']:vm.etichette['Data_Atto'])))"/>
+					</cell>
+					<cell colspan="6">
+						<hlayout>
+							<hlayout valign="middle" hflex="1" spacing="9px" visible="@load(not (vm.dettaglio.isAvvocati() or vm.dettaglio.isUfficialeConferma()) )">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataMatrimonio)" width="100px"/>
+								<label value="@load(vm.etichette['Ore'])"/>
+								<textbox value="@bind(vm.dettaglio.oraMatrimonio)" maxlength="2" width="28px"/>
+								<label value="@load(vm.etichette['Minuti'])"/>
+								<textbox value="@bind(vm.dettaglio.minutoMatrimonio)" maxlength="2" width="28px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto')">
+									<custom-attributes proprieta="dataMatrimonio,oraMatrimonio,minutoMatrimonio"/>
+								</button>
+							</hlayout>
+							<hlayout valign="middle" hflex="1" spacing="9px" visible="@load(vm.dettaglio.isAvvocati() or vm.dettaglio.isUfficialeConferma())">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataMatrimonio)" width="100px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto')">
+									<custom-attributes proprieta="dataMatrimonio"/>
+								</button>
+							</hlayout>
+						</hlayout>
+					</cell>
+					<cell colspan="5"/>
+				</row>
+				<row>
+					<cell align="right">
+						<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Atto'])"/>
+					</cell>
+					<cell colspan="6">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.dettaglio.descrizioneComuneMatrimonio)"
+										   dataRiferimento="@load(vm.dettaglio.dataMatrimonio)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CC_MATR')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CC_MATR')"
+							/>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<textbox value="@load(vm.dettaglio.siglaProvinciaMatrimonio)" hflex="1" readonly="true"/>
+					</cell>
+					<cell colspan="4"/>
+				</row>
+
+                <zk if="${vm.dettaglio.isUfficialeConferma() or vm.dettaglio.isUfficialeAltro()}">
+                    <templateRowEstremiAccordoUfficialeDettaglio/>
+                </zk>
+
+                <zk if="${vm.dettaglio.isUfficialeConferma() or vm.dettaglio.isAvvocati()}">
+                    <templateRowEstremiAccordoAvvocatiDettaglio/>
+                </zk>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Estremi_Atto_Unione_Civile'])"/>
+					</cell>
+					<cell colspan="11">
+						<grid hflex="1">
+							<rows>
+								<row>
+									<cell>
+										<grid>
+											<rows>
+
+												<templateRowEstremiAttoMatrimonioDivScio/>
+
+                                                <zk if="${vm.anscOn and vm.dettaglio.isUfficialeAccordo()}">
+                                                    <row>
+                                                        <cell align="right" width="90px">
+                                                            <hlayout>
+                                                                <!--<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>-->
+                                                                <label value="Data Unione"/>
+                                                            </hlayout>
+                                                        </cell>
+                                                        <cell width="95px">
+                                                            <datebox format="dd/MM/yyyy" value="@bind(vm.sposi.dataMatrimonio)" width="95px"/>
+                                                        </cell>
+
+                                                        <cell align="right">
+                                                            <label value="Comune Unione"/>
+                                                        </cell>
+                                                        <cell colspan="4">
+                                                            <hlayout valign="middle" hflex="1">
+                                                                <bandboxComuni hflex="1"
+                                                                               value="@load(vm.sposi.comuneMatrimonio.descrizione)"
+                                                                               dataRiferimento="@load(vm.sposi.dataMatrimonio)"
+                                                                               onSelect="@command('onSelectComune', campoRiferimento='CC_MATR_ACC')"/>
+                                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CC_MATR_ACC')"
+                                                                />
+                                                            </hlayout>
+                                                        </cell>
+                                                        <cell>
+                                                            <textbox value="@load(vm.sposi.comuneMatrimonio.siglaProvincia)" hflex="1" readonly="true"/>
+                                                        </cell>
+
+                                                        <cell colspan="2"/>
+                                                    </row>
+                                                </zk>
+
+												<row visible="@load( (vm.dettaglio.natura eq 'D') and vm.dettaglio.isCodRec3() and (c:length(vm.listaAnnotazioniMatrimonio) gt 1) )">
+													<cell align="right">
+														<label value="@load(vm.etichette['Annotazione'])"/>
+													</cell>
+													<cell colspan="@load(vm.dettaglio.hasSerie() or vm.dettaglio.isUnioneCivileConiugi()?11:9)">
+														<hlayout valign="middle" hflex="1">
+															<combobox model="@load(vm.listaAnnotazioniMatrimonio)" readonly="false" hflex="1" onSelect="@command('onSelectFormulaAnnotazione')"
+																	  selectedItem="@bind(vm.datiProvenienza.formulaDfaAnnotazioneMatrimonio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+																<template name="model">
+																	<comboitem label="@load(empty each?'- -':each.descrizioneEstesa)" value="@load(each.id)"/>
+																</template>
+																<custom-attributes proprieta="formulaDfaAnnotazioneMatrimonio" tipoFormula="MAT"/>
+															</combobox>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaFormulaAnnotazione')">
+																<custom-attributes proprieta="formulaDfaAnnotazioneMatrimonio" tipoFormula="MAT"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</cell>
+									<cell width="42px">
+										<button image="/images/icon/action/16x16/grid.png"
+												tooltiptext="@load(vm.etichette['Recupera_Estremi_Atto_Unione_Civile'])" onClick="@command('onRecuperaEstremiMatrimonioDaAttoDiMatrimonio')"/>
+									</cell>
+								</row>
+							</rows>
+						</grid>
+					</cell>
+				</row>
+
+				<zk if="${vm.dettaglio.isUfficialeAccordo()}">
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Data_Conferma'])"/>
+						</cell>
+						<cell colspan="2">
+							<hlayout valign="middle" hflex="1" spacing="9px">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataConferma)" width="100px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="dataConferma"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell colspan="2" align="right">
+							<label value="@load(vm.etichette['Note'])"/>
+						</cell>
+						<cell colspan="7">
+							<textbox value="@bind(vm.dettaglio.note)" hflex="1" rows="4"/>
+						</cell>
+					</row>
+				</zk>
+				<zk if="${not vm.dettaglio.isUfficialeAccordo() }">
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Note'])"/>
+						</cell>
+						<cell colspan="11">
+							<textbox value="@bind(vm.dettaglio.note)" hflex="1" rows="4"/>
+						</cell>
+					</row>
+				</zk>
+
+				<zk if="${vm.anscOn and vm.dettaglio.isUfficialeAccordo()}">
+					<row>
+						<cell colspan="3" align="right">
+							<label value="@load(vm.etichette['Giudizio_pendente'])"/>
+							<checkbox checked="@bind(vm.datiProvenienza.flagGiudizioPendente)" hflex="1" />
+						</cell>
+						<cell colspan="2" align="right">
+							<hlayout>
+								<hbox visible="@load(vm.datiProvenienza.flagGiudizioPendente)">
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Autorita_giudiziale'])"
+									   visible="@load(vm.datiProvenienza.flagGiudizioPendente)"/>
+							</hlayout>
+						</cell>
+						<cell colspan="7">
+							<textbox value="@bind(vm.datiProvenienza.enteAutoritaGiudiziaria)" hflex="1" rows="2"
+									 disabled="@load(not vm.datiProvenienza.flagGiudizioPendente)"
+									 visible="@load(vm.datiProvenienza.flagGiudizioPendente)"/>
+						</cell>
+					</row>
+					<row visible="@load(vm.dettaglio.isUfficialeAccordo())">
+						<cell colspan="3" align="right">
+							<label value="@load(vm.etichette['Dati_assegno_mantenimento'])"/>
+						</cell>
+						<cell colspan="9">
+							<hlayout valign="middle" hflex="1">
+								<textbox value="@bind(vm.datiProvenienza.datiAssegnoDivorzio)" hflex="1" rows="2"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="datiAssegnoDivorzio"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>
+				</zk>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

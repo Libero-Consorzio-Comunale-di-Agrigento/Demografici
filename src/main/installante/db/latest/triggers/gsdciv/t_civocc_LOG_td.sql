@@ -1,0 +1,43 @@
+--liquibase formatted sql
+--changeset amonopoli:202306211715_2 runOnChange:true stripComments:false
+create or replace trigger CIVOCC_LOG_TD
+after DELETE 
+on CIVOCC
+for each row
+
+declare
+  w_nome_tabella	varchar2(255) := 'CIVOCC';
+  w_terminalista        varchar2(255) := '';
+  w_terminalista_f11    varchar2(255) := si4.utente;
+  w_id_tabella          varchar2(255);
+  w_operazione		varchar2(255);
+  w_note		varchar2(4000);
+
+begin
+   if w_terminalista_f11 is not null then
+      w_terminalista_f11 := w_terminalista_f11||' (f11)';
+   end if;
+
+   if DELETING then
+      w_id_tabella := :old.id_atto;
+      w_operazione := 'DELETE';
+   end if;
+
+   if DELETING then
+      w_note := 'OLD: '||
+                'id_atto: '||:old.id_atto||' - '||
+                'cognome: '||:old.cognome||' - '||
+                'nome: '||:old.nome||' - '||
+                'cognome_cn: '||:old.cognome_cn||' - '||
+                'nome_cn: '||:old.nome_cn||' - '||
+                'sesso: '||:old.sesso||' - '||
+                'nato_morto: '||:old.nato_morto;
+   end if;
+
+   INSERISCI_GSDLOG_DB(w_nome_tabella, w_operazione, w_note, nvl(w_terminalista,w_terminalista_f11), w_id_tabella);
+
+exception
+   when others then
+        INSERISCI_GSDLOG_DB('GSDLOG_DB', 'errore', w_nome_tabella||' ('||sqlerrm||')');
+end;
+/

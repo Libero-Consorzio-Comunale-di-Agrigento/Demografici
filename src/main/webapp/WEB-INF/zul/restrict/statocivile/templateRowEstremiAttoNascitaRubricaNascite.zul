@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <row>
+        <cell align="right" width="70px">
+            <label value="@load(vm.etichette['Numero_Atto'])"/>
+        </cell>
+        <cell width="80px">
+            <intbox value="@bind(vm.dettaglio.attoNascita.atto)" hflex="1"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Parte'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.dettaglio.attoNascita.parte)" hflex="1"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Serie'])"/>
+        </cell>
+        <cell width="50px">
+            <textbox value="@bind(vm.dettaglio.attoNascita.serie)" hflex="1"
+                     style="text-transform:uppercase"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Ufficio'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.dettaglio.attoNascita.ufficio)" hflex="1"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Anno'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.dettaglio.attoNascita.anno)" maxlength="4" width="45px"/>
+        </cell>
+        <cell align="right" width="75px">
+            <label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+        </cell>
+        <cell hflex="6">
+            <textbox value="@bind(vm.dettaglio.attoNascita.idAttoAnsc)" hflex="1"/>
+        </cell>
+    </row>
+    <row>
+        <cell align="right">
+            <label value="@load(vm.etichette['Comune_Atto'])"/>
+        </cell>
+        <cell colspan="8">
+            <hlayout valign="middle" hflex="1">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.dettaglio.descrizioneComuneAttoNascita)"
+                               onSelect="@command('onSelectComune', campoRiferimento='CA_SOGG_1_NAS')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='CA_SOGG_1_NAS')"
+                />
+            </hlayout>
+        </cell>
+        <cell>
+            <textbox value="@load(vm.dettaglio.siglaProvinciaAttoNascita)" readonly="true" hflex="1"/>
+        </cell>
+        <cell colspan="2"/>
+    </row>
+</zk>

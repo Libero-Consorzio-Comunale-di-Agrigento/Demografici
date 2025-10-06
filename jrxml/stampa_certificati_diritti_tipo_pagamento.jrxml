@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2025-02-17T13:13:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stampa_certificati_tot_diritti" pageWidth="842" pageHeight="842" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="a72de790-c33d-444d-b9c1-6d87c2422fef">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+	<parameter name="TOTALE_TIPOPAGAMENTO" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="formattedSegreteria" class="java.lang.String"/>
+	<field name="formattedStatoCivile" class="java.lang.String"/>
+	<field name="formattedCartaIdentita" class="java.lang.String"/>
+	<field name="formattedRimborsoStampati" class="java.lang.String"/>
+	<field name="formattedBollo" class="java.lang.String"/>
+	<field name="formattedTotale" class="java.lang.String"/>
+	<field name="formattedTipoPagamento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="502" y="0" width="46" height="20" uuid="19dca209-4836-4b1b-8534-9212f5b1d626">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedSegreteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="752" y="0" width="46" height="20" uuid="53e72ef0-474b-4239-86e0-8ff7367d817a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedTotale}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="702" y="0" width="46" height="20" uuid="2820099f-b68b-42a8-8ab8-0dcfe04143b0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedBollo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="652" y="0" width="46" height="20" uuid="b7e0c6e4-6a9b-40fe-a522-c5e0df484aef">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedRimborsoStampati}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="602" y="0" width="46" height="20" uuid="4f19cad4-ccda-47eb-85d7-4aaf6a598458">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedCartaIdentita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="552" y="0" width="46" height="20" uuid="97aac402-6d8d-4136-a4d5-1d86346ec06f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedStatoCivile}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="366" y="0" width="74" height="20" uuid="c0437cbf-821f-4f28-b456-ab2929e9ae1f">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TOTALE_TIPOPAGAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="62" height="20" uuid="9a142a97-3a57-4642-b146-fe7a505734af">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formattedTipoPagamento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

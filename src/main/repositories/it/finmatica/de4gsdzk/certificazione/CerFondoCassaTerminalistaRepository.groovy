@@ -1,0 +1,12 @@
+package it.finmatica.de4gsdzk.certificazione
+
+import groovy.transform.CompileStatic
+import it.finmatica.de4gsdzk.certificazione.CerFondoCassaTerminalista
+import it.finmatica.de4gsdzk.certificazione.CerFondoCassaTerminalistaCompositeId
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@CompileStatic
+@Repository
+interface CerFondoCassaTerminalistaRepository extends JpaRepository<CerFondoCassaTerminalista, CerFondoCassaTerminalistaCompositeId>, CerFondoCassaTerminalistaCustomRepository {
+}

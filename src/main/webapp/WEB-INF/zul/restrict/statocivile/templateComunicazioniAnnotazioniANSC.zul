@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <vlayout>
+        <listbox model="@load(vm.getProperLista(self.getAttribute('tab')))"
+                 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+            <custom-attributes tab="${arg.tab}"/>
+            <listhead sizable="true">
+                <listheader label="@load(vm.etichette['Sequenza'])" width="40px"/>
+                <listheader label="@load(vm.etichette['Servizio'])" width="190px"/>
+                <listheader label=""/>
+            </listhead>
+            <template name="model" var="item">
+                <listitem>
+                    <listcell label="@load(item.sequenza)"/>
+                    <listcell label="@load(item.servizioCdu.servizio.descrizioneEstesa)"/>
+                    <listcell>
+                        <grid model="@load(item.oggettiInvio) @template(item.isTipoBase() ? 'model1' : 'model2')" >
+                            <!-- SERVIZIO BASE -->
+                            <template name="model1" var="ogge">
+                                <row>
+                                    <cell width="45px">
+                                        <button image="/images/icon/action/18x18/arrows.png"
+                                                visible="@load(not ogge.servizioCdu.servizio.flagAllegati)"
+                                                tooltiptext="@load(vm.etichette['invio_ansc_tooltip'])"
+                                                disabled="@load(vm.isInvioServizioBaseDisabled(ogge.servizioCdu, ogge.getTipoArchivioComunicazione(), ogge.idDomain))"
+                                                onClick="@command('onEseguiServizio', servizioCdu=ogge.servizioCdu, tipoArchivioComunicazione = ogge.getTipoArchivioComunicazione(), idDomain = ogge.getIdDomain())"/>
+                                    </cell>
+                                    <cell width="45px">
+                                        <button image="/images/icon/action/18x18/refresh.png"
+                                                visible="@load(not empty ogge.ultimaComunicazione)"
+                                                disabled="@load(vm.isRipetiInvioDisabled(ogge))"
+                                                tooltiptext="@load(vm.etichette['ripetizione_invio_tooltip'])"
+                                                onClick="@command('onRipetiComunicazione', comunicazione=ogge.ultimaComunicazione.comunicazione, servizioCdu=ogge.servizioCdu)"/>
+                                    </cell>
+                                    <cell width="45px">
+                                        <hlayout>
+                                            <button image="/images/icon/action/18x18/ok.png"
+                                                    tooltiptext="@load(vm.etichette['Inviato'])"
+                                                    visible="@load(not empty ogge.ultimaComunicazione and ogge.ultimaComunicazione.comunicazione.inviato and empty ogge.ultimaComunicazione.comunicazione.noteWSAnsc)"
+                                                    onClick="@command(c:showMsgBox(vm.msgTitle, 'I', ogge.ultimaComunicazione.comunicazione.esitoDescrizione))"/>
+                                            <button image="/images/icon/action/18x18/warning_light.png"
+                                                    tooltiptext="@load(vm.etichette['info_tooltip'])"
+                                                    visible="@load(not empty ogge.ultimaComunicazione and not empty ogge.ultimaComunicazione.comunicazione.noteWSAnsc)"
+                                                    onClick="@command(c:showMsgBox(vm.msgTitle, 'E', ogge.ultimaComunicazione.comunicazione.noteWSAnsc))"/>
+                                        </hlayout>
+                                    </cell>
+                                    <cell width="45px">
+                                        <button image="/images/icon/action/18x18/info.png"
+                                                tooltiptext="@load(vm.etichette['info_tooltip'])"
+                                                onClick="@command('onOpenStoricoComunicazioni', oggettoInvio=ogge)"/>
+                                    </cell>
+                                    <cell width="45px">
+                                        <button image="/images/icon/action/18x18/import.png"
+                                                tooltiptext="@load(vm.etichette['scarica_allegato_ANSC_tooltip'])"
+                                                onClick="@command('onDownloadAllegatoAnsc', idAllegatoAnsc=ogge.ultimaComunicazione.comunicazione.id, servizio=ogge.servizioCdu.servizio)"
+                                                visible="@load(not empty ogge.ultimaComunicazione and ogge.ultimaComunicazione.comunicazione.inviato and empty ogge.ultimaComunicazione.comunicazione.noteWSAnsc and ogge.servizioCdu.servizio.flagDownloadAllegato)"/>
+                                    </cell>
+                                </row>
+                            </template>
+                            <!-- SERVIZIO ALLEGATO -->
+                            <template name="model2" var="ogge">
+                                <row/>
+                            </template>
+                        </grid>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </vlayout>
+</zk>

@@ -1,0 +1,191 @@
+--liquibase formatted sql
+--changeset amonopoli:202503270900_13 runOnChange:false stripComments:false
+declare
+w_menu		number;
+w_selezioni	number;
+
+begin
+  begin
+    select 1 into w_menu
+      from a_menu
+     where applicazione = 'GSD'
+       and rownum = 1
+    ;
+  exception
+    when no_data_found then
+         w_menu := 0;
+    when others then
+         w_menu := -1;
+  end;
+
+  if w_menu = 0 then
+     begin
+       select 1 into w_selezioni
+         from a_selezioni
+        where voce_menu in (select voce_menu from a_voci_menu where ambiente = 'GSD')
+          and rownum = 1
+       ;  
+     exception
+       when no_data_found then
+            w_selezioni := 0;
+       when others then
+            w_selezioni := -1;
+     end;
+
+     if w_selezioni = 0 then
+
+begin
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAAI01', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '608', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAAI01', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAAI01', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANAAI01.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAECP5', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '1000', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_RTRIM', 'ANAECP5', 0, 'Abilita Ltrim', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAECP5', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAECP5', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'A944_NEWCP5_0004.DAT', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAELAC', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '1000', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAELAC', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'LIAC037006.CSV', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAELAC', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_RTRIM', 'ANAELAC', 0, 'Abilita Ltrim', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAESQU', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '608', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAESQU', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAESQU', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANAESQU.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAEVNC', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '53', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAEVNC', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAEVNC', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANAEVNC.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAFSDE', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '250', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAFSDE', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAFSDE', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANAFSDE.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANAPINA', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '250', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANAPINA', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANAPINA', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANAPINA.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANARCFR', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '250', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANARCFR', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANARCFR', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANARCFR_1.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANARSCA', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '250', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANARSCA', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANARSCA', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANARSCA.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANASTNA', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '17', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANASTNA', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANASTNA', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANASTNA.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ANASTSA', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '24', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ANASTSA', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ANASTSA', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ANASTSA.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ELELASM', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '1000', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_RTRIM', 'ELELASM', 0, 'Abilita Ltrim', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ELELASM', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ELELASM.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ELELASM', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ELELESM', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '1000', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ELELESM', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_RTRIM', 'ELELESM', 0, 'Abilita Ltrim', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ELELESM', 0, 'Nome TXT File', '', '', 80, 'C', 'S', 'ELELESM.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'ELEPSMI', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '160', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'ELEPSMI', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'ELEPSMI', 0, 'Nome TXT File', '', '', 80, 'C', 'S', '037006_ELEPSMI.txt', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('NUM_CARATTERI', 'LEVLLMD', 0, 'Caratteri per Substring', '', '', 5, 'C', 'S', '1000', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_RTRIM', 'LEVLLMD', 0, 'Abilita Ltrim', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('SE_SUBSTR', 'LEVLLMD', 0, 'Abilita Substring', '', '', 10, 'C', 'S', 'SI', '', '', null, null);
+
+insert into a_selezioni (PARAMETRO, VOCE_MENU, SEQUENZA, DESCRIZIONE, DESCRIZIONE_AL1, DESCRIZIONE_AL2, LUNGHEZZA, FORMATO, OBBLIGO, VALORE_DEFAULT, DOMINIO, ALIAS, GRUPPO_ALIAS, NUMERO_FK)
+values ('TXTFILE', 'LEVLLMD', 0, 'Nome TXT File', '', '', 80, 'C', 'S', '037006_LLMD_N.xls', '', '', null, null);
+end;
+
+  end if;
+end;
+/

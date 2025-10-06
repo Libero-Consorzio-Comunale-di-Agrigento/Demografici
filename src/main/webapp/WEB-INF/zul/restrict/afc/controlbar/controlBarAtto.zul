@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle">
+		<hlayout sclass="afc-control-bar" valign="middle">
+			<zk if="${vm.annotazioniEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/text.png"
+							   disabled="@load(vm.tipoOperazione.isInsert() or vm.dettaglio.atto le 0)"
+							   tooltiptext="@load(vm.etichette['annotazioni_tooltip'])"
+							   onClick="@command('onPreviewAnnotazioni')"/>
+			</zk>
+			<toolbarbutton image="/images/icon/action/22x22/mail.png"
+						   disabled="@load(vm.tipoOperazione.isInsert())"
+						   tooltiptext="@load(vm.etichette['comunicazioni_tooltip'])"
+						   onClick="@command('onPreviewComunicazioni', priorita=false)"/>
+
+			<toolbarbutton image="/images/de4gsdzk/22x22/mail_alert.png"
+						   disabled="@load(vm.tipoOperazione.isInsert())"
+						   tooltiptext="@load(vm.etichette['adempimenti_tooltip'])"
+						   onClick="@command('onPreviewComunicazioni', priorita=true)"/>
+
+			<include src="@load(vm.additionalAttoToolbarbutton)"
+					 if="${not empty vm.additionalAttoToolbarbutton}"/>
+
+			<toolbarbutton image="/images/icon/action/22x22/archive.png"
+						   disabled="@load(vm.tipoOperazione.isInsert())"
+						   tooltiptext="@load(vm.etichette['fascicolo_tooltip'])"
+						   onClick="@command('onPreviewFascicolo')"/>
+
+			<toolbarbutton image="/images/icon/action/22x22/document.png"
+						   disabled="@load(vm.tipoOperazione.isInsert() or (vm.dettaglio.codiceRecord ne 0) or (vm.dettaglio.atto le 0) or (vm.dettaglio.natura ne 'O') )"
+						   tooltiptext="@load(vm.etichette['copia_conforme_tooltip'])"
+						   onClick="@command('onGeneraCopiaConforme')"/>
+
+			<toolbarbutton image="/images/de4gsdzk/22x22/ansc_ret.png"
+						   disabled="@load(vm.tipoOperazione.isInsert() or (not vm.anscEnabled))"
+						   visible="@load(vm.anscEnabled)"
+						   tooltiptext="@load(vm.etichette['ansc_tooltip'])"
+						   onClick="@command('onPreviewANSC')"/>
+		</hlayout>
+	</hlayout>
+</zk>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle">
+		<hlayout sclass="afc-control-bar" valign="middle">
+
+			<zk if="${vm.backFromRecordAnnotazioneEnabled}">
+				<toolbarbuttonBackFromRecord/>
+			</zk>
+
+			<zk if="${vm.saveRecordAnnotazioneEnabled}">
+                <toolbarbuttonSaveRecord/>
+			</zk>
+
+			<zk if="${vm.deleteAnnotazioneEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/delete.png"
+							   disabled="@load(empty vm.dettaglio.id)"
+							   tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+							   onClick="@command('onEliminaRecord')"/>
+			</zk>
+
+			<zk if="${vm.backFromListAnnotazioneEnabled}">
+                <toolbarbuttonBackFromList/>
+			</zk>
+
+			<zk if="${vm.pagingAnnotazioneEnabled}">
+				<paging sclass="afc-paging"
+						onPaging="@command('onPagina')"
+						activePage="@bind(vm.activePage)"
+						pageSize="@bind(vm.pageSize)"
+						totalSize="@load(vm.totalSize)"/>
+			</zk>
+
+			<zk if="${vm.searchAnnotazioneEnabled}">
+				<hlayout sclass="campo-ricerca">
+					<textbox hflex="1" vflex="1"
+							 width="120px"
+							 value="@bind(vm.filtro)"
+							 tooltiptext="@load(vm.etichette['filtro_ricerca_tooltip'])"
+							 placeholder="@load(vm.etichette['filtro_ricerca_placeholder'])"
+							 mold="default"
+							 onOK="@command('onFiltro')"
+							 style="border-width:0px;"/>
+					<image src="/images/de4gsdzk/10x10/cancelSimple.png"
+						   style="padding:5px;"
+						   sclass="toolbar-mini-button"
+						   onClick="@command('onResetFiltro')"/>
+				</hlayout>
+				<toolbarbutton image="/images/icon/action/22x22/search.png"
+							   tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+							   onClick="@command('onFiltro')" />
+			</zk>
+
+			<zk if="${vm.selectTipoOrdinamentoEnabled}">
+				<combobox model="@load(vm.listaTipoOrdinamento)" readonly="true" width="150px"
+						  onChange="@command('onSelectTipoOrdinamento')"
+						  selectedItem="@bind(vm.tipoOrdinamentoSelezionato)">
+					<template name="model">
+						<comboitem label="@load(vm.etichette[each.name()])" value="@load(each)" />
+					</template>
+				</combobox>
+			</zk>
+
+			<zk if="${vm.modifyAnnotazioneEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/edit.png"
+							   tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+							   onClick="@command('onModifica')"
+							   disabled="@load(empty vm.dettaglio)" />
+			</zk>
+
+			<zk if="${vm.addAnnotazioneEnabled}">
+				<toolbarbuttonInsFromList/>
+			</zk>
+
+			<zk if="${vm.addPlusAnnotazioneEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/add.png"
+							   tooltiptext="@load(empty vm.etichetteCustom['inserisci_plus']?vm.etichette['inserisci_tooltip']:vm.etichetteCustom['inserisci_plus'] )"
+							   popup="sceltaNuovo"/>
+			</zk>
+
+			<zk if="${vm.goToComunicazioniEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/mail.png"
+							   tooltiptext="@load(vm.etichette['comunicazioni_tooltip'])"
+							   onClick="@command('onPreviewComunicazioni')"/>
+			</zk>
+
+			<include src="@load(vm.additionalListaToolbarbutton)"
+					 if="${not empty vm.additionalListaToolbarbutton}"/>
+
+			<include src="@load(vm.additionalListaToolbarbutton2)"
+					 if="${not empty vm.additionalListaToolbarbutton2}"/>
+
+			<include src="@load(vm.additionalListaToolbarbutton3)"
+					 if="${not empty vm.additionalListaToolbarbutton3}"/>
+
+		</hlayout>
+	</hlayout>
+
+	<zk if="${vm.addPlusAnnotazioneEnabled}">
+		<menupopup id="sceltaNuovo" children="@load(vm.addPlusList)">
+			<template name="children" var="i">
+				<menuitem label="@load(i.descrizione)" visible="@load(i.tipo eq 'T')" onClick="@command('onInserisciPlus', tipoFormula=i.tipoFormula, tipoAttoRif=i.tipoAttoRif, tipoAttoAnnotazione=i.tipoAttoAnnotazione)"/>
+
+				<menu label="@load(i.descrizione)" visible="@load(i.tipo eq 'C')">
+					<menupopup children="@load(i.subList)">
+						<template name="children" var="ii">
+							<menuitem label="@load(ii.descrizione)" onClick="@command('onInserisciPlus', tipoFormula=ii.tipoFormula, tipoAttoRif=ii.tipoAttoRif, tipoAttoAnnotazione=ii.tipoAttoAnnotazione)"/>
+						</template>
+					</menupopup>
+				</menu>
+			</template>
+		</menupopup>
+	</zk>
+
+</zk>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.dizionari.comunicazione.ComunicazioneViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<tabbox hflex="1" vflex="1">
+			<tabs>
+				<tab label="@load(vm.etichette['Comunicazioni'])"					tooltiptext="@load(vm.etichette['Comunicazioni'])"/>
+				<tab label="@load(vm.etichette['Enti'])"							tooltiptext="@load(vm.etichette['Enti'])"/>
+				<tab label="@load(vm.etichette['Comunicazioni_Ente'])"				tooltiptext="@load(vm.etichette['Comunicazioni_Enti'])"/>
+				<tab label="@load(vm.etichette['Parametri_Protocollo'])" 			tooltiptext="@load(vm.etichette['Parametri_Protocollo'])"/>
+				<tab label="@load(vm.etichette['Tipi_Documento_Fascicolo'])"	    tooltiptext="@load(vm.etichette['Tipi_Documento_Fascicolo'])"/>
+				<tab label="@load(vm.etichette['Formule_CIA'])"						tooltiptext="@load(vm.etichette['Formule_CIA'])"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/comunicazione/comunicazioneLista.zul"/>
+				</tabpanel>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/comunicazione/enteLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/comunicazione/comunicazioneEnteLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/configurazione/parametroProtocolloLista.zul" showDetailsComunicazioniOnly="true"/>
+				</tabpanel>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/comunicazione/tipoDocumentoFascicoloLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include src="/restrict/statocivile/dizionari/comunicazione/formulaAggiuntivaLista.zul"/>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+	</window>
+
+</zk>

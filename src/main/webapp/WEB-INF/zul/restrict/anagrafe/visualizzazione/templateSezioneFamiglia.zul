@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <groupbox closable="false" hflex="1">
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell colspan="2">
+                        <grid sclass="form">
+                            <columns>
+                                <column width="160px"/>
+                                <column/>
+                                <column width="100px"/>
+                                <column width="60px"/>
+                                <column width="165px"/>
+                                <column width="60px"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <cell align="right">
+                                        <label value="@load(empty vm.famiglia.convivenza ? vm.etichette['Intestatario'] : vm.etichette['Denominazione'])"/>
+                                    </cell>
+                                    <cell>
+                                        <customLabel value="@load(empty vm.famiglia.convivenza ? c:cat3(vm.famiglia.cognomeIntestatario, ' ', vm.famiglia.nomeIntestatario) : vm.famiglia.descrizioneConvivenza)" bold="true"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Codice_Famiglia'])"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <customLabel value="@load(vm.famiglia.codice)" bold="true"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Progressivo_Eliminazione'])"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <customLabel value="@load(vm.famiglia.progressivoEliminazione)" bold="true"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell colspan="6">
+                                        <groupboxIndirizzo label="@load(vm.etichette['Indirizzo'])"
+                                                           value="@load(vm.famiglia.indirizzo)"/>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                    <cell visible="@load(vm.famiglia.convivenza)">
+                        <groupbox closable="false" hflex="1">
+                            <caption label="@load(vm.etichette['Convivenza'])"/>
+                            <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Data_Istituzione'])"/>
+                                        </cell>
+                                        <cell>
+                                            <customLabel
+                                                    value="@load(empty vm.famiglia.dataIstituzioneConvivenza? null : (c:formatDate(vm.famiglia.dataIstituzioneConvivenza, 'dd/MM/yyyy')))"
+                                                    bold="true"/>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(c:cat3(vm.etichette['Cognome'], ' ',vm.etichette['Intestatario']))"/>
+                                        </cell>
+                                        <cell>
+                                            <customLabel value="@load(vm.famiglia.intestatarioConvivenza.cognome)"
+                                                         bold="true"/>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(c:cat3(vm.etichette['Nome'], ' ',vm.etichette['Intestatario']))"/>
+                                        </cell>
+                                        <cell>
+                                            <customLabel value="@load(vm.famiglia.intestatarioConvivenza.nome)"
+                                                         bold="true"/>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Data_Intestatario'])"/>
+                                        </cell>
+                                        <cell>
+                                            <customLabel
+                                                    value="@load(empty vm.famiglia.dataIntestatarioConvivenza? null : (c:formatDate(vm.famiglia.dataIntestatarioConvivenza, 'dd/MM/yyyy')))"
+                                                    bold="true"/>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

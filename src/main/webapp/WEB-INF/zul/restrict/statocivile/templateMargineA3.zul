@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<vlayout vflex="1" spacing="20px">
+		<grid sclass="form" width="325px">
+			<rows>
+				<row>
+					<cell/>
+					<cell>
+						<label value="@load(vm.etichette['Numero'])" sclass="testoAttoA3"/>
+					</cell>
+					<cell colspan="2">
+						<label value="@load(vm.occhiello.atto gt 0?vm.occhiello.atto:vm.etichette['Provvisorio'])" sclass="testoAttoA3" style="font-weight: bold;"/>
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label value="@load(vm.etichette['Cognome'])" sclass="testoAttoA3"/>
+					</cell>
+					<cell colspan="3">
+						<textbox value="@bind(vm.occhiello.cognome)" sclass="testoAttoA3" disabled="@load(not vm.margineEditable)" hflex="1"/>
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label value="@load(vm.etichette['Nome'])" sclass="testoAttoA3"/>
+					</cell>
+					<cell colspan="3">
+						<textbox value="@bind(vm.occhiello.nome)" sclass="testoAttoA3" disabled="@load(not vm.margineEditable)" hflex="1"/>
+					</cell>
+				</row>
+				<row>
+					<cell>
+						<label value="@load(vm.etichette['Sesso'])" sclass="testoAttoA3"/>
+					</cell>
+					<cell colspan="3">
+						<textbox value="@bind(vm.occhiello.descrizioneSesso)" sclass="testoAttoA3" disabled="@load(not vm.margineEditable)" hflex="1"/>
+					</cell>
+				</row>
+				<row>
+					<cell colspan="4">
+						<textbox value="@bind(vm.occhiello.descrizioneStatoNascita)"
+								 visible="@load(not empty vm.occhiello.descrizioneStatoNascita)"
+								 disabled="@load(empty vm.occhiello.descrizioneStatoNascita or not vm.margineEditable)"
+								 sclass="testoAttoA3" hflex="1"/>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+
+		<vlayout children="@load(vm.formuleMargine)">
+			<template name="children" var="s">
+				<textbox rows="@load(s.numeroRighe)" cols="@load(s.numeroColonne + vm.scrollChars)"
+						 value="@bind(s.testo)" sclass="testoAttoA3" disabled="@load(not vm.margineEditable)"/>
+			</template>
+		</vlayout>
+
+		<vlayout children="@load(vm.formuleAnnotazioni)">
+			<template name="children" var="s">
+				<textbox rows="@load(s.numeroRighe)" cols="@load(s.numeroColonne + vm.scrollChars)"
+						 value="@load(s.testoAtto)" sclass="testoAttoA3" disabled="true"/>
+			</template>
+		</vlayout>
+
+	</vlayout>
+
+</zk>

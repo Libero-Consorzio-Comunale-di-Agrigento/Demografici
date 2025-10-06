@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- DATI DECESSO -->
+	<groupbox mold="3d" hflex="1" open="false">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_DATI_DECESSO'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row visible="@load(vm.dettaglio.isSecondaB())">
+					<cell align="right" width="120px">
+						<label value="@load(vm.etichette['Morte_violenta'])"/>
+					</cell>
+					<cell colspan="8">
+						<hlayout height="20px" valign="middle">
+							<radiogroup model="@load(vm.listaSiNo)"
+										selectedItem="@bind(vm.dettaglio.morteViolenta) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+				</row>
+				<row visible="@load(vm.dettaglio.isEstremiDecessoDecisionVisible())">
+					<cell align="right" width="120px">
+						<label value="@load(vm.etichette['Estremi_decesso_noti'])"/>
+					</cell>
+					<cell colspan="8">
+						<hlayout height="20px" valign="middle">
+							<radiogroup model="@load(vm.listaSiNo)"
+										selectedItem="@bind(vm.dettaglio.estremiDecessoNoti) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+							<space/>
+							<label visible="@load(vm.dettaglio.isEstremiDecessoDecisionVisible() and (vm.dettaglio.estremiDecessoNoti eq 'NO'))"
+								   value="@load(vm.etichette['Nota_ritrovamento_cadavere'])" sclass="grassetto"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row visible="@load(vm.dettaglio.isEstremiDecessoDecisionVisible() and (vm.dettaglio.estremiDecessoNoti eq 'NO'))">
+					<cell align="right">
+						<label value="@load(vm.etichette['Circostanze'])"/>
+					</cell>
+					<cell colspan="8">
+						<textbox value="@bind(vm.dettaglio.descrizioneEventoMorte)"
+								 placeholder="esempio di testo: 'è stato rinvenuto un cadavere tra la via xxx e la via yyyy' " hflex="1" rows="2"/>
+					</cell>
+				</row>
+				<row visible="@load(vm.dettaglio.isEstremiDecessoDecisionVisible() and (vm.dettaglio.estremiDecessoNoti eq 'NO'))">
+					<cell align="right">
+						<label value="@load(vm.etichette['Data_ritrovamento'])"/>
+					</cell>
+					<cell colspan="4">
+						<textbox value="@bind(vm.dettaglio.descrizioneDataMorte)"
+								 placeholder="esempio di testo: 'tra il giorno X  e il giorno Y del mese di …' " hflex="1" rows="2"/>
+					</cell>
+					<cell align="right">
+						<label value="@load(vm.etichette['Ore_ritrovamento'])"/>
+					</cell>
+					<cell colspan="3">
+						<textbox value="@bind(vm.dettaglio.descrizioneOrarioMorte)"
+								 placeholder="esempio di testo: 'da Z ore' " hflex="1" rows="2"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right" width="120px">
+						<customLabel mandatory="@load(not (vm.datiProvenienza.flagInViaggio))" value="@load(vm.etichette['Data_Decesso'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1" spacing="9px">
+							<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataMorte)" width="95px" onChange="@command('onSelectDataMorte')"/>
+							<label value="@load(vm.etichette['Ore'])"/>
+							<textbox value="@bind(vm.dettaglio.oraMorte)" maxlength="2" width="28px"/>
+							<label value="@load(vm.etichette['Minuti'])"/>
+							<textbox value="@bind(vm.dettaglio.minutoMorte)" maxlength="2" width="28px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto')">
+								<custom-attributes proprieta="dataMorte,oraMorte,minutoMorte"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right" width="85px"/>
+					<cell align="right" width="85px">
+						<label value="@load(vm.etichette['Imprecisati'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1" spacing="6px">
+							<label value="@load(vm.etichette['Giorno'])"/>
+							<checkbox checked="@bind(vm.dettaglio.giornoMorteImprecisato)"/>
+							<label value="@load(vm.etichette['Mese'])"/>
+							<checkbox checked="@bind(vm.dettaglio.meseMorteImprecisato)"/>
+							<label value="@load(vm.etichette['Anno'])"/>
+							<checkbox checked="@bind(vm.dettaglio.annoMorteImprecisato)"/>
+							<label value="@load(vm.etichette['Ore'])"/>
+							<checkbox checked="@bind(vm.dettaglio.oraMorteImprecisata)"/>
+							<label value="@load(vm.etichette['Minuti'])"/>
+							<checkbox checked="@bind(vm.dettaglio.minutoMorteImprecisato)"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<hlayout>
+							<customLabel mandatory="@load( not ( vm.dettaglio.isEstremiDecessoDecisionVisible() and (vm.dettaglio.estremiDecessoNoti eq 'NO') ))"
+										 value="@load(vm.etichette['Comune_Decesso'])"/>
+						</hlayout>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+							               value="@load(vm.dettaglio.comuneMorte.descrizione)"
+										   dataRiferimento="@load(vm.dettaglio.dataMorte)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CM_DEC')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CM_DEC')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.dettaglio.comuneMorte.siglaProvincia)" hflex="1" readonly="true"/>
+					</cell>
+					<cell colspan="4"/>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Note'])"/>
+					</cell>
+					<cell colspan="4">
+						<textbox value="@bind(vm.dettaglio.note)" hflex="1" rows="4"/>
+					</cell>
+					<cell align="right">
+						<label value="@load(vm.etichette['Certificazione_atto'])" visible="@load( (vm.dettaglio.natura eq 'O') or (vm.dettaglio.natura eq 'T'))"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout height="20px">
+							<radiogroup model="@load(vm.listaSiNo)"
+										selectedItem="@bind(vm.dettaglio.certificabile) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+										visible="@load( (vm.dettaglio.natura eq 'O') or (vm.dettaglio.natura eq 'T') )">
+								<template name="model">
+									<radio label="@load(vm.etichette[each.name()])" value="@load(each)" style="padding-left:10px"
+										   disabled="@load((vm.dettaglio.natura ne 'O' and vm.dettaglio.natura ne 'T') or (vm.dettaglio.codiceRecord ne 3) )"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

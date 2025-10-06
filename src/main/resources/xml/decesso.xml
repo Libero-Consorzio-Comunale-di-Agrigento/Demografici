@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DATI_CHIAMATA_COMUNICAZIONE_DECESSI xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Programmi\Comunicazioni Decessi\ref\datichiamatapecacquisizionedecessi.xsd"
+                                     xmlns:th="http://www.thymeleaf.org" >
+    <DATI_COMUNE>
+        <SEDE_COMUNE th:text="${richiesta.sedeComune}"/>
+    </DATI_COMUNE>
+    <DATI_REFERENTE>
+        <COGNOME_REFERENTE th:text="${richiesta.cognome}"/>
+        <NOME_REFERENTE th:text="${richiesta.nome}"/>
+    </DATI_REFERENTE>
+    <DATI_RICHIESTA>
+        <NUMERO_RICHIESTA th:text="${richiesta.numero}"/>
+        <DATA_RICHIESTA>
+            <GIORNO th:text="${richiesta.data_GG}"/>
+            <MESE th:text="${richiesta.data_MM}"/>
+            <ANNO th:text="${richiesta.data_AAAA}"/>
+        </DATA_RICHIESTA>
+    </DATI_RICHIESTA>
+    <ANAGRAFICHE>
+        <DATI_ANAGRAFICI th:each="a, it: ${anagrafiche}">
+            <PROG_ANAGRAFICA th:text="${it.count}"/>
+            <PERS_COGNOME th:text="${a['PERS_COGNOME']}"/>
+            <PERS_NOME th:text="${a['PERS_NOME']}"/>
+            <SESSO th:text="${a['SESSO']}"/>
+            <CODI_LUOGO_NASCITA th:text="${a['CODI_LUOGO_NASCITA']}"/>
+            <CODI_STATO_ESTERO_NAS th:text="${a['CODI_STATO_ESTERO_NAS']}"/>
+            <DESC_COMUNE_ESTERO th:text="${a['DESC_COMUNE_ESTERO']}"/>
+            <DATA_NASCITA>
+                <GIORNO th:text="${a['DATA_NASCITA_GG']}"/>
+                <MESE th:text="${a['DATA_NASCITA_MM']}"/>
+                <ANNO th:text="${a['DATA_NASCITA_AAAA']}"/>
+            </DATA_NASCITA>
+            <CODI_FISCALE th:text="${a['CODI_FISCALE']}"/>
+            <PERS_PATERNITA th:text="${a['PERS_PATERNITA']}"/>
+            <DATI_DECESSO>
+                <CODI_LUOGO_MORTE th:text="${a['CODI_LUOGO_MORTE']}"/>
+                <CODI_STATO_ESTERO_MORTE th:text="${a['CODI_STATO_ESTERO_MORTE']}"/>
+                <DESC_COMUNE_ESTERO_MORTE th:text="${a['DESC_COMUNE_ESTERO_MORTE']}"/>
+                <NUME_ATTO_MORTE th:text="${a['NUME_ATTO_MORTE']}"/>
+                <DATA_MORTE>
+                    <GIORNO th:text="${a['DATA_MORTE_GG']}"/>
+                    <MESE th:text="${a['DATA_MORTE_MM']}"/>
+                    <ANNO th:text="${a['DATA_MORTE_AAAA']}"/>
+                </DATA_MORTE>
+                <CODI_LUOGO_ATTO_MORTE th:text="${a['CODI_LUOGO_ATTO_MORTE']}"/>
+                <ANNO_PROT_DECESSO th:text="${protocollo.anno}"/>
+                <NUME_PROT_DECESSO th:text="${protocollo.numero}"/>
+            </DATI_DECESSO>
+        </DATI_ANAGRAFICI>
+    </ANAGRAFICHE>
+</DATI_CHIAMATA_COMUNICAZIONE_DECESSI>

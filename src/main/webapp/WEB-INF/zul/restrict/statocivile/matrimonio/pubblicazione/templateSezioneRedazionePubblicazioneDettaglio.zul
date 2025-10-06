@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDatiProvenienza" macroURI="/restrict/statocivile/templateRowDatiProvenienza.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+		<groupbox mold="3d" hflex="1" open="false" visible="@load(not empty vm.dettaglio.natura)">
+			<caption sclass="mainCaption">
+				<div>
+					<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+					<label value="@load(vm.etichette['SEZIONE_REDAZIONE'])" sclass="captionLabel"/>
+				</div>
+			</caption>
+
+			<!-- Parte 2-->
+			<zk if="${( vm.dettaglio.isSecondaA() or vm.dettaglio.isSecondaB() )}">
+                <groupbox closable="false">
+                    <caption label="@load(vm.etichette['Provenienza'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <templateRowDatiProvenienza/>
+                        </rows>
+                    </grid>
+                </groupbox>
+			</zk>
+
+			<!-- SEZIONE REDAZIONE -->
+			<groupbox closable="false">
+				<caption label="@load(vm.etichette['Dati_Redazione'])"/>
+				<grid sclass="form">
+					<rows>
+						<templateSezioneRowRedazioneDettaglio/>
+
+						<row>
+							<cell align="right">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Dichiarante'])"/>
+							</cell>
+							<cell colspan="2">
+								<combobox model="@load(vm.listaDichiarante)" readonly="false" hflex="1"
+										  selectedItem="@bind(vm.datiProvenienza.tipoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+									<template name="model">
+										<comboitem label="@load(each.label)" value="@load(each.value)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="3"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<!-- SEZIONE DOCUMENTI -->
+			<groupbox closable="false">
+				<caption label="@load(vm.etichette['Documenti'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="150px">
+								<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Documenti_presentati'])"/>
+							</cell>
+							<cell>
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaSiNo)"
+												selectedItem="@bind(vm.documentoPubblicazione.documentoPresentatoPubblicazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.etichette[each.name()])" value="@load(each)" style="padding-left:10px"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell align="right" width="150px">
+								<label value="@load(vm.etichette['Documenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" spacing="50px">
+									<hlayout valign="middle" >
+										<label value="@load(vm.etichette['Prodotti'])"/>
+										<checkbox checked="@bind(vm.documentoPubblicazione.documentiProdotti)"/>
+									</hlayout>
+									<hlayout valign="middle" >
+										<label value="@load(vm.etichette['Acquisiti'])"/>
+										<checkbox checked="@bind(vm.documentoPubblicazione.documentiAcquisiti)"/>
+									</hlayout>
+									<hlayout valign="middle" >
+										<label value="@load(vm.etichette['Visionati'])"/>
+										<checkbox checked="@bind(vm.documentoPubblicazione.documentiPresaVisione)"/>
+									</hlayout>
+								</hlayout>
+							</cell>
+						</row>
+						<row visible="@load(vm.documentoPubblicazione.documentoPresentatoPubblicazione eq 'SI' )">
+							<cell align="right">
+								<label value="@load(vm.etichette['Sposo'])" />
+							</cell>
+							<cell colspan="5">
+								<grid>
+									<rows>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="@load(vm.etichette['Copia_integrale_atto_nascita'])" />
+											</cell>
+											<cell colspan="5">
+												<hlayout valign="middle" hflex="1">
+													<bandboxComuni hflex="1"
+																   value="@load(vm.documentoPubblicazione.comuneEstratto1.descrizione)"
+																   dataRiferimento="@load(vm.documentoPubblicazione.dataEstratto1)"
+																   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_1_EST')"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															tooltiptext="@load(vm.etichette['Cancella'])"
+															onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_1_EST')"
+													/>
+												</hlayout>
+											</cell>
+											<cell width="50px">
+												<textbox value="@load(vm.documentoPubblicazione.comuneEstratto1.siglaProvincia)" hflex="1" readonly="true"/>
+											</cell>
+											<cell align="right" width="20px">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataEstratto1)"/>
+											</cell>
+										</row>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="@load(vm.etichette['Certificato_contestuale_residenza_cittadinanza_stato_libero'])" />
+											</cell>
+											<cell colspan="5">
+												<hlayout valign="middle" hflex="1">
+													<bandboxComuni hflex="1"
+																   value="@load(vm.documentoPubblicazione.comuneCumulativo1.descrizione)"
+																   dataRiferimento="@load(vm.documentoPubblicazione.dataCumulativo1)"
+																   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_1_CCU')"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															tooltiptext="@load(vm.etichette['Cancella'])"
+															onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_1_CCU')"
+													/>
+												</hlayout>
+											</cell>
+											<cell>
+												<textbox value="@load(vm.documentoPubblicazione.comuneCumulativo1.siglaProvincia)" hflex="1" readonly="true"/>
+											</cell>
+											<cell align="right">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataCumulativo1)"/>
+											</cell>
+										</row>
+									</rows>
+								</grid>
+							</cell>
+						</row>
+						<row visible="@load(vm.documentoPubblicazione.documentoPresentatoPubblicazione eq 'SI' )">
+							<cell align="right">
+								<label value="@load(vm.etichette['Sposa'])" />
+							</cell>
+							<cell colspan="5">
+								<grid>
+									<rows>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="@load(vm.etichette['Copia_integrale_atto_nascita'])" />
+											</cell>
+											<cell colspan="5">
+												<hlayout valign="middle" hflex="1">
+													<bandboxComuni hflex="1"
+																   value="@load(vm.documentoPubblicazione.comuneEstratto2.descrizione)"
+																   dataRiferimento="@load(vm.documentoPubblicazione.dataEstratto2)"
+																   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_2_EST')"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															tooltiptext="@load(vm.etichette['Cancella'])"
+															onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_2_EST')"
+													/>
+												</hlayout>
+											</cell>
+											<cell width="50px">
+												<textbox value="@load(vm.documentoPubblicazione.comuneEstratto2.siglaProvincia)" hflex="1" readonly="true"/>
+											</cell>
+											<cell align="right" width="20px">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataEstratto2)"/>
+											</cell>
+										</row>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="@load(vm.etichette['Certificato_contestuale_residenza_cittadinanza_stato_libero'])" />
+											</cell>
+											<cell colspan="5">
+												<hlayout valign="middle" hflex="1">
+													<bandboxComuni hflex="1"
+																   value="@load(vm.documentoPubblicazione.comuneCumulativo2.descrizione)"
+																   dataRiferimento="@load(vm.documentoPubblicazione.dataCumulativo2)"
+																   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_2_CCU')"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															tooltiptext="@load(vm.etichette['Cancella'])"
+															onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_2_CCU')"
+													/>
+												</hlayout>
+											</cell>
+											<cell>
+												<textbox value="@load(vm.documentoPubblicazione.comuneCumulativo2.siglaProvincia)" hflex="1" readonly="true"/>
+											</cell>
+											<cell align="right">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataCumulativo2)"/>
+											</cell>
+										</row>
+									</rows>
+								</grid>
+							</cell>
+						</row>
+						<!--<row visible="@load(vm.documentoPubblicazione.documentoPresentatoPubblicazione eq 'SI' )">
+							<cell/>
+							<cell colspan="5">
+								<grid>
+									<rows>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="Richiesta di pubblicazione di matrimonio redatta dalla Chiesa" />
+											</cell>
+											<cell colspan="5">
+												<textbox value="@bind(vm.documentoPubblicazione.chiesaRichiesta)" hflex="1"/>
+											</cell>
+											<cell align="right" width="40px">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataChiesaRichiesta)"/>
+											</cell>
+										</row>
+										<row>
+											<cell colspan="2" align="right">
+												<label value="Nulla osta rilasciato da" />
+											</cell>
+											<cell colspan="5">
+												<textbox value="@bind(vm.documentoPubblicazione.autoritaNullaOsta)" hflex="1"/>
+											</cell>
+											<cell align="right">
+												<label value="@load(vm.etichette['Il'])" />
+											</cell>
+											<cell>
+												<datebox format="dd/MM/yyyy" width="100px" value="@bind(vm.documentoPubblicazione.dataNullaOsta)"/>
+											</cell>
+										</row>
+									</rows>
+								</grid>
+							</cell>
+						</row> -->
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateSezioneAccessoComposizioneDettaglio/>
+
+		</groupbox>
+
+</zk>

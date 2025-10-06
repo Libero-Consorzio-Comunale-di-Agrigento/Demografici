@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.StampaFormuleChiusuraListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <hlayout valign="middle">
+            <controlBarStampa/>
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+        </hlayout>
+
+        <vlayout vflex="1" sclass="scroll">
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="80px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Anno'])"/>
+                            </cell>
+                            <cell width="150px">
+                                <hlayout valign="middle">
+                                    <intbox cols="4" maxlength="4" onOK="@command('onRicerca')" value="@bind(vm.ricerca.annoDa)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="annoDa"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right" width="80px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Margine'])"/>
+                            </cell>
+                            <cell width="160px">
+                                <hlayout valign="middle" spacing="5px" hflex="1">
+                                    <combobox model="@load(vm.listaMargineLaterale)" readonly="true" width="140px"
+                                              selectedItem="@bind(vm.tipoMargineLateraleSelezionato) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </hlayout>
+                            </cell>
+                            <cell width="140px" align="right">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Escludi_annullati'])"/>
+                                    <checkbox checked="@bind(vm.ricerca.escludiAnnullati)"/>
+                                </hlayout>
+                            </cell>
+                            <cell width="150px">
+                                <hlayout valign="middle">
+                                    <zk if="${vm.anscOn}">
+                                        <label value="Escludi atti ANSC"/>
+                                        <checkbox checked="@bind(vm.ricerca.escludiANSC)"/>
+                                    </zk>
+                                </hlayout>
+                            </cell>
+                            <cell width="42px"/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Ufficio'])"/>
+                            </cell>
+                            <cell width="150px">
+                                <combobox model="@load(vm.listaUffici)" readonly="true" width="50px"
+                                          selectedItem="@bind(vm.ricerca.ufficio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':each)" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <zk if="${vm.tipoAttoEnum.hasParte()}">
+                                <cell align="right">
+                                    <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Parte'])"/>
+                                </cell>
+                                <cell>
+                                    <combobox model="@load(vm.listaParte)" readonly="true" width="50px" onChange="@command('onSelectParte')"
+                                              selectedItem="@bind(vm.ricerca.parte) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each?'- -':each)" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </zk>
+                            <zk if="${not vm.tipoAttoEnum.hasParte()}">
+                                <cell colspan="2"/>
+                            </zk>
+                            <zk if="${vm.tipoAttoEnum.hasSerie()}">
+                                <cell align="right">
+                                    <hlayout>
+                                        <hbox visible="@load(vm.getCustomMandatoryParams().containsKey('serie'))">
+                                            <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                        </hbox>
+                                        <label value="@load(vm.etichette['Serie'])"/>
+                                    </hlayout>
+                                </cell>
+                                <cell>
+                                    <combobox model="@load(vm.listaSerie)" readonly="true" width="50px"
+                                              selectedItem="@bind(vm.ricerca.serie)">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each?'- -':each)" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </zk>
+                            <zk if="${not vm.tipoAttoEnum.hasSerie()}">
+                                <cell colspan="2"/>
+                            </zk>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <space/>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="100px">
+                            <label value="@load(vm.etichette['Numero_Atti'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.formulaChiusuraAtti.totAtti)" width="100px"/>
+                        </cell>
+
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Dal'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.formulaChiusuraAtti.attoMinAtto)" width="100px"/>
+                        </cell>
+
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Del'])"/>
+                        </cell>
+                        <cell>
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.formulaChiusuraAtti.attoMinData)" width="100px" />
+                        </cell>
+
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Al'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.formulaChiusuraAtti.attoMaxAtto)" width="100px"/>
+                        </cell>
+
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Del'])"/>
+                        </cell>
+                        <cell>
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.formulaChiusuraAtti.attoMaxData)" width="100px" />
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+            <space/>
+
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Formule_Chiusura'])"/>
+                <radiogroup model="@load(vm.listaFormule)" orient="vertical"
+                            selectedItem="@bind(vm.formulaSelezionata) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                    <template name="model">
+                        <radio label="@load(each.descrizione)" value="@load(each)" style="font-weight:bold"/>
+                    </template>
+                </radiogroup>
+            </groupbox>
+
+            <space/>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="150px">
+                            <label value="@load(vm.etichette['Autorita_Giudiziaria'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <textbox value="@bind(vm.richiesta.autorita)" hflex="1"
+                                     readonly="@load(not vm.formulaSelezionata.flagAutorita)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Ordinanza_del'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.richiesta.ordinanzaDel)" hflex="1"
+                                     readonly="@load(not vm.formulaSelezionata.flagAutorita)"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['In_data'])"/>
+                        </cell>
+                        <cell>
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.richiesta.dataOrdinanza)" width="100px"
+                                     disabled="@load(not vm.formulaSelezionata.flagAutorita)"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['restituzione'])"/>
+                        </cell>
+                        <cell>
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.richiesta.dataRestituzione)" width="100px"
+                                     disabled="@load(not vm.formulaSelezionata.flagRestituzione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="Così fatto in ... il giorno..."/>
+                        </cell>
+                        <cell colspan="5">
+                            <hlayout valign="middle">
+                                <datebox format="dd/MM/yyyy" value="@bind(vm.richiesta.dataChiusura)" width="100px"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRichiesta')">
+                                    <custom-attributes proprieta="dataChiusura"/>
+                                </button>
+                            </hlayout>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+        </vlayout>
+
+    </window>
+
+</zk>

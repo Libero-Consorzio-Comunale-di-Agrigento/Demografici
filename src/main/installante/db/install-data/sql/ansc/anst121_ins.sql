@@ -1,0 +1,15 @@
+--liquibase formatted sql
+--changeset amonopoli:202503111250_2 runOnChange:true stripComments:false
+delete anst121;
+
+insert into anst121 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CODICE_ADS)
+values (1, 'Sindaco', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 1, 'SIN');
+
+insert into anst121 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CODICE_ADS)
+values (2, 'Vicesindaco', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 2, 'VSI');
+
+insert into anst121 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CODICE_ADS)
+values (3, 'Assessore', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 3, 'ASS');
+
+insert into anst121 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CODICE_ADS)
+values (4, 'Consigliere delegato dal Sindaco', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 4, 'CON');

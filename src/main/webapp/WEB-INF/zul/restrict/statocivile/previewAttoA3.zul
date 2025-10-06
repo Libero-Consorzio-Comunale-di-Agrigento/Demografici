@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateMargineA3" macroURI="/restrict/statocivile/templateMargineA3.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.PreviewAttoA3ViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout>
+			<controlBarDettaglio/>
+
+			<hlayout sclass="navigazione" valign="middle">
+				<hlayout sclass="afc-control-bar" valign="middle">
+					<toolbarbutton image="/images/icon/action/22x22/note.png"
+								   onClick="@command('onAggiungiTogliTratteggio')"/>
+
+					<toolbarbuttonBloccoSbloccoTesto/>
+
+					<toolbarbutton image="/images/icon/action/22x22/editcopy.png"
+								   tooltiptext="@load(vm.etichette['blocca_margine_tooltip'])"
+								   onClick="@command('onBloccaSbloccaMargine')"/>
+				</hlayout>
+			</hlayout>
+		</hlayout>
+
+		<vlayout sclass="scroll" vflex="1" >
+			<hlayout sclass="testo-al-centro" hflex="1">
+				<vbox sclass="bordered-container" vflex="1">
+					<hlayout hflex="1">
+						<zk if="${vm.margine.isMargineSinistro()}">
+							<templateMargineA3/>
+						</zk>
+
+						<textbox rows="@load(vm.numRighe)" cols="@load(vm.numColonne + vm.scrollChars)"
+								 value="@bind(vm.dettaglio.testo)" sclass="testoAttoA3" disabled="@load(not vm.testoEditable)"/>
+
+						<zk if="${vm.margine.isMargineDestro()}">
+							<templateMargineA3/>
+						</zk>
+					</hlayout>
+				</vbox>
+			</hlayout>
+		</vlayout>
+
+	</window>
+
+</zk>

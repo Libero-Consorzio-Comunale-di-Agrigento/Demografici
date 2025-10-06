@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox closable="true">
+		<caption label="@load(vm.dettaglio.isCivileXDelega()?vm.etichette['Comune_delegante']:vm.etichette['Provenienza'])"/>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="160px">
+						<label value="@load(vm.etichette['Da'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxAutorita hflex="1"
+											 value="@bind(vm.datiProvenienza.autorita)"
+											 tipoAtto="@load(vm.dettaglio.tipoAtto)"
+											 parte="@load(vm.dettaglio.parte)"
+											 serie="@load(vm.dettaglio.serie)"
+											 onSelect="@command('onSelectAutorita')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoProvenienza')">
+                                <custom-attributes proprieta="autorita"/>
+                            </button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<label value="@load(vm.etichette['In'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<textbox hflex="1"
+									 value="@bind(vm.datiProvenienza.comune)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="comune"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+
+				<row>
+					<cell align="right">
+						<zk if="${vm.anscOn}">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Comune'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.datiProvenienza.comuneProvenienza.descrizione)"
+										   dataRiferimento="@load(vm.datiProvenienza.dataNotaRif)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CA_PROV')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_PROV')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.datiProvenienza.comuneProvenienza.siglaProvincia)" hflex="1" readonly="true"/>
+					</cell>
+					<cell align="right">
+						<zk if="${vm.anscOn}">
+							<hlayout valign="middle" hflex="1">
+								<label value="@load(vm.etichette['Consolato'])"/>
+							</hlayout>
+						</zk>
+					</cell>
+					<cell colspan="2">
+						<zk if="${vm.anscOn}">
+							<hlayout valign="middle" hflex="1">
+								<bandboxConsolati hflex="1"
+												  value="@load(vm.datiProvenienza.consolato.descrizione)"
+												  onSelect="@command('onSelectConsolato', campoRiferimento='PROVENIENZA')"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])"
+										onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="consolato"/>
+								</button>
+							</hlayout>
+						</zk>
+					</cell>
+				</row>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Ufficio'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<textbox hflex="1" value="@bind(vm.datiProvenienza.frazione)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="frazione"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell colspan="4"/>
+				</row>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.dettaglio.isCivileXDelega()?vm.etichette['Estremi_delega']:vm.etichette['Nota_Rif_Anno'])"/>
+					</cell>
+					<cell colspan="3" valign="middle">
+						<hlayout>
+							<textbox value="@bind(vm.datiProvenienza.notaRif)"/>
+							<label value="/"/>
+							<textbox value="@bind(vm.datiProvenienza.annoNotaRif)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="notaRif,annoNotaRif"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell/>
+					<cell align="right">
+						<zk if="${vm.anscOn}">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['In_data'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout valign="middle" hflex="1">
+							<datebox value="@bind(vm.datiProvenienza.dataNotaRif)" width="100px" format="dd/MM/yyyy"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataNotaRif"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Numero_Protocollo_Anno'])"/>
+					</cell>
+					<cell colspan="3" valign="middle">
+						<hlayout>
+							<textbox value="@bind(vm.datiProvenienza.numeroProtocollo)"/>
+							<label value="/"/>
+							<textbox value="@bind(vm.datiProvenienza.annoProtocollo)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="numeroProtocollo,annoProtocollo"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell/>
+					<cell align="right">
+						<label value="@load(vm.etichette['In_data'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout valign="middle" hflex="1">
+							<datebox value="@bind(vm.datiProvenienza.dataProtocollo)" width="100px" format="dd/MM/yyyy"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataProtocollo"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Ufficiale_Stato_Civile'])"/>
+					</cell>
+					<cell colspan="7">
+						<hlayout valign="middle" hflex="1">
+							<textbox hflex="1" value="@bind(vm.datiProvenienza.ufficiale)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="ufficiale"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Qualifica'])"/>
+					</cell>
+					<cell colspan="7">
+						<hlayout valign="middle" hflex="1">
+							<textbox hflex="1" value="@bind(vm.datiProvenienza.qualifica)"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="qualifica"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

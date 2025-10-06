@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateSezioneRichiedentiProcessoVerbaleDettaglio" macroURI="/restrict/statocivile/unione/processoVerbale/templateSezioneRichiedentiProcessoVerbaleDettaglio.zul" inline="true"?>
+<?component name="templateSezioneDatiPubblicazioneDettaglio" macroURI="/restrict/statocivile/unione/processoVerbale/templateSezioneDatiPubblicazioneDettaglio.zul" inline="true"?>
+<?component name="templateSezioneRedazioneProcessoVerbaleDettaglio" macroURI="/restrict/statocivile/unione/processoVerbale/templateSezioneRedazioneProcessoVerbaleDettaglio.zul" inline="true"?>
+<?component name="templateSezioneComposizioneProcessoVerbaleDettaglio" macroURI="/restrict/statocivile/unione/processoVerbale/templateSezioneComposizioneProcessoVerbaleDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.unione.processoVerbale.ProcessoVerbalePregressoDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+			<hlayout valign="middle">
+				<controlBarDettaglio/>
+
+				<controlBarAtto/>
+
+				<label value="@load(vm.formLabel)" sclass="@load(vm.attoSclass)"/>
+
+				<estremiAttoFormLabel/>
+			</hlayout>
+
+			<vlayout vflex="1" width="100%" sclass="scroll">
+
+				<templateSezioneInformazioniPubPvuDivScioPregressoDettaglio/>
+
+				<templateSezioneRichiedentiProcessoVerbaleDettaglio/>
+
+				<templateSezioneDatiPubblicazioneDettaglio/>
+
+				<templateSezioneRedazioneProcessoVerbaleDettaglio/>
+
+				<vlayout hflex="1" visible="@load(vm.composizioneTestoAttiva and (vm.statoFrammenti lt 2) and (vm.dettaglio.natura ne 'N'))">
+					<templateSezioneAccessoComposizionePregressoDettaglio/>
+				</vlayout>
+
+				<vlayout hflex="1" visible="@load(vm.composizioneTestoAttiva and (vm.statoFrammenti eq 2) and (vm.dettaglio.natura ne 'N'))">
+					<templateSezioneComposizioneProcessoVerbaleDettaglio/>
+				</vlayout>
+
+				<templateIdDomain/>
+
+			</vlayout>
+
+	</window>
+
+</zk>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.dizionari.configurazione.ParametroProtocolloDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarDettaglio/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="150px">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Funzione'])"/>
+                        </cell>
+                        <cell>
+                            <label value="@bind(vm.dettaglio.descrizioneFase)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Riferimento'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.mapCodiciTipoAtto.keySet())" readonly="true"
+                                      selectedItem="@bind(vm.dettaglio.codiceTipoAtto)"
+                                      disabled="@load(vm.tipoOperazione.isUpdate())"
+                                      onChange="@command('onSelezionaTipo')">
+                                <template name="model">
+                                    <comboitem label="@load(vm.mapCodiciTipoAtto.get(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <zk if="${vm.dettaglio.codiceFase=='W'}">
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comunicazione'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.dettaglio.comunicazione.descrizioneEstesa)" readonly="true" cols="70"
+                                             tooltiptext="@load(vm.dettaglio.comunicazione.descrizione)"
+                                             onDoubleClick="@command('onCaricaComunicazioni')"/>
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Seleziona'])"
+                                            onClick="@command('onCaricaComunicazioni')"/>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </zk>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Tipo_Documento'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.tipoDocumento)" />
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Modalita'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.listaModalita)" readonly="true"
+                                      selectedItem="@bind(vm.dettaglio.modalita)">
+                                <template name="model">
+                                    <comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Invio'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.listaInvioProtocollo)" readonly="true"
+                                      selectedItem="@bind(vm.dettaglio.invioProtocollo)">
+                                <template name="model">
+                                    <comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Documentale'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagDocumentale)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Albo_Pretorio'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagAlboPretorio)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Classificazione'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.classificazione)" />
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Numero_Fascicolo'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.numeroFascicolo)" />
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Anno_Fascicolo'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.dettaglio.annoFascicolo)" />
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+            <templateIdDomain/>
+
+        </vlayout>
+
+    </window>
+
+</zk>

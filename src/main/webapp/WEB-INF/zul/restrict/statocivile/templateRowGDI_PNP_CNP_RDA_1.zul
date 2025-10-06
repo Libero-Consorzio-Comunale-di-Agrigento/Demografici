@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <row>
+        <cell align="right">
+            <label value="@load(vm.etichette['Grado_Istruzione'])"/>
+        </cell>
+        <cell colspan="3">
+            <combobox model="@load(vm.listaGradoIstruzione)" readonly="true" hflex="1"
+                      selectedItem="@bind(vm.dettaglio.gradoIstruzione1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                <template name="model">
+                    <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+                </template>
+            </combobox>
+        </cell>
+        <cell align="right">
+            <label value="@load(vm.etichette['Posizione_professione'])"/>
+        </cell>
+        <cell colspan="3">
+            <combobox model="@load(vm.listaPosizioneProfessione)" readonly="true" hflex="1"
+                      selectedItem="@bind(vm.dettaglio.posizioneProfessionale1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                <template name="model">
+                    <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+                </template>
+            </combobox>
+        </cell>
+    </row>
+
+    <row>
+        <cell align="right">
+            <label value="@load(vm.etichette['Condizione_non_professionale'])"/>
+        </cell>
+        <cell colspan="3">
+            <combobox model="@load(vm.listaCondizioneProfessionale)" readonly="true" hflex="1"
+                      selectedItem="@bind(vm.dettaglio.condizioneProfessionale1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                <template name="model">
+                    <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+                </template>
+            </combobox>
+        </cell>
+        <cell align="right">
+            <label value="@load(vm.etichette['Ramo_attivita_economica'])"/>
+        </cell>
+        <cell colspan="3">
+            <combobox model="@load(vm.listaRamoAttivita)" readonly="true" hflex="1"
+                      selectedItem="@bind(vm.dettaglio.attivitaProfessionale1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                <template name="model">
+                    <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+                </template>
+            </combobox>
+        </cell>
+    </row>
+</zk>

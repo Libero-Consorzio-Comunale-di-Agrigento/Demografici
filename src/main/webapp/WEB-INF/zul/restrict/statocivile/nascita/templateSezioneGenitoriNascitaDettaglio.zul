@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- GENITORI -->
+	<groupbox mold="3d" hflex="1" open="false">
+		<!--<caption label="@load(vm.etichette['SEZIONE_GENITORI'])" sclass="capimg" image="/images/de4gsdzk/16x16/down_light.png"/>-->
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_GENITORI'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="120px">
+						<customLabel mandatory="@load(vm.dettaglio.isPadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Cognome_Padre'])"
+									 tooltiptext="@load(empty vm.anagrafe.anagrafe1.matricola?vm.etichette['Cognome']: vm.anagrafe.anagrafe1.matricola)"/>
+					</cell>
+					<cell colspan="5">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.dettaglio.cognomePadre)" hflex="1" onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='COGNOME_PADRE')"
+									 style="@load(vm.minuscole.cognomePadre?'text-transform:none':'text-transform:uppercase')">
+								<custom-attributes proprieta="cognomePadre"/>
+							</textbox>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='COGNOME_PADRE')">
+								<custom-attributes proprieta="cognomePadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right" width="80px">
+						<hlayout valign="middle">
+							<label value="@load(vm.etichette['Minuscole'])"/>
+							<checkbox checked="@bind(vm.minuscole.cognomePadre)" onCheck="@command('onAggiornaCaseAndFiglio')" >
+								<custom-attributes proprieta="cognomePadre"/>
+							</checkbox>
+						</hlayout>
+					</cell>
+					<cell width="90px"/>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Senza_Cognome'])"/>
+							<checkbox checked="@bind(vm.dettaglio.senzaCognomePadre)"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isPadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Nome_Padre'])"/>
+					</cell>
+					<cell colspan="5">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.dettaglio.nomePadre)" hflex="1" onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='NOME_PADRE')"
+									 style="@load(vm.minuscole.nomePadre?'text-transform:none':'text-transform:uppercase')">
+								<custom-attributes proprieta="nomePadre"/>
+							</textbox>
+							<button image="/images/icon/action/16x16/search.png"
+								tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='PADRE')"
+							/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='NOME_PADRE')">
+								<custom-attributes proprieta="nomePadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Minuscole'])"/>
+							<checkbox checked="@bind(vm.minuscole.nomePadre)" onCheck="@command('onAggiornaCase')" >
+								<custom-attributes proprieta="nomePadre"/>
+							</checkbox>
+						</hlayout>
+					</cell>
+					<cell/>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Senza_Nome'])"/>
+							<checkbox checked="@bind(vm.dettaglio.senzaNomePadre)"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isPadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Data_Nascita'])"/>
+					</cell>
+					<cell>
+						<hlayout>
+							<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaPadre)"
+									 onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='DATA_NASCITA_PADRE')" width="95px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='DATA_NASCITA_PADRE')">
+								<custom-attributes proprieta="dataNascitaPadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isPadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Comune_Nascita'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.dettaglio.comuneNascitaPadre.descrizione)"
+										   dataRiferimento="@load(vm.dettaglio.dataNascitaPadre)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CN_PADRE')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CN_PADRE')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.dettaglio.comuneNascitaPadre.siglaProvincia)" hflex="1" readonly="true"/>
+					</cell>
+					<cell align="right">
+						<label value="@load(vm.etichette['Stato_Anagrafico'])"/>
+					</cell>
+					<cell>
+						<label value="@load(vm.anagrafe.anagrafe1.descrizioneStatoAnagrafico)"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Stato_Civile'])"/>
+					</cell>
+					<cell>
+						<label value="@load(vm.anagrafe.anagrafe1.descrizioneStatoCivile)"/>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isPadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Comune_Residenza'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.dettaglio.descrizioneComuneResidenzaPadre)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CR_PADRE')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_PADRE')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.dettaglio.siglaProvinciaResidenzaPadre)" hflex="1" readonly="true"/>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load((vm.dettaglio.isPadreMandatory() and vm.dettaglio.isNazionalitaPadreMadreMandatory()) or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Nazionalita'])"/>
+					</cell>
+					<cell>
+						<combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+								  selectedItem="@bind(vm.dettaglio.nazionalitaPadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+								  onSelect="@command('onSelectNazionalita')">
+							<template name="model">
+								<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+				</row>
+				<row>
+					<cell colspan="9"/>
+				</row>
+				<row>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isMadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Cognome_Madre'])"
+									 tooltiptext="@load(empty vm.anagrafe.anagrafe2.matricola?vm.etichette['Cognome']: vm.anagrafe.anagrafe2.matricola)"/>
+					</cell>
+					<cell colspan="5">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.dettaglio.cognomeMadre)" hflex="1" onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='COGNOME_MADRE')"
+									 style="@load(vm.minuscole.cognomeMadre?'text-transform:none':'text-transform:uppercase')">
+								<custom-attributes proprieta="cognomeMadre"/>
+							</textbox>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='COGNOME_MADRE')">
+								<custom-attributes proprieta="cognomeMadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right" width="80px">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Minuscole'])"/>
+							<checkbox checked="@bind(vm.minuscole.cognomeMadre)" onCheck="@command('onAggiornaCaseAndFiglio')" >
+								<custom-attributes proprieta="cognomeMadre"/>
+							</checkbox>
+						</hlayout>
+					</cell>
+					<cell width="90px"/>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Senza_Cognome'])"/>
+							<checkbox checked="@bind(vm.dettaglio.senzaCognomeMadre)"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isMadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Nome_Madre'])"/>
+					</cell>
+					<cell colspan="5">
+						<hlayout valign="middle" hflex="1">
+							<textbox value="@bind(vm.dettaglio.nomeMadre)" hflex="1" onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='NOME_MADRE')"
+									 style="@load(vm.minuscole.nomeMadre?'text-transform:none':'text-transform:uppercase')">
+								<custom-attributes proprieta="nomeMadre"/>
+							</textbox>
+							<button image="/images/icon/action/16x16/search.png"
+									tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='MADRE')"
+							/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='NOME_MADRE')">
+								<custom-attributes proprieta="nomeMadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Minuscole'])"/>
+							<checkbox checked="@bind(vm.minuscole.nomeMadre)" onCheck="@command('onAggiornaCase')">
+								<custom-attributes proprieta="nomeMadre"/>
+							</checkbox>
+						</hlayout>
+					</cell>
+					<cell/>
+					<cell align="right">
+						<hlayout valign="middle" >
+							<label value="@load(vm.etichette['Senza_Nome'])"/>
+							<checkbox checked="@bind(vm.dettaglio.senzaNomeMadre)"/>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isMadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Data_Nascita'])"/>
+					</cell>
+					<cell>
+						<hlayout>
+							<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaMadre)"
+									 onChange="@command('onAggiornaCaseAndAna', campoAnagrafe='DATA_NASCITA_MADRE')" width="95px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAtto', campoAnagrafe='DATA_NASCITA_MADRE')">
+								<custom-attributes proprieta="dataNascitaMadre"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isMadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Comune_Nascita'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.dettaglio.comuneNascitaMadre.descrizione)"
+										   dataRiferimento="@load(vm.dettaglio.dataNascitaMadre)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CN_MADRE')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CN_MADRE')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.dettaglio.comuneNascitaMadre.siglaProvincia)" hflex="1" readonly="true"/>
+					</cell>
+					<cell align="right">
+						<label value="@load(vm.etichette['Stato_Anagrafico'])"/>
+					</cell>
+					<cell>
+						<label value="@load(vm.anagrafe.anagrafe2.descrizioneStatoAnagrafico)"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<label value="@load(vm.etichette['Stato_Civile'])"/>
+					</cell>
+					<cell>
+						<label value="@load(vm.anagrafe.anagrafe2.descrizioneStatoCivile)"/>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load(vm.dettaglio.isMadreMandatory() or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Comune_Residenza'])"/>
+					</cell>
+					<cell colspan="3">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.dettaglio.descrizioneComuneResidenzaMadre)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CR_MADRE')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_MADRE')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.dettaglio.siglaProvinciaResidenzaMadre)" hflex="1" readonly="true"/>
+					</cell>
+					<cell align="right">
+						<customLabel mandatory="@load((vm.dettaglio.isMadreMandatory() and vm.dettaglio.isNazionalitaPadreMadreMandatory()) or vm.datiProvenienza.flagInViaggio)"
+									 value="@load(vm.etichette['Nazionalita'])"/>
+					</cell>
+					<cell>
+						<combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+								  selectedItem="@bind(vm.dettaglio.nazionalitaMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+								  onSelect="@command('onSelectNazionalita')">
+							<template name="model">
+								<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

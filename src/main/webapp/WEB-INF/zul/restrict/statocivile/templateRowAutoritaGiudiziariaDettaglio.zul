@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- AUTORITA' GIUDIZIARIA -->
+	<groupbox closable="false">
+		<caption label="@load(vm.etichette['Provvedimento_Autorita'])"/>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="160px">
+						<zk if="${vm.anscOn and (vm.dettaglio.tipoAttoEnum eq 'MAT') }">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Tipo_provvedimento'])"/>
+					</cell>
+					<cell colspan="2">
+						<combobox model="@load(vm.listaTipoProvvedimentoAutoritaGiudiziaria)" readonly="true" width="300px"
+								  selectedItem="@bind(vm.datiProvenienza.tipoProvvedimentoAutoritaGiudiziaria) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+							<template name="model">
+								<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+					<cell align="right" width="220px">
+						<zk if="${vm.anscOn and (vm.dettaglio.tipoAttoEnum eq 'MAT') }">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Data_Formazione'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout valign="middle" hflex="1">
+							<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoAutoritaGiudiziaria)" width="100px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataAttoAutoritaGiudiziaria"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<zk if="${vm.anscOn and (vm.dettaglio.tipoAttoEnum eq 'MAT') }">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Comune'])"/>
+					</cell>
+					<cell colspan="4">
+						<hlayout valign="middle" hflex="1">
+							<bandboxComuni hflex="1"
+										   value="@load(vm.datiProvenienza.comuneAutoritaGiudiziaria.descrizione)"
+										   dataRiferimento="@load(vm.datiProvenienza.dataAttoAutoritaGiudiziaria)"
+										   onSelect="@command('onSelectComune', campoRiferimento='CA_AUT')"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_AUT')"
+							/>
+						</hlayout>
+					</cell>
+					<cell>
+						<textbox value="@load(vm.datiProvenienza.comuneAutoritaGiudiziaria.siglaProvincia)" readonly="true" hflex="1"/>
+					</cell>
+				</row>
+				<row>
+					<cell align="right">
+						<zk if="${vm.anscOn and (vm.dettaglio.tipoAttoEnum eq 'MAT') }">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Data_deposito'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout valign="middle" hflex="1">
+							<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataDepositoAutoritaGiudiziaria)" width="100px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataDepositoAutoritaGiudiziaria"/>
+							</button>
+						</hlayout>
+					</cell>
+					<cell align="right">
+						<zk if="${vm.anscOn and (vm.dettaglio.tipoAttoEnum eq 'MAT') }">
+							<h:span class="mandatoryLabel">*</h:span>
+						</zk>
+						<label value="@load(vm.etichette['Data_comunicazione_avv'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout valign="middle" hflex="1">
+							<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataComunicazioneAvvocatiAutoritaGiudiziaria)" width="100px"/>
+							<button image="/images/icon/action/16x16/cancel.png"
+									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+								<custom-attributes proprieta="dataComunicazioneAvvocatiAutoritaGiudiziaria"/>
+							</button>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <style>
+		.z-groupbox-3d-cnt { padding:0px; }
+	</style>
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.notifiche.NotificaListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarLista/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+		</hlayout>
+
+		<groupbox closable="false">
+			<grid sclass="form">
+				<rows>
+					<!--<row>
+						<cell align="right" width="80px">
+							<label value="@load(vm.etichette['Tipo_Atto'])"/>
+						</cell>
+						<cell colspan="8">
+							<hlayout hflex="1">
+								<radiogroup model="@load(vm.listaTipiEventoAnsc)" onCheck="@command('onSelectTipoEventoAnsc')"
+											selectedItem="@bind(vm.ricercaNotifica.tipoEventoAnsc) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<radio label="@load(empty each? vm.etichette['Tutti']:vm.getEtichettaPluralEnum(each) )" value="@load(each)" style="padding:20px"/>
+									</template>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<cell width="40px"/>
+					</row>-->
+					<row>
+						<cell align="right" width="80px">
+							<label value="@load(vm.etichette['Data_validita'])"/>
+						</cell>
+						<cell colspan="3">
+							<hlayout valign="middle">
+								<label value="@load(vm.etichette['Da'])"/>
+								<datebox format="dd/MM/yyyy" value="@bind(vm.ricercaNotifica.dal)" onChange="@command('onChangeDal')" width="95px"/>
+								<space/>
+								<label value="@load(vm.etichette['A'])"/>
+								<datebox format="dd/MM/yyyy" value="@bind(vm.ricercaNotifica.al)"  onChange="@command('onChangeAl')"  width="95px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+									<custom-attributes proprieta="dal,al"/>
+								</button>
+							</hlayout>
+						</cell>
+						<!--<cell align="right">
+							<label value="@load(vm.etichette['Tipo'])"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout>
+								<radiogroup model="@load(vm.listaTipoContenuto)" onCheck="@command('onSelectTipoContenuto')"
+											selectedItem="@bind(vm.ricercaNotifica.tipoContenutoNotifica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<radio label="@load(empty each? vm.etichette['Tutti']:vm.getEtichettaEnum(each))" value="@load(each)" style="padding:15px"/>
+									</template>
+								</radiogroup>
+							</hlayout>
+						</cell>-->
+						<cell colspan="6"/>
+						<cell width="40px"/>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Stato'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout>
+								<radiogroup model="@load(vm.listaStatoNotifiche)" onCheck="@command('onSelectStatoNotifica')"
+											selectedItem="@bind(vm.ricercaNotifica.statoNotifica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<radio label="@load(empty each? vm.etichette['Tutti']:vm.getEtichettaEnum(each))" value="@load(each)" style="padding:15px"/>
+									</template>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<cell align="right">
+							<label value="@load(vm.etichette['Genere'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout>
+								<radiogroup model="@load(vm.listaGenereNotifiche)" onCheck="@command('onSelectGenereNotifica')"
+											selectedItem="@bind(vm.ricercaNotifica.genereNotifica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<radio label="@load(empty each? vm.etichette['Tutti']:vm.getEtichettaEnum(each))" value="@load(each)" style="padding:15px"/>
+									</template>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<cell>
+							<hlayout valign="middle">
+								<button image="/images/icon/action/16x16/search.png"
+										tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicercaNotificheAnsc')"/>
+							</hlayout>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<!--		<orderByBlock/>-->
+		<hlayout sclass="navigazione" valign="middle">
+			<totalSizeBlock/>
+			<hlayout hflex="1" valign="middle" sclass="testo-a-dx">
+				<label value="@load(vm.etichette['Ordinamento_non_applicabile'])" sclass="grassetto"/>
+			</hlayout>
+		</hlayout>
+
+		<vlayout vflex="1">
+			<borderlayout vflex="1">
+				<center vflex="1">
+					<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+							 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+						<listhead sizable="true">
+							<listheader label="@load(vm.etichette['Comune_Formazione'])" 	/>
+							<listheader label="@load(vm.etichette['Cognome_Nome'])" />
+							<listheader label="@load(vm.etichette['Genere'])" 				width="100px"/>
+							<listheader label="@load(vm.etichette['Descrizione'])"	/>
+							<listheader label="@load(vm.etichette['Data'])" 	width="100px"/>
+							<listheader label="@load(vm.etichette['Stato'])" 	width="100px"/>
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.comuneFormazione)"/>
+								<listcell label="@load(item.infoSoggetto.getNominativo())" />
+								<listcell label="@load(vm.getEtichettaEnum(item.genere))"/>
+								<listcell label="@load(item.descrizione)"/>
+								<listcell>
+									<label value="@load(empty item.validoDal? null:(c:formatDate(item.validoDal, 'dd/MM/yyyy')))"/>
+								</listcell>
+								<listcell label="@load(vm.getEtichettaEnum(item.stato))"/>
+							</listitem>
+						</template>
+					</listbox>
+				</center>
+				<east size="45%" collapsible="true" open="@load(not empty vm.dettaglio)">
+					<vlayout vflex="1" hflex="1" spacing="0px">
+						<groupbox mold="3d" closable="false" style="background: #EDEFF5;">
+							<caption label="@load(vm.getEtichettaEnum(vm.dettaglio.genere))" width="220px">
+								<hlayout sclass="testo-a-dx">
+									<button image="/images/icon/action/18x18/info.png"
+											visible="@load(not empty vm.dettaglio.id)"
+											disabled="@load(empty vm.dettaglio.stato)"
+											tooltiptext="Informazioni notifica"
+											onClick="@command('onConsultaEventoNotificaAnsc', infoNotifica=vm.dettaglio)"/>
+									<button image="/images/icon/action/18x18/right_plus.png"
+											tooltiptext="Approva notifica"
+											visible="@load(not empty vm.dettaglio.stato and (vm.dettaglio.stato eq 'DA') )"
+											disabled="@load(empty vm.dettaglio.stato or (vm.dettaglio.stato ne 'DA'))"
+											onClick="@command('onConfermaNotificaAnsc', infoNotifica=vm.dettaglio)"/>
+									<button image="/images/icon/action/18x18/wrong_plus.png"
+											tooltiptext="Rifiuta notifica"
+											visible="@load(not empty vm.dettaglio.stato and (vm.dettaglio.stato eq 'DA') )"
+											disabled="@load(empty vm.dettaglio.stato or (vm.dettaglio.stato ne 'DA'))"
+											onClick="@command('onRifiutaNotificaAnsc', infoNotifica=vm.dettaglio)"/>
+								</hlayout>
+							</caption>
+						</groupbox>
+						<vlayout vflex="1" hflex="1" sclass="scroll">
+							<grid sclass="form">
+								<rows>
+									<row>
+										<cell align="right" width="100px">
+											<label value="Id ANSC"/>
+										</cell>
+										<cell colspan="3">
+											<customLabel value="@load(vm.dettaglio.idAnsc)" hflex="1" bold="true"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right" width="100px">
+											<label value="@load(vm.etichette['Descrizione'])"/>
+										</cell>
+										<cell colspan="3">
+											<customLabel value="@load(vm.dettaglio.descrizione)" hflex="1"
+														 multiline="true" bold="true"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Cognome_Nome'])" tooltiptext="@load(vm.dettaglio.infoSoggetto.getIdSoggettoAnsc())" />
+										</cell>
+										<cell colspan="3">
+											<customLabel value="@load(vm.dettaglio.infoSoggetto.getNominativo())"
+														 hflex="1" bold="true"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Tipo'])"/>
+										</cell>
+										<cell colspan="3">
+											<customLabel
+													value="@load(vm.getEtichettaEnum(vm.dettaglio.infoEvento.tipoContenutoAnsc))"
+													bold="true"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Testo'])"/>
+										</cell>
+										<cell colspan="3">
+											<hlayout>
+												<grid sclass="form">
+													<rows>
+														<row>
+															<cell>
+																<customLabel
+																		value="@load(vm.dettaglio.infoEvento.testo)"
+																		multiline="true" bold="true"/>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</hlayout>
+										</cell>
+									</row>
+									<row visible="@load(vm.dettaglio.genere eq 'ANN')">
+										<cell colspan="4">
+											<groupbox closable="false">
+												<caption label="@load(vm.etichette['Evento_Primario'])"/>
+												<grid sclass="form">
+													<rows>
+														<row>
+															<cell width="100px">
+																<label value="@load(vm.etichette['Tipo_Atto'])"/>
+															</cell>
+															<cell>
+																<customLabel
+																		value="@load(vm.getEtichettaEnum(vm.dettaglio.infoEvento.tipologiaAnscPrimario))"
+																		bold="true"/>
+															</cell>
+														</row>
+														<row>
+															<cell width="100px">
+																<label value="@load(vm.etichette['Estremi_Atto'])"/>
+															</cell>
+															<cell>
+																<estremiAttoLabel
+																		value="@load(vm.dettaglio.infoEvento.estremiAttoPrimario)"
+																		bold="true"/>
+															</cell>
+														</row>
+														<row>
+															<cell width="100px">
+																<label value="@load(vm.etichette['Comune_Atto'])"/>
+															</cell>
+															<cell>
+																<comuneLabel
+																		value="@load(vm.dettaglio.infoEvento.comunePrimario)"
+																		bold="true"/>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</groupbox>
+										</cell>
+									</row>
+									<row>
+										<cell colspan="4">
+											<templateIdDomain/>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</vlayout>
+					</vlayout>
+				</east>
+			</borderlayout>
+
+		</vlayout>
+
+	</window>
+
+</zk>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoRiconoscimentoMaterno" macroURI="/restrict/statocivile/templateRowEstremiAttoRiconoscimentoMaterno.zul" inline="true"?>
+<?component name="templateRowEstremiAttoRiconoscimentoPaterno" macroURI="/restrict/statocivile/templateRowEstremiAttoRiconoscimentoPaterno.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- FILIAZIONE -->
+	<groupbox mold="3d" hflex="1" open="false"
+			  visible="@load((vm.dettaglio.natura eq 'O' or vm.dettaglio.natura eq 'T' or vm.dettaglio.natura eq 'N') and (vm.dettaglio.isPrimaA() or vm.dettaglio.isPrimaB() or vm.dettaglio.isSecondaA() or vm.dettaglio.isCentroNascita() or vm.dettaglio.isTestoLibero()) )">
+		<!--<caption label="@load(vm.etichette['SEZIONE_FILIAZIONE'])" sclass="capimg" image="/images/de4gsdzk/16x16/down_light.png"/> -->
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_FILIAZIONE'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="165px">
+						<hlayout>
+							<hbox visible="@load((vm.dettaglio.isPrimaA() or vm.dettaglio.isPrimaB() or vm.dettaglio.isSecondaA() or vm.dettaglio.isCentroNascita()) and vm.composizioneTestoAttiva)">
+								<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+							</hbox>
+							<label value="@load(vm.etichette['Tipo_Filiazione'])"/>
+						</hlayout>
+					</cell>
+					<cell colspan="8">
+						<hlayout height="20px">
+							<radiogroup model="@load(vm.listaFiliazione)" onCheck="@command('onSelectFiliazione')" hflex="1"
+										selectedItem="@bind(vm.dettaglio.tipoFiliazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaEnum(each))"
+										   disabled="@load(each.id eq 'S' or empty vm.dettaglio.natura or empty vm.dettaglio.parte or vm.dettaglio.isSenzaSerie() or vm.dettaglio.natura eq 'D' or vm.dettaglio.natura eq 'N' or not (vm.dettaglio.isPrimaA() or vm.dettaglio.isPrimaB() or vm.dettaglio.isSecondaA() or vm.dettaglio.isCentroNascita() or vm.dettaglio.isTestoLibero()))"
+										   value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+				</row>
+				<row visible="@load(vm.dettaglio.tipoFiliazione eq 'C')">
+					<cell align="right">
+						<label value="@load(vm.etichette['Riconoscimento_pre_natale'])"/>
+					</cell>
+					<cell colspan="8">
+						<combobox model="@load(vm.listaTipoRiconoscimento)"
+                                  onChange="@command('onSelectTipoRiconoscimento')"
+								  readonly="true" width="200px" disabled="@load(vm.dettaglio.tipoFiliazione ne 'C')"
+								  selectedItem="@bind(vm.dettaglio.tipoRiconoscimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+							<template name="model">
+								<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+							</template>
+						</combobox>
+					</cell>
+				</row>
+				<zk if="${vm.anscOn}">
+					<row visible="@load(not empty vm.dettaglio.tipoRiconoscimento and vm.dettaglio.tipoFiliazione eq 'C')">
+						<cell align="right">
+							<label value="@load(vm.etichette['Estremi_Atto_Riconoscimento_Unico'])"/>
+						</cell>
+						<cell colspan="8">
+							<templateRowEstremiAttoRiconoscimentoMaterno/>
+						</cell>
+					</row>
+					<row visible="@load(vm.dettaglio.tipoRiconoscimento eq 'PDMD' and vm.dettaglio.tipoFiliazione eq 'C')">
+						<cell align="right">
+							<label value="@load(vm.etichette['Estremi_Atto_Riconoscimento_Paterno'])"/>
+						</cell>
+						<cell colspan="8">
+							<templateRowEstremiAttoRiconoscimentoPaterno/>
+						</cell>
+					</row>
+				</zk>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

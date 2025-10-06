@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.certificazione.emissione.EmissioneCertificatoAnnotazioniViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            vflex="1">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+                <estremiAttoFormLabel/>
+            </hlayout>
+
+            <groupbox mold="3d" closable="false">
+                <caption label="@load(vm.etichette['SEZIONE_DATI_ATTO'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell>
+                                <templateEstremiAttoLabel/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <zk if="${vm.atto.natura.name() eq 'T'}">
+                <groupbox mold="3d" closable="false" visible="@load(vm.atto.natura.name() eq 'T')">
+                    <caption label="@load(vm.etichette['SEZIONE_ATTO_ORIGINALE'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell>
+                                    <templateEstremiAttoOriginaleLabel/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+            </zk>
+
+            <totalSizeBlock/>
+
+            <listbox model="@load(vm.lista)"
+                     selectedItem="@bind(vm.dettaglio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                     vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Formula'])" hflex="2"/>
+                    <listheader label="@load(vm.etichette['Testo'])" hflex="3"/>
+                    <listheader label="@load(vm.etichette['Data_Registrazione'])" width="115px"/>
+                    <listheader label="@load(vm.etichette['Stampa_Su_Estratto'])" width="120px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.formulaDfa.descrizioneEstesa)"/>
+                        <listcell label="@load(item.testo)"/>
+                        <listcell sclass="testo-al-centro">
+                            <label value="@load(empty item.dataRegistrazione? null:(c:formatDate(item.dataRegistrazione, 'dd/MM/yyyy')))"/>
+                        </listcell>
+                        <listcell sclass="testo-al-centro">
+                            <checkbox checked="@bind(item.stampaSuEstratto)"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="@load(vm.etichette['Conferma'])" onClick="@command('onConferma')"
+                        image="/images/icon/action/16x16/ok.png"/>
+                <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                        image="/images/icon/action/16x16/close.png"/>
+            </h:div>
+        </h:div>
+
+    </window>
+
+</zk>

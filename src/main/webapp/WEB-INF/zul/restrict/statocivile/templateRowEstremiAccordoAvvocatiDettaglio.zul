@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<row visible="@load(vm.dettaglio.isAvvocati() or vm.dettaglio.isAvvocatiAltro() or
+	                   (vm.dettaglio.isUfficialeConferma() and vm.datiProvenienza.tipoAccordo.isPressoAvvocati() ) or
+	                   (vm.dettaglio.isUfficialeAltro() and vm.datiProvenienza.tipoAccordo.isPressoAvvocati()) )">
+		<cell width="110px" align="right">
+			<label value="@load(vm.etichette['Estremi_Accordo'])"/>
+		</cell>
+		<cell colspan="11">
+			<grid>
+				<rows>
+					<row>
+						<cell align="right" width="90px">
+							<label value="@load(vm.etichette['Numero'])"/>
+						</cell>
+						<cell width="200px">
+							<hlayout valign="middle" hflex="1">
+								<textbox value="@bind(vm.datiProvenienza.numeroAccordo)" hflex="1"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="numeroAccordo"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell align="right" width="70px">
+							<zk if="${vm.anscOn}">
+								<h:span class="mandatoryLabel">*</h:span>
+							</zk>
+							<label value="@load(vm.etichette['Data'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<datebox value="@bind(vm.datiProvenienza.dataAccordo)" format="dd/MM/yyyy" width="100px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="dataAccordo"/>
+								</button>
+							</hlayout>
+						</cell>
+						<!--<cell align="right" width="90px">
+							<label value="@load(vm.etichette['Nome_Ente'])"/>
+						</cell>
+						<cell colspan="4">
+							<textbox value="@bind(vm.datiProvenienza.enteAccordo)" hflex="1" />
+						</cell>-->
+						<cell colspan="2"/>
+					</row>
+					<row>
+						<cell align="right" width="70px">
+							<label value="@load(vm.etichette['Comune'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout valign="middle" hflex="1">
+								<bandboxComuni hflex="1"
+											   value="@load(vm.datiProvenienza.comuneAccordo.descrizione)"
+											   dataRiferimento="@load(vm.datiProvenienza.dataAccordo)"
+											   onSelect="@command('onSelectComune', campoRiferimento='CA_ACC')"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_ACC')"
+								/>
+							</hlayout>
+						</cell>
+						<cell>
+							<textbox value="@load(vm.datiProvenienza.comuneAccordo.siglaProvincia)" hflex="1" readonly="true"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</cell>
+	</row>
+
+</zk>

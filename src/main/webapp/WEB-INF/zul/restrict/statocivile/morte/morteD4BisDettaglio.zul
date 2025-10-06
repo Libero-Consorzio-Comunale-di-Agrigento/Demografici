@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.morte.MorteD4BisDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarDettaglio/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<groupbox closable="false" open="true">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Completo'])"/>
+							</cell>
+							<cell colspan="3">
+								<checkbox checked="@bind(vm.dettaglio.flagCompleto)"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_ordine_scheda'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.numeroScheda)"  width="120px"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_DECEDUTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.cognome1)" sclass="grassetto"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nome1)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Nascita'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(empty vm.atto.dataNascita1? null:(c:formatDate(vm.atto.dataNascita1, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_morte'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(empty vm.atto.dataMorte? null:(c:formatDate(vm.atto.dataMorte, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                            </cell>
+						</row>
+						<row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Sesso'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(vm.getEtichettaEnum(vm.atto.sesso))" sclass="grassetto"/>
+                            </cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.codiceFiscale1)" hflex="1" sclass="grassetto" />
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Eta_compiuta'])"/>
+							</cell>
+							<cell colspan="3">
+								<vlayout>
+									<hlayout valign="middle">
+										<label value="@load(vm.etichette['Se_fino_ad_un_giorno'])"/>
+										<space/>
+										<intbox cols="2" maxlength="2" value="@bind(vm.dettaglio.etaDecessoOre)" readonly="@load(not empty vm.dettaglio.indicazioneEtaDecesso and vm.dettaglio.indicazioneEtaDecesso ne 1)"
+												onChange="@command('onChangeEtaDecesso', tipo='ore')"/>
+									</hlayout>
+									<hlayout valign="middle">
+										<label value="@load(vm.etichette['Se_fino_ad_un_mese'])"/>
+										<space/>
+										<intbox cols="2" maxlength="2" value="@bind(vm.dettaglio.etaDecessoGiorni)" readonly="@load(not empty vm.dettaglio.indicazioneEtaDecesso and vm.dettaglio.indicazioneEtaDecesso ne 2)"
+												onChange="@command('onChangeEtaDecesso', tipo='giorni')"/>
+									</hlayout>
+									<hlayout valign="middle">
+										<label value="@load(vm.etichette['Se_fino_ad_un_anno'])"/>
+										<space/>
+										<intbox cols="2" maxlength="2" value="@bind(vm.dettaglio.etaDecessoMesi)" readonly="@load(not empty vm.dettaglio.indicazioneEtaDecesso and vm.dettaglio.indicazioneEtaDecesso ne 3)"
+												onChange="@command('onChangeEtaDecesso', tipo='mesi')"/>
+									</hlayout>
+								</vlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Luogo_decesso'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaLuogoDecesso)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.luogoDecesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_PARTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Genere_parto'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaGenereParto)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.genereParto) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Filiazione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaTipoFiliazione)" readonly="true" width="350px"
+										  selectedItem="@bind(vm.dettaglio.tipoFiliazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Durata_gestazione'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="2" maxlength="2" value="@bind(vm.dettaglio.durataGestazione)"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Tipo_parto'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaTipoParto)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.tipoParto) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Presentazione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaPresentazione)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.presentazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Peso_nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.pesoNascita)"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Luogo_Parto'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaLuogoParto)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.luogoParto) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="4"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_PRECEDENTI'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_nascite_precedenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.numeroParti)"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_aborti_precedenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.aborti)"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_nati_vivi_precedenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.natiVivi)"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_nati_morti_precedenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.natiMorti)"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Mortalita_infantile'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaMortalitaInfantile)" hflex="1" onCheck="@command('onSelectMortalitaInfantile')"
+												selectedItem="@bind(vm.dettaglio.mortalitaInfantilePrecedente) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Morti_nel_primo_anno'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox cols="4" maxlength="4" value="@bind(vm.dettaglio.mortiNelPrimoAnno)" disabled="@load(empty vm.dettaglio.mortalitaInfantilePrecedente or vm.dettaglio.mortalitaInfantilePrecedente eq 2)"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_MADRE'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaMadre)" width="110px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="dataNascitaMadre"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell width="160px"/>
+							<cell colspan="3"/>
+						</row>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.dettaglio.codiceFiscaleMadre)" hflex="1" style="text-transform:uppercase"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="codiceFiscaleMadre"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Consanguineita_genitori'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaConsanguineita)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.consanguineo) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Luogo_Residenza'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<bandboxComuni hflex="1"
+												   value="@load(vm.dettaglio.comuneResidenzaMadre.descrizione)"
+												   onSelect="@command('onSelectComune', campoRiferimento='CR_MADRE')"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_MADRE')"/>
+								</hlayout>
+							</cell>
+							<cell>
+								<textbox value="@load(vm.dettaglio.comuneResidenzaMadre.siglaProvincia)" readonly="true" hflex="1"/>
+							</cell>
+							<cell colspan="3"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cittadinanza'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaNazionalita)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.nazionalitaMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="4">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaTipoCittadinanza)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.nazionalitaItalianaMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:20px;"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Grado_Istruzione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaGradoIstruzione)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.gradoIstruzioneMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Posizione_professione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaPosizioneProfessione)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.posizioneProfessionaleMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Condizione_non_professionale'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaCondizioneProfessionale)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.condizioneProfessionaleMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Ramo_attivita_economica'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaRamoAttivita)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.attivitaProfessionaleMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_PADRE'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.dettaglio.codiceFiscalePadre)" hflex="1" style="text-transform:uppercase"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="codiceFiscalePadre"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell width="160px"/>
+							<cell colspan="3"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cittadinanza'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaNazionalita)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.nazionalitaPadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="4">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaTipoCittadinanza)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.nazionalitaItalianaPadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:20px;"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Grado_Istruzione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaGradoIstruzione)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.gradoIstruzionePadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Posizione_professione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaPosizioneProfessione)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.posizioneProfessionalePadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Condizione_non_professionale'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaCondizioneProfessionale)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.condizioneProfessionalePadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Ramo_attivita_economica'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaRamoAttivita)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.attivitaProfessionalePadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateIdDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

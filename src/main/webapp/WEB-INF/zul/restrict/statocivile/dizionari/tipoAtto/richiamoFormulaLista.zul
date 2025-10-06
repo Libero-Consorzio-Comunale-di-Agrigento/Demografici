@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.dizionari.tipoAtto.RichiamoFormulaListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <controlBarLista/>
+
+            <totalSizeBlock/>
+
+            <listbox model="@load(vm.lista)"
+                     selectedItem="@bind(vm.dettaglio)" nonselectableTags=""
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])"
+                     vflex="1">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Formula'])" width="90px"/>
+                    <listheader label="@load(vm.etichette['Descrizione'])" />
+                    <listheader label="@load(vm.etichette['Testo'])" />
+                    <listheader label="@load(vm.etichette['Default'])" align="center" width="72px"/>
+                    <listheader label="@load(vm.etichette['Ricorrente'])" align="center" width="72px"/>
+                    <listheader label="@load(vm.etichette['Testo_fisso'])" align="center" width="72px"/>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model">
+                    <listitem onDoubleClick="@command('onModifica')">
+                        <listcell label="${each.formula.id}"/>
+                        <listcell label="${each.formula.descrizione}"/>
+                        <listcell label="${each.formula.testo.testoA4}"/>
+                        <listcell>
+                            <checkbox checked="@load(each.predefinito)" disabled="true"/>
+                        </listcell>
+                        <listcell>
+                            <checkbox checked="@load(each.ricorrente)" disabled="true"/>
+                        </listcell>
+                        <listcell>
+                            <checkbox checked="@load(each.testoFisso)" disabled="true"/>
+                        </listcell>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/edit.png"
+                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                    visible="@load(not empty each.formula)"
+                                    onClick="@command('onModifica')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

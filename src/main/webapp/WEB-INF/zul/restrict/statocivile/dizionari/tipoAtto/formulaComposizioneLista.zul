@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.dizionari.tipoAtto.FormulaComposizioneListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1">
+
+			<hlayout valign="middle">
+				<controlBarAnnotazioni/>
+
+				<label value="@load(vm.formLabel)" sclass="formTitle"/>
+			</hlayout>
+
+			<groupbox closable="false">
+				<grid sclass="form">
+					<rows>
+						<templateRowTipoAttoRicerca/>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<orderByBlock/>
+
+			<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead sizable="true">
+					<listheader label="@load(vm.etichette['Formula'])"	/>
+					<listheader label="@load(vm.etichette['Tipo'])"					width="120px"/>
+					<listheader label="@load(vm.etichette['Richiami'])"				width="22%"/>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem onDoubleClick="@command('onModifica')">
+						<listcell label="@load(item.getFirst().descrizioneEstesa)"/>
+						<listcell label="@load(vm.getEtichettaEnum(item.getFirst().tipoAnnotazione))"/>
+						<listcell>
+							<listbox model="@load(item.getSecond())" emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+								<template name="model" var="r">
+									<listitem>
+										<listcell>
+											<vlayout hflex="1">
+												<hlayout valign="middle" hflex="1">
+													<label value="@load(vm.etichette['Richiamo'])"/>
+													<intbox value="@load(r.richiamo)" disabled="true" width="45px"/>
+													<space/>
+													<label value="@load(vm.etichette['Progressivo'])"/>
+													<intbox value="@load(r.progressivo)" disabled="true"/>
+												</hlayout>
+											</vlayout>
+										</listcell>
+									</listitem>
+								</template>
+							</listbox>
+						</listcell>
+						<listcell>
+							<button image="/images/icon/action/18x18/edit.png"
+									tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+									visible="@load(not empty item.getFirst().id)"
+									onClick="@command('onModifica')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+
+	</window>
+
+</zk>

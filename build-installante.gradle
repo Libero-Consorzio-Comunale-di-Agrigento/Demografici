@@ -1,0 +1,40 @@
+apply plugin: 'it.finmatica.adsinstaller'
+
+finmaticaInstallante {
+    applyDb {
+        config = [
+                // la configurazione della tua connessione "principale", il tuo user oracle insomma.
+                "global.db.target.url"      : "jdbc:oracle:thin:@svi-detr-fin-db19.finmatica.local:1521/p_detr_svi01",
+                "global.db.target.username" : "GSD",
+                "global.db.target.password" : "GSD",
+                "global.db.target.driver"   : "oracle.jdbc.driver.OracleDriver",
+                "global.db.target.jndi-name": "jdbc/de4gsdzk",
+
+                "progetto.istanza.codice"   : "GSD",
+                // configurazione per AD4:
+                "global.db.ad4.username"    : "AD4",
+                "global.db.ad4.password"    : "AD4",
+                // configurazione per AS4:
+                "global.db.as4.username"    : "AS4",
+                "global.db.as4.password"    : "AS4",
+                // configurazione per SO4:
+                "global.db.so4.username"    : "SO4",
+                "global.db.so4.password"    : "SO4",
+                // configurazione per GDM:
+                "global.db.gdm.username"    : "GDM",
+                "global.db.gdm.password"    : "GDM",
+                // configurazione per STATS:
+                "global.db.stats.username"    : "STATS",
+                "global.db.stats.password"    : "STATS",
+                // configurazione per SI:
+                "global.db.si.username"    : "SI",
+                "global.db.si.password"    : "SI",
+                // configurazione per A00:
+                "global.db.a00.username"    : "A00",
+                "global.db.a00.password"    : "A00",
+
+//                "global.db.system.username" : "system",
+//                "global.db.system.password" : "Lavoro17"
+        ]
+    }
+}

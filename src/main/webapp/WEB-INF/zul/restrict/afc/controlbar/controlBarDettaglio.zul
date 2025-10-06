@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle">
+		<hlayout sclass="afc-control-bar" valign="middle">
+
+			<zk if="${vm.backFromRecordEnabled}">
+				<toolbarbuttonBackFromRecord/>
+			</zk>
+
+            <zk if="${vm.saveRecordEnabled}">
+				<toolbarbuttonSaveRecord/>
+            </zk>
+
+			<zk if="${vm.printRecordEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/print.png"
+				    disabled="@load(empty vm.dettaglio)"
+					tooltiptext="@load(vm.etichette['print_tooltip'])"
+					onClick="@command('onStampaRecord')"/>
+			</zk>
+
+			<zk if="${vm.deleteRecordEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/delete.png"
+			   		disabled="@load(empty vm.dettaglio.id)"
+					tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+					onClick="@command('onEliminaRecord')"/>
+			</zk>
+
+			<zk if="${vm.printRecordPlusEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/print.png"
+							   tooltiptext="@load(vm.etichette['print_tooltip'])"
+							   popup="sceltaStampa"/>
+			</zk>
+		</hlayout>
+
+		<zk if="${vm.printRecordPlusEnabled}">
+			<menupopup id="sceltaStampa" children="@load(vm.printList)">
+				<template name="children" var="i">
+					<menuitem label="@load(i.descrizione)" onClick="@command('onStampaPlus', id=i.id)"/>
+				</template>
+			</menupopup>
+		</zk>
+	</hlayout>
+</zk>

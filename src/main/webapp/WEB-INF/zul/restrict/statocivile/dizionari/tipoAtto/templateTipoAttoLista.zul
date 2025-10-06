@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox closable="false">
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="120px">
+						<label value="@load(vm.msgTitle)"/>
+					</cell>
+					<cell hflex="6">
+						<hlayout hflex="1">
+							<radiogroup model="@load(vm.listaTipiAtto)" onCheck="@command('onSelectTipoAtto')"
+										selectedItem="@bind(vm.tipoAttoEnum) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaPluralEnum(each) )" value="@load(each)"
+										   style="padding:20px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+					<zk if="${arg.additionalFilters}">
+						<cell align="right" hflex="1">
+							<label value="@load(vm.etichette['Tipo'])"
+								   visible="@load(vm.tipoAttoEnum.isMatrimonio() or vm.tipoAttoEnum.isUnioneCivile())"/>
+						</cell>
+						<cell hflex="2">
+							<combobox model="@load(vm.listaTipiEvento)" readonly="true"
+									  selectedItem="@bind(vm.selectedTipoEvento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+									  onSelect="@command('onSelectTipoEvento')"
+									  visible="@load(vm.tipoAttoEnum.isMatrimonio() or vm.tipoAttoEnum.isUnioneCivile())">
+								<template name="model">
+									<comboitem label="@load(empty each?vm.etichette['Tutti']:vm.etichette[each.name()])"
+											   value="@load(each)"/>
+								</template>
+							</combobox>
+						</cell>
+					</zk>
+					<!--<cell width="40px">
+                        <hlayout valign="middle">
+                            <button image="/images/icon/action/16x16/search.png"
+                                    tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                        </hlayout>
+                    </cell>-->
+				</row>
+				<zk if="${arg.additionalFilters}">
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Valido_ANSC'])"/>
+						</cell>
+						<cell>
+							<hlayout hflex="1">
+								<radiogroup onCheck="@command('onSelectFlagAnsc')"
+											selectedItem="@bind(vm.flagAnsc)">
+									<radio label="@load(vm.etichette['SI'])" value="${true}"
+										   style="padding:20px"/>
+									<radio label="@load(vm.etichette['NO'])" value="${false}"
+										   style="padding:20px"/>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<cell colspan="2"/>
+					</row>
+				</zk>
+			</rows>
+		</grid>
+	</groupbox>
+
+	<vlayout vflex="1">
+
+		<totalSizeBlock/>
+
+		<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+				 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+			<listhead>
+				<listheader label="@load(vm.etichette['Tipo_Atto'])" width="80px"
+							visible="@load(vm.tipoAttoEnum.isMatrimonio() or vm.tipoAttoEnum.isUnioneCivile())"/>
+				<listheader label="@load(vm.etichette['Sequenza'])" width="8%"/>
+				<listheader label="@load(vm.etichette['Parte'])" width="5%"
+							visible="@load(vm.tipoAttoEnum.hasParte())"/>
+				<listheader label="@load(vm.etichette['Serie'])" width="5%"
+							visible="@load(vm.tipoAttoEnum.hasSerie())"/>
+				<listheader label="@load(vm.etichette['Descrizione'])"/>
+				<listheader label="@load(vm.etichette['Natura_Atto'])" width="10%"/>
+				<listheader label="@load(vm.etichette['Categoria'])" width="10%"/>
+				<listheader label="@load(vm.etichette['Dismesso'])" width="55px"/>
+				<listheader label="@load(vm.etichette['Note'])" width="30%"/>
+				<listheader label="" width="52px"/>
+			</listhead>
+			<template name="model" var="item">
+				<listitem onDoubleClick="@command('onModifica')">
+					<listcell>
+						<label value="@load(item.divorzio?vm.etichetteCustom['AttoDivorzio']:vm.getEtichettaEnum(vm.getTipoAttoEnum()))"
+							   visible="@load(vm.tipoAttoEnum.isMatrimonio() or vm.tipoAttoEnum.isUnioneCivile())"/>
+					</listcell>
+					<listcell label="@load(item.sequenza)"/>
+					<listcell label="@load(item.parte)" visible="@load(vm.tipoAttoEnum.hasParte())"/>
+					<listcell label="@load(item.serie)" visible="@load(vm.tipoAttoEnum.hasSerie())"/>
+					<listcell label="@load(item.descrizione)"/>
+					<listcell label="@load(vm.getEtichettaEnum(item.natura))"/>
+					<listcell label="@load(item.categoriaDomain.descrizione)"/>
+					<listcell sclass="testo-al-centro">
+						<checkbox checked="@load(item.flagDismesso)" disabled="true"/>
+					</listcell>
+					<listcell label="@load(item.note)"/>
+					<listcell>
+						<button image="/images/icon/action/18x18/edit.png"
+								tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+								visible="@load(not empty item.id)"
+								onClick="@command('onModifica')"/>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+
+	</vlayout>
+
+</zk>

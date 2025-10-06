@@ -1,0 +1,931 @@
+--liquibase formatted sql
+--changeset amonopoli:202303311030_2 runOnChange:true stripComments:false
+delete anst03;
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (411111, 'Dichiarazione: Unione civile nella casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 1, null, 'O1', null, 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (411211, 'Dichiarazione: Unione civile fuori dalla casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'FCC', null, 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (411212, 'Dichiarazione: Unione civile fuori dalla casa comunale in imminente pericolo di vita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'PDV', null, 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (412111, 'Dichiarazione: Unione civile con delega di altro Comune nella casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'UPD', null, 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (412211, 'Dichiarazione: Unione civile con delega di altro Comune fuori dalla casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'UPD', null, 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (419999, 'Caso d''uso di servizio unioni civili', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, 'S', 'UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (431000, 'Trascrizione unione civile dall''estero - richiesta di trascrizione da parte dell''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'TEP', null, 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (432000, 'Trascrizione unione civile dall''estero - richiesta di trascrizione da parte del Consolato/Ambasciata', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'TEA', null, 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (433000, 'Trascrizione di unione civile di sentenze di Tribunali stranieri - richiesta di trascrizione da parte dell''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, null, null, 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (434000, 'Trascrizione di unione civile di sentenze di Tribunali stranieri - richiesta di trascrizione da parte del Consolato/Ambasciata', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, null, null, 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (436000, 'Trascrizione atto unione civile su richiesta dell''interessato per art. 19', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'TEP', null, 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (439999, 'Caso d''uso di servizio trascrizioni unioni civili', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, 'S', 'Trascr_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (441000, 'Manifestazione congiunta di volonta'' di scioglimento dell''unione civile tra persone dello stesso sesso', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'DVS', null, 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (442000, 'Manifestazione di volonta'' di scioglimento dell''unione civile tra persone dello stesso sesso di una sola parte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'DVS', null, 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (443000, 'Accordo di scioglimento degli uniti civilmente', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'UAC', null, 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (444000, 'Conferma dell''accordo di scioglimento dell''unione civile tra persone dello stesso sesso', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'UCO', null, 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (445000, 'Mancata conferma dell''accordo di scioglimento dell''unione civile', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, 2, null, 'UAL', null, 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (449999, 'Caso d''uso di servizio scioglimenti', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, 'S', 'Sciogl_UnCiv', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (456999, 'Caso d''uso di servizio annotazione comunicazione da altri comuni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, 'S', 'Annotazione', 'AltriComuni', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (457999, 'Caso d''uso di servizio annotazione comunicazione da altre amministrazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, 'S', 'Annotazione', 'AltreAmm', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (458699, 'Annotazione per rettifica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, null, 'Annotazione', 'Rettifica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (458799, 'Annotazione per errore materiale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, null, 'Annotazione', 'Errore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (459000, 'Annotazione modificativa generica', '2023-12-21 09:54:27.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, null, 'Annotazione', 'Modificativa', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (40000000, 'Annotazione automatica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, -4, null, null, null, null, 'Annotazione', 'Automatica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51101, 'Dichiarazione: Straniero o apolide, del quale il padre o la madre o uno dei ascendenti in linea retta di secondo grado sono stati cittadini per nascita: acquisto mediante prestazione del servizio militare per lo Stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51102, 'Dichiarazione: Straniero o dall''apolide, del quale il padre o la madre o uno degli ascendenti in linea retta di secondo grado sono stati cittadini per nascita, il quale, al raggiungimento della maggiore eta'', risiede legalmente da almeno due anni nel territorio della Repubblica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51103, 'Dichiarazione: Straniero nato in Italia che vi abbia risieduto legalmente senza interruzioni fino alla maggiore eta''', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51104, 'Dichiarazione: Straniero riconosciuto durante la maggiore eta'' da cittadino italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51105, 'Dichiarazione: Acquisto automatico di cittadina straniera che si sposa con cittadino italiano fino al 27 aprile 1983', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51106, 'Dichiarazione: Prestazione di giuramento a seguito di decreto abile', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'GIU', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51107, 'Dichiarazione: Prestazione di giuramento a seguito di decreto con impedimenti', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51108, 'Dichiarazione: Straniero o dell''apolide, del quale il padre o la madre o uno degli ascendenti in linea retta di secondo grado sono stati cittadini per nascita: acquisto assunzione di pubblico impiego alle dipendenze dello Stato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51201, 'Dichiarazione: Rinuncia del maggiorenne che aveva acquistato la cittadinanza per convivenza con il genitore art. 14', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51202, 'Dichiarazione: Revoca dell''adozione per il fatto dell''adottante, rinuncia espressa cittadinanza entro un anno dalla revoca adozione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51301, 'Dichiarazione: Dichiarazione fatta da chi, avendo perduto la cittadinanza italiana,intende riacquistarla mediante prestazione del servizio militare per lo stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51302, 'Dichiarazione: Dichiarazione fatta da chi, avendo perduto la cittadinanza italiana, intende riacquistarla per l''assunzione di pubblico impiego alle dipendenze dello Stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51303, 'Dichiarazione: Riacquisto per residenza in Italia', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51304, 'Dichiarazione: Riacquisto per abbandono dei servigi allo stato estero', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51305, 'Dichiarazione: Rinuncia al riacquisto della cittadinaza entro un anno dalla richiesta di residenza', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51306, 'Dichiarazione: Donna che, avendo perduto, anteriormente al 1 gennaio 1948, la cittadinanza italiana per effetto di matrimonio con uno straniero o di mutamento di cittadinanza da parte del marito, intende riacquistarla', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (51999, 'Caso d''uso di servizio dichiarazioni di cittadinanza', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52111, 'Trascrizione: Acquisto alla nascita per iure soli: figlio di genitori che non trasmettono la cittadinanza italiana', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52112, 'Trascrizione: Straniero o apolide, del quale il padre o la madre o uno dei ascendenti in linea retta di secondo grado sono stati cittadini per nascita: acquisto mediante prestazione del servizio militare per lo Stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52114, 'Trascrizione: Straniero o dell''apolide, del quale il padre o la madre o uno degli ascendenti in linea retta di secondo grado sono stati cittadini per nascita: acquisto assunzione di pubblico impiego alle dipendenze dello Stato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52121, 'Trascrizione: Straniero o dall''apolide, del quale il padre o la madre o uno degli ascendenti in linea retta di secondo grado sono stati cittadini per nascita, il quale, al raggiungimento della maggiore eta'', risiede legalmente da almeno due anni nel territorio della Repubblica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52122, 'Trascrizione: Straniero nato in Italia che vi abbia risieduto legalmente senza interruzioni fino alla maggiore eta''', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52123, 'Trascrizione: Straniero riconosciuto durante la maggiore eta'' da cittadino italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52141, 'Trascrizione: Figlio minore riconosciuto da cittadino italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52142, 'Trascrizione: Adozione di minore in casi particolari art. 44 l. 184/1983 o adozione nazionale art 25 l. 184/1983 e art. 35 comma 4', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52143, 'Trascrizione: Figlio minore di chi ha acquista la cittadinanza italiana', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52153, 'Trascrizione: Trascrizione del decreto per matrimonio-unione civile-naturalizzazione-presentazione cittadino', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, 2, 'C', 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52154, 'Trascrizione: Trascrizione del decreto per matrimonio-unione civile-naturalizzazione-da consolato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, 2, 'C', 'DAQ', null, 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52211, 'Trascrizione: Reso servigi ad uno Stato estero', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52221, 'Trascrizione: Rinuncia del maggiorenne che aveva acquistato la cittadinanza per convivenza con il genitore art. 14', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52222, 'Trascrizione: Revoca dell''adozione per il fatto dell''adottante, rinuncia espressa cittadinanza entro un anno dalla revoca adozione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52241, 'Trascrizione: Disconoscimento da parte del genitore italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52242, 'Trascrizione: Perdita per naturalizzazione straniera', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52251, 'Trascrizione: Revoca: cittadinanza italiana acquisita ai sensi degli articoli  4, comma 2, 5 e 9, e'' revocata in caso  di  condanna  definitiva  per  i reati previsti dall''articolo 407, comma 2, lettera  a,  n.  4,  del codice di procedura penale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52261, 'Trascrizione: Rinuncia espressa', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52271, 'Trascrizione: Revoca dell''adozione per il fatto dell''adottato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52311, 'Trascrizione: Esito dell''accertamento per chi avendo perduto la cittadinanza intende riacquistarla mediante prestazione del servizio militare per lo stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52312, 'Trascrizione: Esito dell''accertamento per chi, avendo perduto la cittadinanza italiana, intende riacquistarla per l''assunzione di pubblico impiego alle dipendenze dello Stato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52321, 'Trascrizione: Riacquisto per residenza in Italia esito dell''accertamento', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52322, 'Trascrizione: Riacquisto per abbandono dei servigi allo stato estero', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52323, 'Trascrizione: Rinuncia al riacquisto della cittadinaza entro un anno dalla richiesta di residenza', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52324, 'Trascrizione: Donna che, avendo perduto, anteriormente al 1 gennaio 1948, la cittadinanza italiana per effetto di matrimonio con uno straniero o di mutamento di cittadinanza da parte del marito, intende riacquistarla', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52331, 'Trascrizione: Riacquisto per residenza in Italia, dichiarazione resa in Consolato italiano', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52341, 'Trascrizione: Riacquisto per un anno di residenza in Italia', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (52999, 'Caso d''uso di servizio trascrizioni di cittadinanza', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Trascr_Citt', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (53599, 'Caso d''uso di servizio annotazione comunicazione da altri comuni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Annotazione', 'AltriComuni', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (53699, 'Caso d''uso di servizio annotazione comunicazione da altre amministrazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, 'S', 'Annotazione', 'AltreAmm', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (53719, 'Annotazione per rettifica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Annotazione', 'Rettifica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (53729, 'Annotazione per errore materiale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Annotazione', 'Errore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (53800, 'Annotazione modificativa generica', '2023-12-21 09:54:27.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Annotazione', 'Modificativa', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (50000000, 'Annotazione automatica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 1, null, null, null, null, 'Annotazione', 'Automatica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1311, 'Trascrizione di nascita: Trascrizione di atto di nascita avvenuta all''estero su richiesta dell''autorita'' diplomatica o consolare', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEA', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1312, 'Trascrizione di nascita: Trascrizione di atto di nascita avvenuta all estero su richiesta di chi ha interesse alla trascrizione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEP', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1313, 'Trascrizione di nascita: Trascrizione dichiarazione di nascita avvenuta durante un viaggio in mare, aereo, treno', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEA', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1314, 'Trascrizione di nascita: Trascrizione atto di nascita resa alla direzione sanitaria', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CNA', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1315, 'Trascrizione atto nascita su richiesta dell''interessato per art. 19', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEP', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1321, 'Trascrizione di nascita: Trascrizione della sentenza straniera di dichiarazione giudiziale di maternita'' richiesta dall''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', '???', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1322, 'Trascrizione di nascita: Trascrizione della sentenza straniera di dichiarazione giudiziale di paternita'' richiesta dall''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEP', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1323, 'Trascrizione di nascita: Trascrizione della sentenza straniera di dichiarazione giudiziale di paternita'' o maternita'' su richiesta dell''autorita'' diplomatica o consolare', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'TEA', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1324, 'Trascrizione di nascita: Trascrizione richiesta dall''interessato della sentenza straniera di disconoscimento di paternita''', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', '???', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1325, 'Trascrizione di nascita: Trascrizione della sentenza straniera di disconoscimento di paternita'' su richiesta dell''autorita'' diplomatica o consolare', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', '???', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1331, 'Trascrizione di nascita: Trascrizione del decreto prefettizio di cambiamento del nome e cognome', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1341, 'Trascrizione di nascita: Trascrizione della sentenza di adozione di minore emessa dal Tribunale dei minori', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1342, 'Trascrizione di nascita: Trascrizione della sentenza di adozione di minore in casi particolari emessa dal Tribunale dei minori', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1343, 'Trascrizione di nascita: Trascrizione della sentenza di revoca della adozione di minore in casi particolari', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1344, 'Trascrizione di nascita: Trascrizione della sentenza di adozione di maggiorenne emessa dal Tribunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1345, 'Trascrizione di nascita: Trascrizione della sentenza di revoca della adozione di maggiorenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1351, 'Trascrizione di nascita: Trascrizione provvedimento straniero di adozione richiesta da un privato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1352, 'Trascrizione di nascita: Trascrizione del provvedimento straniero di adozione di minore riconosciuto valido dal Tribunale dei minori convenzione Aja 29.5.1993', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1353, 'Trascrizione di nascita: Trascrizione di provvedimento straniero adozione di minorenne o maggiorenne in casi particolari richiesta da un privato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1354, 'Trascrizione di nascita: Trascrizione di provvedimento straniero adozione di minorenne o maggiorenne in casi particolari richiesta dall''autorita'' diplomatica o consolare', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1361, 'Trascrizione di nascita: Formazione dell''atto di nascita su autorizzazione tribunale in caso di omessa denuncia', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ODN', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1362, 'Trascrizione di nascita: Scelta del cognome del figlio maggiorenne il cui genitore ha cambiato o modificato il cognome su istanza di parte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1363, 'Trascrizione di nascita: Scelta del cognome del figlio maggiorenne il cui genitore ha cambiato o modificato il cognome su istanza di ufficio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1364, 'Trascrizione di nascita: Scelta del cognome del figlio maggiorenne a seguito di accertamento o riconoscimento della paternita'' successivamente al riconoscimento materno', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', '???', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1365, 'Trascrizione di nascita: Trascrizione della comunicazione scritta trasmessa dal direttore dell''istituto che accoglie un minore abbandonato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1366, 'Trascrizione di nascita: Scelta del cognome del figlio di ignoti maggiorenne a seguito del riconoscimento da parte di uno o di entrambi i genitori  su istanza di parte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1367, 'Trascrizione di nascita: Scelta del cognome del figlio di ignoti maggiorenne a seguito del riconoscimento da parte di uno o di entrambi i genitori  su istanza di ufficio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (1399, 'Caso d''uso di servizio trascrizioni nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, 'S', 'Trascr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (10000000, 'Annotazione automatica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'Automatica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11111000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11111100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11111200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dal padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11112000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11112100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11112200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dalla madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11113000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre con presenza madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11113100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre con presenza madre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11113200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dal padre con presenza madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11114000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore del padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11114100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore del padre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11114200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dal procuratore del padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11115000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dall''ostetrica o sanitario o altra persona che ha assistito al parto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11115100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dall''ostetrica o sanitario o altra persona che ha assistito al parto - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11115200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa da sanitario/ostetrica all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11116000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11116100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre con presenza padre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11116200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dalla madre con presenza padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11117000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore della madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11117100, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore della madre - bambino nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11117200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione nel matrimonio resa dal procuratore della madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11121000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dal padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11121100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal padre all''USC di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11121200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11122000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11122100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dalla madre all''USC di filiazione di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11122200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dalla madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11123000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dal padre con presenza madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11123100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal padre con presenza madre all''USC di filiazione di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11123200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal padre con presenza madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11124000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dal procuratore del padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11124100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal procuratore del padre all''USC di filiazione di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11124200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal procuratore del padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11125000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11125100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC da ostetrica o altro sanitario di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11125200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa da sanitario all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11126000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dalla madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11126100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dalla madre con presenza padre all''USC di filiazione di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11126200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dalla madre con presenza padre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11127000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa all''USC dal procuratore della madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11127100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal procuratore della madre all''USC di filiazione di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11127200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione nel matrimonio resa dal procuratore della madre all''USC di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11211001, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre senza il consenso della madre - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11211004, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre con il consenso della madre reso mediante atto notarile - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11211101, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre senza il consenso della madre - bambino nato morto - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11211104, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal padre con consenso materno espresso con atto notarile di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11211201, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal padre senza il consenso della madre - bambino nato vivo e morto prima della dichiarazione di nascita - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212002, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre senza il consenso del padre - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212003, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dalla madre con il consenso del padre reso mediante atto notarile - filiazione fuori dal matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212102, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre senza il consenso paterno di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212103, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre con consenso paterno espresso con atto notarile di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212202, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre senza consenso paterno di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11212203, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre con consenso paterno espresso con atto notarile di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11213000, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11213100, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11213200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11214000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore del padre - Filiazione fuori dal matrimonio con consenso della madre a essere nominata', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11214100, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal procuratore del padre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11214200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal procuratore del padre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11216000, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11216100, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11216200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11217000, 'Dichiarazione nascita: Dichiarazione entro i 10 giorni - resa dal procuratore della madre - Filiazione fuori dal matrimonio con consenso del padre ad essere nominato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11217100, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal procuratore della madre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11217200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC dal procuratore della madre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221001, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre senza il consenso materno', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221004, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con il consenso materno espresso con atto notarile', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221101, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre senza consenso materno di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221104, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con consenso materno espresso con atto notarile di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221201, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre senza consenso materno di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11221204, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con consenso materno espresso con atto notarile di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222002, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre senza il consenso paterno', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222003, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con il consenso paterno espresso con atto notarile', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222102, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre senza il consenso paterno di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222103, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con il consenso paterno di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222202, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre senza il consenso paterno di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11222203, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con il consenso paterno di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11223000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11223100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11223200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal padre con presenza madre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11224000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore del padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11224100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore del padre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11224200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore del padre di bimbo nato vivo ma morto prima della dichiarazione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11226000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11226100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11226200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dalla madre con presenza padre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11227000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore della madre con consenso del padre ad essere nominato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11227100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore della madre di bimbo nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11227200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC dal procuratore della madre di bimbo nato vivo ma morto prima della denuncia di nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11315000, 'Dichiarazione nascita: Dichiarazione resa da ostetrica o altro - fuori matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11315100, 'Dichiarazione nascita: Dichiarazione nei temini di filiazione fuori dal matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto - nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11315200, 'Dichiarazione nascita: Dichiarazione nei termini di filiazione fuori dal matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto - nato vivo ma morto prima della dichiarazione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11325000, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto - nato vivo', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11325100, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto - nato morto', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11325200, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori dal matrimonio resa all''USC da ostetrica o altro sanitario che ha assistito al parto - nato vivo ma morto prima della dichiarazione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11411010, 'Dichiarazione nascita: Dichiarazione fuori del matrimonio nei termini di legge resa dal padre, di bimbo riconosciuto da entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11411024, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio, nei termini di legge, resa dal padre con atto pubblico di consenso della madre, di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11412010, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio nei termini di legge, resa dalla madre di bimbo riconosciuto prima della nascita da parte di entrambi i genitori', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11412020, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio nei termini di legge, resa dalla madre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11413020, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio nei termini di legge resa dal padre con presenza madre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11414010, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio, nei termini di legge, resa dal procuratore del padre, di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11414020, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio, nei termini di legge, resa dal procuratore del padre, di bimbo riconosciuto da parte della madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11415010, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio nei termini di legge, resa dall''ostetrica o sanitario o altra persona che ha assistito al parto di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11415020, 'Dichiarazione nascita: Dichiarazione di filiiazione fuori del matrimonio nei termini di legge resa dall''ostetrica o da sanitario o da altra persona che ha assistito al parto, di bimbo che e'' stato riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11416020, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio nei termini di legge resa dalla madre con presenza padre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11417010, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio, nei termini di legge, resa da procuratore speciale della madre, di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11417020, 'Dichiarazione nascita: Dichiarazione di filiazione fuori del matrimonio, nei termini di legge, resa dal procuratore della madre, di bimbo riconosciuto da parte della madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'A', 'O1A', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11421010, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio,  resa dal padre, di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11421024, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dal padre mediante atto pubblico di consenso della madre, di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11422010, 'Dichiarazione nascita: Dichiarazione tardiva, di filiazione fuori del matrimonio, resa dalla madre, di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11422020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dalla madre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11423020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dal padre con presenza madre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11424020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dal procuratore del padre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11425010, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dall''ostetrica o sanitario o altra persona che ha assistito al parto di bimbo riconosciuto da parte di entrambi i genitori prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11425020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dall''ostetrica o sanitario o altra persona che ha assistito al parto di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11426020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dall madre con presenza padre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11427020, 'Dichiarazione nascita: Dichiarazione tardiva di filiazione fuori del matrimonio, resa dal procuratore della madre di bimbo riconosciuto dalla madre prima della nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 1, 'B', 'O1B', null, 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (11999999, 'Caso d''uso di servizio dichiarazioni nascita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, 'S', 'Dic_Nasc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12211312, 'Riconoscimento paterno di nascituro gia'' riconosciuto dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RPN', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12212300, 'Riconoscimento materno di nascituro', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RPN', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12214300, 'Riconoscimento di nascituro da parte del padre con presenza della madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RPN', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12216300, 'Riconoscimento di nascituro da parte della madre con presenza del padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RPN', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12221122, 'Riconoscimento paterno di figlio ultraquattordicenne gia'' riconosciuto dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12221123, 'Riconoscimento paterno di figlio di ignoti ultra14enne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12221203, 'Riconoscimento paterno di figlio di ignoti infra14enne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12221212, 'Riconoscimento paterno di figlio infraquattordicenne gia'' riconosciuto dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12221422, 'Riconoscimento paterno di figlio maggiorenne gia'' riconosciuto dalla madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12222121, 'Riconoscimento materno di figlio ultraquattordicenne gia'' riconsciuto dal padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12222123, 'Riconoscimento materno di figlio di ignoti ultraquattordicenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12222203, 'Riconoscimento materno di figlio di ignoti infraquattordicenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12222231, 'Riconoscimento materno di figlio infraquattordicenne gia'' riconosciuto dal padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12224123, 'Riconoscimento di figlio di ignoti ultraquattordicenne da parte del padre con presenza della madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12224203, 'Riconoscimento di figlio di ignoti infraquattordicenne da parte del padre con presenza madre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12226123, 'Riconoscimento di figlio di ignoti ultraquattordicenne da parte della madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12226203, 'Riconoscimento di figlio di ignoti infraquattordicenne da parte della madre con presenza padre', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12323100, 'Riconoscimento: Assenso al riconoscimento da parte del figlio ultraquattordicenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12421200, 'Riconoscimento: Consenso paterno al riconoscimento materno del figlio infraquattordicenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12422200, 'Riconoscimento: Consenso materno al riconoscimento paterno del figlio infraquattordicenne', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'RIC', null, 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (12999999, 'Caso d''uso di servizio riconoscimenti', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, 'S', 'Rico', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14400000, 'Caso d''uso di servizio annotazione comunicazione da altri comuni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, 'S', 'Annotazione', 'AltriComuni', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14500000, 'Caso d''uso di servizio  annotazione comunicazione da altre amministrazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, 'S', 'Annotazione', 'AtreAmm', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14630000, 'Annotazione per rettifica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'Rettifica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14640000, 'Annotazione per errore materiale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'Errore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14750000, 'Annotazione per cambio generalit  genitore', '2023-12-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'CambioGen', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14850000, 'Annotazione modificativa generica', '2023-12-21 09:54:27.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'Modificativa', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (14950000, 'Annotazione per adozione internazionale di minore', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, null, null, null, null, 'Annotazione', 'AdozioneMinore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311111, 'Dichiarazione: Matrimonio con Rito Civile nella casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 1, null, 'O1', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311121, 'Dichiarazione: Matrimonio con Rito Civile nella casa comunale con riconoscimento di uno o piu'' figli', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 1, null, 'O1', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311211, 'Dichiarazione: Matrimonio con Rito Civile fuori dalla casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'FCC', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311212, 'Dichiarazione: Matrimonio con Rito Civile fuori dalla casa comunale in Imminente Pericolo di Vita', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'PDV', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311221, 'Dichiarazione: Matrimonio con Rito Civile fuori dalla casa comunale con Riconoscimento di uno o piu'' figli', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'FCC', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (311222, 'Dichiarazione: Matrimonio con Rito Civile fuori dalla casa comunale in Imminente Pericolo di Vita con Riconoscimento di uno o piu'' figli', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'PDV', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (312111, 'Dichiarazione: Matrimonio con Rito Civile con delega di altro Comune nella casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'CPD', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (312121, 'Dichiarazione: Matrimonio con Rito Civile con Delega di altro Comune nella casa comunale con Riconoscimento di uno o piu'' figli', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'CPD', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (312211, 'Dichiarazione: Matrimonio con Rito Civile con delega di altro Comune fuori dalla casa comunale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'CPD', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (312221, 'Dichiarazione: Matrimonio con Rito Civile con Delega di altro Comune fuori dalla casa comunale con Riconoscimento di uno o piu'' figli', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'CPD', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (313111, 'Matrimonio con Rito Civile di stranieri non domiciliati ne'' residenti', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 1, null, 'O1', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (319999, 'Caso d''uso di servizio matrimoni con rito civile', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, 'O1', 'S', 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (321311, 'Dichiarazione: Matrimonio con Rito Religioso Cattolico', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'A', 'O2A', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (321411, 'Dichiarazione: Matrimonio con Rito Religioso Acattolico', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'A', 'O2A', null, 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (329999, 'Caso d''uso di servizio matrimoni con rito religioso', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, 'O2A', 'S', 'Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (331000, 'Trascrizione matrimoni dall''estero - richiesta di trascrizione da parte dell''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'TEP', null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (332000, 'Trascrizione matrimoni dall''estero - richiesta di trascrizione da parte del Consolato/Ambasciata', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'TEA', null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (333000, 'Trascrizione sentenze di Tribunali stranieri - richiesta di trascrizione da parte del Consolato/Ambasciata', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', null, null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (334000, 'Trascrizione sentenze di Tribunali stranieri - richiesta di trascrizione da parte dell''interessato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', null, null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (335003, 'Trascrizione di matrimonio in imminente pericolo di vita durante un viaggio in aereo o nave', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'TEA', null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (336000, 'Trascrizione matrimoni dall''estero - Richiesta di trascrizione da parte dell''interessato art. 19', '2024-03-25 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'TEP', null, 'Trascr_Matr', null, null);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (339999, 'Caso d''uso di servizio trascrizioni matrimonio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, 'S', 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (341000, 'Separazioni e divorzi: Accordo di separazione personale dei coniugi', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'UAC', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (342000, 'Separazioni e divorzi: Accordo di scioglimento o di cessazione degli effetti civili del matrimonio divorzio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'UAC', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (343000, 'Separazioni e divorzi: Conferma di accordo di separazione o divorzio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'UCO', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (344000, 'Separazioni e divorzi: Accordo di modifica delle condizioni di separazione o divorzio', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'UAL', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (345000, 'Separazioni e divorzi: Trascrizione della convenzione di negoziazione assistita ai sensi dell''art.6 Decreto-legge n.132/2014 convertito con Legge 10.11.2014 n.162', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'AVVAAL', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (346000, 'Separazioni e divorzi: Trascrizione delle sentenze di deliberazione, da parte della Corte d''Appello, delle sentenze di nullita'' del matrimonio pronunciate dai Tribunali Ecclesiastici', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', null, null, 'Trascr_Matr', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (347000, 'Separazioni e divorzi: Trascrizione provvedimenti esteri in materia matrimoniale.', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'EST', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (348000, 'Mancata conferma di separazione o divorzio', '2000-01-01 00:00:00.0', '9999-12-12 00:00:00.0', null, 4, 2, 'C', 'UAL', null, 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (349999, 'Caso d''uso di servizio separazioni e divorzi', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, 'S', 'Sep_Div', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (350000, 'Riconciliazione: Dichiarazione di riconciliazione', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, 2, 'C', 'RCN', null, 'Matr_Riconc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (359999, 'Caso d''uso di servizio riconciliazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, 'S', 'Matr_Riconc', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (366999, 'Caso d''uso di servizio annotazione comunicazione da altri comuni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, 'S', 'Annotazione', 'AltriComuni', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (367999, 'Caso d''uso di servizio annotazione comunicazione da altre amministrazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, 'S', 'Annotazione', 'AltreAmm', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (368699, 'Annotazione per rettifica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, null, 'Annotazione', 'Rettifica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (368799, 'Annotazione per errore materiale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, null, 'Annotazione', 'Errore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (369000, 'Annotazione modificativa generica', '2023-12-21 09:54:27.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, null, 'Annotazione', 'Modificativa', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (30000000, 'Annotazione automatica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 4, null, null, null, null, 'Annotazione', 'Automatica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2101, 'Dichiarazione di morte: Decesso in abitazione o in luogo pubblico', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 1, null, 'O1', null, 'Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2102, 'Dichiarazione di morte: Decesso in ospedale o casa di cura', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'B', 'O2B', null, 'Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2103, 'Dichiarazione di morte: Decesso in caso di morte violenta', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'B', 'O2B', null, 'Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2104, 'Dichiarazione di morte: Decesso relativo a cadavere rinvenuto non identificato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', 'ATL', null, 'Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2199, 'Caso d''uso di servizio dichiarazioni di morte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, 'S', 'Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2211, 'Trascrizione di morte: Decesso durante il viaggio in treno o aereo o nave', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', 'TEA', null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2212, 'Trascrizione di morte: Richiesta trascrizione atto di morte all''estero richiesto da privati con istanza scritta', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', 'TEP', null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2213, 'Trascrizione di morte: Richiesta trascrizione atto di morte all''estero richiesto da pubblica autorita''', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', 'TEA', null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2214, 'Trascrizione atto morte su richiesta dell''interessato per art. 19', '2000-01-01 00:00:00.0', '2024-06-25 00:00:00.0', null, 5, 2, 'C', 'TEP', null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2221, 'Trascrizione di morte: Trascrizioni di sentenza dichiarazione di scomparsa per disastri aerei o a bordo di navi', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', null, null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2222, 'Trascrizione di morte: Trascrizioni di sentenze estera di morte presunta o scomparsa o assenza richiesta da pubblica autorita''', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', null, null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2223, 'Trascrizione di morte: Trascrizioni di sentenze estera di morte presunta o scomparsa o assenza richiesta da privato', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', null, null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2224, 'Trascrizione di morte: Trascrizioni di sentenze di accertamento morte gia'' dichiarata presunta', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, 2, 'C', null, null, 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2299, 'Caso d''uso di servizio trascrizioni di morte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, 'S', 'Trascr_Morte', null, 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2310, 'Caso d''uso di servizio annotazione comunicazione da altri comuni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, 'S', 'Annotazione', 'AltriComuni', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2320, 'Caso d''uso di servizio annotazione comunicazione da altre amministrazioni', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, 'S', 'Annotazione', 'AltreAmm', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2341, 'Annotazione per rettifica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, null, 'Annotazione', 'Rettifica', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2342, 'Annotazione per errore materiale', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, null, 'Annotazione', 'Errore', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (2350, 'Annotazione modificativa generica', '2023-12-21 09:54:27.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, null, 'Annotazione', 'Modificativa', 0);
+
+insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
+values (20000000, 'Annotazione automatica', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 5, null, null, null, null, 'Annotazione', 'Automatica', 0);
+

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<hlayout xmlns="http://www.zkoss.org/2005/zul"
+         sclass="afc-control-bar" valign="middle">
+
+    <zk if="${arg.cbAttributes.backEnabled}">
+        <toolbarbuttonBack/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.pagingEnabled}">
+        <paging sclass="afc-paging"
+                onPaging="@command('onPagina')"
+                activePage="@bind(vm.activePage)"
+                pageSize="@bind(vm.pageSize)"
+                totalSize="@load(vm.totalSize)"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.searchEnabled}">
+        <hlayout sclass="campo-ricerca">
+            <textbox hflex="1" vflex="1"
+                     width="120px"
+                     value="@bind(vm.filtro)"
+                     tooltiptext="@load(vm.etichette['filtro_ricerca_tooltip'])"
+                     placeholder="@load(vm.etichette['filtro_ricerca_placeholder'])"
+                     mold="default"
+                     onOK="@command('onFiltro')"
+                     style="border-width:0px;"/>
+            <image src="/images/de4gsdzk/10x10/cancelSimple.png"
+                   style="padding:5px;"
+                   sclass="toolbar-mini-button"
+                   onClick="@command('onResetFiltro')"/>
+        </hlayout>
+        <toolbarbutton image="/images/icon/action/22x22/search.png"
+                       tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+                       onClick="@command('onFiltro')"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.searchPopupEnabled}">
+        <toolbarbutton image="/images/icon/action/22x22/search.png"
+                       tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+                       onClick="@command('onRicercaPlus')"/>
+    </zk>
+
+
+    <include hflex="1" vflex="1" src="@load(vm.additionalSearchFilter)"
+             if="${not empty arg.cbAttributes.additionalSearchFilter}"/>
+
+    <include src="@load(vm.additionalSearchFilter2)"
+             if="${not empty arg.cbAttributes.additionalSearchFilter2}"/>
+
+    <zk if="${arg.cbAttributes.saveEnabled}">
+        <toolbarbuttonSave/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.modifyEnabled}">
+        <toolbarbuttonEdit/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.addEnabled}">
+        <toolbarbuttonAdd/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.addPlusEnabled}">
+        <toolbarbuttonAddPlus/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.addCustomEnabled}">
+        <toolbarbutton image="/images/de4gsdzk/22x22/d.png"
+                       tooltiptext="@load(empty vm.etichetteCustom['inserisci_custom']?'':vm.etichetteCustom['inserisci_custom'] )"
+                       popup="sceltaNuovoCustom"/>
+        <menupopup id="sceltaNuovoCustom" children="@load(vm.addPlusCustomList)">
+            <template name="children" var="i">
+                <menuitem label="@load(i.descrizione)" visible="@load(i.tipo eq 'T')"
+                          onClick="@command('onInserisciCustomPlus', idDomain=i.idDomain, tipo=i.tipo)"/>
+
+                <menu label="@load(i.descrizione)" visible="@load(i.tipo eq 'C')">
+                    <menupopup children="@load(i.subList)">
+                        <template name="children" var="ii">
+                            <menuitem label="@load(ii.descrizione)"
+                                      onClick="@command('onInserisciCustomPlus', idDomain=ii.id, tipo=i.tipo)"/>
+                        </template>
+                    </menupopup>
+                </menu>
+
+                <!--<menuseparator visible="@load(i.tipo eq 'P')"/>  -->
+
+                <menu label="@load(i.descrizione)" visible="@load(i.tipo eq 'P')">
+                    <menupopup children="@load(i.subList)">
+                        <template name="children" var="ii">
+                            <menuitem label="@load(ii.descrizione)"
+                                      onClick="@command('onInserisciCustomPlus', idDomain=ii.id, tipo=i.tipo)"/>
+                        </template>
+                    </menupopup>
+                </menu>
+            </template>
+        </menupopup>
+    </zk>
+
+    <zk if="${arg.cbAttributes.deleteEnabled}">
+        <toolbarbuttonDelete/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.excelExportEnabled}">
+        <toolbarbuttonExportXls/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.csvExportEnabled}">
+        <toolbarbuttonExportCsv/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.pdfExportEnabled}">
+        <toolbarbutton image="/images/icon/action/22x22/pdf.png"
+                       tooltiptext="@load(vm.etichette['pdf_export_tooltip'])"
+                       onClick="@command('onEsportaPDF')"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.xmlExportEnabled}">
+        <toolbarbutton image="/images/icon/action/22x22/xml.png"
+                       tooltiptext="@load(vm.etichette['xml_export_tooltip'])"
+                       onClick="@command('onEsportaXML')"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.filtriExtraEnabled}">
+        <toolbarbutton image="/images/icon/action/22x22/open.png"
+                       tooltiptext="@load(vm.etichette['filtri_extra_tooltip'])"
+                       popup="sceltaFiltri"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.printEnabled}">
+        <toolbarbutton id="btnStampa" image="/images/icon/action/22x22/print.png"
+                       tooltiptext="@load(vm.etichette['print_tooltip'])"
+                       onClick="@command('onStampa')"/>
+    </zk>
+
+    <zk if="${arg.cbAttributes.printPlusEnabled}">
+        <toolbarbutton image="/images/icon/action/22x22/print.png"
+                       tooltiptext="@load(vm.etichette['print_tooltip'])"
+                       popup="sceltaStampa"/>
+        <menupopup id="sceltaStampa" children="@load(vm.stampaList)">
+            <template name="children" var="i">
+                <menuitem label="@load(i.descrizione)"
+                          onClick="@command('onSelectStampa', codice=i.codice)"/>
+            </template>
+        </menupopup>
+    </zk>
+
+    <include src="@load(vm.additionalToolbarbutton)"
+             if="${not empty arg.cbAttributes.additionalToolbarbutton}"/>
+
+    <include src="@load(vm.additionalToolbarbutton2)"
+             if="${not empty arg.cbAttributes.additionalToolbarbutton2}"/>
+
+    <include src="@load(vm.additionalToolbarbutton3)"
+             if="${not empty arg.cbAttributes.additionalToolbarbutton3}"/>
+
+    <hlayout sclass="extraChildrenContainer"/>
+
+</hlayout>

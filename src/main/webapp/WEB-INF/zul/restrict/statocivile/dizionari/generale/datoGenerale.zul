@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.dizionari.generale.DatoGeneraleViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<tabbox hflex="1" vflex="1">
+			<tabs>
+				<tab label="@load(vm.etichette['Uffici'])" 							tooltiptext="@load(vm.etichette['Uffici'])"/>
+				<tab label="@load(vm.etichette['Ufficiali'])" 						tooltiptext="@load(vm.etichette['Ufficiali'])"/>
+				<tab label="@load(vm.etichette['Luoghi_Evento'])"					tooltiptext="@load(vm.etichette['Luoghi_Evento'])"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/generale/ufficioLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/generale/ufficialeLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/generale/luogo.zul" />
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+	</window>
+
+</zk>

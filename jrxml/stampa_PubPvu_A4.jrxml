@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stampa_PubPvu_A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9b23a2a-85ce-41ef-9600-17065af28841">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ESTREMI_ATTO" class="java.lang.String"/>
+	<parameter name="ID" class="java.lang.Long"/>
+	<parameter name="CODICE_TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="TESTO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT f_CIV_testo_atto($P{TIPO_ATTO}, A.ID_ATTO, 'S') AS TESTO
+FROM  CIV$P!{CODICE_TIPO_ATTO} A
+WHERE A.ID = $P{ID}]]>
+	</queryString>
+	<field name="TESTO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="33" y="0" width="488" height="30" uuid="b55943ab-1959-43ec-a83d-2b14a9160ba0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ESTREMI_ATTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="755" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="33" y="0" width="488" height="750" uuid="8f06e477-2e8f-44dd-9bbb-f627623372a1"/>
+			</rectangle>
+			<textField>
+				<reportElement x="35" y="2" width="484" height="748" uuid="3bd0e201-69e7-45b6-8769-16cb5b872d44"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO}?:$F{TESTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

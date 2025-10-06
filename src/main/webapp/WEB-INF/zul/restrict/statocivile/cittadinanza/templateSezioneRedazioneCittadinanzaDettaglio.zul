@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDichiaranteDettaglio" macroURI="/restrict/statocivile/templateRowDichiaranteDettaglio.zul" inline="true"?>
+<?component name="templateRowAscendenteDettaglio"  macroURI="/restrict/statocivile/templateRowAscendenteDettaglio.zul" inline="true"?>
+<?component name="templateRowSoggettoCollegatoPadreDettaglio"  macroURI="/restrict/statocivile/templateRowSoggettoCollegatoPadreDettaglio.zul" inline="true"?>
+<?component name="templateRowSoggettoCollegatoMadreDettaglio"  macroURI="/restrict/statocivile/templateRowSoggettoCollegatoMadreDettaglio.zul" inline="true"?>
+<?component name="templateRowPubblicoImpiegoDettaglio"  macroURI="/restrict/statocivile/templateRowPubblicoImpiegoDettaglio.zul" inline="true"?>
+<?component name="templateRowDocumentoRiconoscimentoDettaglio"  macroURI="/restrict/statocivile/templateRowDocumentoRiconoscimentoDettaglio.zul" inline="true"?>
+<?component name="templateRowEstremiAttoRiconoscimentoMaterno" macroURI="/restrict/statocivile/templateRowEstremiAttoRiconoscimentoMaterno.zul" inline="true"?>
+<?component name="templateRowEstremiAttoRiconoscimentoPaterno" macroURI="/restrict/statocivile/templateRowEstremiAttoRiconoscimentoPaterno.zul" inline="true"?>
+<?component name="templateRowDatiProvenienza" macroURI="/restrict/statocivile/templateRowDatiProvenienza.zul" inline="true"?>
+<?component name="templateRowIntestatarioVecchieGeneralitaDettaglio" macroURI="/restrict/statocivile/templateRowIntestatarioVecchieGeneralitaDettaglio.zul" inline="true"?>
+<?component name="templateRowDatiAccertamento" macroURI="/restrict/statocivile/templateRowDatiAccertamento.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox mold="3d" hflex="1" open="false" visible="@load(not empty vm.dettaglio.natura)">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_REDAZIONE'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+
+		<zk if="${vm.dettaglio.isPerdita() or vm.dettaglio.isGiuramento() or vm.dettaglio.isRichiestaDiciottenne()}">
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Provenienza'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <templateRowDatiProvenienza/>
+                    </rows>
+                </grid>
+            </groupbox>
+		</zk>
+
+		<zk if="${vm.anscOn}">
+			<!-- SEZIONE DICHIARANTE/COMPARENTE/FIRMATARIO -->
+			<grid sclass="innerForm" style="@load(vm.dettaglio.isDicCompFirmCitVisibile() ? '' : 'display:none')">
+				<rows visible="@load(vm.dettaglio.isDicCompFirmCitVisibile())">
+					<row visible="@load(vm.dettaglio.isDicCompFirmCitVisibile())">
+                        <cell>
+                            <groupbox closable="false">
+                                <caption label="@load(vm.etichette['Dati_Dichiarazione'])"/>
+                                <grid sclass="form">
+                                    <rows>
+                                        <row>
+                                            <cell align="right" width="160px">
+                                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Dichiarante'])"/>
+                                            </cell>
+                                            <cell>
+                                                <combobox model="@load(vm.listaDichiarante)" readonly="true" hflex="1"
+                                                          onChange="@command('onSelectDichiarante')"
+                                                          selectedItem="@bind(vm.datiProvenienza.tipoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+                                                    <template name="model">
+                                                        <comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+                                                    </template>
+                                                </combobox>
+                                            </cell>
+
+                                            <cell align="right">
+                                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comparente'])"/>
+                                            </cell>
+                                            <cell>
+                                                <combobox model="@load(vm.listaComparente)" readonly="true" hflex="1"
+                                                          onChange="@command('onSelectComparente')"
+                                                          selectedItem="@bind(vm.datiProvenienza.tipoComparente) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+                                                    <template name="model">
+                                                        <comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+                                                    </template>
+                                                </combobox>
+                                            </cell>
+
+                                            <cell align="right">
+                                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Firmatario'])"/>
+                                            </cell>
+                                            <cell>
+                                                <combobox model="@load(vm.listaFirmatario)" readonly="true" hflex="1"
+                                                          onChange="@command('onSelectFirmatario')"
+                                                          selectedItem="@bind(vm.datiProvenienza.tipoFirmatario) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+                                                    <template name="model">
+                                                        <comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+                                                    </template>
+                                                </combobox>
+                                            </cell>
+                                        </row>
+
+                                        <row visible="@load(vm.dettaglio.isComprensioneDichiaranteVisibile())">
+                                            <cell align="right">
+                                                <zk if="${vm.anscOn}">
+                                                    <h:span class="mandatoryLabel">*</h:span>
+                                                </zk>
+                                                <label value="@load(vm.etichette['Condizioni_dichiarante'])"/>
+                                            </cell>
+                                            <cell colspan="1">
+                                                <combobox hflex="1" model="@load(vm.listaTipiComprensione)" readonly="true"
+                                                          disabled="@load(not vm.dettaglio.isComprensioneDichiaranteVisibile())"
+                                                          selectedItem="@bind(vm.datiProvenienza.comprensioneDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                    <template name="model">
+                                                        <comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)"/>
+                                                    </template>
+                                                </combobox>
+                                            </cell>
+                                            <cell align="right" colspan="1">
+                                                <hlayout valign="middle" hflex="1" visible="@load(vm.datiProvenienza.comprensioneDichiarante.flagMotivazioneImpedimento)">
+                                                    <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Motivo_Impedimento'])"/>
+                                                </hlayout>
+                                            </cell>
+                                            <cell colspan="3">
+                                                <hlayout valign="middle" hflex="1" visible="@load(vm.datiProvenienza.comprensioneDichiarante.flagMotivazioneImpedimento)">
+                                                    <textbox value="@bind(vm.datiProvenienza.motivoImpedimentoDichiarante)"
+                                                             disabled="@load(not vm.dettaglio.isComprensioneDichiaranteVisibile())"
+                                                             hflex="1" rows="2"/>
+                                                    <button image="/images/icon/action/16x16/cancel.png"
+                                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                                            disabled="@load(not vm.dettaglio.isComprensioneDichiaranteVisibile())"
+                                                            onClick="@command('onCancellaCampoProvenienza')">
+                                                        <custom-attributes proprieta="motivoImpedimentoDichiarante"/>
+                                                    </button>
+                                                </hlayout>
+                                            </cell>
+                                        </row>
+
+                                    </rows>
+                                </grid>
+                            </groupbox>
+                        </cell>
+					</row>
+				</rows>
+			</grid>
+
+			<!-- SEZIONE RICONOSCIMENTO PATERNO/MATERNO -->
+			<grid sclass="innerForm"
+				  style="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento ? '' : 'display:none')">
+				<rows visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento)">
+					<row visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento)">
+						<cell visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento)">
+							<groupbox closable="false">
+								<caption label="@load(vm.etichette['Estremi_riconoscimento'])" visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento)"/>
+								<grid hflex="1">
+									<rows>
+										<row>
+											<cell align="right" width="150px">
+												<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Tipo_riconoscimento'])"/>
+											</cell>
+											<cell>
+												<combobox model="@load(vm.listaTipoRiconoscimento)" readonly="true" width="300px"
+														  onChange="@command('onSelectRiconoscimento')"
+														  selectedItem="@bind(vm.dettaglio.tipoRiconoscimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+													<template name="model">
+														<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+													</template>
+												</combobox>
+											</cell>
+										</row>
+
+										<row visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento and vm.dettaglio.tipoRiconoscimento eq 'MD')">
+											<cell align="right" width="150px">
+                                                <label value="@load(vm.etichette['Estremi_Atto_Riconoscimento_Materno'])"/>
+											</cell>
+											<cell>
+												<templateRowEstremiAttoRiconoscimentoMaterno/>
+											</cell>
+										</row>
+
+										<row visible="@load(vm.dettaglio.motivoCittadinanza.flagEstremiRiconoscimento and vm.dettaglio.tipoRiconoscimento eq 'PD')">
+											<cell align="right" width="150px">
+												<label value="@load(vm.etichette['Estremi_Atto_Riconoscimento_Paterno'])"/>
+											</cell>
+											<cell>
+												<templateRowEstremiAttoRiconoscimentoPaterno/>
+											</cell>
+										</row>
+									</rows>
+								</grid>
+							</groupbox>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+
+            <!--SEZIONE INTERPRETE -->
+            <zk if="${vm.anscOn}">
+				<grid sclass="form" style="@load(vm.datiProvenienza.isComparenteInterprete() ? '' : 'display:none')">
+                    <rows visible="@load(vm.datiProvenienza.isComparenteInterprete())">
+                        <templateRowInterpreteDettaglio/>
+                    </rows>
+                </grid>
+            </zk>
+
+            <!--SEZIONE GENITORE CHE TRASMETTE A FIGLIO MINORE -->
+            <zk if="${vm.anscOn}">
+				<grid sclass="form" style="@load(vm.dettaglio.motivoCittadinanza.flagMinore ? '' : 'display:none')">
+                    <rows>
+                        <row visible="@load(vm.dettaglio.motivoCittadinanza.flagMinore)">
+                            <cell align="right" width="160px">
+                                <h:span class="mandatoryLabel">*</h:span>
+                                <label value="@load(vm.dettaglio.motivoCittadinanza.flagRiconoscimento?'Riconoscimento da genitore italiano':vm.etichette['Genitore_cittadinanza'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaTipoTrasmissioneCittadinanza)" readonly="true" width="300px"
+                                          onChange="@command('onSelectTipoTrasmissioneCittadinanza')"
+                                          selectedItem="@bind(vm.dettaglio.tipoTrasmissioneCittadinanza) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </zk>
+
+			<grid sclass="innerForm">
+				<rows>
+				    <!-- SEZIONE DATI ACCERTAMENTO -->
+				    <templateRowDatiAccertamento/>
+				    <!-- SEZIONE VECCHIE GENERALITA' INTESTATARIO -->
+                    <templateRowIntestatarioVecchieGeneralitaDettaglio/>
+					<!-- SEZIONE SOGGETTO COLLEGATO MADRE -->
+					<templateRowSoggettoCollegatoMadreDettaglio/>
+					<!-- SEZIONE SOGGETTO COLLEGATO PADRE -->
+					<templateRowSoggettoCollegatoPadreDettaglio/>
+					<!-- SEZIONE ASCENDENTE -->
+					<templateRowAscendenteDettaglio/>
+					<!-- SEZIONE DOCUMENTAZIONE PUBBLICO IMPIEGO -->
+					<templateRowPubblicoImpiegoDettaglio/>
+					<!-- SEZIONE DOCUMENTO DI RICONOSCIMENTO -->
+					<templateRowDocumentoRiconoscimentoDettaglio/>
+				</rows>
+			</grid>
+		</zk>
+
+		<zk if="${vm.dettaglio.isAttestazioneSindacoMinore()}">
+			<groupbox closable="false">
+				<caption label="@load(vm.etichette['Dati_Richiedente'])"/>
+				<grid sclass="form">
+					<rows>
+						<templateRowDichiaranteDettaglio mandatory="true"/>
+					</rows>
+				</grid>
+			</groupbox>
+		</zk>
+
+		<groupbox closable="false" visible="@load(vm.dettaglio.isDatiDecretoAttestazioneVisible())">
+			<caption label="@load(vm.etichette['Dati_Decreto_Attestazione'])"/>
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="160px">
+							<zk if="${vm.anscOn and vm.dettaglio.isGiuramento()}">
+								<h:span class="mandatoryLabel">*</h:span>
+							</zk>
+							<label value="@load(vm.etichette['Decreto_Attestazione'])"/>
+						</cell>
+						<cell colspan="1">
+							<hlayout valign="middle" hflex="1">
+								<textbox hflex="1" value="@bind(vm.datiProvenienza.numeroSentenza)"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="numeroSentenza"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell align="right">
+							<zk if="${vm.anscOn and vm.dettaglio.isGiuramento()}">
+								<h:span class="mandatoryLabel">*</h:span>
+							</zk>
+							<label value="@load(vm.etichette['In_data'])"/>
+						</cell>
+						<cell colspan="2">
+							<hlayout valign="middle" hflex="1">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataSentenza)" width="100px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="dataSentenza"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell align="right">
+							<zk if="${vm.anscOn and vm.dettaglio.isGiuramento()}">
+								<h:span class="mandatoryLabel">*</h:span>
+							</zk>
+							<label value="@load(vm.etichette['Notificato_in_data'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataNotificaSentenza)" width="100px"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="dataNotificaSentenza"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Firmato'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout valign="middle" hflex="1">
+								<textbox hflex="1" value="@bind(vm.datiProvenienza.tribunaleSentenza)"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="tribunaleSentenza"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell colspan="2"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<zk if="${vm.anscOn}">
+			<grid sclass="innerForm" style="@load(vm.dettaglio.isTrascrizioneEsteroDaAutorita() ? '' : 'display:none')">
+				<rows visible="@load(vm.dettaglio.isTrascrizioneEsteroDaAutorita())">
+					<row>
+						<cell>
+							<templateRowTrascrizioneEsteroAutoritaDettaglio mandatory="true"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</zk>
+
+		<!-- SEZIONE ALTRI DATI PER ANSC -->
+		<zk if="${vm.anscOn}">
+			<groupbox closable="false" style="@load(vm.dettaglio.isDataProvvedimentoSindacoMandatory() or
+													(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagAnnotazione) or
+													(vm.dettaglio.isDichiarazione() or vm.dettaglio.isGiuramento()) or
+													(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagResidenza)? '' : 'display: none')">
+				<caption label="@load(vm.etichette['Altri_Dati'])"/>
+				<grid sclass="form">
+					<rows>
+						<row visible="@load(vm.dettaglio.isDataProvvedimentoSindacoMandatory())">
+							<cell align="right" width="160px">
+								<h:span class="mandatoryLabel">*</h:span>
+								<label value="Data provvedimento Sindaco"/>
+							</cell>
+							<cell colspan="1">
+								<hlayout valign="middle" hflex="1">
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataAccertamento)"
+											 width="100px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])"
+											onClick="@command('onCancellaCampoAtto')">
+										<custom-attributes proprieta="dataAccertamento"/>
+									</button>
+								</hlayout>
+							</cell>
+						</row>
+                        <row visible="@load(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagAnnotazione)">
+							<cell align="right" width="160px">
+                                <hlayout>
+                                    <hbox visible="@load(vm.dettaglio.isDichiarazione())">
+                                        <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                    </hbox>
+                                    <label value="@load(vm.etichette['Riassunto_dichiarazione'])"/>
+                                </hlayout>
+							</cell>
+							<cell colspan="4">
+								<hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.datiProvenienza.testoRiassunto)" rows="2" hflex="1"
+                                        placeholder="@load(vm.etichette['Testo_Riassunto_placeholder'])"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="testoRiassunto"/>
+                                    </button>
+                                </hlayout>
+							</cell>
+						</row>
+						<row visible="@load(vm.dettaglio.isDichiarazione() or vm.dettaglio.isGiuramento())">
+							<cell align="right" width="160px">
+                                <hlayout>
+                                    <hbox visible="@load(vm.dettaglio.isDichiarazione())">
+                                        <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                    </hbox>
+                                    <label value="@load(vm.etichette['Presentazione_documenti'])"/>
+                                </hlayout>
+							</cell>
+							<cell>
+								<combobox model="@load(vm.listaPresentazioneDocumenti)" readonly="true" width="200px"
+										  selectedItem="@bind(vm.datiProvenienza.presentazioneDocumentiAnsc) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell/>
+							<cell colspan="2"/>
+						</row>
+                        <row visible="@load(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagResidenza)">
+                            <cell align="right">
+                                 <hlayout visible="@load(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagResidenza)">
+                                     <hbox>
+                                         <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                     </hbox>
+                                     <label value="@load(vm.etichette['Dati_residenza_biennale'])"/>
+                                 </hlayout>
+                            </cell>
+                            <cell colspan="4">
+                                 <hlayout valign="middle" hflex="1" visible="@load(vm.dettaglio.isDichiarazione() and vm.dettaglio.motivoCittadinanza.flagResidenza)">
+                                     <textbox value="@bind(vm.datiProvenienza.datiResidenza)" rows="2" hflex="1"/>
+                                     <button image="/images/icon/action/16x16/cancel.png"
+                                             tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                         <custom-attributes proprieta="datiResidenza"/>
+                                     </button>
+                                 </hlayout>
+                            </cell>
+						</row>
+                        <!--<row>
+							<cell align="right" width="160px">
+                                <label value="@load(vm.etichette['Indirizzo_posta_autorita'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.datiProvenienza.emailAutorita)" width="350px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="emailAutorita"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>-->
+					</rows>
+				</grid>
+			</groupbox>
+		</zk>
+
+		<!-- SEZIONE REDAZIONE -->
+		<groupbox closable="false">
+			<caption label="@load(vm.etichette['Dati_Redazione'])"/>
+			<grid sclass="form">
+				<rows>
+					<templateSezioneRowRedazioneDettaglio/>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<templateSezioneAccessoComposizioneDettaglio/>
+
+	</groupbox>
+
+</zk>

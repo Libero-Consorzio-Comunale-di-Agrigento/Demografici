@@ -1,0 +1,115 @@
+<vlayout vflex="1">
+
+    <orderByBlock/>
+
+    <borderlayout vflex="1">
+        <center vflex="1">
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])"
+                     onSelect="@command('onSelectDettaglio')">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Tipo_Documento'])"/>
+                    <listheader label="@load(vm.etichette['Natura_Documento'])"/>
+                    <listheader label="@load(vm.etichette['Data_emissione'])"/>
+                    <listheader label="@load(vm.etichette['Data_Scadenza'])"/>
+                    <listheader label="@load(vm.etichette['Scadenza_Illimitata'])"/>
+                    <listheader label="@load(vm.etichette['Espatrio'])"/>
+                    <listheader label="@load(vm.etichette['Categoria'])"/>
+                    <listheader label="@load(vm.etichette['Numero'])"/>
+                    <listheader label="@load(vm.etichette['Ente'])"/>
+                    <listheader label="@load(vm.etichette['Comune_Ente'])"/>
+
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.tipoDocumento.descrizione)"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.natura))"/>
+                        <listcell sclass="testo-al-centro"
+                                  label="@load(empty item.dataEmissione? null:(c:formatDate(item.dataEmissione, 'dd/MM/yyyy')))"/>
+                        <listcell sclass="testo-al-centro"
+                                  label="@load(empty item.dataScadenza? null:(c:formatDate(item.dataScadenza, 'dd/MM/yyyy')))"/>
+                        <listcell>
+                            <checkbox checked="@load(item.scadenzaIllimitata)" disabled="true"/>
+                        </listcell>
+                        <listcell>
+                            <checkbox checked="@load(item.espatrio eq 'S')" disabled="true"/>
+                        </listcell>
+                        <listcell label="@load(item.categoria)"/>
+                        <listcell label="@load(item.numero)"/>
+                        <listcell label="@load(item.ente.descrizione)"/>
+                        <listcell>
+                            <comuneLabel value="@load(item.comuneEnte)"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </center>
+        <east size="30%" collapsible="true" splittable="true" open="@load(not empty vm.dettaglio)">
+            <vlayout vflex="1" hflex="1" sclass="scroll">
+                <groupbox mold="3d" style="background: #EDEFF5" closable="false">
+                    <caption label="@load(vm.etichette['Altri_Dati'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell align="right">
+                                    <label value="@load(vm.etichette['Data_Registrazione'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataRegistrazione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="@load(vm.etichette['Note'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.note)" bold="true"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+                <groupbox mold="3d" closable="false" style="background: #EDEFF5" vflex="1">
+                    <caption label="@load(vm.etichette['Allegati'])" width="260px" height="27px">
+                        <hlayout sclass="testo-a-dx">
+                            <button image="/images/icon/action/18x18/add.png"
+                                    tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('ADD_ALLEGATO')))"
+                                    upload="true"
+                                    onUpload="@command('onUploadDocumentoAllegato', documento=vm.dettaglio)"
+                                    visible="@load(vm.funzioniDettaglio.isVisible('ADD_ALLEGATO'))"
+                                    disabled="@load(vm.funzioniDettaglio.isDisabled('ADD_ALLEGATO'))"/>
+                            <button image="/images/icon/action/18x18/import.png"
+                                    tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('DOWNLOAD')))"
+                                    onClick="@command('onDownloadDocumento')"
+                                    visible="@load(vm.funzioniDettaglio.isVisible('DOWNLOAD'))"
+                                    disabled="@load(vm.funzioniDettaglio.isDisabled('DOWNLOAD'))"/>
+                        </hlayout>
+                    </caption>
+                    <hlayout sclass="navigazione" valign="middle">
+                        <label value="@load(c:cat(vm.etichette['Numero_record_trovati'], vm.allegatoLista.size()))"
+                               multiline="true" sclass="grassetto"/>
+                    </hlayout>
+                    <listbox model="@load(vm.allegatoLista)" nonselectableTags="" vflex="1"
+                             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                        <listhead sizable="true">
+                            <listheader label="@load(vm.etichette['Nome'])"/>
+                            <listheader width="60px"/>
+                        </listhead>
+                        <template name="model" var="item">
+                            <listitem>
+                                <listcell label="@load(item.nome)"/>
+                                <listcell>
+                                    <button image="/images/icon/action/18x18/import.png"
+                                            tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
+                                            onClick="@command('onDownloadDocumentoAllegato', allegato=item)"
+                                            visible="@load(item.canDownload())"/>
+                                </listcell>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </groupbox>
+            </vlayout>
+        </east>
+    </borderlayout>
+
+</vlayout>

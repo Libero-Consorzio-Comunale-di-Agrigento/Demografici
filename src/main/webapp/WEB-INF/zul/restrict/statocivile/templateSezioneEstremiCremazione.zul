@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- ESTREMI CREMAZIONE -->
+	<groupbox mold="3d" hflex="1" open="false">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_ESTREMI_CREMAZIONE'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="160px">
+						<label value="@load(vm.etichette['Cremazione'])" />
+					</cell>
+					<cell colspan="9">
+						<hlayout height="20px">
+							<radiogroup model="@load(vm.listaSiNo)" hflex="1" onCheck="@command('onSelectCremazione')"
+										selectedItem="@bind(vm.trasporto.cremazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.etichette[each.name()])" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+				</row>
+				<row visible="@load(vm.trasporto.cremazione eq 'SI')">
+					<cell colspan="10">
+						<groupbox closable="false" open="true">
+							<caption label="@load(vm.etichette['Dati_Cremazione'])"/>
+							<grid sclass="form">
+								<rows>
+									<row>
+										<cell align="right" width="150px">
+											<label value="@load(vm.etichette['Data'])" />
+										</cell>
+										<cell colspan="2">
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1" spacing="9px">
+													<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataCremazione)" width="100px" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+													<label value="@load(vm.etichette['Ore'])"/>
+													<textbox value="@bind(vm.trasporto.oraCremazione)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+													<label value="@load(vm.etichette['Minuti'])"/>
+													<textbox value="@bind(vm.trasporto.minutoCremazione)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="dataCremazione,oraCremazione,minutoCremazione"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+										<cell width="40px"/>
+										<cell colspan="2"/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_cremazione'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+															   value="@load(vm.trasporto.descrizioneComuneCremazione)"
+															   dataRiferimento="@load(vm.trasporto.dataCremazione)"
+															   onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CC_DEC_CREM')"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CC_DEC_CREM')"/>
+											</hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaCremazione)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Indirizzo_destinazione_ceneri'])"/>
+										</cell>
+										<cell colspan="5">
+											<hlayout valign="middle" hflex="1">
+												<textbox value="@bind(vm.trasporto.destinazioneCeneri)" hflex="1" rows="2" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="destinazioneCeneri"/>
+												</button>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Note'])"/>
+										</cell>
+										<cell colspan="5">
+											<textbox value="@bind(vm.trasporto.noteCremazione)" hflex="1" rows="4" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Registro_Aut_Cremazione'])"/>
+										</cell>
+										<cell colspan="5">
+											<combobox model="@load(vm.listaRegistriCremazione)" readonly="true" hflex="1"
+                                                      onChange="@command('onSelectRegistroCremazione')"
+													  disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+													  selectedItem="@bind(vm.trasporto.registroCremazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+												<template name="model">
+													<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)"/>
+												</template>
+											</combobox>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Numero_Protocollo_Anno'])"/>
+										</cell>
+										<cell colspan="3">
+											<hlayout valign="middle">
+												<intbox value="@bind(vm.trasporto.numeroProtocolloCremazione)" cols="5" maxlength="5"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+												<label value="/"/>
+												<intbox value="@bind(vm.trasporto.annoProtocolloCremazione)"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/calculator.png"
+														tooltiptext="@load(vm.etichette['Numera'])"
+														disabled="@load((empty vm.trasporto.cremazione) or (vm.trasporto.cremazione eq 'NO') or (not empty vm.trasporto.numeroProtocolloCremazione) )"
+														onClick="@command('onNumeraProtocolloCremazione')" />
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="numeroProtocolloCremazione,annoProtocolloCremazione"/>
+												</button>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['In_data'])"/>
+										</cell>
+										<cell>
+											<hlayout valign="middle" hflex="1">
+												<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataProtocolloCremazione)" width="100px" disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.cremazione eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="dataProtocolloCremazione"/>
+												</button>
+											</hlayout>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</zk>

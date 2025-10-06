@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.nascita.NascitaP4DettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarDettaglio/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<groupbox closable="false" open="true">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="120px">
+								<label value="@load(vm.etichette['Completo'])"/>
+							</cell>
+							<cell colspan="7">
+								<checkbox checked="@bind(vm.dettaglio.flagCompleto)"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_INTESTATARIO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="120px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.dettaglio.cognomeIntestatario)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.dettaglio.nomeIntestatario)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Indirizzo'])"/>
+							</cell>
+							<cell colspan="7">
+								<label value="@load(vm.dettaglio.indirizzo)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Iscrizione'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.dettaglio.dataIscrizione? null:(c:formatDate(vm.dettaglio.dataIscrizione, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Sez_Censimento'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.dettaglio.sezioneCensimento)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Tot_Componenti'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.dettaglio.numeroComponenti)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Tot_Minori'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.dettaglio.numeroComponentiMinori)" sclass="grassetto"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_NATO_A'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="120px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.cognome)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nome)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.atto.dataNascita? null:(c:formatDate(vm.atto.dataNascita, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Sesso'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.getEtichettaEnum(vm.atto.sesso))" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Luogo_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(c:cat4(vm.atto.descrizioneComuneNascita, empty vm.atto.siglaProvinciaNascita?'':' (', vm.atto.siglaProvinciaNascita, empty vm.atto.siglaProvinciaNascita?'':') '))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cittadinanza'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nazionalita.descrizione)" sclass="grassetto"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_MADRE'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="120px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.cognomeMadre)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nomeMadre)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaMadre)" width="110px"/>
+								<!--<label value="@load(empty vm.dettaglio.dataNascitaMadre? null:(c:formatDate(vm.dettaglio.dataNascitaMadre, 'dd/MM/yyyy')))" sclass="grassetto"/>-->
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stato_Civile'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaStatoCivile2)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.statoCivileMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<textbox value="@bind(vm.dettaglio.codiceFiscaleMadre)" hflex="1" style="text-transform:uppercase"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="codiceFiscaleMadre"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cittadinanza'])"/>
+							</cell>
+							<cell colspan="3">
+								<!--<label value="@load(vm.dettaglio.nazionalitaMadre.descrizione)" sclass="grassetto"/>-->
+								<combobox model="@load(vm.listaNazionalita)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.nazionalitaMadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_PADRE'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="120px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.cognomePadre)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nomePadre)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaPadre)" width="110px"/>
+								<!--<label value="@load(empty vm.dettaglio.dataNascitaPadre? null:(c:formatDate(vm.dettaglio.dataNascitaPadre, 'dd/MM/yyyy')))" sclass="grassetto"/>-->
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stato_Civile'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaStatoCivile1)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.statoCivilePadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.dettaglio.codiceFiscalePadre)" hflex="1" style="text-transform:uppercase"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="codiceFiscalePadre"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cittadinanza'])"/>
+							</cell>
+							<cell colspan="3">
+								<!--<label value="@load(vm.dettaglio.nazionalitaPadre.descrizione)" sclass="grassetto"/>-->
+								<combobox model="@load(vm.listaNazionalita)" readonly="true" width="250px"
+										  selectedItem="@bind(vm.dettaglio.nazionalitaPadre) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateIdDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

@@ -1,0 +1,16 @@
+package it.finmatica.de4gsdzk.statocivile
+
+import it.finmatica.de4gsdzk.CivAccordoBaseDomain
+
+import javax.persistence.Entity
+import javax.persistence.Table
+
+@Entity
+@Table(name = "CIVUCI_V_UAC")
+class CivAccordoScioglimento extends CivAccordoBaseDomain{
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////// GENERALI/////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+
+}

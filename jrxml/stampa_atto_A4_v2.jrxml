@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stampa_atto_A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="7b16e643-89a4-41ad-bb26-25cfe518ad53">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="5"/>
+	<style name="border1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$P{CORNICE_VISIBILE}]]></conditionExpression>
+			<style>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<parameter name="ID" class="java.lang.Long"/>
+	<parameter name="CODICE_TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="TIPO_ATTO" class="java.lang.Integer"/>
+	<parameter name="ESTREMI_ATTO" class="java.lang.String"/>
+	<parameter name="LABEL_COGNOME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Cognome]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_NOME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Nome]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_SESSO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Sesso]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COGNOME" class="java.lang.String"/>
+	<parameter name="NOME" class="java.lang.String"/>
+	<parameter name="COGNOME_CONIUGE" class="java.lang.String"/>
+	<parameter name="NOME_CONIUGE" class="java.lang.String"/>
+	<parameter name="SESSO" class="java.lang.String"/>
+	<parameter name="STATO" class="java.lang.String"/>
+	<parameter name="TESTO" class="java.lang.String"/>
+	<parameter name="CORNICE_VISIBILE" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT f_CIV_testo_atto($P{TIPO_ATTO}, A.ID_ATTO, 'S') AS TESTO
+FROM  CIV$P!{CODICE_TIPO_ATTO} A
+WHERE A.ID = $P{ID}]]>
+	</queryString>
+	<field name="TESTO" class="java.lang.String"/>
+	<pageHeader>
+		<band height="72">
+			<textField>
+				<reportElement style="border1" x="42" y="0" width="326" height="72" isPrintWhenDetailOverflows="true" uuid="f24c3345-33e1-4bb0-bf97-3875754de521"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTREMI_ATTO}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement style="border1" x="368" y="0" width="198" height="72" uuid="f490f0b6-d939-483c-9d2f-b7e0acc32985"/>
+				<subreport isUsingCache="false" runToBottom="false">
+					<reportElement x="0" y="0" width="198" height="72" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f84d611e-24e0-49c1-b5e6-47cff2e4e879">
+						<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("NAS") || $P{CODICE_TIPO_ATTO}.equals("MOR") || $P{CODICE_TIPO_ATTO}.equals("CIT")]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="LABEL_COGNOME">
+						<subreportParameterExpression><![CDATA[$P{LABEL_COGNOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="STATO">
+						<subreportParameterExpression><![CDATA[$P{STATO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="SESSO">
+						<subreportParameterExpression><![CDATA[$P{SESSO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="NOME">
+						<subreportParameterExpression><![CDATA[$P{NOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COGNOME">
+						<subreportParameterExpression><![CDATA[$P{COGNOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="LABEL_NOME">
+						<subreportParameterExpression><![CDATA[$P{LABEL_NOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="LABEL_SESSO">
+						<subreportParameterExpression><![CDATA[$P{LABEL_SESSO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODICE_TIPO_ATTO">
+						<subreportParameterExpression><![CDATA[$P{CODICE_TIPO_ATTO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="TIPO_ATTO">
+						<subreportParameterExpression><![CDATA[$P{TIPO_ATTO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "occhiello_NAS_A4_v2.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport isUsingCache="false">
+					<reportElement x="0" y="0" width="198" height="72" uuid="327e85ab-9207-4e72-bf71-b83317afd3bd">
+						<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("MAT") || $P{CODICE_TIPO_ATTO}.equals("UCI")]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="LABEL_COGNOME">
+						<subreportParameterExpression><![CDATA[$P{LABEL_COGNOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="NOME_CONIUGE">
+						<subreportParameterExpression><![CDATA[$P{NOME_CONIUGE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COGNOME">
+						<subreportParameterExpression><![CDATA[$P{COGNOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="NOME">
+						<subreportParameterExpression><![CDATA[$P{NOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="LABEL_NOME">
+						<subreportParameterExpression><![CDATA[$P{LABEL_NOME}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ID">
+						<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CODICE_TIPO_ATTO">
+						<subreportParameterExpression><![CDATA[$P{CODICE_TIPO_ATTO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COGNOME_CONIUGE">
+						<subreportParameterExpression><![CDATA[$P{COGNOME_CONIUGE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="TIPO_ATTO">
+						<subreportParameterExpression><![CDATA[$P{TIPO_ATTO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "occhiello_MAT_A4_v2.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="696" splitType="Immediate">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="border1" isPrintRepeatedValues="false" mode="Transparent" x="42" y="0" width="524" height="696" uuid="73c64d91-e751-437d-8931-7bdb9bea6da3"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="5" rightIndent="5" spacingBefore="10" spacingAfter="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO}?:$F{TESTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

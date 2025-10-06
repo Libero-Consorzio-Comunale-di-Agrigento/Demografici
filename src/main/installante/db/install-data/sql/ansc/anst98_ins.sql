@@ -1,0 +1,15 @@
+--liquibase formatted sql
+--changeset amonopoli:202309061220_2 runOnChange:true stripComments:false
+delete anst98;
+
+insert into ANST98 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_RICONOSCIMENTO_ADS)
+values (1, 'Riconoscimento Materno', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 1, 'MD');
+
+insert into ANST98 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_RICONOSCIMENTO_ADS)
+values (2, 'Riconoscimento Paterno', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 2, 'PD');
+
+insert into ANST98 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_RICONOSCIMENTO_ADS)
+values (3, 'Sentenza di riconoscimento paterno', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 3, 'SP');
+
+insert into ANST98 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_RICONOSCIMENTO_ADS)
+values (4, 'Sentenza di riconoscimento materno', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 4, 'SM');

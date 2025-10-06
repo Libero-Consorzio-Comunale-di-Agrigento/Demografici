@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/de4gsdzk.css" ?>
+<?xel-method prefix="c" name="westWidth" class="it.finmatica.de4gsdzk.utils.ConfigurazioneUtils" signature="String getWestWidth()"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.visualizzazione.StatoCivileStoricoListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+        <vlayout vflex="1">
+
+            <hlayout sclass="navigazione" valign="middle">
+                <controlBar value="@load(vm.controlBarAttributes)"/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+                <estremiIndividuoFormLabel/>
+            </hlayout>
+            <orderByBlock/>
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)"
+                     nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Descrizione'])" width="150px"/>
+                    <listheader
+                            label="@load(c:cat5(vm.etichette['Cognome'], ' ',vm.etichette['Coniuge'],'/',vm.etichette['Contraente']))"/>
+                    <listheader
+                            label="@load(c:cat5(vm.etichette['Nome'], ' ',vm.etichette['Coniuge'],'/',vm.etichette['Contraente'])))"/>
+                    <listheader label="@load(vm.etichette['Data_Evento'])" hflex="min"/>
+                    <listheader label="@load(vm.etichette['Comune'])" width="150px"/>
+                    <listheader label="@load(vm.etichette['Atto'])" hflex="min"/>
+                    <listheader label="@load(vm.etichette['Comune_Atto'])"/>
+                    <listheader label="@load(vm.etichette['Trascrizione'])" hflex="min"/>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.descrizione)"/>
+                        <listcell label="@load(item.coniuge.cognome)"/>
+                        <listcell label="@load(item.coniuge.nome)"/>
+                        <listcell>
+                            <dateLabel value="@load(item.dataEvento)"/>
+                        </listcell>
+                        <listcell>
+                            <comuneLabel value="@load(item.comuneEvento)"/>
+                        </listcell>
+                        <listcell>
+                            <estremiAttoLabel value="@load(item.atto)"/>
+                        </listcell>
+                        <listcell>
+                            <comuneLabel value="@load(item.comuneAtto)"/>
+                        </listcell>
+                        <listcell>
+                            <estremiAttoLabel value="@load(item.attoTrascritto)"/>
+                        </listcell>
+                        <listcell>
+                            <button image="/images/icon/action/16x16/forward.png"
+                                    visible="@load(not empty item.coniuge.idAnagrafe)"
+                                    onClick="@command('onOpenConiuge', soggetto=item.coniuge.anagrafe)"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </vlayout>
+    </window>
+
+
+</zk>

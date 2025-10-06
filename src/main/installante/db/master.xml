@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!-- esegue tutti gli script sql che trova nella directory "install" in ordine alfabetico. -->
+    <includeAll path="install" relativeToChangelogFile="true"/>
+
+    <!-- <includeAll path="latest/synonyms/si" relativeToChangelogFile="true"/> -->
+
+    <!-- <includeAll path="latest/synonyms/a00" relativeToChangelogFile="true"/> -->
+    <!-- <includeAll path="latest/package_spec/a00" relativeToChangelogFile="true"/> -->
+    <!-- <includeAll path="latest/package_body/a00" relativeToChangelogFile="true"/> -->
+    <!-- <includeAll path="latest/functions/a00" relativeToChangelogFile="true"/> -->
+    <!-- <includeAll path="latest/procedures/a00" relativeToChangelogFile="true"/> -->
+
+    <includeAll path="latest/synonyms/ad4" relativeToChangelogFile="true"/>
+    <includeAll path="latest/synonyms/as4" relativeToChangelogFile="true"/>
+    <includeAll path="latest/synonyms/so4" relativeToChangelogFile="true"/>
+    <includeAll path="latest/synonyms/gdm" relativeToChangelogFile="true"/>
+
+    <includeAll path="latest/views/ad4" relativeToChangelogFile="true"/>
+    <includeAll path="latest/views/as4" relativeToChangelogFile="true"/>
+    <includeAll path="latest/views/so4" relativeToChangelogFile="true"/>
+
+    <include file="update/master.xml" relativeToChangelogFile="true"/>
+
+    <include file="latest/master.xml" relativeToChangelogFile="true"/>
+
+    <include file="update/after.xml" relativeToChangelogFile="true"/>
+
+    <!-- grant degli oggetti verso stats, dopo la creazione eseguita da latest/master.xml -->
+    <includeAll path="latest/synonyms/stats" relativeToChangelogFile="true"/>
+
+    <include file="install-data/master.xml" relativeToChangelogFile="true"/>
+
+    <include file="update-data/master.xml" relativeToChangelogFile="true"/>
+
+    <!-- Final checks -->
+    <include file="utils/compileInvalids.xml"/>
+    <include file="utils/checkInvalidObjects.xml"/>
+
+</databaseChangeLog>

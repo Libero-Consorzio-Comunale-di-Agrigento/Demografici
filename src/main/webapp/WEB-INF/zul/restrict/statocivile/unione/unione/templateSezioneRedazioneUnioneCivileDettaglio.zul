@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDicCompFirmMatUciDettaglio" macroURI="/restrict/statocivile/templateRowDicCompFirmMatUciDettaglio.zul" inline="true"?>
+<?component name="templateSezioneRowFCCPDVMatUci" macroURI="/restrict/statocivile/templateSezioneRowFCCPDVMatUci.zul" inline="true"?>
+<?component name="templateSezioneDocumentiPvuUciProcessoVerbaleDettaglio" macroURI="/restrict/statocivile/unione/templateSezioneDocumentiPvuUciProcessoVerbaleDettaglio.zul" inline="true"?>
+<?component name="templateRowCivileXDelegaDettaglio" macroURI="/restrict/statocivile/templateRowCivileXDelegaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneTipoDocumentoFineOpposizione" macroURI="/restrict/statocivile/templateSezioneTipoDocumentoFineOpposizione.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+		<groupbox mold="3d" hflex="1" open="false" visible="@load(not empty vm.dettaglio.natura)">
+			<caption sclass="mainCaption">
+				<div>
+					<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+					<label value="@load(vm.etichette['SEZIONE_REDAZIONE'])" sclass="captionLabel"/>
+				</div>
+			</caption>
+
+			<!-- SEZIONE DICHIARANTE/COMPARENTE/FIRMATARIO -->
+			<zk if="${vm.anscOn}">
+				<groupbox closable="false" visible="@load(vm.dettaglio.isDichMatUciVisibile() or vm.dettaglio.isCompMatUciVisibile() or vm.dettaglio.isFirmMatUciVisibile() )">
+					<templateRowDicCompFirmMatUciDettaglio/>
+				</groupbox>
+			</zk>
+
+			<!--SEZIONE INTERPRETE -->
+			<zk if="${vm.anscOn}">
+				<grid sclass="form">
+					<rows visible="@load(vm.datiProvenienza.isComparenteInterprete())">
+						<templateRowInterpreteDettaglio/>
+					</rows>
+				</grid>
+			</zk>
+
+			<!-- Parte 2 E CIVILE PER DELEGA O TRASCRIZIONE ALTRO COMUNE O ATTO A TESTO LIBERO -->
+			<zk if="${vm.dettaglio.isParteSeconda() and (vm.dettaglio.isCivileXDelega() or vm.dettaglio.isTrascrizioneAltroComune() or vm.dettaglio.isTestoLibero())}">
+				<templateRowCivileXDelegaDettaglio/>
+			</zk>
+
+			<!-- TRASCRIZIONE ESTERO (PRIVATO) -->
+			<templateRowTrascrizioneEsteroPrivatoDettaglio/>
+
+
+			<!-- TRASCRIZIONE ESTERO (AUTORITA’) -->
+			<zk if="${vm.dettaglio.isTrascrizioneEsteroDaAutorita()}">
+			    <templateRowTrascrizioneEsteroAutoritaDettaglio mandatory="true"/>
+			</zk>
+
+			<!-- FUORI CASA COMUNALE - PERICOLO DI VITA -->
+			<templateSezioneRowFCCPDVMatUci/>
+
+			<zk if="${vm.dettaglio.isUnioneCivileConiugi()}">
+				<groupbox closable="false">
+				<caption label="@load(vm.etichette['Cambio_sesso'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="150px">
+									<label value="@load(vm.etichette['Autorizzazione_tribunale_di'])"/>
+								</cell>
+								<cell>
+									<hlayout valign="middle" hflex="1">
+										<textbox hflex="1" value="@bind(vm.datiProvenienza.tribunaleSentenza)"
+												 disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+												disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())">
+											<custom-attributes proprieta="tribunaleSentenza"/>
+										</button>
+									</hlayout>
+								</cell>
+								<cell align="right" width="150px">
+									<label value="@load(vm.etichette['Sentenza_n'])"/>
+								</cell>
+								<cell valign="middle">
+									<hlayout>
+										<textbox value="@bind(vm.datiProvenienza.numeroSentenza)"
+												 disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())"
+												tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="numeroSentenza"/>
+										</button>
+									</hlayout>
+								</cell>
+								<cell align="right">
+									<label value="@load(vm.etichette['In_data'])"/>
+								</cell>
+								<cell>
+									<hlayout valign="middle" hflex="1">
+										<datebox value="@bind(vm.datiProvenienza.dataSentenza)" width="100px" format="dd/MM/yyyy"
+												 disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												disabled="@load(not vm.dettaglio.isUnioneCivileConiugi())"
+												tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="dataSentenza"/>
+										</button>
+									</hlayout>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<zk if="${vm.anscOn and vm.dettaglio.isRichiestaCostituzioneVisibile()}">
+				<groupbox closable="false">
+					<caption label="@load(vm.etichette['Richiesta'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="150px">
+									<label value="@load(vm.etichette['Contraente_1'])" />
+								</cell>
+								<cell colspan="9">
+									<grid>
+										<rows>
+											<row>
+												<cell colspan="2" align="right">
+													<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Certificato_richiesta_costituzione_1'])" />
+												</cell>
+												<cell colspan="5">
+													<hlayout valign="middle" hflex="1">
+														<bandboxComuni hflex="1"
+																	   value="@load(vm.datiProvenienza.comuneRichiestaCostituzione1.descrizione)"
+																	   dataRiferimento="@load(vm.datiProvenienza.dataRichiestaCostituzione1)"
+																	   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_1_CUCI')"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])"
+																onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_1_CUCI')"
+														/>
+													</hlayout>
+												</cell>
+												<cell width="50px">
+													<textbox value="@load(vm.datiProvenienza.comuneRichiestaCostituzione1.siglaProvincia)" hflex="1" readonly="true"/>
+												</cell>
+												<cell align="right" width="20px">
+													<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Il'])" />
+												</cell>
+												<cell>
+													<hlayout valign="middle" hflex="1">
+														<datebox format="dd/MM/yyyy" width="95px" value="@bind(vm.datiProvenienza.dataRichiestaCostituzione1)"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+															<custom-attributes proprieta="dataRichiestaCostituzione1"/>
+														</button>
+													</hlayout>
+												</cell>
+											</row>
+										</rows>
+									</grid>
+								</cell>
+							</row>
+
+							<row>
+								<cell align="right">
+									<label value="@load(vm.etichette['Contraente_2'])" />
+								</cell>
+								<cell colspan="9">
+									<grid>
+										<rows>
+											<row>
+												<cell colspan="2" align="right">
+													<label value="@load(vm.etichette['Certificato_richiesta_costituzione_2'])" />
+												</cell>
+												<cell colspan="5">
+													<hlayout valign="middle" hflex="1">
+														<bandboxComuni hflex="1"
+																	   value="@load(vm.datiProvenienza.comuneRichiestaCostituzione2.descrizione)"
+																	   dataRiferimento="@load(vm.datiProvenienza.dataRichiestaCostituzione2)"
+																	   onSelect="@command('onSelectComune', campoRiferimento='CC_SOGG_2_CUCI')"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])"
+																onClick="@command('onCancellaComune', campoRiferimento='CC_SOGG_2_CUCI')"
+														/>
+													</hlayout>
+												</cell>
+												<cell width="50px">
+													<textbox value="@load(vm.datiProvenienza.comuneRichiestaCostituzione2.siglaProvincia)" hflex="1" readonly="true"/>
+												</cell>
+												<cell align="right" width="20px">
+													<label value="@load(vm.etichette['Il'])" />
+												</cell>
+												<cell>
+													<hlayout valign="middle" hflex="1">
+														<datebox format="dd/MM/yyyy" width="95px" value="@bind(vm.datiProvenienza.dataRichiestaCostituzione2)"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+															<custom-attributes proprieta="dataRichiestaCostituzione2"/>
+														</button>
+													</hlayout>
+												</cell>
+											</row>
+										</rows>
+									</grid>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<templateSezioneTipoDocumentoFineOpposizione/>
+			</zk>
+
+			<zk if="${not (vm.dettaglio.isTrascrizioneEsteroDaPrivato() or vm.dettaglio.isTrascrizioneEsteroDaAutorita() or vm.dettaglio.isUnioneCivileConiugi())}">
+				<templateSezioneDocumentiPvuUciProcessoVerbaleDettaglio/>
+			</zk>
+
+			<!-- SEZIONE ALTRI DATI PER ANSC -->
+			<zk if="${vm.anscOn and vm.dettaglio.isImpedimentoGenericoVisibile()}">
+				<groupbox closable="false">
+					<caption label="@load(vm.etichette['Altri_Dati'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="150px">
+									<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Impedimento_generico'])"/>
+								</cell>
+								<cell colspan="2">
+									<combobox model="@load(vm.listaImpedimentoGenerico)" readonly="true" width="200px"
+											  selectedItem="@bind(vm.datiProvenienza.impedimentoGenericoUci) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+										</template>
+									</combobox>
+								</cell>
+								<cell colspan="3"/>
+							</row>
+							<!--<row>
+								<cell align="right" width="150px">
+									<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Presentazione_documenti'])"/>
+								</cell>
+								<cell colspan="2">
+									<combobox model="@load(vm.listaPresentazioneDocumenti)" readonly="true" width="200px"
+											  selectedItem="@bind(vm.datiProvenienza.presentazioneDocumentiAnsc) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+										</template>
+									</combobox>
+								</cell>
+								<cell colspan="3"/>
+							</row>-->
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<!-- SEZIONE REDAZIONE -->
+			<groupbox closable="false">
+				<caption label="@load(vm.etichette['Dati_Redazione'])"/>
+				<grid sclass="form">
+					<rows>
+						<templateSezioneRowRedazioneDettaglio/>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateSezioneAccessoComposizioneDettaglio/>
+
+		</groupbox>
+
+</zk>

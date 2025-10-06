@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.documenti.DocumentoEntrataAssociatoListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarLista/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+		</hlayout>
+
+		<groupbox closable="false">
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="120px">
+							<label value="@load(vm.etichette['Tipo_Documento'])"/>
+						</cell>
+						<cell colspan="3">
+							<hlayout hflex="1">
+								<radiogroup onCheck="@command('onSelectTipoDocumento')" selectedItem="@bind(vm.flagNumerati)">
+									<radio label="@load(vm.etichette['Documenti_Numerati'])" value="${true}" style="padding:20px"/>
+									<radio label="@load(vm.etichette['Documenti_Non_Numerati'])" value="${false}" style="padding:20px"/>
+								</radiogroup>
+							</hlayout>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Registro'])"/>
+						</cell>
+						<cell>
+							<combobox model="@load(vm.listaRegistri)" mold="rounded" hflex="1" readonly="true"
+									  onChange="@command('onSelectRegistro')"
+									  selectedItem="@bind(vm.registro) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)" />
+								</template>
+							</combobox>
+						</cell>
+						<cell align="right">
+							<label value="@load(vm.etichette['Anno_Protocollo'])"/>
+						</cell>
+						<cell>
+							<combobox model="@load(vm.listaAnni)" mold="rounded" width="200px" readonly="true"
+									  onChange="@command('onSelectAnno')"
+									  selectedItem="@bind(vm.anno) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+									  disabled="@load(!vm.flagNumerati)">
+								<template name="model">
+									<comboitem label="@load(empty each?'- -':each)" value="@load(each)" />
+								</template>
+							</combobox>
+						</cell>
+						<!--<cell width="40px">
+							<hlayout valign="middle">
+								<button image="/images/icon/action/16x16/search.png"
+										tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+							</hlayout>
+						</cell>-->
+					</row>
+				</rows>
+			</grid>
+
+		</groupbox>
+
+		<vlayout vflex="1">
+
+			<orderByBlock/>
+
+			<listbox model="@load(vm.lista) @template('model')"
+					 selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead>
+					<listheader label="@load(vm.etichette['Protocollo'])" width="104px"
+								tooltiptext="@load(vm.etichette['Protocollo'])"/>
+					<listheader label="@load(vm.etichette['Anno_Protocollo'])" width="104px"
+								tooltiptext="@load(vm.etichette['Anno_Protocollo'])"/>
+					<listheader label="@load(vm.etichette['Data_Protocollo'])" width="104px"
+								tooltiptext="@load(vm.etichette['Data_Protocollo'])"/>
+					<listheader label="@load(vm.etichette['Cognome_Nome'])"/>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem onDoubleClick="@command('onModifica')">
+						<listcell label="@load(item.numeroProtocollo)"/>
+						<listcell label="@load(item.annoProtocollo)"/>
+						<listcell label="@load(empty item.dataProtocollo? null:(c:formatDate(item.dataProtocollo, 'dd/MM/yyyy')))"/>
+						<listcell label="@load(item.nominativo)"/>
+						<listcell>
+							<button image="/images/icon/action/18x18/edit.png"
+									tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+									visible="@load(not empty item.id)"
+									onClick="@command('onModifica')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+
+	</window>
+
+</zk>

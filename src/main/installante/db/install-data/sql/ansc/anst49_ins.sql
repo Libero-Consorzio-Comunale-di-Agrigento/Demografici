@@ -1,0 +1,18 @@
+--liquibase formatted sql
+--changeset amonopoli:202306151015_2 runOnChange:true stripComments:false
+delete anst49;
+
+insert into anst49 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CONVENZIONI_ADS)
+values (1, 'Comunione dei beni', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 1, 'NO');
+
+insert into anst49 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CONVENZIONI_ADS)
+values (2, 'Separazione dei beni', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 2, 'SI1');
+
+insert into anst49 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CONVENZIONI_ADS)
+values (3, 'Altra legge applicabile', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 3, 'SI2');
+
+insert into anst49 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CONVENZIONI_ADS)
+values (4, 'Convenzioni matrimoniali', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 4, 'SI3');
+
+insert into anst49 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, CONVENZIONI_ADS)
+values (5, 'Non specificata', '2000-01-01 00:00:00.0', '9999-12-31 00:00:00.0', 5, 'XX');

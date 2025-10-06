@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <vlayout vflex="1" sclass="scroll">
+
+        <hbox height="40px" pack="center" align="center">
+            <!--<controlBarLista/>-->
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+        </hbox>
+
+
+        <grid sclass="form" model="@load(vm.lista)">
+            <template name="model" var="item">
+                <row>
+                    <cell>
+                        <groupbox closable="false">
+                            <caption label="@load(item.getFirst().descrizione)"/>
+                            <grid sclass="form">
+                                <columns>
+                                    <column width="100px"/>
+                                    <column/>
+                                    <column width="140px"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="Immagine"/>
+                                        </cell>
+                                        <cell align="center">
+                                            <image content="@load(item.getSecond())"
+                                                       width="@load(item.getSecond().getCustomWidth())"
+                                                       visible="@load(not empty item.getSecond())"/>
+                                        </cell>
+                                        <cell>
+                                            <hlayout valign="middle" hflex="1">
+                                                <button visible="@load(not empty item.getFirst().blobAllegato)"
+                                                        image="/images/icon/action/16x16/import.png"
+                                                        tooltiptext="@load(vm.etichette['scarica_immagine_tooltip'])"
+                                                        onClick="@command('onDownloadAllegato', logo=item.getFirst())"/>
+                                                <button image="/images/icon/action/16x16/export.png" upload="true"
+                                                        tooltiptext="@load(vm.etichette['inserisci_immagine_tooltip'])"
+                                                        onUpload="@command('onUploadAllegato', logo=item.getFirst())"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        visible="@load(not empty item.getFirst().blobAllegato)"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaLogo', logo=item.getFirst())"/>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+
+                </row>
+            </template>
+        </grid>
+
+    </vlayout>
+
+</zk>

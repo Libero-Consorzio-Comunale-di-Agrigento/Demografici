@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - ANNOTAZIONI - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<groupbox mold="3d" hflex="1" open="true"
+				  visible="@load(vm.isCaricamentoAnnotazioniAbilitato() and (c:length(vm.mapAnnotazioniDaAtto.values()) ge 1) )">
+			<caption>
+				<hlayout hflex="1" sclass="customCaption25">
+					<hlayout sclass="testo-a-sx" hflex="1">
+						<updownbutton onClick="@command(self.openClose())"/>
+						<label value="@load(vm.etichette['SEZIONE_ANNOTAZIONI_DA_ATTO'])" sclass="captionLabel"/>
+					</hlayout>
+					<hlayout sclass="testo-a-dx" hflex="1" style="padding-right:8px">
+						<button onClick="@command('onRefreshAllAnnotazioni')"
+								image="/images/icon/action/16x16/refresh.png"
+								disabled="@load(vm.dettaglio.isCodRec0())"
+								tooltiptext="@load(vm.etichette['Aggiorna_Annotazioni'])"/>
+					</hlayout>
+				</hlayout>
+			</caption>
+			<grid sclass="form" model="@load(vm.mapAnnotazioniDaAtto.entrySet())">
+				<template name="model" var="aa">
+					<row visible="@load(vm.getChiaviAnnotazioni().contains(aa.value.tipoFormula))">
+						<cell align="right" width="150px">
+							<label value="@load(vm.getLabelAnnotazione(aa.value.tipoFormula))"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout hflex="1" valign="middle">
+								<textbox rows="@load(not empty aa.value.numeroRighe?aa.value.numeroRighe:5)"
+										 sclass="testoAtto"
+										 value="@bind(aa.value.testo)" hflex="1"
+										 disabled="@load(vm.dettaglio.isCodRec0())"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/refresh.png"
+											tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshAnnotazione', chiave=aa.getKey())"
+											disabled="@load(vm.dettaglio.isCodRec0())"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+				</template>
+			</grid>
+		</groupbox>
+
+</zk>

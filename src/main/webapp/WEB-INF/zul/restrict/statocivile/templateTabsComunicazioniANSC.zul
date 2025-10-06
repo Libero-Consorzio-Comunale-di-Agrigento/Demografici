@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+<?component name="templateComunicazioniANSC" macroURI="/restrict/statocivile/templateComunicazioniANSC.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <tabbox selectedIndex="@bind(vm.selectedTab.index)">
+        <tabs>
+            <tab label="@load(vm.etichette['Servizi_allegati'])"
+                 visible="@load(not empty vm.getProperLista('Allegati'))"/>
+            <tab label="@load(vm.etichette['Servizi_obbligatori'])"/>
+            <tab label="@load(vm.etichette['Servizi_aggiuntivi'])"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <templateComunicazioniANSC tab="Allegati"/>
+            </tabpanel>
+            <tabpanel>
+                <templateComunicazioniANSC tab="Obbligatori"
+                                           hint="I SERVIZI SONO PROPOSTI IN ORDINE DI ESECUZIONE"
+                                           sequence="true"/>
+            </tabpanel>
+            <tabpanel>
+                <templateComunicazioniANSC tab="Aggiuntivi"/>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+</zk>

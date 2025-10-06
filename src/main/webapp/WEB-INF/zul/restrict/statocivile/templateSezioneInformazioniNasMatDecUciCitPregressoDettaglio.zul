@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="showInfoMsg" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showInfoMsg(org.zkoss.zk.ui.Component, java.lang.String)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<groupbox mold="3d" hflex="1">
+		<!--<caption label="@load(vm.etichette['SEZIONE_INFORMAZIONI_ATTO'])" sclass="capimg" image="/images/de4gsdzk/16x16/up_light.png"/>-->
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_INFORMAZIONI_ATTO'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="120px">
+						<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Ufficio'])"/>
+					</cell>
+					<cell width="100px">
+						<combobox model="@load(vm.listaUffici)" readonly="true" hflex="1"
+								  disabled="@load(vm.tipoOperazione.isUpdate())" visible="@load(vm.tipoOperazione.isInsert())"
+								  selectedItem="@bind(vm.dettaglio.ufficio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+							<template name="model">
+								<comboitem label="@load(each)" value="@load(each)"/>
+							</template>
+						</combobox>
+						<intbox value="@load(vm.dettaglio.ufficio)" hflex="1" visible="@load(vm.tipoOperazione.isUpdate())" disabled="true"/>
+						<!--<intbox value="@bind(vm.dettaglio.ufficio)" disabled="@load(vm.tipoOperazione.isUpdate())" hflex="1"/> -->
+					</cell>
+					<cell align="right" width="110px">
+						<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Anno'])"/>
+					</cell>
+					<cell width="70px">
+						<intbox value="@bind(vm.dettaglio.anno)" maxlength="4" disabled="@load(vm.tipoOperazione.isUpdate())" width="45px"/>
+					</cell>
+					<cell align="right" width="110px">
+						<label value="@load(vm.etichette['Tipo_Atto'])"/>
+					</cell>
+					<cell colspan="2">
+						<label value="@load(vm.dettaglio.tipoAttoDomain.descrizione)"
+							   tooltiptext="@load(c:cat3(vm.dettaglio.tipoAttoDomain.descrizione, ' - ', c:cat3 (vm.dettaglio.tipoAttoDomain.categoriaDomain.codice, ': ', vm.dettaglio.tipoAttoDomain.categoriaDomain.descrizione)))"/>
+					</cell>
+					<cell>
+						<hlayout valign="middle" hflex="1">
+							<zk if="${vm.dettaglio.hasParte()}">
+								<label value="@load(vm.etichette['Parte'])"/>
+								<intbox value="@bind(vm.dettaglio.parte)" width="30px" disabled="true"/>
+							</zk>
+							<zk if="${vm.dettaglio.hasSerie()}">
+								<space width="4px" />
+								<label value="@load(vm.etichette['Serie'])"/>
+								<label value="@load(vm.dettaglio.serie)" width="30px" sclass="grassetto"/>
+							</zk>
+						</hlayout>
+					</cell>
+				</row>
+				<row>
+					<cell colspan="3" align="right">
+						<label value="@load(vm.etichette['Numero_Atto'])"/>
+					</cell>
+					<cell>
+						<intbox value="@bind(vm.dettaglio.atto)" maxlength="6" disabled="@load(vm.tipoOperazione.isUpdate())"
+								visible="@load((vm.dettaglio.atto gt 0) or (empty vm.dettaglio.atto))" width="70px"
+								onChange="@command('onChangeNumeroAtto')"/>
+						<label value="@load(c:cat3( '(', vm.etichette['Provvisorio'], ')' ))" visible="@load(vm.dettaglio.atto le 0)"/>
+					</cell>
+					<cell align="right">
+						<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Natura_Atto'])"/>
+					</cell>
+					<cell colspan="2">
+						<hlayout height="20px">
+							<radiogroup model="@load(vm.listaNatura)" onCheck="@command('onSelectNatura')"
+										selectedItem="@bind(vm.dettaglio.natura) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+					<cell>
+						<hlayout valign="middle" hflex="1" spacing="20px" visible="@load(not empty vm.dettaglio.tipoAttoDomain.note)">
+							<label value="@load(vm.etichette['Note'])"/>
+							<button image="/images/icon/action/18x18/info.png"
+							        onClick="@command(c:showInfoMsg(self, vm.dettaglio.tipoAttoDomain.note))"/>
+						</hlayout>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</zk>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout hflex="1" sclass="testo-a-dx" valign="middle" visible="@load(not empty vm.dettaglio.id)">
+		<image src="/images/icon/action/16x16/minus.png"
+			   tooltiptext="@load(c:cat('Id: ', vm.dettaglio.id))"
+			   onClick="@command(c:showMsgBox(vm.msgTitle, 'I', c:cat('Id: ', vm.dettaglio.id)))"/>
+	</hlayout>
+
+</zk>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.rubricaNascite.StampaRubricaNasciteListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="@load(vm.wCenterHeight)"
+            sizable="false" closable="false">
+
+        <hlayout valign="middle">
+            <controlBarStampa/>
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+        </hlayout>
+
+        <groupbox closable="false">
+            <grid sclass="form">
+                <columns>
+                    <column width="125px"/>
+                    <column/>
+                    <column width="80px"/>
+                    <column/>
+                    <column width="80px"/>
+                    <column/>
+                    <column width="120px"/>
+                    <column/>
+                    <column width="80px"/>
+                    <column/>
+                    <column width="120px"/>
+                    <column width="250px"/>
+                    <column width="50px"/>
+                </columns>
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Anno_Registrazione'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <hlayout valign="middle">
+                                <label value="@load(vm.etichette['Da'])"/>
+                                <intbox value="@bind(vm.ricerca.annoRegistrazioneDa)" onOK="@command('onRicerca')" cols="4"/>
+                                <space/>
+                                <label value="@load(vm.etichette['A'])"/>
+                                <intbox value="@bind(vm.ricerca.annoRegistrazioneA)" onOK="@command('onRicerca')" cols="4"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                    <custom-attributes proprieta="annoRegistrazioneDa,annoRegistrazioneA"/>
+                                </button>
+                            </hlayout>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Data_Registrazione'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <hlayout valign="middle">
+                                <label value="@load(vm.etichette['Da'])"/>
+                                <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataRegistrazioneDa)" width="100px"/>
+                                <space/>
+                                <label value="@load(vm.etichette['A'])"/>
+                                <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataRegistrazioneA)" width="100px"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                    <custom-attributes proprieta="dataRegistrazioneDa,dataRegistrazioneA"/>
+                                </button>
+                            </hlayout>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Data_Nascita'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <hlayout valign="middle">
+                                <label value="@load(vm.etichette['Da'])"/>
+                                <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataNascitaDa)" width="95px"/>
+                                <space/>
+                                <label value="@load(vm.etichette['A'])"/>
+                                <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataNascitaA)" width="95px"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                    <custom-attributes proprieta="dataNascitaDa,dataNascitaA"/>
+                                </button>
+                            </hlayout>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Sesso'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <combobox model="@load(vm.listaSesso)" readonly="true" width="95px"
+                                      selectedItem="@bind(vm.ricerca.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Comune_Atto_Nascita'])"/>
+                        </cell>
+                        <cell colspan="5">
+                            <hlayout valign="middle" hflex="1">
+                                <bandboxComuni hflex="1" value="@load(vm.ricerca.descrizioneComuneAttoNascita)"
+                                               onSelect="@command('onSelectComune', campoRiferimento='CA_SOGG_1_NAS')"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                        onClick="@command('onCancellaComune', campoRiferimento='CA_SOGG_1_NAS')"/>
+                            </hlayout>
+                        </cell>
+                        <cell colspan="6"/>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Ufficio'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.ricerca.ufficio)" onOK="@command('onRicerca')" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Anno'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.ricerca.anno)" onOK="@command('onRicerca')" maxlength="4" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Parte'])" />
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.ricerca.parte)" onOK="@command('onRicerca')" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Serie'])" />
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.ricerca.serie)" style="text-transform:uppercase" onOK="@command('onRicerca')" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Numero_Atto'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.ricerca.atto)" onOK="@command('onRicerca')" hflex="1"/>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.ricerca.idAttoAnsc)"
+                                     onOK="@command('onRicerca')" hflex="1"/>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Cognome'])"/>
+                        </cell>
+                        <cell colspan="11">
+                            <hlayout valign="middle" hflex="1">
+                                <textbox value="@bind(vm.ricerca.cognome)" onOK="@command('onRicerca')" hflex="1"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                    <custom-attributes proprieta="cognome"/>
+                                </button>
+                                <space/>
+                            </hlayout>
+                        </cell>
+                        <cell/>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Nome'])"/>
+                        </cell>
+                        <cell colspan="11">
+                            <hlayout valign="middle" hflex="1">
+                                <textbox value="@bind(vm.ricerca.nome)" onOK="@command('onRicerca')" hflex="1"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                    <custom-attributes proprieta="nome"/>
+                                </button>
+                                <space/>
+                            </hlayout>
+                        </cell>
+                        <cell align="right">
+                            <hlayout valign="middle">
+                                <button image="/images/icon/action/16x16/search.png"
+                                        tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+        </groupbox>
+
+        <vlayout vflex="1">
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista) @template('model')" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Cognome'])"/>
+                    <listheader label="@load(vm.etichette['Nome'])"/>
+                    <listheader label="@load(vm.etichette['Sesso'])" width="52px"
+                                tooltiptext="@load(vm.etichette['Sesso'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Data_Nascita'])" width="104px"
+                                tooltiptext="@load(vm.etichette['Data_Nascita'])" style="text-overflow: ellipsis" />
+                    <listheader label="@load(vm.etichette['Anno_Registrazione'])" width="78px"
+                                tooltiptext="@load(vm.etichette['Anno_Registrazione'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Data_Registrazione'])" width="95px"
+                                tooltiptext="@load(vm.etichette['Data_Registrazione'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Anno'])" width="52px"/>
+                    <listheader label="@load(vm.etichette['Atto'])" width="52px"/>
+                    <listheader label="@load(vm.etichette['Parte'])" width="52px"/>
+                    <listheader label="@load(vm.etichette['Serie'])" width="52px"/>
+                    <listheader label="@load(vm.etichette['Ufficio'])" width="52px"/>
+                    <listheader label="@load(vm.etichette['Id_Atto_Ansc'])" width="160px"/>
+                    <listheader label="@load(vm.etichette['Comune_Atto_Nascita'])"
+                                tooltiptext="@load(vm.etichette['Comune_Atto_Nascita'])" style="text-overflow: ellipsis"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.cognome)"/>
+                        <listcell label="@load(item.nome)"/>
+                        <listcell label="@load(item.sesso)"/>
+                        <listcell label="@load(empty item.dataNascita ? null : (c:formatDate(item.dataNascita, 'dd/MM/yyyy')))"/>
+                        <listcell label="@load(item.annoRegistrazione)"/>
+                        <listcell label="@load(empty item.dataRegistrazione ? null : (c:formatDate(item.dataRegistrazione, 'dd/MM/yyyy')))"/>
+                        <listcell label="@load(item.attoNascita.anno)"/>
+                        <listcell label="@load(item.attoNascita.atto)"/>
+                        <listcell label="@load(item.attoNascita.parte)"/>
+                        <listcell label="@load(item.attoNascita.serie)"/>
+                        <listcell label="@load(item.attoNascita.ufficio)"/>
+                        <listcell label="@load(item.attoNascita.idAttoAnsc)"/>
+                        <listcell label="@load(item.descrizioneComuneAttoNascita)"/>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.certificazione.dizionari.pagamento.PagamentoViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="@load(vm.wCenterHeight)"
+            sizable="false" closable="false">
+
+        <tabbox hflex="1" vflex="1">
+            <tabs>
+                <zk if="${vm.sezioneList.size() ge 1}">
+                    <tab label="@load(vm.sezioneList[0].label)"/>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 2}">
+                    <tab label="@load(vm.sezioneList[1].label)"/>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 3}">
+                    <tab label="@load(vm.sezioneList[2].label)"/>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 4}">
+                    <tab label="@load(vm.sezioneList[3].label)"/>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 5}">
+                    <tab label="@load(vm.sezioneList[4].label)"/>
+                </zk>
+            </tabs>
+            <tabpanels>
+                <zk if="${vm.sezioneList.size() ge 1}">
+                    <tabpanel>
+                        <include hflex="1" vflex="1"
+                                 src="@load(vm.sezioneList[0].uri)"/>
+                    </tabpanel>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 2}">
+                    <tabpanel>
+                        <include hflex="1" vflex="1"
+                                 src="@load(vm.sezioneList[1].uri)"/>
+                    </tabpanel>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 3}">
+                    <tabpanel>
+                        <include hflex="1" vflex="1"
+                                 src="@load(vm.sezioneList[2].uri)"/>
+                    </tabpanel>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 4}">
+                    <tabpanel>
+                        <include hflex="1" vflex="1"
+                                 src="@load(vm.sezioneList[3].uri)"/>
+                    </tabpanel>
+                </zk>
+                <zk if="${vm.sezioneList.size() ge 5}">
+                    <tabpanel>
+                        <include hflex="1" vflex="1"
+                                 src="@load(vm.sezioneList[4].uri)"/>
+                    </tabpanel>
+                </zk>
+            </tabpanels>
+        </tabbox>
+
+    </window>
+
+</zk>

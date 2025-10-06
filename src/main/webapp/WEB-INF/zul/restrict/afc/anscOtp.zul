@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.afc.AnscOtpViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="450px"
+            title="@load(vm.etichette['Otp'])"
+            sizable="false" closable="false"
+            onOK="@command('onSeleziona')">
+
+        <vlayout>
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="120px">
+                            <customLabel mandatory="true" value="Otp ANSC"/>
+                        </cell>
+                        <cell>
+                            <passwordTextbox value="@bind(vm.anscOtp)"/>
+                        </cell>
+                    </row>
+                    <zk if="${vm.servizio.flagOtpFirma}">
+                        <row>
+                            <cell align="right" visible="@load(vm.servizio.flagOtpFirma)">
+                                <customLabel mandatory="true" value="Utente firma"/>
+                            </cell>
+                            <cell visible="@load(vm.servizio.flagOtpFirma)">
+                                <passwordTextbox value="@bind(vm.utenteFirmaRemota)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" visible="@load(vm.servizio.flagOtpFirma)">
+                                <customLabel mandatory="true" value="Password firma"/>
+                            </cell>
+                            <cell visible="@load(vm.servizio.flagOtpFirma)">
+                                <passwordTextbox value="@bind(vm.pwdFirmaRemota)"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right" visible="@load(vm.servizio.flagOtpFirma)">
+                                <customLabel mandatory="true" value="Otp firma"/>
+                            </cell>
+                            <cell visible="@load(vm.servizio.flagOtpFirma)">
+                                <passwordTextbox value="@bind(vm.otpFirmaRemota)"/>
+                            </cell>
+                        </row>
+                    </zk>
+                </rows>
+            </grid>
+            <h:div sclass="barraPulsanti">
+                <h:div style="float:left;">
+                    <button label="@load(vm.etichette['Recupera_Otp_Ansc'])"
+                            image="/images/icon/action/16x16/calculator.png" href="@load(vm.urlOTP)" target="_blank"
+                            visible="@load(not empty vm.urlOTP)"/>
+                </h:div>
+
+                <h:div>
+                    <button label="@load(vm.etichette['Elabora'])" onClick="@command('onSeleziona')"
+                            image="/images/icon/action/16x16/ok.png"/>
+
+                    <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                            image="/images/icon/action/16x16/close.png"/>
+                </h:div>
+            </h:div>
+
+        </vlayout>
+    </window>
+</zk>

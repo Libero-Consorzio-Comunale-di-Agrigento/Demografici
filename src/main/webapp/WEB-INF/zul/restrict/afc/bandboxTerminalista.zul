@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<bandpopup>
+
+	    <vlayout>
+
+            <hlayout sclass="navigazione" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+
+                    <paging sclass="afc-paging"/>
+
+                    <hlayout sclass="campo-ricerca" visible="false">
+                        <textbox width="180px"
+                                 mold="default"
+                                 disabled="true"
+                                 style="border-width:0px; text-transform:uppercase"/>
+                        <image src="/images/de4gsdzk/10x10/cancelSimple.png"
+                               style="padding:5px;"
+                               sclass="toolbar-mini-button"/>
+                    </hlayout>
+                </hlayout>
+            </hlayout>
+
+            <hlayout sclass="navigazione" valign="middle" hflex="1">
+                <label multiline="true" sclass="grassetto"/>
+            </hlayout>
+
+            <listbox width="750px" height="250px" multiple="false">
+                <listhead>
+                    <customlistheader label="@load(self.bbParent.etichette['Cognome'])" />
+                    <customlistheader label="@load(self.bbParent.etichette['Nome'])" />
+                    <customlistheader label="@load(self.bbParent.etichette['Qualifica'])" />
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell label="${each.cognome}"/>
+                        <listcell label="${each.nome}"/>
+                        <listcell label="${each.qualifica}"/>
+                    </listitem>
+                </template>
+            </listbox>
+
+		</vlayout>
+
+	</bandpopup>
+	
+</zk>

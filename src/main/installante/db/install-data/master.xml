@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<!--	<includeAll path="f11" relativeToChangelogFile="true"/> -->
+	<!--	<includeAll path="f11/gsd" relativeToChangelogFile="true"/> -->
+	<!--	<includeAll path="f11/gsdist" relativeToChangelogFile="true"/> -->
+	<!--	<includeAll path="f11/aodi" relativeToChangelogFile="true"/> -->
+	<!-- -->
+	<includeAll path="sql/anpr" relativeToChangelogFile="true"/>
+	<includeAll path="sql/ansc" relativeToChangelogFile="true"/>
+	<!--	<includeAll path="sql/gsdana" relativeToChangelogFile="true"/> -->
+	<includeAll path="sql/gsdarc" relativeToChangelogFile="true"/>
+	<includeAll path="sql/gsdcer" relativeToChangelogFile="true"/>
+	<includeAll path="sql/gsdciv" relativeToChangelogFile="true"/>
+	<includeAll path="sql/gsdciv_ansc" relativeToChangelogFile="true"/>
+	<includeAll path="sql/gsdist" relativeToChangelogFile="true"/>
+	<includeAll path="sql" relativeToChangelogFile="true"/>
+	<!-- -->
+	<includeAll path="sql/aodi" relativeToChangelogFile="true"/>
+	<includeAll path="sql/wspa" relativeToChangelogFile="true"/>
+	<includeAll path="sql/stats" relativeToChangelogFile="true"/>
+	<!-- AD4 -->
+	<includeAll path="sql/ad4" relativeToChangelogFile="true"/>
+</databaseChangeLog>

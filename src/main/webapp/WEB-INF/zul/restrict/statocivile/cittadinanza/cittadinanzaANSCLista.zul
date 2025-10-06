@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowCasoUso" macroURI="/restrict/statocivile/templateRowCasoUso.zul" inline="true"?>
+<?component name="templateFirmatariANSC" macroURI="/restrict/statocivile/templateFirmatariANSC.zul" inline="true"?>
+<?component name="templateTabsComunicazioniANSC" macroURI="/restrict/statocivile/templateTabsComunicazioniANSC.zul" inline="true"?>
+<?component name="templateAttoDomain" macroURI="/restrict/afc/templateAttoDomain.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.cittadinanza.CittadinanzaANSCListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarANSC/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<templateRowCasoUso showMotivoRecupero="true"/>
+
+			<!--RICHIEDENTE-->
+			<groupbox mold="3d" closable="false">
+				<caption label="@load(vm.etichette['SEZIONE_RICHIEDENTE'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="110px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="4">
+								<label value="@load(vm.atto.cognome)" sclass="grassetto" multiline="true"/>
+							</cell>
+							<cell align="right" width="110px">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="4">
+								<label value="@load(vm.atto.nome)" sclass="grassetto" multiline="true"/>
+							</cell>
+							<cell align="right" width="110px">
+								<label value="@load(vm.etichette['Sesso'])"/>
+							</cell>
+							<cell width="80px">
+								<label value="@load(vm.atto.sesso)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Comune_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.descrizioneComuneNascita)" sclass="grassetto" multiline="true"/>
+							</cell>
+							<cell>
+								<label value="@load(vm.atto.siglaProvinciaNascita)" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="4">
+								<label value="@load(empty vm.atto.dataNascita? null:(c:formatDate(vm.atto.dataNascita, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell colspan="2"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Comune_Residenza'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.descrizioneComuneResidenza)" sclass="grassetto" multiline="true"/>
+							</cell>
+							<cell>
+								<label value="@load(vm.atto.siglaProvinciaResidenza)" sclass="grassetto"/>
+							</cell>
+							<cell colspan="7"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Richiesta'])"/>
+							</cell>
+							<cell colspan="4">
+								<label value="@load(empty vm.atto.dataRichiesta? null:(c:formatDate(vm.atto.dataRichiesta, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Giuramento'])"/>
+							</cell>
+							<cell colspan="4">
+								<label value="@load(empty vm.atto.dataGiuramento? null:(c:formatDate(vm.atto.dataGiuramento, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Decorrenza'])"/>
+							</cell>
+							<cell colspan="1">
+								<label value="@load(empty vm.atto.dataDecorrenza? null:(c:formatDate(vm.atto.dataDecorrenza, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<!--<orderByBlock/>-->
+			<templateFirmatariANSC/>
+
+			<templateTabsComunicazioniANSC/>
+
+			<templateAttoDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

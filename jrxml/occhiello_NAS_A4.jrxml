@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="occhiello_A4_NAS" language="groovy" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="03596775-ffd6-4b67-bd25-5a97d65630ad">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="dynamicSize" hAlign="Left" vAlign="Middle" fontName="Arial" fontSize="10">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[($P{COGNOME}.length()>34 || $P{NOME}.length()>34)? true: false]]></conditionExpression>
+			<style hAlign="Left" vAlign="Middle" fontName="Arial" fontSize="9"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="LABEL_COGNOME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Cognome]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_NOME" class="java.lang.String"/>
+	<parameter name="LABEL_SESSO" class="java.lang.String"/>
+	<parameter name="ID" class="java.lang.String"/>
+	<parameter name="TIPO_ATTO" class="java.lang.Integer"/>
+	<parameter name="CODICE_TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="COGNOME" class="java.lang.String"/>
+	<parameter name="NOME" class="java.lang.String"/>
+	<parameter name="SESSO" class="java.lang.String"/>
+	<parameter name="STATO" class="java.lang.String"/>
+	<parameter name="CAMPO1_LUNGO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT O.COGNOME AS COGNOME, O.NOME AS NOME, O.ATTO AS NUMERO, DECODE(O.TIPO_ATTO, 2, O.SESSO, '') AS SESSO, DECODE(O.TIPO_ATTO, 2, O.NATO_MORTO, '') AS STATO
+FROM  CIV$P!{CODICE_TIPO_ATTO} N, CIVOCC O
+WHERE N.ID = $P{ID}
+AND O.TIPO_ATTO = $P{TIPO_ATTO} AND O.ID_ATTO = N.ID_ATTO]]>
+	</queryString>
+	<field name="COGNOME" class="java.lang.String"/>
+	<field name="NOME" class="java.lang.String"/>
+	<field name="SESSO" class="java.lang.String"/>
+	<field name="STATO" class="java.lang.String"/>
+	<pageHeader>
+		<band height="72">
+			<frame>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="199" height="72" uuid="82aeb05c-55aa-4ad8-9f5d-20da4adf5ae1"/>
+				<textField>
+					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="52" height="23" isPrintWhenDetailOverflows="true" uuid="cc068445-6b55-49b8-b3b0-0820beb225db"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+						<paragraph leftIndent="5" rightIndent="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{LABEL_COGNOME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="dynamicSize" isPrintRepeatedValues="false" x="52" y="0" width="147" height="23" isPrintWhenDetailOverflows="true" uuid="c3c5c4f5-6d4e-4d25-9b88-d319658174cc"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph lineSpacing="Proportional" lineSpacingSize="0.7" leftIndent="3" rightIndent="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{COGNOME}?:$F{COGNOME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="17" width="52" height="23" isPrintWhenDetailOverflows="true" uuid="e86b8f8e-63d1-4f03-a787-fe3d2ffdc276"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+						<paragraph leftIndent="5" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{LABEL_NOME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="dynamicSize" isPrintRepeatedValues="false" x="52" y="17" width="147" height="23" isPrintWhenDetailOverflows="true" uuid="bd5ff45d-7f29-4afc-9c2c-196f6b71d725"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph lineSpacing="Proportional" lineSpacingSize="0.7" leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOME}?:$F{NOME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="34" width="52" height="23" isPrintWhenDetailOverflows="true" uuid="d6076d85-811d-4d78-9dbd-c65c80dbfde0">
+						<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("NAS")]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+						<paragraph leftIndent="5" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{LABEL_SESSO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="52" y="34" width="147" height="23" isPrintWhenDetailOverflows="true" uuid="18bddf61-8236-4bbb-9c33-776d68557bf5">
+						<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("NAS")]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false"/>
+						<paragraph leftIndent="3" rightIndent="3" spacingBefore="3" spacingAfter="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{SESSO}?:$F{SESSO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="dynamicSize" isPrintRepeatedValues="false" x="0" y="50" width="199" height="22" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="5ba01598-0f30-4bae-bbe2-d30db20732ff">
+						<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("NAS")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial"/>
+						<paragraph leftIndent="5" rightIndent="3" spacingBefore="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{STATO}?:$F{STATO}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+</jasperReport>

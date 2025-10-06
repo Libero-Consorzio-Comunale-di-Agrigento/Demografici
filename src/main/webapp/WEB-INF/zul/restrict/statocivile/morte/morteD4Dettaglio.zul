@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.morte.MorteD4DettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarDettaglio/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<groupbox closable="false" open="true">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Completo'])"/>
+							</cell>
+							<cell colspan="3">
+								<checkbox checked="@bind(vm.dettaglio.flagCompleto)"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Numero_ordine_scheda'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.numeroScheda)"  width="120px"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<!--<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_DATI_DECESSO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="160px">
+								<h:span class="mandatoryLabel" >*</h:span><label value="@load(vm.etichette['Data_morte'])"/>
+							</cell>
+							<cell colspan="7">
+								<label value="@load(empty vm.atto.dataMorte? null:(c:formatDate(vm.atto.dataMorte, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox> -->
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_DECEDUTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<!-- i dati non modificabili li leggo dall'atto -->
+						<row>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.cognome1)" sclass="grassetto"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.nome1)" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Nascita'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.atto.dataNascita1? null:(c:formatDate(vm.atto.dataNascita1, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right" width="160px">
+								<label value="@load(vm.etichette['Data_morte'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.atto.dataMorte? null:(c:formatDate(vm.atto.dataMorte, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Sesso'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.getEtichettaEnum(vm.atto.sesso))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.atto.codiceFiscale1)" hflex="1" sclass="grassetto" />
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Stato_Civile'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(vm.getDescrizioneStatoCivile(vm.atto.statoCivile1))" sclass="grassetto" />
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Separato_legalmente'])"/>
+							</cell>
+							<cell colspan="3">
+								<checkbox checked="@bind(vm.dettaglio.separato)"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Anno_nascita_coniuge'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.annoNascitaConiuge)" maxlength="4"
+										disabled="@load( (vm.atto.statoCivile1 eq 'CE') or (vm.atto.statoCivile1 eq 'NU') or (vm.atto.statoCivile1 eq 'VE') or (vm.atto.statoCivile1 eq 'VU'))"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Anno_matrimonio'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.annoMatrimonio)" maxlength="4"
+										disabled="@load( (vm.atto.statoCivile1 eq 'CE') or (vm.atto.statoCivile1 eq 'NU') )"/>
+							</cell>
+						</row>
+
+						<templateRowCIT_1/>
+
+						<templateRowGDI_PNP_CNP_RDA_1/>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateIdDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

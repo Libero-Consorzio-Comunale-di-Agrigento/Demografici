@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- TERMINALISTA -->
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Firma_Emissione'])"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="160px">
+                        <h:span class="mandatoryLabel">*</h:span>
+                        <label value="@load(vm.etichette['Cognome_Nome'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxTerminalistaInStampa hflex="1"
+                                                         value="@load(vm.cognomeNomeTerminalista)"
+                                                         onSelect="@command('onSelectTerminalistaInStampa')"
+                                                         onChangePreventDefault="@command('onChangePreventDefaultTerminalistaInStampa')"
+                                                         disabled="@load(not vm.forceGenerazioneGte)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    disabled="@load(not vm.forceGenerazioneGte)"
+                                    onClick="@command('onCancellaCampoCertificato')">
+                                <custom-attributes proprieta="cognomeNomeTerminalista"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Qualifica'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <hlayout valign="middle" hflex="1">
+                            <customTextbox value="@bind(vm.qualificaTerminalista)"
+                                     disabled="@load(not vm.forceGenerazioneGte)"
+                                     hflex="1"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    disabled="@load(not vm.forceGenerazioneGte)"
+                                    onClick="@command('onCancellaCampoCertificato')">
+                                <custom-attributes proprieta="qualificaTerminalista"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Nominativo_Stampa'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <checkbox checked="@bind(vm.flagInStampaTerminalista)"
+                                  disabled="@load(not vm.forceGenerazioneGte)"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Altri_Dati'])"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Generazione_certificato_ADS'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <checkbox checked="@bind(vm.forceGenerazioneGte)"
+                                  disabled="@load(empty vm.tipoCertificato or not vm.tipoCertificato.isGenerazioneEsterna())"
+                                  onCheck="@command('onCheckForceGenerazioneGte')"/>
+                    </cell>
+                </row>
+                <row visible="@load(vm.tipoCertificato.canUseAnpr())">
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Generazione_certificato_forzata_ANPR'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <checkbox checked="@bind(vm.flagForzaturaAnpr)"
+                                  disabled="@load(vm.forceGenerazioneGte)"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+    <groupbox closable="false"
+              style="@load(vm.tipoCertificato.shouldGenerateDocumentoAnagrafico() and not empty vm.documentoAnagrafico ? '' : 'display:none')">
+        <caption label="@load(vm.etichette['Documento_Individuo'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="160px"/>
+                <column/>
+                <column width="160px"/>
+                <column/>
+                <column width="160px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Tipo_Documento'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <label value="@load(vm.documentoAnagrafico.tipoDocumento.descrizione)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Numero'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.documentoAnagrafico.numero)" hflex="1"/>
+                            <button image="/images/icon/action/16x16/number.png"
+                                    tooltiptext="@load(vm.etichette['Numera'])"
+                                    onClick="@command('onNumeraDocumentoAnagrafico')"
+                                    disabled="@load(not empty vm.documentoAnagrafico.numero)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoDocumentoAnagrafico')">
+                                <custom-attributes proprieta="numero"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Del'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(empty vm.documentoAnagrafico.dataEmissione? null:(c:formatDate(vm.documentoAnagrafico.dataEmissione, 'dd/MM/yyyy')))"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Natura_Documento'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaNaturaDocumentoAnagrafico)" readonly="true"
+                                  selectedItem="@bind(vm.documentoAnagrafico.natura) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                  style="padding:5px">
+                            <template name="model">
+                                <comboitem label="@load(vm.getEtichettaEnum(each))"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

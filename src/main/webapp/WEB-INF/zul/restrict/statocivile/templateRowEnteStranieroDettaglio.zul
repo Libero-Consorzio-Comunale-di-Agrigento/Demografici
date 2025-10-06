@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- ENTE STRANIERO -->
+	<zk if="${vm.anscOn}">
+		<groupbox closable="false">
+			<caption label="@load(vm.etichette['Atto_da_trascrivere'])"/>
+			<grid sclass="form">
+				<rows>
+				    <zk if="${vm.dettaglio.isTrascrizioneEsteroDaPrivato() and vm.dettaglio.tipoAttoEnum ne 'MOR'}">
+                        <row>
+                            <cell align="right" width="160px">
+                               <label value="Ex Art.19"/>
+                            </cell>
+                            <cell colspan="4" valign="middle">
+                                <checkbox checked="@bind(vm.datiProvenienza.flagExArt19)"/>
+						    </cell>
+                            <cell width="165px"/>
+                            <cell colspan="2"/>
+				        </row>
+				    </zk>
+					<row>
+						<cell align="right" width="160px">
+							<customLabel mandatory="true" value="@load(vm.etichette['Nome_Ente'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout valign="middle" hflex="1">
+								<textbox hflex="1" value="@bind(vm.datiProvenienza.autoritaEnteStraniero)"
+										 disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+										disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )">
+									<custom-attributes proprieta="autoritaEnteStraniero"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell align="right" width="165px">
+							<customLabel mandatory="true" value="@load(vm.etichette['Data_Formazione'])"/>
+						</cell>
+						<cell colspan="2">
+							<hlayout valign="middle" hflex="1">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoEnteStraniero)" width="100px"
+										 disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+										disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )">
+									<custom-attributes proprieta="dataAttoEnteStraniero"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>
+
+					<row>
+						<cell align="right">
+							<customLabel mandatory="true" value="@load(vm.etichette['Comune_Ente'])"/>
+						</cell>
+						<cell colspan="6">
+							<hlayout valign="middle" hflex="1">
+								<bandboxComuni hflex="1" disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"
+											   value="@load(vm.datiProvenienza.comuneEnteStraniero.descrizione)"
+											   dataRiferimento="@load(vm.datiProvenienza.dataAttoEnteStraniero)"
+											   onSelect="@command('onSelectComune', campoRiferimento='CE_STRA')"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])"
+										disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"
+										onClick="@command('onCancellaComune', campoRiferimento='CE_STRA')"
+								/>
+							</hlayout>
+						</cell>
+						<cell>
+							<textbox value="@load(vm.datiProvenienza.comuneEnteStraniero.siglaProvincia)" hflex="1" readonly="true"/>
+						</cell>
+					</row>
+
+					<row>
+						<cell align="right">
+						    <!-- matrimoni, unioni civili, NO nascite -->
+							<customLabel mandatory="${vm.dettaglio.tipoAttoEnum ne 'NAS'  or (vm.dettaglio.tipoAttoEnum eq 'NAS' and vm.dettaglio.isOmessaDichiarazioneNascita())}"
+										 value="@load(vm.etichette['Estremi_Atto_Straniero'])"/>
+						</cell>
+						<cell colspan="4" valign="middle">
+							<hlayout valign="middle" hflex="1">
+								<textbox hflex="1" value="@bind(vm.datiProvenienza.estremiAttoEnteStraniero)"
+										 disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+										disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )">
+									<custom-attributes proprieta="estremiAttoEnteStraniero"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell align="right">
+                            <label value="@load(vm.etichette['Descrizione_Atto_Straniero'])"/>
+						</cell>
+						<cell colspan="2" valign="middle">
+                            <hlayout valign="middle" hflex="1">
+                                <textbox hflex="1" value="@bind(vm.datiProvenienza.tipoAttoEnteStraniero)"
+										 disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+										disabled="@load(not vm.dettaglio.isEnteStranieroEnabled() )">
+                                    <custom-attributes proprieta="tipoAttoEnteStraniero"/>
+                                </button>
+                            </hlayout>
+						</cell>
+					</row>
+
+				</rows>
+			</grid>
+		</groupbox>
+	</zk>
+
+</zk>

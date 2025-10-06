@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.OtpViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="500px"
+            title="@load(vm.etichette['Firma'])"
+			sizable="false" closable="false">
+
+		<vlayout>
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell width="20%" align="right">
+							<label value="@load(vm.etichette['Firmatario'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<combobox model="@load(vm.listaFirmatari)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.firmatario)">
+									<template name="model">
+										<comboitem label="@load(each.cognomeNome)" tooltiptext="@load(each)" value="@load(each)"/>
+									</template>
+								</combobox>
+								<button image="/images/icon/action/16x16/calculator.png" onClick="@command('onRecuperaOtp')" visible="@load(vm.recuperaOtpEnabled)"
+										disabled="@load(not vm.recuperaOtpEnabled)"/>
+							</hlayout>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Otp'])"/>
+						</cell>
+						<cell>
+							<textbox value="@bind(vm.otp)" hflex="1" type="password"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+
+			<h:div sclass="barraPulsanti">
+				<h:div>
+					<button label="@load(vm.etichette['Elabora'])"		onClick="@command('onSeleziona')" 		image="/images/icon/action/16x16/ok.png" />
+					<button label="@load(vm.etichette['Chiudi'])"		onClick="@command('onChiudi')" 			image="/images/icon/action/16x16/close.png"/>
+				</h:div>
+			</h:div>
+		</vlayout>
+
+	</window>
+
+</zk>

@@ -1,0 +1,1 @@
+Qui vanno caricati i modelli dei clienti che NON hanno gestione personalizzata sulla base dei valori della tabella MENUDITTA

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <row>
+        <cell align="right" width="70px">
+            <label value="@load(vm.etichette['Numero_Atto'])"/>
+        </cell>
+        <cell width="80px">
+            <intbox value="@bind(vm.sposi.attoAttoNascita1)" width="75px"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Parte'])"/>
+        </cell>
+        <cell width="50px">
+            <textbox value="@bind(vm.sposi.parteAttoNascita1String)" width="45px"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Serie'])"/>
+        </cell>
+        <cell width="50px">
+            <textbox value="@bind(vm.sposi.serieAttoNascita1)" width="45px" maxlength="1" style="text-transform:uppercase"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Ufficio'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.sposi.ufficioAttoNascita1)" width="45px" maxlength="2"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Anno'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.sposi.annoAttoNascita1)" onChange="@command('onAggiornaDataRiferimentoComuneAttoNascitaSoggetto1')"
+                    maxlength="4" width="45px"/>
+        </cell>
+        <cell align="right" width="75px">
+            <label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+        </cell>
+        <cell>
+            <textbox value="@bind(vm.sposi.idAttoAnscNascita1)" hflex="1"/>
+        </cell>
+    </row>
+    <row>
+        <cell align="right">
+            <label value="@load(vm.etichette['Comune_Atto'])"/>
+        </cell>
+        <cell colspan="10">
+            <hlayout valign="middle" hflex="1">
+                <!-- FIXME: CHE DATA USO COME RIFERIMENTO? -->
+                <bandboxComuni hflex="1"
+                               value="@load(vm.sposi.descrizioneComuneAttoNascita1)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoNascitaSoggetto1)"
+                               onSelect="@command('onSelectComune', campoRiferimento='CA_SOGG_1_NAS')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_SOGG_1_NAS')"
+                />
+            </hlayout>
+        </cell>
+        <cell>
+            <textbox value="@load(vm.sposi.siglaProvinciaAttoNascita1)" hflex="1" readonly="true"/>
+        </cell>
+    </row>
+</zk>

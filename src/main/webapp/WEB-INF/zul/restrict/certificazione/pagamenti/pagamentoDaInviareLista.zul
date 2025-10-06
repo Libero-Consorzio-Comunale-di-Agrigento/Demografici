@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.certificazione.pagamenti.PagamentoDaInviareListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false"
+            onOK="@command('onRicerca')">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="90px">
+                                <label value="@load(vm.etichette['Data_emissione'])"/>
+                            </cell>
+                            <cell width="300px">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Da'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaCertificato.dataEmissioneDal)"
+                                             width="100px"/>
+                                    <space/>
+                                    <label value="@load(vm.etichette['A'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaCertificato.dataEmissioneAl)"
+                                             width="100px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="dataEmissioneDal,dataEmissioneAl"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right" width="90px">
+                                <label value="@load(vm.etichette['Terminalista'])"/>
+                            </cell>
+                            <cell width="300px">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxTerminalista hflex="1"
+                                                         value="@load(vm.ricercaCertificato.terminalista.cognomeNome)"
+                                                         onSelect="@command('onSelectTerminalista')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="terminalista"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell colspan="2"/>
+                            <cell width="40px"
+                                  align="right">
+                                <hlayout valign="middle">
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Effettua_Ricerca'])"
+                                            onClick="@command('onRicerca')"/>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" vflex="1" nonselectableTags=""
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <zk if="${vm.showMassiveCheck}">
+                        <listheader width="30px">
+                            <checkbox checked="@bind(vm.massiveCheck)" onCheck="@command('onSelezionaTutte')"/>
+                        </listheader>
+                    </zk>
+                    <listheader label="@load(vm.etichette['Anno_emissione'])" width="110px"/>
+                    <listheader label="@load(vm.etichette['Progressivo_emissione'])" width="110px"/>
+                    <listheader label="@load(vm.etichette['Descrizione'])"/>
+                    <listheader label="@load(vm.etichette['Beneficiario'])"/>
+                    <listheader label="@load(vm.etichette['Richiedente'])"/>
+                    <listheader label="@load(vm.etichette['Terminalista'])"/>
+                    <listheader label="@load(vm.etichette['Data_emissione'])" width="9%"/>
+                    <listheader label="@load(vm.etichette['Totale'])" width="100px"/>
+                    <zk if="${vm.showDepagColumns}">
+                        <listheader label="@load(vm.etichette['Servizio'])"/>
+                    </zk>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <zk if="${vm.showMassiveCheck}">
+                            <listcell>
+                                <checkbox checked="@load(vm.isSelezionata(item))"
+                                          onCheck="@command('onSelezionaPagamentoDaInviare', selected=self.checked, pagamentoDaInviare=item)"/>
+                            </listcell>
+                        </zk>
+                        <listcell label="@load(item.certificatoEmesso.annoEmissione)"/>
+                        <listcell label="@load(item.certificatoEmesso.progressivoEmissione)"/>
+                        <listcell label="@load(item.certificatoEmesso.tipoCertificato.descrizione)"/>
+                        <listcell label="@load(item.certificatoEmesso.beneficiario.cognomeNome)"/>
+                        <listcell label="@load(item.certificatoEmesso.richiedente.cognomeNome)"/>
+                        <listcell label="@load(item.certificatoEmesso.terminalista.cognomeNome)"/>
+                        <listcell sclass="testo-al-centro">
+                            <label value="@load(empty item.certificatoEmesso.dataEmissione? null:(c:formatDate(item.certificatoEmesso.dataEmissione, 'dd/MM/yyyy')))"/>
+                        </listcell>
+                        <listcell>
+                            <currencylabel value="@load(item.certificatoEmesso.totale)"/>
+                        </listcell>
+                        <zk if="${vm.showDepagColumns}">
+                            <listcell label="@load(item.servizio.descrizione)"/>
+                        </zk>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <listbox model="@load(vm.eventoAnagrafeFamigliaList)" nonselectableTags="" vflex="1"
+             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+        <listhead>
+            <listheader label="@load(vm.etichette['Cognome'])"/>
+            <listheader label="@load(vm.etichette['Nome'])"/>
+            <listheader label="@load(vm.etichette['Data_Nascita'])" width="104px"/>
+            <listheader label="@load(vm.etichette['Comune_Nascita'])"/>
+            <listheader label="@load(vm.etichette['Rapporto_Parentela'])"/>
+            <listheader label="@load(vm.etichette['Descrizione'])"/>
+            <listheader label="" width="52px"/>
+        </listhead>
+        <template name="model" var="item">
+            <listitem>
+                <listcell label="@load(item.anagrafe.cognome)"/>
+                <listcell label="@load(item.anagrafe.nome)"/>
+                <listcell
+                        label="@load(empty item.anagrafe.dataNascita? null:(c:formatDate(item.anagrafe.dataNascita, 'dd/MM/yyyy')))"/>
+                <listcell label="@load(item.anagrafe.descrizioneComuneNascita)"/>
+                <listcell label="@load(item.rapportoParentela)"/>
+                <listcell label="@load(item.descrizione)"/>
+                <listcell>
+                    <button image="/images/icon/action/16x16/forward.png"
+                            tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+                            onClick="@command('onSelezionaEventoAnagrafeFamiglia', evento = item)"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

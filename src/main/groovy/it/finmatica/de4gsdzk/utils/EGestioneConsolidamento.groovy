@@ -1,0 +1,12 @@
+package it.finmatica.de4gsdzk.utils
+
+enum EGestioneConsolidamento {
+
+    CONSOLIDAMENTO,
+    BLOCCO,
+    CONSOLIDAMENTO_CERTIFICAZIONE,
+    CONSOLIDAMENTO_BLOCCO_CERTIFICAZIONE,
+    CONSOLIDAMENTO_BLOCCO,
+    ANNULLAMENTO
+
+}

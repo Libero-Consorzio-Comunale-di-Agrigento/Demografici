@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- DICHIARANTE/COMPARENTE/FIRMATARIO -->
+	<caption label="@load(vm.etichette['Dati_Dichiarazione'])"/>
+	<grid sclass="form">
+		<rows>
+			<row>
+				<cell align="right" width="160px">
+					<hlayout visible="@load(vm.dettaglio.isDichDivScioVisibile() and (not vm.datiProvenienza.isMancataConfermaAccordo(vm.dettaglio.tipoAttoEnum)))">
+						<hbox>
+							<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+						</hbox>
+						<label value="@load(vm.etichette['Dichiarante'])"/>
+					</hlayout>
+				</cell>
+				<cell>
+					<combobox model="@load(vm.listaDichiarante)" readonly="true" hflex="1"
+							  onChange="@command('onSelectDichiarante')"
+							  visible="@load(vm.dettaglio.isDichDivScioVisibile() and (not vm.datiProvenienza.isMancataConfermaAccordo(vm.dettaglio.tipoAttoEnum)))"
+							  disabled="@load(vm.datiProvenienza.isMancataConfermaAccordo(vm.dettaglio.tipoAttoEnum))"
+							  selectedItem="@bind(vm.datiProvenienza.tipoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+						<template name="model">
+							<comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+						</template>
+					</combobox>
+				</cell>
+
+				<cell align="right">
+					<hlayout visible="@load(vm.dettaglio.isCompDivScioVisibile())">
+						<hbox>
+							<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+						</hbox>
+						<label value="@load(vm.etichette['Comparente'])"/>
+					</hlayout>
+				</cell>
+				<cell>
+					<combobox model="@load(vm.listaComparente)" readonly="true" hflex="1"
+							  onChange="@command('onSelectComparente')"
+							  visible="@load(vm.dettaglio.isCompDivScioVisibile())"
+							  selectedItem="@bind(vm.datiProvenienza.tipoComparente) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+						<template name="model">
+							<comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+						</template>
+					</combobox>
+				</cell>
+
+				<cell align="right">
+					<hlayout visible="@load(vm.dettaglio.isFirmDivScioVisibile())">
+						<hbox>
+							<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+						</hbox>
+						<label value="@load(vm.etichette['Firmatario'])"/>
+					</hlayout>
+				</cell>
+				<cell>
+					<combobox model="@load(vm.listaFirmatario)" readonly="true" hflex="1"
+							  onChange="@command('onSelectFirmatario')"
+							  visible="@load(vm.dettaglio.isFirmDivScioVisibile())"
+							  selectedItem="@bind(vm.datiProvenienza.tipoFirmatario) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+						<template name="model">
+							<comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+						</template>
+					</combobox>
+				</cell>
+
+			</row>
+		</rows>
+	</grid>
+
+</zk>

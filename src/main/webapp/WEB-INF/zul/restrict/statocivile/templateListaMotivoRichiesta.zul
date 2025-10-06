@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+        <listhead>
+            <listheader label="@load(vm.etichette['Descrizione'])"/>
+            <listheader label="" width="52px"/>
+        </listhead>
+        <template name="model" var="item">
+            <listitem onDoubleClick="@command('onSeleziona')">
+                <listcell label="@load(item.descrizione)"/>
+                <listcell>
+                    <button image="/images/icon/action/16x16/forward.png"
+                            tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+                            visible="@load(not empty item.id)"
+                            onClick="@command('onSeleziona')"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

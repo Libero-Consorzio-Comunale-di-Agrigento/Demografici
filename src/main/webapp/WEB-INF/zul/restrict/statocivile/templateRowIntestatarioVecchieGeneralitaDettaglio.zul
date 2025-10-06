@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- SEZIONE VECCHIE GENERALITA' INTESTATARIO -->
+    <row visible="@load(vm.dettaglio.motivoCittadinanza.flagCambioGeneralita)">
+        <cell colspan="2">
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Generalita_intestatario_vecchie'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <label value="@load(vm.etichette['Cambio_cognome_nome'])"/>
+                            </cell>
+                            <cell colspan="9">
+                                <hlayout height="20px">
+                                    <radiogroup model="@load(vm.listaSiNo)" hflex="1"
+                                                selectedItem="@bind(vm.intestatarioVecchioGeneralita.cambioGeneralita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row visible="@load(vm.intestatarioVecchioGeneralita.cambioGeneralita eq 'SI')">
+                            <cell colspan="9">
+                                <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell align="right" width="142px">
+                                            <label value="@load(vm.etichette['Vecchio_cognome'])"/>
+                                        </cell>
+                                        <cell colspan="7">
+                                            <hlayout valign="middle" hflex="1">
+                                                <textbox value="@bind(vm.intestatarioVecchioGeneralita.cognome)" hflex="1" style="@load(vm.minuscole.cognomeIntestatarioVecchio?'text-transform:none':'text-transform:uppercase')"
+                                                         onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='CG')">
+                                                    <custom-attributes proprieta="cognomeIntestatarioVecchio"/>
+                                                </textbox>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='CG')">
+                                                    <custom-attributes proprieta="cognome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell align="right">
+                                            <hlayout valign="middle">
+                                                <label value="@load(vm.etichette['Minuscole'])"/>
+                                                <checkbox checked="@bind(vm.minuscole.cognomeIntestatarioVecchio)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='CG')" >
+                                                    <custom-attributes proprieta="cognomeIntestatarioVecchio"/>
+                                                </checkbox>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span><label value="Vecchio nome"/>
+                                        </cell>
+                                        <cell colspan="7">
+                                            <hlayout valign="middle" hflex="1">
+                                                <textbox value="@bind(vm.intestatarioVecchioGeneralita.nome)" hflex="1" style="@load(vm.minuscole.nomeIntestatarioVecchio?'text-transform:none':'text-transform:uppercase')"
+                                                         onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='CG')">
+                                                    <custom-attributes proprieta="nomeIntestatarioVecchio"/>
+                                                </textbox>
+                                                <button image="/images/icon/action/16x16/search.png"
+                                                        tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='CAMBIO_GENERALITA')"
+                                                />
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='CG')">
+                                                    <custom-attributes proprieta="nome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell align="right">
+                                            <hlayout valign="middle">
+                                                <label value="@load(vm.etichette['Minuscole'])"/>
+                                                <checkbox checked="@bind(vm.minuscole.nomeIntestatarioVecchio)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='CG')" >
+                                                    <custom-attributes proprieta="nomeIntestatarioVecchio"/>
+                                                </checkbox>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Sesso'])"/>
+                                        </cell>
+                                        <cell colspan="2">
+                                            <combobox model="@load(vm.listaSessoSoggettoCollegato)" readonly="true" width="100px"
+                                                      selectedItem="@bind(vm.intestatarioVecchioGeneralita.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Data_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="2">
+                                            <hlayout>
+                                                <datebox format="dd/MM/yyyy" value="@bind(vm.intestatarioVecchioGeneralita.dataNascita)" width="95px"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='CG')">
+                                                    <custom-attributes proprieta="dataNascita"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell/>
+                                        <cell align="right"/>
+                                        <cell/>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="5">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1"
+                                                               value="@load(vm.intestatarioVecchioGeneralita.comuneNascita.descrizione)"
+                                                               dataRiferimento="@load(vm.intestatarioVecchioGeneralita.dataNascita)"
+                                                               onSelect="@command('onSelectComune', campoRiferimento='CN_SOGG_1_OLD')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CN_SOGG_1_OLD')"
+                                                />
+                                            </hlayout>
+                                        </cell>
+                                        <cell>
+                                            <textbox value="@load(vm.intestatarioVecchioGeneralita.comuneNascita.siglaProvincia)" hflex="1" readonly="true"/>
+                                        </cell>
+                                        <cell colspan="2"/>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Comune_Residenza'])"/>
+                                        </cell>
+                                        <cell colspan="5">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1"
+                                                               value="@load(vm.intestatarioVecchioGeneralita.comuneResidenza.descrizione)"
+                                                               onSelect="@command('onSelectComune', campoRiferimento='CR_SOGG_1_OLD')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_SOGG_1_OLD')"
+                                                />
+                                            </hlayout>
+                                        </cell>
+                                        <cell>
+                                            <textbox value="@load(vm.intestatarioVecchioGeneralita.comuneResidenza.siglaProvincia)" hflex="1" readonly="true"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nazionalita'])"/>
+                                        </cell>
+                                        <cell>
+                                            <combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+                                                      selectedItem="@bind(vm.intestatarioVecchioGeneralita.nazionalita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                    </row>
+                                </rows>
+                                </grid>
+                            </cell>
+                            <cell width="42px">
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                        onClick="@command('onCancellaAnagrafica', tipoSoggetto='CAMBIO_GENERALITA')"/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+    </row>
+
+</zk>

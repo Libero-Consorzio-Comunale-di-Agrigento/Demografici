@@ -1,0 +1,70 @@
+--liquibase formatted sql
+--changeset snocca:202210190801 runOnChange:true
+CREATE OR REPLACE SYNONYM SO4_INDIRIZZI_TELEMATICI FOR ${global.db.so4.username}.INDIRIZZI_TELEMATICI
+/
+
+CREATE OR REPLACE SYNONYM SO4_AOO_VIEW FOR ${global.db.so4.username}.AOO_VIEW
+/
+
+create or replace synonym SO4_DELEGHE for ${global.db.so4.username}.deleghe
+/
+
+create or replace synonym SO4_applicativi for ${global.db.so4.username}.applicativi
+/
+
+create or replace synonym SO4_COMPETENZE_DELEGA for ${global.db.so4.username}.COMPETENZE_DELEGA
+/
+
+CREATE or replace SYNONYM so4_competenze_delega_tpk FOR ${global.db.so4.username}.competenze_delega_tpk
+/
+
+CREATE OR REPLACE SYNONYM SO4_ALBERO_UNITA_ORG FOR ${global.db.so4.username}.UNITA_ORGANIZZATIVE
+/
+
+CREATE OR REPLACE SYNONYM SO4_AMMINISTRAZIONI FOR ${global.db.so4.username}.AMMINISTRAZIONI
+/
+
+CREATE OR REPLACE SYNONYM SO4_AOO FOR ${global.db.so4.username}.AOO
+/
+
+CREATE OR REPLACE SYNONYM SO4_ATTRIBUTI_COMPONENTE FOR ${global.db.so4.username}.VISTA_ATCO_GRAILS
+/
+
+CREATE OR REPLACE SYNONYM SO4_ATTRIBUTI_COMPONENTE_PUBB FOR ${global.db.so4.username}.VISTA_ATCO_GRAILS_PUBB
+/
+
+CREATE OR REPLACE SYNONYM SO4_COMPONENTI FOR ${global.db.so4.username}.VISTA_COMP_GRAILS
+/
+
+CREATE OR REPLACE SYNONYM SO4_COMPONENTI_PUBB FOR ${global.db.so4.username}.VISTA_COMP_GRAILS_PUBB
+/
+
+CREATE OR REPLACE SYNONYM SO4_OTTICHE FOR ${global.db.so4.username}.OTTICHE
+/
+
+CREATE OR REPLACE SYNONYM SO4_RUOLI_COMPONENTE FOR ${global.db.so4.username}.RUOLI_COMPONENTE
+/
+
+CREATE OR REPLACE SYNONYM SO4_RUOLI_COMPONENTE_PUBB FOR ${global.db.so4.username}.VISTA_PUBB_RUCO
+/
+
+CREATE OR REPLACE SYNONYM SO4_SUDDIVISIONI_STRUTTURA FOR ${global.db.so4.username}.SUDDIVISIONI_STRUTTURA
+/
+
+CREATE OR REPLACE SYNONYM SO4_UNITA_ORGANIZZATIVE FOR ${global.db.so4.username}.VISTA_UNITA_ORGANIZZATIVE
+/
+
+CREATE OR REPLACE SYNONYM SO4_UNITA_ORGANIZZATIVE_PUBB FOR ${global.db.so4.username}.VISTA_UNITA_ORGANIZZATIVE_PUBB
+/
+
+CREATE OR REPLACE SYNONYM SO4_UTIL FOR ${global.db.so4.username}.SO4_UTIL
+/
+
+CREATE OR REPLACE SYNONYM SO4_INDIRIZZO_TELEMATICO FOR ${global.db.so4.username}.INDIRIZZO_TELEMATICO
+/
+
+CREATE OR REPLACE SYNONYM SO4_CODICI_IPA_TPK FOR ${global.db.so4.username}.CODICI_IPA_TPK
+/
+
+create or replace synonym SO4_ANAGRAFE_UNITA FOR ${global.db.so4.username}.ANAGRAFE_UNITA_ORGANIZZATIVE
+/

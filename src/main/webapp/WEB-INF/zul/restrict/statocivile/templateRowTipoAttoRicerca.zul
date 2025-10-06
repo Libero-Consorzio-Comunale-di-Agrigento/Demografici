@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <row>
+        <cell align="right" width="80px">
+            <label value="@load(vm.etichette['Tipo_Atto'])"/>
+        </cell>
+        <cell>
+            <hlayout hflex="1">
+                <radiogroup model="@load(vm.listaTipiAtto)" onCheck="@command('onSelectTipoAtto')"
+                            selectedItem="@bind(vm.tipoAttoEnum) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                    <template name="model">
+                        <radio label="@load(vm.getEtichettaPluralEnum(each) )" value="@load(each)" style="padding:15px"/>
+                    </template>
+                </radiogroup>
+            </hlayout>
+        </cell>
+        <!--<cell width="40px">
+            <hlayout valign="middle">
+                <button image="/images/icon/action/16x16/search.png"
+                        tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+            </hlayout>
+        </cell>  -->
+    </row>
+
+</zk>

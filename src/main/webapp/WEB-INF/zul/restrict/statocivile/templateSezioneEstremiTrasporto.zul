@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name=bandboxCimitero extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxCimitero?>
+<?component name=bandboxDittaOnoranze extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxDittaOnoranze?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- ESTREMI TRASPORTO -->
+	<groupbox mold="3d" hflex="1" open="false">
+		<caption sclass="mainCaption">
+			<div>
+				<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+				<label value="@load(vm.etichette['SEZIONE_ESTREMI_TRASPORTO'])" sclass="captionLabel"/>
+			</div>
+		</caption>
+		<grid sclass="form">
+			<rows>
+				<row>
+					<cell align="right" width="160px">
+						<label value="@load(vm.etichette['Trasporto'])" />
+					</cell>
+					<cell colspan="9">
+						<hlayout height="20px">
+							<radiogroup model="@load(vm.listaSiNo)" hflex="1" onCheck="@command('onSelectTrasporto')"
+										selectedItem="@bind(vm.trasporto.trasporto) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+								<template name="model">
+									<radio label="@load(vm.etichette[each.name()])" value="@load(each)" style="padding-left:10px"/>
+								</template>
+							</radiogroup>
+						</hlayout>
+					</cell>
+				</row>
+				<row visible="@load(vm.trasporto.trasporto eq 'SI')">
+					<cell colspan="10">
+						<groupbox closable="false" open="true">
+							<caption label="@load(vm.etichette['Dati_Richiedente'])"/>
+							<grid sclass="form">
+								<rows>
+									<row>
+										<cell align="right" width="150px">
+											<label value="@load(vm.etichette['Data_Richiesta'])" />
+										</cell>
+										<cell>
+											<hlayout valign="middle" hflex="1">
+												<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataRichiesta)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="dataRichiesta"/>
+												</button>
+											</hlayout>
+										</cell>
+										<cell colspan="4"/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Cognome_Richiedente'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<textbox value="@bind(vm.trasporto.cognomeRichiedente)" hflex="1" style="@load(vm.minuscole.cognomeRichiedente?'text-transform:none':'text-transform:uppercase')"
+														 disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                         onChange="@command('onAggiornaCaseTrasporto')">
+                                                    <custom-attributes proprieta="cognomeRichiedente"/>
+                                                </textbox>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+                                                    <custom-attributes proprieta="cognomeRichiedente"/>
+                                                </button>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<hlayout valign="middle" >
+                                                <label value="@load(vm.etichette['Minuscole'])"/>
+                                                <checkbox checked="@bind(vm.minuscole.cognomeRichiedente)" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))" onCheck="@command('onAggiornaCaseTrasporto')">
+                                                    <custom-attributes proprieta="cognomeRichiedente"/>
+                                                </checkbox>
+                                            </hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Nome_Richiedente'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1">
+													<textbox value="@bind(vm.trasporto.nomeRichiedente)" hflex="1" style="@load(vm.minuscole.nomeRichiedente?'text-transform:none':'text-transform:uppercase')"
+															 disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															 onChange="@command('onAggiornaCaseTrasporto')">
+														<custom-attributes proprieta="nomeRichiedente"/>
+													</textbox>
+													<button image="/images/icon/action/16x16/search.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggettiTrasporto', tipoSoggetto='RICHIEDENTE')"
+													/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="nomeRichiedente"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<hlayout valign="middle" >
+												<label value="@load(vm.etichette['Minuscole'])"/>
+												<checkbox checked="@bind(vm.minuscole.nomeRichiedente)" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))" onCheck="@command('onAggiornaCaseTrasporto')">
+													<custom-attributes proprieta="nomeRichiedente"/>
+												</checkbox>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Sesso'])"/>
+										</cell>
+										<cell>
+											<combobox model="@load(vm.listaSesso)" readonly="true" hflex="1"
+													  disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+													  selectedItem="@bind(vm.trasporto.sessoRichiedente) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+												<template name="model">
+													<comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+												</template>
+											</combobox>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['Data_Nascita'])"/>
+										</cell>
+										<cell>
+											<hlayout valign="middle" hflex="1">
+												<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataNascitaRichiedente)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+											 	<button image="/images/icon/action/16x16/cancel.png"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+                                                <custom-attributes proprieta="dataNascitaRichiedente"/>
+                                            </button>
+                                        </hlayout>
+										</cell>
+										<cell colspan="2"/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_Nascita'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                               value="@load(vm.trasporto.descrizioneComuneNascitaRichiedente)"
+                                                               dataRiferimento="@load(vm.trasporto.dataNascitaRichiedente)"
+                                                               onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CN_RIC')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CN_RIC')"/>
+                                            </hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaNascitaRichiedente)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_Residenza'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                               value="@load(vm.trasporto.descrizioneComuneResidenzaRichiedente)"
+                                                               onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CR_RIC')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CR_RIC')"/>
+                                            </hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaResidenzaRichiedente)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</cell>
+				</row>
+				<row visible="@load(vm.trasporto.trasporto eq 'SI')">
+					<cell colspan="10">
+						<groupbox closable="false" open="true">
+							<caption label="@load(vm.etichette['Dati_Trasporto'])"/>
+							<grid sclass="form">
+								<rows>
+									<row>
+										<cell align="right" width="150px">
+											<label value="@load(vm.etichette['Data_Trasporto'])" />
+										</cell>
+										<cell colspan="2">
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1" spacing="9px">
+													<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataTrasporto)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<label value="@load(vm.etichette['Ore'])"/>
+													<textbox value="@bind(vm.trasporto.oraTrasporto)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<label value="@load(vm.etichette['Minuti'])"/>
+													<textbox value="@bind(vm.trasporto.minutoTrasporto)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="dataTrasporto,oraTrasporto,minutoTrasporto"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+										<cell width="40px"/>
+										<cell colspan="2"/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_destinazione'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															   value="@load(vm.trasporto.descrizioneComuneDestinazione)"
+															   dataRiferimento="@load(vm.trasporto.dataTrasporto)"
+															   onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CD_DEC_TRAS')"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CD_DEC_TRAS')"/>
+											</hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaDestinazione)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Indirizzo_destinazione'])"/>
+										</cell>
+										<cell colspan="5">
+											<hlayout valign="middle" hflex="1">
+												<textbox value="@bind(vm.trasporto.indirizzoDestinazione)" hflex="1" rows="2" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="indirizzoDestinazione"/>
+												</button>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Cimitero'])"/>
+										</cell>
+										<cell colspan="2">
+											<hlayout valign="middle" hflex="1">
+												<bandboxCimitero hflex="1" value="@bind(vm.trasporto.cimiteroDestinazione)"
+																 onSelect="@command('onSelectCimitero')"
+																 disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCimitero')"/>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['Note'])"/>
+										</cell>
+										<cell colspan="2">
+											<textbox value="@bind(vm.trasporto.noteTrasporto)" hflex="1" rows="4" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Registro_Aut_Trasporto'])"/>
+										</cell>
+										<cell colspan="5">
+											<combobox model="@load(vm.listaRegistriTrasporto)" readonly="true" hflex="1"
+													  onChange="@command('onSelectRegistroTrasporto')"
+													  disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+                                                      selectedItem="@bind(vm.trasporto.registroTrasporto) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Numero_Protocollo_Anno'])"/>
+										</cell>
+										<cell colspan="3">
+											<hlayout valign="middle">
+												<intbox value="@bind(vm.trasporto.numeroProtocolloTrasporto)" cols="5" maxlength="5"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<label value="/"/>
+												<intbox value="@bind(vm.trasporto.annoProtocolloTrasporto)"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/calculator.png"
+														tooltiptext="@load(vm.etichette['Numera'])"
+														disabled="@load((empty vm.trasporto.trasporto) or (vm.trasporto.trasporto eq 'NO') or (not empty vm.trasporto.numeroProtocolloTrasporto) )"
+														onClick="@command('onNumeraProtocolloTrasporto')" />
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="numeroProtocolloTrasporto,annoProtocolloTrasporto"/>
+												</button>
+                                        	</hlayout>
+                                    	</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['In_data'])"/>
+										</cell>
+										<cell>
+											<hlayout valign="middle" hflex="1">
+												<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataProtocolloTrasporto)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="dataProtocolloTrasporto"/>
+												</button>
+											</hlayout>
+										</cell>
+                                	</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</cell>
+				</row>
+				<row visible="@load(vm.trasporto.trasporto eq 'SI')">
+					<cell colspan="10">
+						<groupbox closable="false" open="true">
+							<caption label="@load(vm.etichette['Estremi_Onoranze_Funebri'])"/>
+							<grid sclass="form">
+								<rows>
+									<row>
+										<cell align="right" width="150px">
+											<label value="@load(vm.etichette['Data'])" />
+										</cell>
+										<cell colspan="2">
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1" spacing="9px">
+													<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataOnoranze)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<label value="@load(vm.etichette['Ore'])"/>
+													<textbox value="@bind(vm.trasporto.oraOnoranze)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<label value="@load(vm.etichette['Minuti'])"/>
+													<textbox value="@bind(vm.trasporto.minutoOnoranze)" maxlength="2" width="28px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="dataOnoranze,oraOnoranze,minutoOnoranze"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+										<cell width="40px"/>
+										<cell colspan="2"/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Ditta'])"/>
+										</cell>
+										<cell colspan="5">
+											<hlayout valign="middle" hflex="1">
+												<bandboxDittaOnoranze hflex="1" value="@bind(vm.trasporto.dittaOnoranze)"
+																	  onSelect="@command('onSelectDittaOnoranze')"
+																	  disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaDittaOnoranze')"
+												/>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Cognome_Incaricato'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<textbox value="@bind(vm.trasporto.cognomeIncaricatoTrasporto)" hflex="1" style="@load(vm.minuscole.cognomeIncaricatoTrasporto?'text-transform:none':'text-transform:uppercase')"
+														 disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														 onChange="@command('onAggiornaCaseTrasporto')">
+													<custom-attributes proprieta="cognomeIncaricatoTrasporto"/>
+												</textbox>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="cognomeIncaricatoTrasporto"/>
+												</button>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<hlayout valign="middle" >
+												<label value="@load(vm.etichette['Minuscole'])"/>
+												<checkbox checked="@bind(vm.minuscole.cognomeIncaricatoTrasporto)" onCheck="@command('onAggiornaCaseTrasporto')" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))">
+													<custom-attributes proprieta="cognomeIncaricatoTrasporto"/>
+												</checkbox>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Nome_Incaricato'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1">
+													<textbox value="@bind(vm.trasporto.nomeIncaricatoTrasporto)" hflex="1" style="@load(vm.minuscole.nomeIncaricatoTrasporto?'text-transform:none':'text-transform:uppercase')"
+															 disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															 onChange="@command('onAggiornaCaseTrasporto')">
+														<custom-attributes proprieta="nomeIncaricatoTrasporto"/>
+													</textbox>
+													<button image="/images/icon/action/16x16/search.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggettiTrasporto', tipoSoggetto='INCARICATO')"
+													/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="nomeIncaricatoTrasporto"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<hlayout valign="middle" >
+												<label value="@load(vm.etichette['Minuscole'])"/>
+												<checkbox checked="@bind(vm.minuscole.nomeIncaricatoTrasporto)" onCheck="@command('onAggiornaCaseTrasporto')" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))">
+													<custom-attributes proprieta="nomeIncaricatoTrasporto"/>
+												</checkbox>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Sesso'])"/>
+										</cell>
+										<cell>
+											<combobox model="@load(vm.listaSesso)" readonly="true" hflex="1"
+													  disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+													  selectedItem="@bind(vm.trasporto.sessoIncaricatoTrasporto) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+												<template name="model">
+													<comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+												</template>
+											</combobox>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['Data_Nascita'])"/>
+										</cell>
+										<cell colspan="2">
+											<hlayout valign="middle" hflex="1">
+												<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataNascitaIncaricatoTrasporto)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="dataNascitaIncaricatoTrasporto"/>
+												</button>
+											</hlayout>
+										</cell>
+										<cell/>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_Nascita'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															   value="@load(vm.trasporto.descrizioneComuneNascitaIncaricatoTrasporto)"
+															   dataRiferimento="@load(vm.trasporto.dataNascitaIncaricatoTrasporto)"
+															   onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CN_INC')"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CN_INC')"/>
+											</hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaNascitaIncaricatoTrasporto)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Comune_Residenza'])"/>
+										</cell>
+										<cell colspan="4">
+											<hlayout valign="middle" hflex="1">
+												<bandboxComuni hflex="1" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															   value="@load(vm.trasporto.descrizioneComuneResidenzaIncaricatoTrasporto)"
+															   onSelect="@command('onSelectComuneTrasporto', campoRiferimento='CR_INC')"/>
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComuneTrasporto', campoRiferimento='CR_INC')"/>
+											</hlayout>
+										</cell>
+										<cell>
+											<textbox value="@load(vm.trasporto.siglaProvinciaResidenzaIncaricatoTrasporto)" readonly="true" hflex="1"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Registro_Aut_Seppellimento'])"/>
+										</cell>
+										<cell colspan="5">
+											<combobox model="@load(vm.listaRegistriSeppellimento)" readonly="true" hflex="1"
+													  onChange="@command('onSelectRegistroSeppellimento')"
+													  disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+													  selectedItem="@bind(vm.trasporto.registroSeppellimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+												<template name="model">
+													<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)"/>
+												</template>
+											</combobox>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Numero_Protocollo_Anno'])"/>
+										</cell>
+										<cell colspan="3">
+											<hlayout valign="middle">
+												<intbox value="@bind(vm.trasporto.numeroProtocolloSeppellimento)" cols="5" maxlength="5"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<label value="/"/>
+												<intbox value="@bind(vm.trasporto.annoProtocolloSeppellimento)"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+												<button image="/images/icon/action/16x16/calculator.png"
+														tooltiptext="@load(vm.etichette['Numera'])"
+														disabled="@load((empty vm.trasporto.trasporto) or (vm.trasporto.trasporto eq 'NO') or (not empty vm.trasporto.numeroProtocolloSeppellimento) )"
+														onClick="@command('onNumeraProtocolloSeppellimento')" />
+												<button image="/images/icon/action/16x16/cancel.png"
+														disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+														tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+													<custom-attributes proprieta="numeroProtocolloSeppellimento,annoProtocolloSeppellimento"/>
+												</button>
+											</hlayout>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['In_data'])"/>
+										</cell>
+										<cell>
+											<hlayout valign="middle" hflex="1">
+												<hlayout valign="middle" hflex="1">
+													<datebox format="dd/MM/yyyy" value="@bind(vm.trasporto.dataProtocolloSeppellimento)" width="100px" disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"/>
+													<button image="/images/icon/action/16x16/cancel.png"
+															disabled="@load(not (vm.trasporto.trasporto eq 'SI'))"
+															tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoTrasporto')">
+														<custom-attributes proprieta="dataProtocolloSeppellimento"/>
+													</button>
+												</hlayout>
+											</hlayout>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+						</groupbox>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</zk>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<row visible="@load( (vm.datiProvenienza.tipoAccordo.isPressoUfficiale() and vm.dettaglio.isUfficialeConferma() ) or
+	                     (vm.datiProvenienza.tipoAccordo.isPressoUfficiale() and vm.dettaglio.isUfficialeAltro() and vm.datiProvenienza.isMancataConfermaAccordo(vm.dettaglio.tipoAttoEnum) ) or
+                         (vm.dettaglio.tipoAttoEnum.isMatrimonio() and vm.dettaglio.isRiconciliazione() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaRCN() ) or
+                         (vm.dettaglio.isUfficialeAltro() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaUAL() ) or
+                         (vm.dettaglio.isUfficialeAccordo() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaUAC() ) )">
+		<cell align="right">
+			<label value="@load( ( (vm.dettaglio.tipoAttoEnum.isMatrimonio() and vm.dettaglio.isRiconciliazione() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaRCN() ) or
+			                       (vm.dettaglio.isUfficialeAccordo() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaUAC()) or
+			                       (vm.dettaglio.isUfficialeAltro() and vm.datiProvenienza.isSepDaAccordoSeparazioneODaNegoziazioneAssistitaUAL()) )?
+			                       vm.etichette['Estremi_Accordo_Separazione']:vm.etichette['Estremi_Accordo'])"/>
+		</cell>
+		<cell colspan="11">
+			<grid>
+				<rows>
+					<row>
+						<cell align="right" width="85px">
+							<hlayout>
+								<hbox visible="@load(vm.anscOn)">
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Numero_Atto'])"/>
+							</hlayout>
+						</cell>
+						<cell width="80px">
+							<intbox value="@bind(vm.datiProvenienza.attoAccordo)" width="75px"/>
+						</cell>
+						<cell align="right" width="40px">
+							<label value="@load(vm.etichette['Parte'])"/>
+						</cell>
+						<cell width="50px">
+							<intbox value="@bind(vm.datiProvenienza.parteAccordo)" width="45px" maxlength="1"/>
+						</cell>
+						<zk if="${vm.dettaglio.hasSerie()}">
+							<cell align="right" width="40px">
+								<label value="@load(vm.etichette['Serie'])"/>
+							</cell>
+                            <cell width="50px">
+								<textbox value="@bind(vm.datiProvenienza.serieAccordo)" width="45px" maxlength="1" style="text-transform:uppercase"/>
+							</cell>
+						</zk>
+                        <cell align="right" width="40px">
+							<label value="@load(vm.etichette['Ufficio'])"/>
+						</cell>
+                        <cell width="50px">
+							<intbox value="@bind(vm.datiProvenienza.ufficioAccordo)" width="45px"/>
+						</cell>
+                        <cell align="right" width="45px">
+							<hlayout>
+								<hbox visible="@load(vm.anscOn)">
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Anno'])"/>
+							</hlayout>
+						</cell>
+                        <cell width="50px">
+							<intbox value="@bind(vm.datiProvenienza.annoAccordo)" maxlength="4" width="45px"/>
+						</cell>
+                        <cell align="right" width="75px">
+							<label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+						</cell>
+						<cell>
+							<textbox value="@bind(vm.datiProvenienza.idAttoAnscAccordo)" hflex="1"/>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+							<hlayout>
+								<hbox visible="@load(vm.anscOn)">
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Comune_Atto'])"/>
+							</hlayout>
+						</cell>
+						<cell colspan="@load(vm.dettaglio.hasSerie()?8:6)">
+							<hlayout valign="middle" hflex="1">
+								<bandboxComuni hflex="1"
+											   value="@load(vm.datiProvenienza.comuneAccordo.descrizione)"
+											   dataRiferimento="@load(vm.datiProvenienza.dataAccordo)"
+											   onSelect="@command('onSelectComune', campoRiferimento='CA_ACC')"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_ACC')"
+								/>
+							</hlayout>
+						</cell>
+						<cell>
+							<textbox value="@load(vm.datiProvenienza.comuneAccordo.siglaProvincia)" hflex="1" readonly="true"/>
+						</cell>
+						<cell align="right">
+							<hlayout>
+								<hbox visible="@load(vm.anscOn)">
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Data_Atto'])"/>
+							</hlayout>
+						</cell>
+						<cell>
+							<datebox value="@bind(vm.datiProvenienza.dataAccordo)" format="dd/MM/yyyy" width="95px"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</cell>
+	</row>
+
+</zk>

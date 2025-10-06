@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<documentRoot>
+  <descrizione>Test</descrizione>
+  <connections>
+    <connectionJNDI>jdbc/de4gsdzk</connectionJNDI>
+  </connections>
+  <testStaticData>
+    <documentRoot>
+      <info>
+        <TESTO>XXXX</TESTO>
+      </info>
+    </documentRoot>
+  </testStaticData>
+  <definitions>
+    <!-- DEFINIZIONE PARAMETRI DI INPUT -->
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>idAnnotazione</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>id di riferimento</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>testo</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>testo annotazione</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>attiLi</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>pre data</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>dataRegistrazione</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>data di registrazione</descrizione>
+      <path/>
+    </metaDato>
+    <!-- DEFINIZIONE CAMPI DELLA QUERY -->
+    <metaDato>
+      <nomeSimbolico>TESTO_ANNOTAZIONE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_LI</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_REGISTRAZIONE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+  </definitions>
+  <queryes>
+    <query id='info'
+           help_query_alias="i"
+           help_field_aliases="TESTO"><![CDATA[
+      SELECT #testo AS TESTO_ANNOTAZIONE, #attiLi AS COMUNE_LI, #dataRegistrazione AS DATA_REGISTRAZIONE
+        FROM dual
+    ]]></query>
+  </queryes>
+  <staticData />
+</documentRoot>

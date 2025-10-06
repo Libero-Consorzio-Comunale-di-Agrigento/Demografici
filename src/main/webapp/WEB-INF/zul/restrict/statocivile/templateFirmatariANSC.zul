@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" closable="false">
+        <caption label="FIRMATARI"/>
+        <grid model="@load(vm.listaFirmatari)" emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+            <columns>
+                <column label="@load(vm.etichette['Ruolo'])"        width="150px"/>
+                <column label="@load(vm.etichette['Cognome'])"/>
+                <column label="@load(vm.etichette['Nome'])"/>
+                <column label="@load(vm.etichette['Tipo_firma'])"   width="140px"/>
+                <column label="@load(vm.etichette['Email'])"/>
+            </columns>
+            <template name="model" var="fir">
+                <row>
+                    <cell>
+                        <label value="@load(fir.descrizioneRuolo)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(fir.cognome)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(fir.nome)"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.getEtichettaEnum(fir.tipoFirma))"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(fir.indirizzoMail)"/>
+                    </cell>
+                </row>
+            </template>
+        </grid>
+    </groupbox>
+
+</zk>

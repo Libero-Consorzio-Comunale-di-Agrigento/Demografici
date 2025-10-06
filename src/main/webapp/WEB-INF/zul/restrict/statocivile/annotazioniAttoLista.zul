@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateComunicazioniAnnotazioniANSC" macroURI="/restrict/statocivile/templateComunicazioniAnnotazioniANSC.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.AnnotazioniAttoListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarAnnotazioni/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+		</hlayout>
+
+		<vlayout vflex="1">
+			<groupbox mold="3d" closable="false">
+				<caption label="@load(vm.etichette['SEZIONE_DATI_ATTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell>
+								<templateEstremiAttoLabel/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<zk if="${vm.atto.natura.name() eq 'T'}">
+				<groupbox mold="3d" closable="false" visible="@load(vm.atto.natura.name() eq 'T')">
+					<caption label="@load(vm.etichette['SEZIONE_ATTO_ORIGINALE'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell>
+									<templateEstremiAttoOriginaleLabel/>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<totalSizeBlock/>
+
+			<borderlayout vflex="1">
+				<center vflex="1">
+					<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')" vflex="1"
+							 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+						<listhead>
+							<listheader label="@load(vm.etichette['Formula'])"	/>
+							<listheader label="@load(vm.etichette['Testo'])"	/>
+							<listheader label="@load(vm.etichette['Data_Registrazione'])"	width="115px"/>
+							<zk if="${vm.showDeleteOption}">
+								<listheader label="" 										width="52px"/>
+							</zk>
+						</listhead>
+						<template name="model" var="item">
+							<listitem>
+								<listcell label="@load(item.formulaDfa.descrizioneEstesa)"/>
+								<listcell label="@load(item.testo)"/>
+								<listcell sclass="testo-al-centro">
+									<label value="@load(empty item.dataRegistrazione? null:(c:formatDate(item.dataRegistrazione, 'dd/MM/yyyy')))"/>
+								</listcell>
+								<zk if="${vm.showDeleteOption}">
+									<listcell>
+										<button image="/images/icon/action/18x18/delete.png"
+												tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+												onClick="@command('onEliminaAnnotazione', annotazione=item)"/>
+									</listcell>
+								</zk>
+							</listitem>
+						</template>
+					</listbox>
+				</center>
+				<east size="50%" collapsible="true" open="@load(not empty vm.dettaglio)">
+					<vlayout vflex="1" hflex="1" spacing="0px">
+						<groupbox mold="3d" closable="false" style="background: #EDEFF5">
+							<caption label="@load(vm.etichette['Annotazione'])" width="260px">
+								<hlayout sclass="testo-a-dx">
+									<button image="/images/icon/action/18x18/save.png"
+											tooltiptext="@load(vm.etichette['salva_tooltip'])"
+											onClick="@command('onSalvaAnnotazione')" />
+									<button image="/images/icon/action/18x18/print.png"
+											tooltiptext="@load(vm.etichette['stampa_etichetta_tooltip'])"
+											onClick="@command('onStampaEtichetta')" />
+									<button image="/images/icon/action/18x18/edit.png"
+										    tooltiptext="@load(vm.etichette['blocca_testo_tooltip'])"
+										    onClick="@command('onBloccaSbloccaTesto')"/>
+									<button image="/images/de4gsdzk/18x18/istat.png"
+											disabled="@load(not vm.dettaglio.hasModelloProvvSDSU )"
+											tooltiptext="@load(vm.etichette['modello_istat_tooltip'])"
+											onClick="@command('onPreviewModelloIstat')"/>
+								</hlayout>
+							</caption>
+							<vlayout>
+								<label value="@load(vm.dettaglio.formulaDfa.descrizioneEstesa)" multiline="true"/>
+								<zk if="${vm.anscOn}">
+									<hlayout>
+										<label value="@load(c:cat('Id ANSC: ', vm.dettaglio.idAttoAnsc))" visible="@load(not empty vm.dettaglio.idAttoAnsc)"/>
+										<space/>
+										<space/>
+										<label value="@load(c:cat3(vm.etichette['Numero_comunale'], ': ',vm.dettaglio.numeroUnico))" visible="@load(not empty vm.dettaglio.numeroUnico)"/>
+										<space/>
+										<space/>
+										<label value="@load(c:cat3(vm.etichette['Caso_Uso_Ansc'], ': ',vm.dettaglio.idAnscUseCase))" visible="@load(not empty vm.dettaglio.idAnscUseCase)"/>
+									</hlayout>
+								</zk>
+							</vlayout>
+						</groupbox>
+						<vlayout vflex="1" hflex="1" sclass="scroll">
+							<grid sclass="form">
+								<rows>
+									<row visible="@load(vm.anscOn and vm.atto.isAttoAnsc() and empty vm.dettaglio.idAttoAnsc)">
+										<cell colspan="2"/>
+										<cell align="right" width="110px">
+											<label value="@load(vm.etichette['Forza_Id_Atto_Ansc'])"/>
+										</cell>
+										<cell>
+											<hlayout height="25px">
+												<radiogroup model="@load(vm.listaSiNo)"
+															selectedItem="@bind(vm.selectedForzaIdAttoAnsc)"
+															onCheck="@command('onForzaIdAttoAnsc')">
+													<template name="model">
+														<radio label="@load(vm.getEtichettaEnum(each))"
+															   value="@load(each)"
+															   style="padding-left:10px"/>
+													</template>
+												</radiogroup>
+											</hlayout>
+										</cell>
+									</row>
+									<row>
+										<cell align="right" width="110px">
+											<label value="@load(vm.etichette['Istat'])"/>
+										</cell>
+										<cell width="200px">
+											<checkbox checked="@bind(vm.dettaglio.flagIstat)"
+													  disabled="@load(not ( vm.atto.getTipoAttoEnum().isMatUci() and (not vm.isAttoDivorzioScioglimento(vm.atto)) ) )"/>
+										</cell>
+										<cell align="right" width="100px">
+										    <zk if="${vm.anscOn}">
+											    <label value="@load(vm.etichette['Secretato'])" visible="@load(vm.anscOn)"/>
+											</zk>
+										</cell>
+										<cell>
+										    <zk if="${vm.anscOn}">
+											    <checkbox checked="@bind(vm.dettaglio.flagSecretato)" disabled="@load(not vm.casiUsoEnabled)" visible="@load(vm.anscOn)"/>
+											</zk>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<hlayout>
+												<hbox visible="@load(vm.dettaglio.flagIstat)">
+													<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+												</hbox>
+												<label value="@load(vm.etichette['Genere'])"/>
+											</hlayout>
+										</cell>
+										<cell colspan="3">
+											<combobox model="@load(vm.listaGenereAnnotazione)" readonly="true" width="92%"
+													  onChange="@command('onSelectGenereAnnotazione')"
+													  visible="@load(vm.casiUsoEnabled)"
+													  disabled="@load(not vm.casiUsoEnabled)"
+													  selectedItem="@bind(vm.dettaglio.genere) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+												<template name="model">
+													<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+												</template>
+											</combobox>
+											<!-- uso label al posto della combo per consentire la lettura del testo per intero, la combo taglia -->
+											<label value="@load(vm.getEtichettaEnum(vm.dettaglio.genere))" multiline="true" visible="@load(not vm.casiUsoEnabled)"/>
+										</cell>
+									</row>
+									<row visible="@load(vm.dettaglio.isProvenienzaEnte())">
+										<cell colspan="4">
+											<groupbox closable="false">
+												<caption label="@load(vm.etichette['Provenienza'])"/>
+												<grid>
+													<rows>
+														<row>
+															<cell align="right" width="115px">
+																<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Estremi_documento'])"/>
+															</cell>
+															<cell>
+																<hlayout>
+																	<textbox value="@bind(vm.dettaglio.estremiDocumentoProvenienza)"
+																			 disabled="@load(not vm.casiUsoEnabled)" hflex="1"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			disabled="@load(not vm.casiUsoEnabled)"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoAnnotazione')">
+																		<custom-attributes proprieta="estremiDocumentoProvenienza"/>
+																	</button>
+																</hlayout>
+															</cell>
+															<cell align="right" width="80px">
+																<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['In_data'])"/>
+															</cell>
+															<cell width="110px">
+																<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataProvenienza)"
+																		 disabled="@load(not vm.casiUsoEnabled)" width="100px"/>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Ente'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout valign="middle" hflex="1">
+																	<bandboxComuni hflex="1"
+																				   value="@load(vm.dettaglio.comuneProvenienza.descrizione)"
+																				   disabled="@load(not vm.casiUsoEnabled)"
+																				   dataRiferimento="@load(vm.dettaglio.dataProvenienza)"
+																				   onSelect="@command('onSelectComune', campoRiferimento='CP_ANN')"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])"
+																			disabled="@load(not vm.casiUsoEnabled)" onClick="@command('onCancellaComune', campoRiferimento='CP_ANN')"
+																	/>
+																</hlayout>
+															</cell>
+															<cell>
+																<textbox value="@load(vm.dettaglio.comuneProvenienza.siglaProvincia)" hflex="1" readonly="true"/>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</groupbox>
+										</cell>
+									</row>
+									<!--<row>
+										<cell align="right" width="110px">
+											<label value="@load(vm.etichette['Nuovo_Ordinamento'])"/>
+										</cell>
+										<cell width="200px">
+											<checkbox checked="@load(vm.dettaglio.formulaDfa.nuovoOrdinamento)" disabled="true"/>
+										</cell>
+										<cell width="100px"/>
+										<cell/>
+									</row>-->
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Testo'])"/>
+										</cell>
+										<cell colspan="3">
+											<textbox value="@bind(vm.dettaglio.testo)" hflex="1" rows="8"
+													 disabled="@load(vm.dettaglio.bloccato)"/>
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Data_Registrazione'])"/>
+										</cell>
+										<cell>
+											<datebox value="@bind(vm.dettaglio.dataRegistrazione)" width="100px" format="dd/MM/yyyy"/>
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['Sequenza'])"/>
+										</cell>
+										<cell>
+											<intbox value="@bind(vm.dettaglio.sequenza)" />
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Stampa_Su_Estratto'])"/>
+										</cell>
+										<cell>
+											<checkbox checked="@bind(vm.dettaglio.stampaSuEstratto)" />
+										</cell>
+										<cell align="right">
+											<label value="@load(vm.etichette['Stampa_Su_Atto'])"/>
+										</cell>
+										<cell>
+											<checkbox checked="@bind(vm.dettaglio.stampaSuAtto)" />
+										</cell>
+									</row>
+									<row>
+										<cell align="right">
+											<label value="@load(vm.etichette['Stato'])"/>
+										</cell>
+										<cell colspan="3">
+											<hlayout height="20px">
+												<radiogroup model="@load(vm.listaStatoAnnotazione)"
+															selectedItem="@bind(vm.dettaglio.stato) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+													<template name="model">
+														<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+													</template>
+												</radiogroup>
+											</hlayout>
+										</cell>
+									</row>
+									<zk if="${vm.anscOn and vm.atto.isAttoAnsc()}">
+										<row visible="@load(not empty vm.atto.idAttoAnsc)">
+											<cell colspan="4">
+												<tabbox selectedIndex="@bind(vm.selectedTab.index)">
+													<tabs>
+														<tab label="@load(vm.etichette['Servizi_allegati'])"
+															 visible="@load(not empty vm.getProperLista('Allegati'))"/>
+														<tab label="@load(vm.etichette['Servizi_obbligatori'])"/>
+														<tab label="@load(vm.etichette['Servizi_aggiuntivi'])"/>
+													</tabs>
+													<tabpanels>
+														<tabpanel>
+															<templateComunicazioniAnnotazioniANSC tab="Allegati"/>
+														</tabpanel>
+														<tabpanel>
+															<templateComunicazioniAnnotazioniANSC tab="Obbligatori"/>
+														</tabpanel>
+														<tabpanel>
+															<templateComunicazioniAnnotazioniANSC tab="Aggiuntivi"/>
+														</tabpanel>
+													</tabpanels>
+												</tabbox>
+											</cell>
+										</row>
+									</zk>
+									<row>
+										<cell colspan="4">
+											<templateIdDomain/>
+										</cell>
+									</row>
+								</rows>
+							</grid>
+							<space/>
+						</vlayout>
+					</vlayout>
+				</east>
+			</borderlayout>
+
+		</vlayout>
+	</window>
+
+</zk>

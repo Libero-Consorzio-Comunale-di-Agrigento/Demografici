@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="testo-a-dx" hflex="1">
+		<hlayout spacing="2px">
+
+			<label value="@load(vm.tipoAttoLabel)" sclass="grassetto"/>
+
+			<hlayout valign="middle" spacing="5px">
+				<label value=" : "/>
+				<label value="@load(vm.atto.atto)" sclass="grassetto" visible="@load(vm.atto.atto gt 0)" />
+				<label value="@load(vm.etichette['Provvisorio'])" sclass="grassetto" visible="@load(vm.atto.atto le 0)"/>
+
+				<zk if="${vm.atto.hasParte()}">
+					<label value=" - " visible="@load(not empty vm.atto.parte)"/>
+					<label value="@load(vm.etichette['Parte'])" sclass="grassetto" visible="@load(not empty vm.atto.parte)"/>
+					<label value="@load(vm.atto.parte)" sclass="grassetto" visible="@load(not empty vm.atto.parte)"/>
+				</zk>
+
+				<zk if="${vm.atto.hasSerie()}">
+					<label value=" - " visible="@load(not empty vm.atto.serie)"/>
+					<label value="@load(vm.etichette['Serie'])" sclass="grassetto" visible="@load(not empty vm.atto.serie)"/>
+					<label value="@load(vm.atto.serie)" sclass="grassetto" visible="@load(not empty vm.atto.serie)"/>
+				</zk>
+
+				<label value=" - "/>
+				<label value="@load(vm.etichette['Anno'])" sclass="grassetto"/>
+				<label value="@load(vm.atto.anno)" sclass="grassetto"/>
+
+				<label value=" - "/>
+				<label value="@load(vm.etichette['Ufficio'])" sclass="grassetto"/>
+				<label value="@load(vm.atto.ufficio)" sclass="grassetto"/>
+
+				<zk if="${vm.atto.isAttoAnsc()}">
+					<label value="@load(c:cat3('(', vm.atto.idAttoAnsc , ')'))" visible="@load(not empty vm.atto.idAttoAnsc)" sclass="grassetto"/>
+				</zk>
+			</hlayout>
+
+			<space/>
+
+		</hlayout>
+	</hlayout>
+
+</zk>

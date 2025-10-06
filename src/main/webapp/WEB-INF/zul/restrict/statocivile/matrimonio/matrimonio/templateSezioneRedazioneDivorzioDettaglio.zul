@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDicCompFirmDivScioDettaglio" macroURI="/restrict/statocivile/templateRowDicCompFirmDivScioDettaglio.zul" inline="true"?>
+<?component name="templateRowAutoritaGiudiziariaDettaglio" macroURI="/restrict/statocivile/templateRowAutoritaGiudiziariaDettaglio.zul" inline="true"?>
+<?component name="templateRowDatiProvenienza" macroURI="/restrict/statocivile/templateRowDatiProvenienza.zul" inline="true"?>
+<?component name="templateRowDichiaranteDettaglio" macroURI="/restrict/statocivile/templateRowDichiaranteDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@load(not empty vm.dettaglio.natura)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['SEZIONE_REDAZIONE'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <zk if="${vm.anscOn}">
+            <groupbox closable="false"
+                      visible="@load(vm.dettaglio.isDichDivScioVisibile() or vm.dettaglio.isCompDivScioVisibile() or vm.dettaglio.isFirmDivScioVisibile() )">
+                <templateRowDicCompFirmDivScioDettaglio/>
+            </groupbox>
+        </zk>
+
+        <zk choose="">
+
+            <!-- DIVORZIO ESTERO -->
+            <zk when="${vm.anscOn and vm.dettaglio.isDivorzioEstero()}">
+
+                <groupbox closable="false" open="true">
+                    <caption label="@load(vm.etichette['Altri_Dati'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell align="right" width="165px">
+                                    <label value="@load(vm.etichette['Richiesta_da_privato_cittadino'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@bind(vm.datiProvenienza.flagRichiestaDaPrivatoDichiarante)"
+                                              onCheck="@command('onCheckFlagRichiestaDaPrivatoDichiarante')"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+
+                <groupbox closable="false" open="true">
+                    <caption label="@load(vm.etichette['Sentenza'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <row>
+                                <cell align="right" width="165px">
+                                    <customLabel mandatory="true"
+                                                 value="@load(vm.etichette['Data_Pubblicazione'])"/>
+                                </cell>
+                                <cell valign="middle">
+                                    <hlayout valign="middle" hflex="1">
+                                        <datebox format="dd/MM/yyyy" mold="rounded" width="110px"
+                                                 value="@bind(vm.datiProvenienza.dataPubblicazioneSentenza)"/>
+                                        <button image="/images/icon/action/16x16/cancel.png"
+                                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                                onClick="@command('onCancellaCampoProvenienza')">
+                                            <custom-attributes proprieta="dataPubblicazioneSentenza"/>
+                                        </button>
+                                    </hlayout>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
+                                    <label value="@load(vm.etichette['Data_Decorrenza'])"/>
+                                </cell>
+                                <cell valign="middle">
+                                    <hlayout valign="middle" hflex="1">
+                                        <datebox format="dd/MM/yyyy" mold="rounded" width="110px"
+                                                 value="@bind(vm.datiProvenienza.dataDecorrenzaSentenza)"/>
+                                        <button image="/images/icon/action/16x16/cancel.png"
+                                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                                onClick="@command('onCancellaCampoProvenienza')">
+                                            <custom-attributes proprieta="dataDecorrenzaSentenza"/>
+                                        </button>
+                                    </hlayout>
+                                </cell>
+                            </row>
+
+                        </rows>
+                    </grid>
+                </groupbox>
+
+                <div visible="@load(vm.datiProvenienza.flagRichiestaDaPrivatoDichiarante)">
+                    <templateRowTrascrizioneEsteroPrivatoDettaglio/>
+                </div>
+
+                <div visible="@load(not vm.datiProvenienza.flagRichiestaDaPrivatoDichiarante)">
+                    <templateRowTrascrizioneEsteroAutoritaDettaglio mandatory="false"/>
+                </div>
+            </zk>
+
+            <zk>
+                <groupbox closable="false">
+                    <caption label="@load(vm.etichette['Provenienza'])"/>
+                    <grid sclass="form">
+                        <rows>
+                            <templateRowDatiProvenienza/>
+                        </rows>
+                    </grid>
+                </groupbox>
+            </zk>
+
+        </zk>
+
+        <!-- SEZIONE AUTORITA' GIUDIZIARIA -->
+        <zk if="${vm.anscOn and (vm.dettaglio.isAvvocati() or vm.dettaglio.isAvvocatiAltro())}">
+            <templateRowAutoritaGiudiziariaDettaglio/>
+        </zk>
+
+        <!-- SEZIONE REDAZIONE -->
+        <groupbox closable="false">
+            <caption label="@load(vm.etichette['Dati_Redazione'])"/>
+            <grid sclass="form">
+                <rows>
+                    <templateSezioneRowRedazioneDettaglio/>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <templateSezioneAccessoComposizioneDettaglio/>
+
+    </groupbox>
+
+</zk>

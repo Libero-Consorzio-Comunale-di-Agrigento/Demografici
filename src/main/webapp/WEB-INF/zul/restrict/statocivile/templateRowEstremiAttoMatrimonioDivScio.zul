@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <row>
+        <cell align="right" width="105px">
+            <hlayout>
+                <hbox visible="@load(vm.anscOn and vm.dettaglio.isEstremiAttoMatUciMandatory())">
+                    <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                </hbox>
+                <label value="@load(vm.etichette['Numero_Atto'])"/>
+            </hlayout>
+        </cell>
+        <cell width="95px">
+            <intbox value="@bind(vm.sposi.attoAttoMatrimonio)" width="75px"/>
+        </cell>
+        <cell align="right" width="60px">
+            <label value="@load(vm.etichette['Parte'])"/>
+        </cell>
+        <cell width="50px">
+            <textbox value="@bind(vm.sposi.parteAttoMatrimonioString)" width="45px"/>
+        </cell>
+        <zk if="${vm.dettaglio.hasSerie() or vm.dettaglio.isUnioneCivileConiugi()}">
+            <cell align="right" width="40px">
+                <label value="@load(vm.etichette['Serie'])"/>
+            </cell>
+            <cell width="50px">
+                <textbox value="@bind(vm.sposi.serieAttoMatrimonio)" width="45px" style="text-transform:uppercase"/>
+            </cell>
+        </zk>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Ufficio'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.sposi.ufficioAttoMatrimonio)" width="45px" maxlength="2"/>
+        </cell>
+        <cell align="right" width="45px">
+            <hlayout>
+                <hbox visible="@load(vm.anscOn and vm.dettaglio.isEstremiAttoMatUciMandatory())">
+                    <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                </hbox>
+                <label value="@load(vm.etichette['Anno'])"/>
+            </hlayout>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.sposi.annoAttoMatrimonio)" onChange="@command('onAggiornaDataRiferimentoMatrimonio')"
+                    maxlength="4" width="45px"/>
+        </cell>
+        <cell align="right" width="85px">
+            <label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+        </cell>
+        <cell>
+            <textbox value="@bind(vm.sposi.idAttoAnscMatrimonio)" hflex="1"/>
+        </cell>
+    </row>
+    <row>
+        <cell align="right">
+            <hlayout>
+                <hbox visible="@load(vm.anscOn and vm.dettaglio.isEstremiAttoMatUciMandatory())">
+                    <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                </hbox>
+                <label value="@load(vm.etichette['Comune_Atto'])"/>
+            </hlayout>
+        </cell>
+        <cell colspan="@load(vm.dettaglio.hasSerie() or vm.dettaglio.isUnioneCivileConiugi()?8:6)">
+            <hlayout valign="middle" hflex="1">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.sposi.descrizioneComuneAttoMatrimonio)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoMatrimonio)"
+                               onSelect="@command('onSelectComune', campoRiferimento='CA_MATR')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_MATR')"
+                />
+            </hlayout>
+        </cell>
+        <cell>
+            <textbox value="@load(vm.sposi.siglaProvinciaAttoMatrimonio)" hflex="1" readonly="true"/>
+        </cell>
+        <cell align="right" width="85px">
+            <customLabel mandatory="@load(vm.anscOn and vm.dettaglio.isEstremiAttoMatUciMandatory())"
+                         value="@load(vm.etichette['Data_Atto'])"/>
+        </cell>
+        <cell width="100px">
+            <datebox format="dd/MM/yyyy" value="@bind(vm.sposi.dataAttoMatrimonio)" width="95px"/>
+        </cell>
+    </row>
+</zk>

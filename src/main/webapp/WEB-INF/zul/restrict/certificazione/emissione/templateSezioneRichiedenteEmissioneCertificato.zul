@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- RICHIEDENTE -->
+    <groupbox mold="3d" hflex="1" id="richiedente"
+              visible="@load(vm.tipoRichiedente.isAltroRichiedente())">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['SEZIONE_RICHIEDENTE'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell>
+                        <groupbox closable="false">
+                            <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell align="right" width="180px">
+                                            <customLabel mandatory="true"
+                                                         value="@load(vm.etichette['Codice_Fiscale'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox
+                                                        value="@bind(vm.richiedenteState.richiedente.codiceFiscale)"
+                                                               hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="codiceFiscale"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell colspan="3"/>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel mandatory="true" value="@load(vm.etichette['Cognome'])"/>
+                                        </cell>
+                                        <cell colspan="6">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox value="@bind(vm.richiedenteState.richiedente.cognome)"
+                                                               hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="cognome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel mandatory="true" value="@load(vm.etichette['Nome'])"/>
+                                        </cell>
+                                        <cell colspan="6">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox value="@bind(vm.richiedenteState.richiedente.nome)"
+                                                               hflex="1"/>
+                                                <button image="/images/icon/action/16x16/search.png"
+                                                        tooltiptext="@load(vm.etichette['Seleziona'])"
+                                                        onClick="@command('onCaricaSoggetti', tipoSoggetto='RICHIEDENTE_CERTIFICATO')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="nome"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel mandatory="@load(vm.richiedenteState.datiAnagraficiMandatory)"
+                                                         value="@load(vm.etichette['Sesso'])"/>
+                                        </cell>
+                                        <cell>
+                                            <combobox model="@load(vm.listaSesso)" readonly="true" width="115px"
+                                                      selectedItem="@bind(vm.richiedenteState.richiedente.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))"
+                                                               value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                        <cell align="right">
+                                            <customLabel mandatory="@load(vm.richiedenteState.datiAnagraficiMandatory)"
+                                                         value="@load(vm.etichette['Data_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="4">
+                                            <hlayout valign="middle" hflex="1" spacing="9px">
+                                                <datebox format="dd/MM/yyyy"
+                                                         value="@bind(vm.richiedenteState.richiedente.dataNascita)"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="dataNascita"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel mandatory="@load(vm.richiedenteState.datiAnagraficiMandatory)"
+                                                         value="@load(vm.etichette['Comune_Nascita'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1"
+                                                               value="@load(vm.richiedenteState.richiedente.comuneNascita.descrizione)"
+                                                               dataRiferimento="@load(vm.richiedenteState.richiedente.dataNascita)"
+                                                               onSelect="@command('onSelectComune', campoRiferimento='CN_RIC')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaComune', campoRiferimento='CN_RIC')"
+                                                />
+                                            </hlayout>
+                                        </cell>
+                                        <cell>
+                                            <customTextbox
+                                                    value="@load(vm.richiedenteState.richiedente.comuneNascita.siglaProvincia)"
+                                                    hflex="1" readonly="true"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Nazionalita'])"/>
+                                        </cell>
+                                        <cell>
+                                            <combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+                                                      selectedItem="@bind(vm.richiedenteState.richiedente.nazionalita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(empty each?'- -':each.descrizione)"
+                                                               tooltiptext="@load(each.descrizione)"
+                                                               value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel
+                                                    mandatory="@load(vm.richiedenteState.documentoMandatory)"
+                                                    value="@load(vm.etichette['Documento_riconoscimento'])"/>
+                                        </cell>
+                                        <cell colspan="2">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxTipoDocumentoAnagrafe hflex="1"
+                                                                              tipoDocumentoAnagrafeFiltro="@load(vm.tipoDocumentoAnagrafeFiltro)"
+                                                                              value="@load(vm.richiedenteState.richiedente.tipoDocumento.descrizioneEstesa)"
+                                                                              onSelect="@command('onSelectTipoDocumento')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="tipoDocumento"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell align="right">
+                                            <customLabel
+                                                    mandatory="@load(vm.richiedenteState.documentoMandatory)"
+                                                    value="@load(vm.etichette['Numero'])"/>
+                                        </cell>
+                                        <cell>
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox
+                                                        value="@bind(vm.richiedenteState.richiedente.numeroDocumento)"
+                                                               hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="numeroDocumento"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell align="right">
+                                            <customLabel
+                                                    mandatory="@load(vm.richiedenteState.documentoMandatory)"
+                                                    value="@load(vm.etichette['Data_Rilascio'])"/>
+                                        </cell>
+                                        <cell>
+                                            <hlayout valign="middle" hflex="1" spacing="9px">
+                                                <datebox format="dd/MM/yyyy"
+                                                         value="@bind(vm.richiedenteState.richiedente.dataRilascioDocumento)"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="dataRilascioDocumento"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <label value="@load(vm.etichette['Note'])"/>
+                                        </cell>
+                                        <cell colspan="6">
+                                            <hlayout valign="middle" hflex="1">
+                                                <customTextbox rows="2"
+                                                               value="@bind(vm.richiedenteState.richiedente.note)"
+                                                               hflex="1"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoRichiededente')">
+                                                    <custom-attributes proprieta="note"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+                    <cell width="42px">
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaAnagrafica', tipoSoggetto='RICHIEDENTE_CERTIFICATO')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- SEZIONE OPPOSIZIONE -->
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Opposizione'])"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell colspan="10">
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaTipoDocumentoFineOpposizione)"
+                                        onCheck="@command('onSelectTipoDocumentoFineOpposizione')"
+                                        selectedItem="@bind(vm.datiProvenienza.tipoDocumentoFineOpposizione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <radio label="@load(empty each?vm.etichette['Opposizione_nessuna']:vm.getEtichettaEnum(each))"
+                                           value="@load(each)" style="padding-left:10px"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                </row>
+
+                <row visible="@load(not empty vm.datiProvenienza.tipoDocumentoFineOpposizione)">
+                    <cell align="right">
+                        <label value="@load(vm.datiProvenienza.tipoDocumentoFineOpposizione eq 'DE'?vm.etichette['Opposizione_rigetto']:vm.etichette['Opposizione_estinzione'])"/>
+                    </cell>
+                    <cell colspan="9">
+                        <grid>
+                            <rows>
+                                <row>
+                                    <cell align="right" width="120px">
+                                        <h:span class="mandatoryLabel">*</h:span>
+                                        <label value="@load(vm.etichette['Nome_Ente'])"/>
+                                    </cell>
+                                    <cell colspan="6">
+                                        <hlayout valign="middle" hflex="1">
+                                            <textbox hflex="1" value="@bind(vm.datiProvenienza.enteFineOpposizione)"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvenienza')">
+                                                <custom-attributes proprieta="enteFineOpposizione"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell align="right">
+                                        <h:span class="mandatoryLabel">*</h:span>
+                                        <label value="@load(vm.etichette['Comune_Ente'])"/>
+                                    </cell>
+                                    <cell colspan="5">
+                                        <hlayout valign="middle" hflex="1">
+                                            <bandboxComuni hflex="1"
+                                                           value="@load(vm.datiProvenienza.comuneFineOpposizione.descrizione)"
+                                                           onSelect="@command('onSelectComune', campoRiferimento='CA_FOP')"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaComune', campoRiferimento='CA_FOP')"
+                                            />
+                                        </hlayout>
+                                    </cell>
+                                    <cell>
+                                        <textbox value="@load(vm.datiProvenienza.comuneFineOpposizione.siglaProvincia)"
+                                                 hflex="1" readonly="true"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell align="right">
+                                        <h:span class="mandatoryLabel">*</h:span>
+                                        <label value="@load(vm.etichette['Estremi_documento'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <hlayout valign="middle" hflex="1">
+                                            <textbox value="@bind(vm.datiProvenienza.estremiDocumentoFineOpposizione)"
+                                                     hflex="1"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvenienza')">
+                                                <custom-attributes proprieta="estremiDocumentoFineOpposizione"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                    <cell align="right" colspan="2">
+                                        <h:span class="mandatoryLabel">*</h:span>
+                                        <label value="@load(vm.etichette['Data_Formazione'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <hlayout valign="middle" hflex="1">
+                                            <datebox format="dd/MM/yyyy"
+                                                     value="@bind(vm.datiProvenienza.dataDocumentoFineOpposizione)"
+                                                     width="100px"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvenienza')">
+                                                <custom-attributes proprieta="dataDocumentoFineOpposizione"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

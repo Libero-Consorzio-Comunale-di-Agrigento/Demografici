@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout valign="middle">
+        <label value="@load(vm.etichette['Archivio'])"/>
+        <combobox model="@load(vm.listaTipiLog)" readonly="true" selectedItem="@bind(vm.tipoLog)"
+                  onChange="@command('onFiltro')" style="padding:5px">
+            <template name="model">
+                <comboitem label="@load(vm.etichette[each.etichettaDesc.codice])" value="@load(each)"/>
+            </template>
+        </combobox>
+    </hlayout>
+
+</zk>

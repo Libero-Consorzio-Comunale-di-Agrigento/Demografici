@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <vlayout>
+        <listbox model="@load(vm.listaStringhe)" rows="@load(vm.listaStringheSize)" multiple="false" width="290px" xmlns="http://www.zkoss.org/2005/zul">
+            <listhead>
+                <listheader>
+                    <textbox placeholder="@load(vm.labelCercaStringhe)" hflex="1" onChanging="@command('onChanging')"/>
+                 </listheader>
+            </listhead>
+            <template name="model" var="item">
+                <listitem>
+                    <listcell>
+                        <hbox align="center" hflex="1" spacing="7px">
+                            <image src="/images/icon/action/16x16/back.png" draggable="true" tooltiptext="@load(item)"/>
+                            <label value="@load(item)" hflex="1"/>
+                        </hbox>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+        <script defer="true"><![CDATA[
+              this.$f().testoConVariabili.listen({onDrop: function(e) {
+                  var orig = $(e.target._node).val();
+                  var cursor = e.target._node.selectionStart;
+                  this.setValue(orig.substr(0, cursor) + e.dragged.getTooltiptext() + orig.substr(cursor));
+                  this.fireOnChange(null);
+              }});
+        ]]></script>
+    </vlayout>
+</zk>

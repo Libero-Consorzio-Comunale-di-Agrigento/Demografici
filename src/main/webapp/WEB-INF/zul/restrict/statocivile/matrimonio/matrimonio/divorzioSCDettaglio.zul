@@ -1,0 +1,1120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.matrimonio.matrimonio.DivorzioSCDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarDettaglio/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+			<estremiAttoFormLabel/>
+
+		</hlayout>
+
+		<vlayout vflex="1" width="100%" sclass="scroll">
+
+			<groupbox closable="false" open="true">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="150px">
+								<label value="@load(vm.etichette['Completo'])"/>
+							</cell>
+							<cell colspan="3">
+								<checkbox checked="@bind(vm.dettaglio.flagCompleto)"/>
+							</cell>
+							<cell align="right" width="150px">
+								<label value="@load(vm.etichette['Progressivo'])"/>
+							</cell>
+							<cell colspan="3">
+								<intbox value="@bind(vm.dettaglio.progressivo)" disabled="true"/>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Atto'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.atto.dataMatrimonio? null:(c:formatDate(vm.atto.dataMatrimonio, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Trascrizione'])"/>
+							</cell>
+							<cell colspan="3">
+								<label value="@load(empty vm.atto.dataRegistrazione? null:(c:formatDate(vm.atto.dataRegistrazione, 'dd/MM/yyyy')))" sclass="grassetto"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_DATI_ATTO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="150px">
+								<label value="@load(vm.etichette['Tipo_Accordo'])"/>
+							</cell>
+							<cell colspan="7">
+								<hlayout valign="middle">
+									<radiogroup model="@load(vm.listaTipiAccordoMatrimonio)" orient="horizontal"
+												selectedItem="@bind(vm.dettaglio.tipoAccordo) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each.codice)"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Causa_divorzio'])"/>
+							</cell>
+							<cell colspan="3">
+								<vlayout>
+									<radiogroup model="@load(vm.listaCauseScioglimento)" orient="vertical"
+												selectedItem="@bind(vm.dettaglio.causaScioglimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each.codice)"
+												   disabled="@load(vm.dettaglio.tipoAccordo eq 1)"/>
+										</template>
+									</radiogroup>
+								</vlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Separazione'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataSentenzaSeparazione)" width="100px"
+											 disabled="@load(vm.dettaglio.tipoAccordo eq 1)"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											disabled="@load(vm.dettaglio.tipoAccordo eq 1)"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="dataSentenzaSeparazione"/>
+									</button>
+								</hlayout>
+							</cell>
+						</row>
+
+						<!--
+						02/01/2024 commento perché questi campi hanno senso in relazione ai tracciati del 2015 (In caso di separazione con accordo extragiudiziale)
+						e NON per i tracciati del 2023
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Stipula'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataStipulaSeparazione)" width="100px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="dataStipulaSeparazione"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Data_Registrazione'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataRegistrazioneSeparazione)" width="100px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="dataRegistrazioneSeparazione"/>
+									</button>
+								</hlayout>
+							</cell>
+						</row>-->
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_DATI_MATRIMONIO'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="150px">
+								<h:span class="mandatoryLabel" >*</h:span><label value="@load(vm.etichette['Data_Matrimonio'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout>
+									<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataMatUci)" width="100px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+										<custom-attributes proprieta="dataMatUci"/>
+									</button>
+								</hlayout>
+							</cell>
+							<cell align="right" width="150px">
+								<h:span class="mandatoryLabel" >*</h:span><label value="@load(vm.etichette['Comune_Matrimonio'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<bandboxComuni hflex="1"
+												   value="@load(vm.dettaglio.comuneMatUci.descrizione)"
+												   dataRiferimento="@load(vm.dettaglio.dataMatUci)"
+												   onSelect="@command('onSelectComune', campoRiferimento='CC_MATR')"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CC_MATR')"
+									/>
+									<textbox value="@load(vm.dettaglio.comuneMatUci.siglaProvincia)" readonly="true" width="60px"/>
+								</hlayout>
+							</cell>
+						</row>
+						<row>
+							<cell align="right">
+								<h:span class="mandatoryLabel" >*</h:span><label value="@load(vm.etichette['Rito'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaRito)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.rito) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each.codice)" style="padding-left:20px;font-weight: bold"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Regime_patrimoniale'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaRegimePatrimoniale)" hflex="1"
+												selectedItem="@bind(vm.dettaglio.regimePatrimoniale) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+										<template name="model">
+											<radio label="@load(c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each.codice)" style="padding-left:20px;font-weight: bold"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_MARITO'])"/>
+				<grid sclass="form">
+					<rows>
+
+						<templateRowIntestatario1ModelloSDSU/>
+
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Titolo_Studio'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaTitoliStudio)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.titoloStudio1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="4"/>
+						</row>
+
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Condizione_professionale'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaCondizioneProfessionaleSC)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.condizioneProfessionale1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Posizione_professione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaPosizioneProfessioneSC)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.posizioneProfessionale1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_MOGLIE'])"/>
+				<grid sclass="form">
+					<rows>
+						<templateRowIntestatario2ModelloSDSU/>
+
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Titolo_Studio'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaTitoliStudio)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.titoloStudio2) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell colspan="4"/>
+						</row>
+
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Condizione_professionale'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaCondizioneProfessionaleSC)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.condizioneProfessionale2) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Posizione_professione'])"/>
+							</cell>
+							<cell colspan="3">
+								<combobox model="@load(vm.listaPosizioneProfessioneSC)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.dettaglio.posizioneProfessionale2) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+									<template name="model">
+										<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+									</template>
+								</combobox>
+							</cell>
+						</row>
+
+					</rows>
+				</grid>
+			</groupbox>
+
+			<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_AVVOCATI'])"/>
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell>
+								<groupbox closable="false" open="true">
+									<caption label="@load(vm.etichette['Avvocato_Marito'])"/>
+									<grid sclass="form">
+										<rows>
+											<row>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Cognome'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.cognomeAvvocato1)" hflex="1" />
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="cognomeAvvocato1"/>
+														</button>
+													</hlayout>
+												</cell>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Nome'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.nomeAvvocato1)" hflex="1" />
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="nomeAvvocato1"/>
+														</button>
+													</hlayout>
+												</cell>
+											</row>
+											<row>
+												<cell align="right">
+													<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.codiceFiscaleAvvocato1)" hflex="1" style="text-transform:uppercase"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="codiceFiscaleAvvocato1"/>
+														</button>
+													</hlayout>
+												</cell>
+												<cell align="right">
+													<label value="@load(vm.etichette['Albo_Iscrizione'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<bandboxComuni hflex="1"
+																	   value="@load(vm.dettaglio.comuneAlboAvvocato1.descrizione)"
+																	   onSelect="@command('onSelectComune', campoRiferimento='CA_AVV1')"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_AVV1')"/>
+														<space/>
+														<textbox value="@load(vm.dettaglio.comuneAlboAvvocato1.siglaProvincia)" readonly="true" width="90px"/>
+													</hlayout>
+												</cell>
+											</row>
+										</rows>
+									</grid>
+								</groupbox>
+							</cell>
+						</row>
+						<row>
+							<cell>
+								<groupbox closable="false" open="true">
+									<caption label="@load(vm.etichette['Avvocato_Moglie'])"/>
+									<grid sclass="form">
+										<rows>
+											<row>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Cognome'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.cognomeAvvocato2)" hflex="1" />
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="cognomeAvvocato2"/>
+														</button>
+													</hlayout>
+												</cell>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Nome'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.nomeAvvocato2)" hflex="1" />
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="nomeAvvocato2"/>
+														</button>
+													</hlayout>
+												</cell>
+											</row>
+											<row>
+												<cell align="right">
+													<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<textbox value="@bind(vm.dettaglio.codiceFiscaleAvvocato2)" hflex="1" style="text-transform:uppercase"/>
+														<button image="/images/icon/action/16x16/cancel.png"
+																tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')">
+															<custom-attributes proprieta="codiceFiscaleAvvocato2"/>
+														</button>
+													</hlayout>
+												</cell>
+												<cell align="right">
+													<label value="@load(vm.etichette['Albo_Iscrizione'])"/>
+												</cell>
+												<cell colspan="3">
+													<hlayout valign="middle" hflex="1">
+														<hlayout valign="middle" hflex="1">
+															<bandboxComuni hflex="1"
+																		   value="@load(vm.dettaglio.comuneAlboAvvocato2.descrizione)"
+																		   onSelect="@command('onSelectComune', campoRiferimento='CA_AVV2')"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_AVV2')"/>
+															<space/>
+															<textbox value="@load(vm.dettaglio.comuneAlboAvvocato2.siglaProvincia)" readonly="true" width="90px"/>
+														</hlayout>
+													</hlayout>
+												</cell>
+											</row>
+										</rows>
+									</grid>
+								</groupbox>
+							</cell>
+						</row>
+
+						<row>
+							<cell>
+								<groupbox closable="false" open="true">
+									<grid sclass="form">
+										<rows>
+											<row>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Sostentamento_coniuge'])"/>
+												</cell>
+												<cell colspan="1">
+													<hlayout hflex="1">
+														<radiogroup model="@load(vm.listaSostentamentoConiuge)" hflex="1"
+																	selectedItem="@bind(vm.dettaglio.sostentamentoConiuge) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+															</template>
+														</radiogroup>
+													</hlayout>
+												</cell>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Mensile'])"/>
+												</cell>
+												<cell>
+													<intbox value="@bind(vm.dettaglio.importoMensileConiuge)" readonly="@load(empty vm.dettaglio.sostentamentoConiuge or (vm.dettaglio.sostentamentoConiuge eq 2) )"/>
+												</cell>
+												<cell align="right" width="140px">
+													<label value="@load(vm.etichette['Una_Tantum'])"/>
+												</cell>
+												<cell>
+													<intbox value="@bind(vm.dettaglio.importoUnicoConiuge)" readonly="@load(empty vm.dettaglio.sostentamentoConiuge or (vm.dettaglio.sostentamentoConiuge eq 2) )"/>
+												</cell>
+                                                <cell align="right" width="140px">
+                                                    <label value="@load(vm.etichette['Chi_obbligato'])"/>
+                                                </cell>
+                                                <cell>
+                                                    <combobox model="@load(vm.listaSostentamentoConiugeChi)" readonly="true" width="100px"
+                                                              disabled="@load(empty vm.dettaglio.sostentamentoConiuge or (vm.dettaglio.sostentamentoConiuge eq 2) )"
+                                                              selectedItem="@bind(vm.dettaglio.sostentamentoConiugeChi) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                                                        <template name="model">
+                                                            <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+                                                        </template>
+                                                    </combobox>
+                                                </cell>
+											</row>
+
+											<row>
+												<cell align="right">
+													<label value="@load(vm.etichette['Assegnazione_abitazione'])"/>
+												</cell>
+												<cell>
+													<combobox model="@load(vm.listaAssegnamentoAbitazione)" readonly="true" hflex="1"
+															  selectedItem="@bind(vm.dettaglio.assegnazioneAbitazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+														<template name="model">
+															<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+														</template>
+													</combobox>
+												</cell>
+												<cell align="right">
+													<label value="@load(vm.etichette['Presenza_Figli'])"/>
+												</cell>
+												<cell>
+													<hlayout hflex="1">
+														<radiogroup model="@load(vm.listaPresenzaFigli)" hflex="1"
+																	selectedItem="@bind(vm.dettaglio.presenzaFigli) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+															</template>
+														</radiogroup>
+													</hlayout>
+												</cell>
+												<cell align="right">
+													<label value="@load(vm.etichette['Numero_Figli'])"/>
+												</cell>
+												<cell>
+													<intbox value="@bind(vm.dettaglio.numeroFigli)" readonly="@load(empty vm.dettaglio.presenzaFigli or (vm.dettaglio.presenzaFigli eq 2) )"/>
+												</cell>
+                                                <cell colspan="2"/>
+											</row>
+										</rows>
+									</grid>
+								</groupbox>
+							</cell>
+						</row>
+
+					</rows>
+				</grid>
+			</groupbox>
+
+			<zk if="${vm.dettaglio.is6sd()}">
+				<groupbox mold="3d" closable="false" open="true">
+				<caption label="@load(vm.etichette['SEZIONE_FIGLI'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell>
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Figli_Minorenni'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout hflex="1">
+															<radiogroup model="@load(vm.listaPresenzaFigli)" hflex="1"
+																		selectedItem="@bind(vm.dettaglio.presenzaFigliMinori) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+																<template name="model">
+																	<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+																</template>
+															</radiogroup>
+														</hlayout>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Numero_Figli'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.numeroFigliMinori)"
+																readonly="@load(empty vm.dettaglio.presenzaFigliMinori or (vm.dettaglio.presenzaFigliMinori eq 2) )"/>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Figli_Maggiorenni'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout hflex="1">
+															<radiogroup model="@load(vm.listaPresenzaFigli)" hflex="1"
+																		selectedItem="@bind(vm.dettaglio.presenzaFigliMaggiorenni) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+																<template name="model">
+																	<radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:10px;"/>
+																</template>
+															</radiogroup>
+														</hlayout>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Numero_Figli'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.numeroFigliMaggiorenni)"
+																readonly="@load(empty vm.dettaglio.presenzaFigliMaggiorenni or (vm.dettaglio.presenzaFigliMaggiorenni eq 2) )"/>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Cognome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.cognomeFiglio1)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)">
+																<custom-attributes proprieta="cognomeFiglio1"/>
+															</button>
+														</hlayout>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Nome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.nomeFiglio1)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)">
+																<custom-attributes proprieta="nomeFiglio1"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Sesso'])"/>
+													</cell>
+													<cell>
+														<combobox model="@load(vm.listaSesso)" readonly="true" width="100px"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"
+																  selectedItem="@bind(vm.dettaglio.sessoFiglio1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(c:cat3(vm.etichette['Data_Nascita'], '/', vm.etichette['Anni']))"/>
+													</cell>
+													<cell colspan="2">
+														<hlayout valign="middle" hflex="1" spacing="9px">
+															<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaFiglio1)" width="100px"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+															/
+															<intbox value="@bind(vm.dettaglio.etaFiglio1)" width="32px"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+														</hlayout>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.codiceFiscaleFiglio1)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)">
+																<custom-attributes proprieta="codiceFiscaleFiglio1"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Tipo_Affidamento'])"/>
+													</cell>
+													<cell colspan="4">
+														<combobox model="@load(vm.listaTipoAffidamento)" readonly="true" hflex="1"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"
+																  selectedItem="@bind(vm.dettaglio.affidamentoFiglio1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Numero_Pernotti'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.pernottamentiFiglio1)"
+																disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 1)"/>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</cell>
+							</row>
+
+							<row>
+								<cell>
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Cognome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.cognomeFiglio2)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)">
+																<custom-attributes proprieta="cognomeFiglio2"/>
+															</button>
+														</hlayout>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Nome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.nomeFiglio2)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)">
+																<custom-attributes proprieta="nomeFiglio2"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Sesso'])"/>
+													</cell>
+													<cell>
+														<combobox model="@load(vm.listaSesso)" readonly="true" width="100px"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"
+																  selectedItem="@bind(vm.dettaglio.sessoFiglio2) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+															<template name="model">
+                                                                <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(c:cat3(vm.etichette['Data_Nascita'], '/', vm.etichette['Anni']))"/>
+													</cell>
+													<cell colspan="2">
+														<hlayout valign="middle" hflex="1" spacing="9px">
+															<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaFiglio2)" width="100px"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+															/
+															<intbox value="@bind(vm.dettaglio.etaFiglio2)" width="32px"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+														</hlayout>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.codiceFiscaleFiglio2)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)">
+																<custom-attributes proprieta="codiceFiscaleFiglio2"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Tipo_Affidamento'])"/>
+													</cell>
+													<cell colspan="4">
+														<combobox model="@load(vm.listaTipoAffidamento)" readonly="true" hflex="1"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"
+																  selectedItem="@bind(vm.dettaglio.affidamentoFiglio2) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Numero_Pernotti'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.pernottamentiFiglio2)"
+																disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 2)"/>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</cell>
+							</row>
+
+							<row>
+								<cell>
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Cognome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.cognomeFiglio3)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)">
+																<custom-attributes proprieta="cognomeFiglio3"/>
+															</button>
+														</hlayout>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Nome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.nomeFiglio3)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)">
+																<custom-attributes proprieta="nomeFiglio3"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Sesso'])"/>
+													</cell>
+													<cell>
+														<combobox model="@load(vm.listaSesso)" readonly="true" width="100px"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"
+																  selectedItem="@bind(vm.dettaglio.sessoFiglio3) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+															<template name="model">
+                                                                <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(c:cat3(vm.etichette['Data_Nascita'], '/', vm.etichette['Anni']))"/>
+													</cell>
+													<cell colspan="2">
+														<hlayout valign="middle" hflex="1" spacing="9px">
+															<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaFiglio3)" width="100px"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+															/
+															<intbox value="@bind(vm.dettaglio.etaFiglio3)" width="32px"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+														</hlayout>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.codiceFiscaleFiglio3)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)">
+																<custom-attributes proprieta="codiceFiscaleFiglio3"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Tipo_Affidamento'])"/>
+													</cell>
+													<cell colspan="4">
+														<combobox model="@load(vm.listaTipoAffidamento)" readonly="true" hflex="1"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"
+																  selectedItem="@bind(vm.dettaglio.affidamentoFiglio3) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Numero_Pernotti'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.pernottamentiFiglio3)"
+																disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 3)"/>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</cell>
+							</row>
+
+							<row>
+								<cell>
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Cognome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.cognomeFiglio4)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)">
+																<custom-attributes proprieta="cognomeFiglio4"/>
+															</button>
+														</hlayout>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Nome'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.nomeFiglio4)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)">
+																<custom-attributes proprieta="nomeFiglio4"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Sesso'])"/>
+													</cell>
+													<cell>
+														<combobox model="@load(vm.listaSesso)" readonly="true" width="100px"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"
+																  selectedItem="@bind(vm.dettaglio.sessoFiglio4) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceAds')">
+															<template name="model">
+                                                                <comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codiceAds)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(c:cat3(vm.etichette['Data_Nascita'], '/', vm.etichette['Anni']))"/>
+													</cell>
+													<cell colspan="2">
+														<hlayout valign="middle" hflex="1" spacing="9px">
+															<datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataNascitaFiglio4)" width="100px"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+															/
+															<intbox value="@bind(vm.dettaglio.etaFiglio4)" width="32px"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+														</hlayout>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Codice_Fiscale'])"/>
+													</cell>
+													<cell colspan="4">
+														<hlayout>
+															<textbox value="@bind(vm.dettaglio.codiceFiscaleFiglio4)" hflex="1" style="text-transform:uppercase"
+																	 disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+															<button image="/images/icon/action/16x16/cancel.png"
+																	tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoIstat')"
+																	disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)">
+																<custom-attributes proprieta="codiceFiscaleFiglio4"/>
+															</button>
+														</hlayout>
+													</cell>
+												</row>
+
+												<row>
+													<cell align="right">
+														<label value="@load(vm.etichette['Tipo_Affidamento'])"/>
+													</cell>
+													<cell colspan="4">
+														<combobox model="@load(vm.listaTipoAffidamento)" readonly="true" hflex="1"
+																  disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"
+																  selectedItem="@bind(vm.dettaglio.affidamentoFiglio4) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right">
+														<label value="@load(vm.etichette['Numero_Pernotti'])"/>
+													</cell>
+													<cell colspan="4">
+														<intbox value="@bind(vm.dettaglio.pernottamentiFiglio4)"
+																disabled="@load((vm.dettaglio.numeroFigliMinori + vm.dettaglio.numeroFigliMaggiorenni) lt 4)"/>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</cell>
+							</row>
+
+							<row>
+								<cell>
+									<groupbox closable="false" open="true">
+										<grid sclass="form">
+											<rows>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Mantenimento'])"/>
+													</cell>
+													<cell colspan="4">
+														<combobox model="@load(vm.listaTipoMantenimentoFigli)" readonly="true" hflex="1"
+																  selectedItem="@bind(vm.dettaglio.mantenimentoFigli) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell colspan="5">
+														<grid sclass="form">
+															<rows>
+																<row>
+																	<cell align="right" width="100px">
+																		<label value="1. Abitazione"/>
+																	</cell>
+																	<cell>
+																		<intbox value="@bind(vm.dettaglio.capitoloSpesa1)"/>
+																	</cell>
+																</row>
+																<row>
+																	<cell align="right">
+																		<label value="2. Abbigliamento"/>
+																	</cell>
+																	<cell>
+																		<intbox value="@bind(vm.dettaglio.capitoloSpesa2)"/>
+																	</cell>
+																</row>
+																<row>
+																	<cell align="right">
+																		<label value="3. Salute"/>
+																	</cell>
+																	<cell>
+																		<intbox value="@bind(vm.dettaglio.capitoloSpesa3)"/>
+																	</cell>
+																</row>
+																<row>
+																	<cell align="right">
+																		<label value="4. Istruzione"/>
+																	</cell>
+																	<cell>
+																		<intbox value="@bind(vm.dettaglio.capitoloSpesa4)"/>
+																	</cell>
+																</row>
+																<row>
+																	<cell align="right">
+																		<label value="5. Attività"/>
+																	</cell>
+																	<cell>
+																		<intbox value="@bind(vm.dettaglio.capitoloSpesa5)"/>
+																	</cell>
+																</row>
+															</rows>
+														</grid>
+													</cell>
+												</row>
+												<row>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Chi_obbligato'])"/>
+													</cell>
+													<cell colspan="2">
+														<combobox model="@load(vm.listaSostentamentoFigliChi)" readonly="true" width="100px"
+																  selectedItem="@bind(vm.dettaglio.sostentamentoFigliChi) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+													<cell align="right" width="140px">
+														<label value="@load(vm.etichette['Importo'])"/>
+													</cell>
+													<cell>
+														<intbox value="@bind(vm.dettaglio.importoMensileFigli)" hflex="1"/>
+													</cell>
+													<cell colspan="2" align="right" width="140px">
+														<label value="@load(vm.etichette['Mantenimento_Maggiorenni'])"/>
+													</cell>
+													<cell colspan="3">
+														<combobox model="@load(vm.listaTipoMantenimentoFigliMaggiorenni)" readonly="true" hflex="1"
+																  selectedItem="@bind(vm.dettaglio.mantenimentoFigliMaggiorenni) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+															<template name="model">
+																<comboitem label="@load(empty each?'- -':c:cat3(each.codice, ' - ', each.descrizione) )" value="@load(each.codice)"/>
+															</template>
+														</combobox>
+													</cell>
+												</row>
+											</rows>
+										</grid>
+									</groupbox>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<templateIdDomain/>
+
+		</vlayout>
+
+	</window>
+
+</zk>

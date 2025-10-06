@@ -1,0 +1,45 @@
+<vlayout vflex="1">
+
+    <orderByBlock/>
+
+    <listbox model="@load(vm.lista) @template('model')"
+             selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+        <listhead>
+            <zk if="${vm.showDetailsProtocollazione}">
+                <listheader label="@load(vm.etichette['Protocollo'])"/>
+                <listheader label="@load(vm.etichette['Anno_Protocollo'])"/>
+                <listheader label="@load(vm.etichette['Data'])"/>
+            </zk>
+            <listheader label="@load(vm.etichette['Ufficio'])"/>
+            <listheader label="@load(vm.etichette['Anno'])"/>
+            <listheader label="@load(vm.etichette['Parte'])"/>
+            <listheader label="@load(vm.etichette['Serie'])"/>
+            <listheader label="@load(vm.etichette['Numero_Atto'])"/>
+            <listheader label="@load(vm.etichette['Cognome_Nome'])"/>
+            <listheader label="" width="52px"/>
+        </listhead>
+        <template name="model" var="item">
+            <listitem onDoubleClick="@command('onModifica')">
+                <zk if="${vm.showDetailsProtocollazione}">
+                    <listcell label="@load(item.numeroProtocollo)"/>
+                    <listcell label="@load(item.annoProtocollo)"/>
+                    <listcell label="@load(empty item.dataProtocollo? null:(c:formatDate(item.dataProtocollo, 'dd/MM/yyyy')))"/>
+                </zk>
+                <listcell label="@load(item.ufficio)"/>
+                <listcell label="@load(item.anno)"/>
+                <listcell label="@load(item.parte)"/>
+                <listcell label="@load(item.serie)"/>
+                <listcell label="@load(item.atto)"/>
+                <listcell label="@load(item.nominativo)"/>
+                <listcell>
+                    <button image="/images/icon/action/18x18/edit.png"
+                            tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                            visible="@load(not empty item.id)"
+                            onClick="@command('onModifica')"/>
+                </listcell>
+            </listitem>
+        </template>
+    </listbox>
+
+</vlayout>

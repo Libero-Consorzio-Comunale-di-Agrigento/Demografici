@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDichiaranteDettaglio" macroURI="/restrict/statocivile/templateRowDichiaranteDettaglio.zul" inline="true"?>
+<?component name="templateRowEnteStranieroDettaglio" macroURI="/restrict/statocivile/templateRowEnteStranieroDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<zk if="${vm.dettaglio.isDatiRichiedenteEnabled()}">
+		<groupbox closable="false" open="@load(vm.dettaglio.isDatiRichiedenteEnabled())">
+			<caption label="@load(vm.etichette['Dati_Richiedente'])" visible="@load(vm.dettaglio.isDatiRichiedenteEnabled())"/>
+			<grid sclass="form">
+				<rows>
+				    <!-- solo nascite -->
+					<zk if="${vm.anscOn and vm.dettaglio.tipoAttoEnum eq 'NAS'}">
+						<row>
+							<cell align="right" width="160px">
+                                <customLabel mandatory="true"
+                                             value="@load(vm.etichette['Dichiarazione_giudiziale'])"/>
+							</cell>
+							<cell width="160px">
+								<hlayout height="20px">
+									<radiogroup model="@load(vm.listaSiNo)" hflex="1"
+												selectedItem="@bind(vm.datiProvenienza.dichiarazioneGiudiziale) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell colspan="6"/>
+							<cell width="1px"/>
+						</row>
+					</zk>
+					<zk if="${vm.anscOn}">
+						<row>
+							<cell align="right" width="160px">
+                                <customLabel
+                                        mandatory="true"
+                                        value="@load(vm.etichette['Data_Richiesta'])"/>
+							</cell>
+                            <cell width="160px">
+                                <hlayout valign="middle" hflex="1">
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataRichiestaTrascrizione)" width="110px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="dataRichiestaTrascrizione"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <!-- nascite, matrimoni, unioni civili, NO decessi -->
+                            <cell align="right">
+                                <zk if="${vm.dettaglio.tipoAttoEnum eq 'NAS' or vm.dettaglio.tipoAttoEnum eq 'MAT' or vm.dettaglio.tipoAttoEnum eq 'UCI'}">
+                                    <hlayout visible="@load(vm.dettaglio.tipoAttoEnum eq 'NAS' or vm.dettaglio.tipoAttoEnum eq 'MAT' or vm.dettaglio.tipoAttoEnum eq 'UCI')">
+                                        <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                        <label value="@load(vm.etichette['Tipo_richiesta'])"/>
+                                    </hlayout>
+                                </zk>
+                            </cell>
+                            <cell colspan="2">
+                                <zk if="${vm.dettaglio.tipoAttoEnum eq 'NAS' or vm.dettaglio.tipoAttoEnum eq 'MAT' or vm.dettaglio.tipoAttoEnum eq 'UCI'}">
+                                    <combobox model="@load(vm.listaTipoRichiestaTrascrizione)" readonly="true" width="200px"
+                                              selectedItem="@bind(vm.datiProvenienza.tipoRichiestaTrascrizione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </zk>
+                            </cell>
+                            <!-- solo nascite -->
+                            <cell align="right">
+                                <zk if="${vm.dettaglio.tipoAttoEnum eq 'NAS'}">
+                                    <hlayout>
+                                        <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                                        <label value="@load(vm.etichette['Richiedente'])"/>
+                                    </hlayout>
+                                </zk>
+                            </cell>
+                            <cell colspan="2">
+                                <zk if="${vm.dettaglio.tipoAttoEnum eq 'NAS'}">
+                                    <combobox model="@load(vm.listaRichiedenteTrascr)" readonly="true" width="120px"
+                                              selectedItem="@bind(vm.datiProvenienza.tipoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each?'- -':each.label)" value="@load(each.value)"/>
+                                        </template>
+                                    </combobox>
+                                </zk>
+                            </cell>
+                            <cell width="1px"/>
+						</row>
+					</zk>
+					<!-- campo in uso in F11 ma in F11 nn c'erano le categorie quindi non sarà mai pieno
+					<row visible="@load(not empty vm.datiProvenienza.autorita)">
+						<cell align="right" width="160px">
+							<label value="@load(vm.etichette['Da'])"/>
+						</cell>
+						<cell colspan="7">
+							<textbox hflex="1" value="@bind(vm.datiProvenienza.autorita)" disabled="true"/>
+						</cell>
+					</row>
+					-->
+
+                    <templateRowDichiaranteDettaglio mandatory="true"/>
+					<!-- nascite, matrimoni, unioni civili, NO decessi -->
+                    <zk if="${vm.dettaglio.tipoAttoEnum eq 'NAS' or vm.dettaglio.tipoAttoEnum eq 'MAT' or vm.dettaglio.tipoAttoEnum eq 'UCI'}">
+                        <row>
+                            <cell align="right">
+                                <customLabel mandatory="${vm.anscOn}"
+                                             value="@load(vm.etichette['Firmatario'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout height="20px">
+                                    <radiogroup model="@load(vm.listaFirmatarioTrascr)"
+                                                selectedItem="@bind(vm.datiProvenienza.tipoFirmatario) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+                                        <template name="model">
+                                            <radio label="@load(each.label)" value="@load(each.value)" style="padding-left:10px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                            <cell colspan="6"/>
+                        </row>
+                    </zk>
+
+					<!-- RIMPIAZZATO DA ENTE STRANIERO -->
+					<!--<row>
+						<cell align="right">
+							<label value="@load(vm.etichette['Registrato_da'])"/>
+						</cell>
+						<cell colspan="4">
+							<hlayout valign="middle" hflex="1">
+								<textbox hflex="1" value="@bind(vm.datiProvenienza.autoritaAttoOriginale)"
+										 disabled="@load(not vm.dettaglio.isDatiRichiedenteEnabled())"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')"
+										disabled="@load(not vm.dettaglio.isDatiRichiedenteEnabled())">
+									<custom-attributes proprieta="autoritaAttoOriginale"/>
+								</button>
+							</hlayout>
+						</cell>
+						<cell/>
+						<cell align="right">
+							<label value="@load(vm.etichette['In_data'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoOriginale)" width="100px"
+										 disabled="@load(not vm.dettaglio.isDatiRichiedenteEnabled())"/>
+								<button image="/images/icon/action/16x16/cancel.png"
+										disabled="@load(not vm.dettaglio.isDatiRichiedenteEnabled())"
+										tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+									<custom-attributes proprieta="dataAttoOriginale"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>-->
+					<!-- ENTE STRANIERO -->
+				</rows>
+			</grid>
+		</groupbox>
+
+		<templateRowEnteStranieroDettaglio/>
+	</zk>
+
+</zk>

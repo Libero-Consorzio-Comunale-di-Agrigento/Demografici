@@ -1,0 +1,279 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://nexus.finmatica.it/repository/maven-public"
+        }
+    }
+    dependencies {
+        // plugin per la continuous-integration di Finmatica
+        classpath 'it.finmatica.gradle:gradle-ci-plugin:2.0-SNAPSHOT'
+
+        // plugin per spring-boot
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.22.RELEASE")
+
+        // il plugin gradle-ads-installer:
+        classpath 'it.finmatica.gradle:finmatica-adsinstaller-gradle-plugin:1.15'
+
+        // plugin per verificare compatibilità con jdk
+        classpath "ru.vyarus:gradle-animalsniffer-plugin:1.4.6"
+    }
+}
+
+apply plugin: 'fin.gradle-ci-plugin'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'groovy'
+apply plugin: 'war'
+apply from: 'build-installante.gradle'
+apply plugin: 'ru.vyarus.animalsniffer'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+task classpathJar(type: Jar) {
+    inputs.files sourceSets.main.runtimeClasspath
+
+    archiveName = "runboot-classpath.jar"
+    doFirst {
+        // If run in configuration phase, some artifacts may not exist yet (after clean)
+        // and File.toURI can’t figure out what is directory to add the critical trailing slash.
+        manifest {
+            def classpath = sourceSets.main.runtimeClasspath.files
+            attributes "Class-Path": classpath.collect { f -> f.toURI().toString() }.join(" ")
+        }
+    }
+}
+
+tasks.withType(JavaExec) {
+    if (project.hasProperty('jvmArgs')) {
+        jvmArgs = (project.jvmArgs.split("\\s+") as List)
+    }
+}
+
+bootRun {
+    classpath = classpathJar.outputs.files
+}
+
+//compileGroovy {
+//    configure(groovyOptions) {
+//        configurationScript = file("$rootDir/.settings/compiler-config.groovy")
+//    }
+//}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ["src/main/controller",
+                       "src/main/domain",
+                       "src/main/groovy",
+                       "src/main/java",
+                       "src/main/services",
+                       "src/main/repositories",
+                       "src/main/viewmodels"]
+        }
+
+        java {
+            srcDirs = []
+        }
+    }
+
+    test {
+        groovy {
+            srcDirs = [
+                    "src/test/domain",
+                    "src/test/groovy",
+                    "src/test/services",
+                    "src/test/repositories",
+                    "src/test/viewmodels"
+            ]
+        }
+    }
+
+    integration {
+
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+        groovy {
+            srcDirs = [
+                    "src/integration/domain",
+                    "src/integration/groovy",
+                    "src/integration/services",
+                    "src/integration/repositories",
+                    "src/integration/viewmodels",
+                    "src/integration/zats"
+            ]
+        }
+    }
+}
+
+configurations {
+    integrationCompile.extendsFrom testCompile
+    integrationRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test, group: 'verification') {
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    if (project.hasProperty('jvmArgs')) {
+        jvmArgs = (project.jvmArgs.split("\\s+") as List)
+    }
+}
+
+check.dependsOn integrationTest
+
+war {
+    rootSpec.exclude('finmatica-dms-*jar')
+    rootSpec.exclude('finmatica-jsign*jar')
+    rootSpec.exclude('ojdbc*jar')
+}
+
+dependencies {
+
+    // librerie per springboot
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    //compile 'org.springframework.boot:spring-boot-legacy:1.0.2.RELEASE'
+
+    // ultima versione di hibernate compatibile con Java 7
+    compile("org.hibernate:hibernate-core:5.1.16.Final")
+    compile("org.hibernate:hibernate-ehcache:5.1.16.Final")
+    compile("org.hibernate:hibernate-entitymanager:5.1.16.Final")
+
+    // libreria per l'esternalizzazione della configurazione:
+    compile("it.finmatica.spring:finmatica-confapps:2.1")
+    compile("it.finmatica.spring:finmatica-static-resources:1.6")
+
+    // libreria per l'integrazione con ad4:
+    compile("it.finmatica.spring:finmatica-amministrazione-database:4.5.12.5")
+    compile("it.finmatica.spring:finmatica-anagrafe-soggetti:4.4.3.0")
+    compile("it.finmatica.spring:finmatica-struttura-organizzativa:1.4.7.0")
+
+    // libreria per la gestione del multi-ente:
+    //compile("it.finmatica.spring:finmatica-multiente:1.0")
+    //compile("it.finmatica.spring:finmatica-hibernate-filters:1.0")
+
+    // libreria per la configurazione automatica di zk:
+    compile("it.finmatica.spring:finmatica-zk:3.0.0.0")
+
+    // libreria per la gestione di testi:
+    compile("it.finmatica.spring:finmatica-gestione-testi:2.0.0.4"){
+        exclude module: 'jsign'
+    }
+    compile("it.finmatica.reporter:finmatica-reporter2:1.2.33")
+
+    //apache-poi per export excel
+    //compile 'org.apache.poi:poi:3.17'
+    // CSV
+    compile 'com.opencsv:opencsv:3.1'
+
+    // Manager of MANIFEST.MF files
+    compile group: 'com.jcabi', name: 'jcabi-manifests', version: '1.1'
+
+    // jasper reports
+    compile 'it.finmatica.jasper:finmatica-jasper-font-extension:1.2'
+    compile('net.sf.jasperreports:jasperreports:6.5.1') {
+        exclude module: 'itext' // questa libreria non viene trovata.
+        exclude module: 'lucene-core' // non ci serve lucene
+        exclude module: 'lucene-analyzers-common' // non ci serve lucene
+        exclude module: 'lucene-queryparser' // non ci serve lucene
+        exclude module: 'olap4j' // non ci serve
+        exclude module: 'core' // non ci serve
+        exclude module: 'icu4j' // non ci serve
+    }
+
+    //libreria per l'integrazione con il documentale
+    compile("it.finmatica:finmatica-smartdoc:1.1.17") {
+        exclude module: 'guice'
+        exclude module: 'bcmail-jdk14'
+        exclude module: 'bcprov-jdk14'
+        exclude module: 'bctsp-jdk14'
+        exclude module: 'xercesImpl'
+        exclude module: 'finmatica-dms'
+        exclude module: 'jsign'
+        exclude module: 'javax.servlet'
+        exclude group: 'javax.servlet', module: 'servlet-api'
+    }
+
+    providedRuntime("it.finmatica.ag.jsuite:finmatica-dms:3.6.3") {
+        exclude module: 'commons-io'
+        exclude module: 'fop'
+        exclude module: 'itext'
+        exclude module: 'xercesImpl'
+        exclude module: 'jsign'
+    }
+    /*
+    //libreria per l'integrazione con il documentale
+    compile("it.finmatica:finmatica-smartdoc:1.1.15") {
+        exclude module: 'bcmail-jdk14'
+        exclude module: 'bcprov-jdk14'
+        exclude module: 'bctsp-jdk14'
+        exclude module: 'xercesImpl'
+        exclude module: 'jsign'
+    }
+
+    compile ("it.finmatica.ag.jsuite:finmatica-dms:3.6.1.0-SNAPSHOT"){
+        exclude module: 'jsign'
+    }
+    */
+
+    /*
+    compile("it.finmatica:finmatica-jsign:4.0.0") {
+        exclude module: 'uploaddownload-applet'
+        exclude module: 'iaikPkcs11Wrapper'
+        exclude module: 'axis'
+        exclude module: 'axis-jaxrpc'
+        exclude module: 'axis-saaj'
+        exclude module: 'guice'
+        exclude module: 'guice-multibindings'
+        exclude module: 'plugin'
+        exclude module: 'atr-xml'
+        exclude module: 'itextpdf'
+        exclude module: 'sc-light-jdk15on'
+        exclude module: 'scpkix-jdk15on'
+    }
+    */
+
+    compile('com.lowagie:itext:2.1.7') {
+        exclude module: 'bcmail-jdk14'
+        exclude module: 'bcprov-jdk14'
+        exclude module: 'bctsp-jdk14'
+    }
+
+    //libreria per la scansione
+    compile("it.finmatica.spring:finmatica-webscan:3.0.0.2")
+
+    providedCompile "com.oracle:ojdbc6:11.2.0.3"
+
+    // dipendenza tomcat necessaria per il run in locale
+    providedCompile 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // le solite terribili db-utils
+    providedCompile("it.finmatica:finmatica-dbutils:5.2.1.1") {
+        exclude module: 'xercesImpl'
+    }
+
+    // libreria per i test automatici
+    testCompile "com.h2database:h2:1.4.197"
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "com.vaadin.external.google", module:"android-json"
+    }
+    testCompile "cglib:cglib-nodep:3.2.6"
+    testCompile 'junit:junit:4.12'
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+
+    //integrationCompile "org.zkoss.zats:zats-mimic-ext6:2.1.0"
+    // librerie per ansc
+    implementation 'org.gaixie.json:json:1.0.0'
+    implementation 'com.auth0:java-jwt:4.1.0'
+
+    // plugin per verificare compatibilità con jdk
+    signature 'org.codehaus.mojo.signature:java17:1.0@signature'
+    compile "org.codehaus.mojo:animal-sniffer-annotations:1.16"
+}
+
+animalsniffer {
+    // FIXME: dovrebbe bloccare la build quando animal sniffer fallisce
+    //  Attualmente ignora a causa di questo bug https://github.com/mojohaus/animal-sniffer/issues/27
+    ignoreFailures = true
+}

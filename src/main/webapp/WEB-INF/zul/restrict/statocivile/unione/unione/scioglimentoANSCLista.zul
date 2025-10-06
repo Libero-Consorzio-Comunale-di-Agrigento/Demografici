@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowCasoUso" macroURI="/restrict/statocivile/templateRowCasoUso.zul" inline="true"?>
+<?component name="templateFirmatariANSC" macroURI="/restrict/statocivile/templateFirmatariANSC.zul" inline="true"?>
+<?component name="templateTabsComunicazioniANSC" macroURI="/restrict/statocivile/templateTabsComunicazioniANSC.zul" inline="true"?>
+<?component name="templateAttoDomain" macroURI="/restrict/afc/templateAttoDomain.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.unione.unione.ScioglimentoANSCListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <hlayout valign="middle">
+            <controlBarANSC/>
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+            <estremiAttoFormLabel/>
+
+        </hlayout>
+
+        <vlayout vflex="1" width="100%" sclass="scroll">
+
+			<templateRowCasoUso showMotivoRecupero="true"/>
+
+            <!--DATI COINUGE 1-->
+            <groupbox mold="3d" closable="false">
+                <caption label="@load(vm.etichette['SEZIONE_CONTRAENTE_1'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="110px">
+                                <label value="@load(vm.etichette['Cognome'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(vm.atto.cognome1)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell align="right" width="110px">
+                                <label value="@load(vm.etichette['Nome'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(vm.atto.nome1)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Comune_Nascita'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(vm.atto.descrizioneComuneNascita1)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(vm.atto.siglaProvinciaNascita1)" sclass="grassetto"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Nascita'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(empty vm.atto.dataNascita1? null:(c:formatDate(vm.atto.dataNascita1, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Comune_Residenza'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(vm.atto.descrizioneComuneResidenza1)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(vm.atto.siglaProvinciaResidenza1)" sclass="grassetto"/>
+                            </cell>
+                            <cell colspan="5"/>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+            <!--DATI CONIUGE 2-->
+            <groupbox mold="3d" closable="false">
+                <caption label="@load(vm.etichette['SEZIONE_CONTRAENTE_2'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="110px">
+                                <label value="@load(vm.etichette['Cognome'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(vm.atto.cognome2)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell align="right" width="110px">
+                                <label value="@load(vm.etichette['Nome'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(vm.atto.nome2)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Comune_Nascita'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(vm.atto.descrizioneComuneNascita2)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(vm.atto.siglaProvinciaNascita2)" sclass="grassetto"/>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Nascita'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <label value="@load(empty vm.atto.dataNascita2? null:(c:formatDate(vm.atto.dataNascita2, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Comune_Residenza'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(vm.atto.descrizioneComuneResidenza2)" sclass="grassetto" multiline="true"/>
+                            </cell>
+                            <cell>
+                                <label value="@load(vm.atto.siglaProvinciaResidenza2)" sclass="grassetto"/>
+                            </cell>
+                            <cell colspan="5"/>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <!--<orderByBlock/>-->
+            <templateFirmatariANSC/>
+
+            <templateTabsComunicazioniANSC/>
+
+            <templateAttoDomain/>
+
+        </vlayout>
+
+    </window>
+
+</zk>

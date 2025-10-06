@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- MODALITA RILASCIO -->
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Modalita_rilascio'])"/>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell align="right" width="160px">
+                        <h:span class="mandatoryLabel">*</h:span>
+                        <label value="@load(vm.etichette['Motivo'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxModalitaRilascioEmissioneCertificato hflex="1"
+                                                                         value="@load(vm.modalitaRilascio.descrizione)"
+                                                                         categoriaTipoCertificato="@load(vm.tipoCertificato.categoriaTipoCertificato)"
+                                                                         disabled="@load(empty vm.tipoCertificato)"
+                                                                         onSelect="@command('onSelectModalitaRilascio')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    disabled="@load(empty vm.tipoCertificato)"
+                                    onClick="@command('onCancellaCampoCertificato')">
+                                <custom-attributes proprieta="modalitaRilascio"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right" width="160px">
+                        <label value="Altra specifica esenzione"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <customTextbox rows="2" hflex="1"
+                                     value="@bind(vm.descrizioneModalitaStampaLibera)"
+                                     disabled="@load(empty vm.modalitaRilascio or not vm.modalitaRilascio.isModalitaStampaLiberaAttiva())"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    disabled="@load(empty vm.modalitaRilascio or not vm.modalitaRilascio.isModalitaStampaLiberaAttiva())"
+                                    onClick="@command('onCancellaCampoCertificato')">
+                                <custom-attributes proprieta="descrizioneModalitaStampaLibera"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right" width="120px">
+                        <label value="Esenzione diritti di segreteria"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaSiNo)"
+                                        selectedItem="@bind(vm.modalitaRilascio.esenzioneDiritti) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)"
+                                           style="padding-left:10px" disabled="true"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(not empty vm.diritti.segreteria.getDescrizione() ? vm.diritti.segreteria.getDescrizione() : vm.etichette['Diritti_segreteria'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxDiritto
+                                    value="@bind(vm.diritti.segreteria.importo)"
+                                    diritto="SEGRETERIA"
+                                    modalitaRilascio="@load(vm.modalitaRilascio)"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    readonly="@load(!vm.diritti.segreteria.isEditable())"
+                                    onSelect="@command('onSelectDiritto')"/>
+                            <button image="/images/icon/action/16x16/edit.png"
+                                    tooltiptext="@load(vm.etichette['Modifica'])"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    onClick="@command('onEnableDiritto')">
+                                <custom-attributes diritto="SEGRETERIA"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(not empty vm.diritti.statoCivile.getDescrizione() ? vm.diritti.statoCivile.getDescrizione() : vm.etichette['Diritti_stato_civile'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxDiritto
+                                    value="@bind(vm.diritti.statoCivile.importo)"
+                                    diritto="STATO_CIVILE"
+                                    modalitaRilascio="@load(vm.modalitaRilascio)"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    readonly="@load(!vm.diritti.statoCivile.isEditable())"
+                                    onSelect="@command('onSelectDiritto')"/>
+                            <button image="/images/icon/action/16x16/edit.png"
+                                    tooltiptext="@load(vm.etichette['Modifica'])"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    onClick="@command('onEnableDiritto')">
+                                <custom-attributes diritto="STATO_CIVILE"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(not empty vm.diritti.cartaIdentita.getDescrizione() ? vm.diritti.cartaIdentita.getDescrizione() : vm.etichette['Diritti_carta_identita'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxDiritto
+                                    value="@bind(vm.diritti.cartaIdentita.importo)"
+                                    diritto="CARTA_IDENTITA"
+                                    modalitaRilascio="@load(vm.modalitaRilascio)"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    readonly="@load(!vm.diritti.cartaIdentita.isEditable())"
+                                    onSelect="@command('onSelectDiritto')"/>
+                            <button image="/images/icon/action/16x16/edit.png"
+                                    tooltiptext="@load(vm.etichette['Modifica'])"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    onClick="@command('onEnableDiritto')">
+                                <custom-attributes diritto="CARTA_IDENTITA"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(not empty vm.diritti.rimborsoStampati.getDescrizione() ? vm.diritti.rimborsoStampati.getDescrizione() : vm.etichette['Rimborso_stampati'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxDiritto
+                                    value="@bind(vm.diritti.rimborsoStampati.importo)"
+                                    diritto="RIMBORSO_STAMPATI"
+                                    modalitaRilascio="@load(vm.modalitaRilascio)"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    readonly="@load(!vm.diritti.rimborsoStampati.isEditable())"
+                                    onSelect="@command('onSelectDiritto')"/>
+                            <button image="/images/icon/action/16x16/edit.png"
+                                    tooltiptext="@load(vm.etichette['Modifica'])"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    onClick="@command('onEnableDiritto')">
+                                <custom-attributes diritto="RIMBORSO_STAMPATI"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(not empty vm.diritti.bollo.getDescrizione() ? vm.diritti.bollo.getDescrizione() : vm.etichette['Bollo'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxDiritto
+                                    value="@bind(vm.diritti.bollo.importo)"
+                                    diritto="BOLLO"
+                                    modalitaRilascio="@load(vm.modalitaRilascio)"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    readonly="@load(!vm.diritti.bollo.isEditable())"
+                                    onSelect="@command('onSelectDiritto')"/>
+                            <button image="/images/icon/action/16x16/edit.png"
+                                    tooltiptext="@load(vm.etichette['Modifica'])"
+                                    disabled="@load(empty vm.modalitaRilascio or vm.modalitaRilascio.esenzioneDiritti eq 'SI')"
+                                    onClick="@command('onEnableDiritto')">
+                                <custom-attributes diritto="BOLLO"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Tipo_pagamento'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaTipoPagamento)" readonly="true" width="200px"
+                                  selectedItem="@bind(vm.tipoPagamento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                  disabled="@load(empty vm.modalitaRilascio)">
+                            <template name="model">
+                                <comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

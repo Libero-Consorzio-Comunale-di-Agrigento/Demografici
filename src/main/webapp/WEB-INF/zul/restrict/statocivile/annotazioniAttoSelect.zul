@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.AnnotazioniAttoSelectViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="900px" height="550px"
+            title="@load(vm.etichette['Annotazioni'])"
+			sizable="false" closable="false">
+
+		<controlBarAnnotazioni/>
+
+		<orderByBlock/>
+
+		<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+				 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+			<listhead sizable="true">
+				<listheader label="@load(vm.etichette['Formula'])"	/>
+				<listheader label="@load(vm.etichette['Tipo'])"					width="80px"/>
+				<listheader label="Istat"										width="80px"/>
+				<listheader label="@load(vm.etichette['Genere'])"				width="160px"/>
+				<listheader label="@load(vm.etichette['Nuovo_Ordinamento'])"	width="120px"/>
+				<listheader label="" width="52px"/>
+			</listhead>
+			<template name="model" var="item">
+				<listitem onDoubleClick="@command('onSalva')">
+					<listcell label="@load(item.descrizioneEstesa)"/>
+					<listcell label="@load(vm.getEtichettaEnum(item.tipoAnnotazione))"/>
+                    <listcell sclass="testo-al-centro">
+                        <checkbox checked="@load(item.flagIstat)" disabled="true"/>
+                    </listcell>
+					<listcell label="@load(vm.getEtichettaEnum(item.genere))"/>
+					<listcell sclass="testo-al-centro">
+						<checkbox checked="@load(item.nuovoOrdinamento)" disabled="true"/>
+					</listcell>
+					<listcell>
+						<button image="/images/icon/action/16x16/save.png"
+								tooltiptext="@load(vm.etichette['seleziona_salva_tooltip'])"
+								visible="@load(not empty item.id)"
+								onClick="@command('onSalva')"/>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+
+		<space/>
+
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="@load(vm.etichette['Salva'])"		onClick="@command('onSalva')" 		image="/images/icon/action/16x16/save.png" />
+				<button label="@load(vm.etichette['Chiudi'])"		onClick="@command('onChiudi')" 		image="/images/icon/action/16x16/close.png"/>
+			</h:div>
+		</h:div>
+
+	</window>
+
+</zk>

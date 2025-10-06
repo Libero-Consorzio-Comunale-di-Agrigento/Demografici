@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="getAttoCellSclass" class="it.finmatica.de4gsdzk.utils.FormUtils" signature="java.lang.String getAttoCellSclass(it.finmatica.de4gsdzk.CivAttoBaseDomain)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.statocivile.StampaAttiListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <hlayout valign="middle">
+            <controlBarStampa/>
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+        </hlayout>
+
+        <vlayout vflex="1">
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="32px">
+                                <label value="@load(vm.etichette['Ufficio'])"/>
+                            </cell>
+                            <cell width="230px">
+                                <combobox model="@load(vm.listaUffici)" readonly="true" cols="2"
+                                          selectedItem="@bind(vm.ricerca.ufficio)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(each)" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <cell align="right" width="92px">
+                                <label value="@load(vm.etichette['Natura_Atto'])"/>
+                            </cell>
+                            <cell width="290px">
+                                <hlayout valign="middle">
+                                    <combobox model="@load(vm.listaNature)" readonly="true" width="90px"
+                                              selectedItem="@bind(vm.ricerca.natura) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutte'))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                    <space/>
+                                    <label value="@load(vm.etichette['Escludi_annullati'])"/>
+                                    <checkbox checked="@bind(vm.ricerca.escludiAnnullati)"/>
+                                </hlayout>
+                            </cell>
+                            <zk if="${vm.ricerca.hasSesso()}">
+                                <cell align="right" width="103px">
+                                    <label value="@load(vm.etichette['Sesso'])"/>
+                                </cell>
+                                <cell>
+                                    <combobox model="@load(vm.listaSesso)" readonly="true" width="90px"
+                                              selectedItem="@bind(vm.ricerca.sesso)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutti'))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </zk>
+                            <zk if="${vm.ricerca.isIMatrimonio() and not vm.ricerca.hasSesso()}">
+                                <cell align="right" width="103px">
+                                    <label value="@load(vm.etichette['Tipo'])"/>
+                                </cell>
+                                <cell>
+                                    <combobox model="@load(vm.listaTipi)" readonly="true" width="120px"
+                                              selectedItem="@bind(vm.ricerca.tipo) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each?vm.etichette['Tutti']:vm.etichette[each.etichettaDesc.codice] )" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </zk>
+                            <zk if="${not vm.ricerca.isIMatrimonio() and not vm.ricerca.hasSesso()}">
+                                <cell width="104px"/>
+                                <cell/>
+                            </zk>
+                            <cell width="38px"/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Stato'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaStati)" readonly="true" width="120px"
+                                          selectedItem="@bind(vm.ricerca.stato) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?vm.etichette['Tutti']:vm.etichette[each.name()])" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Tipo_Individui'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaIndividui)" readonly="true"
+                                          selectedItem="@bind(vm.ricerca.tipoIndividuiAtto)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutti'))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <zk if="${vm.ricerca.hasTipoLuogoEvento()}">
+                                <cell align="right">
+                                    <label value="@load(vm.etichette['Luogo'])"/>
+                                </cell>
+                                <cell>
+                                    <combobox model="@load(vm.listaLuoghi)" readonly="true"
+                                              selectedItem="@bind(vm.ricerca.tipoLuogoEvento)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutti'))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                </cell>
+                            </zk>
+                            <zk if="${not vm.ricerca.hasTipoLuogoEvento()}">
+                                <cell colspan="2"/>
+                            </zk>
+                            <cell/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Anno'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Da'])"/>
+                                    <intbox cols="4" maxlength="4" onOK="@command('onRicerca')" value="@bind(vm.ricerca.annoDa)"/>
+                                    <space/>
+                                    <label value="@load(vm.etichette['A'])"/>
+                                    <intbox cols="4" maxlength="4" onOK="@command('onRicerca')" value="@bind(vm.ricerca.annoA)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="annoDa,annoA"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Evento'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Da'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataEventoDa)" width="95px"/>
+                                    <space/>
+                                    <label value="@load(vm.etichette['A'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataEventoA)" width="95px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="dataEventoDa,dataEventoA"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Registrazione'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Da'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataRegistrazioneDa)" width="95px"/>
+                                    <space/>
+                                    <label value="@load(vm.etichette['A'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricerca.dataRegistrazioneA)" width="95px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="dataRegistrazioneDa,dataRegistrazioneA"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <hlayout valign="middle">
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" nonselectableTags="" vflex="1" emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <zk if="${vm.ricerca.isIMatrimonio()}">
+                        <listheader label="@load(vm.etichette['Tipo_Atto'])" 				width="80px"/>
+                    </zk>
+                    <listheader label="@load(vm.etichetteCustom['Cognome1'])" 			/>
+                    <listheader label="@load(vm.etichetteCustom['Nome1'])" 				width="18%"/>
+                    <zk if="${vm.ricerca.hasSesso()}">
+                        <listheader label="@load(vm.etichette['Sesso'])" 					width="5%"/>
+                    </zk>
+                    <zk if="${vm.ricerca.isDoppioSoggetto()}">
+                        <listheader label="@load(vm.etichetteCustom['Cognome2'])" 		    />
+                        <listheader label="@load(vm.etichetteCustom['Nome2'])" 		        width="18%"/>
+                    </zk>
+                    <listheader label="@load(vm.etichetteCustom['DataEvento'])"		    width="9%"/>
+                    <listheader label="@load(vm.etichette['Anno'])" 					width="5%"/>
+                    <listheader label="@load(vm.etichette['Numero_Atto'])" 				width="5%"/>
+                    <zk if="${vm.ricerca.hasParte()}">
+                        <listheader label="@load(vm.etichette['Parte'])" 					width="5%"/>
+                    </zk>
+                    <zk if="${vm.ricerca.hasSerie()}">
+                        <listheader label="@load(vm.etichette['Serie'])" 					width="5%"/>
+                    </zk>
+                    <listheader label="@load(vm.etichette['Ufficio'])" 					width="5%"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <zk if="${vm.ricerca.isIMatrimonio()}">
+                            <listcell>
+                                <label value="@load(item.divorzio?vm.etichetteCustom['AttoDivorzio']:vm.getEtichettaEnum(item.getTipoAttoEnum()) )"
+                                       sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                        </zk>
+                        <listcell>
+                            <label value="@load(item.cognome1Lista)"
+                                   sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                        <listcell>
+                            <label value="@load(item.nome1Lista)"
+                                   sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                        <zk if="${vm.ricerca.hasSesso()}">
+                            <listcell>
+                                <label value="@load(item.sesso1Lista)"
+                                       sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                        </zk>
+                        <zk if="${vm.ricerca.isDoppioSoggetto()}">
+                            <listcell>
+                                <label value="@load(item.cognome2Lista)"
+                                       sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                            <listcell>
+                                <label value="@load(item.nome2Lista)"
+                                       sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                        </zk>
+                        <listcell>
+                            <label value="@load(empty item.dataEventoLista? null:(c:formatDate(item.dataEventoLista, 'dd/MM/yyyy')))"
+                                   sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                        <listcell>
+                            <label value="@load(item.anno)" sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                        <listcell>
+                            <label value="@load(item.atto lt 0? vm.etichette['Provvisorio']: item.atto)" sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                        <zk if="${vm.tipoAttoEnum.hasParte()}">
+                            <listcell>
+                                <label value="@load(item.parte)" sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                        </zk>
+                        <zk if="${vm.tipoAttoEnum.hasSerie()}">
+                            <listcell>
+                                <label value="@load(item.serie)" sclass="@load(c:getAttoCellSclass(item))"/>
+                            </listcell>
+                        </zk>
+                        <listcell>
+                            <label value="@load(item.ufficio)" sclass="@load(c:getAttoCellSclass(item))"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- SEZIONE DATI ACCERTAMENTO -->
+    <row visible="@load(vm.dettaglio.motivoCittadinanza.flagAccertamento)">
+        <cell colspan="2" visible="@load(vm.dettaglio.motivoCittadinanza.flagAccertamento)">
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Dati_accertamento'])" visible="@load(vm.dettaglio.motivoCittadinanza.flagAccertamento)"/>
+                <grid visible="@load(vm.dettaglio.motivoCittadinanza.flagAccertamento)">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nome_Ente'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox hflex="1" value="@bind(vm.datiProvenienza.enteAccertamento)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="enteAccertamento"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Ente'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.datiProvenienza.comuneAccertamento.descrizione)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CA_DCA')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_DCA')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.datiProvenienza.comuneAccertamento.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span> <label value="@load(vm.etichette['Estremi_documento'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.datiProvenienza.estremiDocumentoAccertamento)" hflex="1"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="estremiDocumentoAccertamento"/>
+                                    </button>
+                                 </hlayout>
+                            </cell>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span> <label value="@load(vm.etichette['Data_Formazione'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout valign="middle" hflex="1">
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataDocumentoAccertamento)" width="100px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="dataDocumentoAccertamento"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+    </row>
+</zk>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="stampa_atto_A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="35" bottomMargin="35" whenResourceMissingType="Empty" uuid="7b16e643-89a4-41ad-bb26-25cfe518ad53">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID" class="java.lang.Long"/>
+	<parameter name="CODICE_TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="TIPO_ATTO" class="java.lang.Integer"/>
+	<parameter name="ESTREMI_ATTO" class="java.lang.String"/>
+	<parameter name="LABEL_COGNOME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Cognome]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_NOME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Nome]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LABEL_SESSO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[Sesso]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COGNOME" class="java.lang.String"/>
+	<parameter name="NOME" class="java.lang.String"/>
+	<parameter name="COGNOME_CONIUGE" class="java.lang.String"/>
+	<parameter name="NOME_CONIUGE" class="java.lang.String"/>
+	<parameter name="SESSO" class="java.lang.String"/>
+	<parameter name="STATO" class="java.lang.String"/>
+	<parameter name="TESTO" class="java.lang.String"/>
+	<parameter name="CORNICE_VISIBILE" class="java.lang.Boolean"/>
+	<parameter name="CAMPO1_LUNGO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CIA_VISIBILE" class="java.lang.Boolean"/>
+	<parameter name="TESTO_CIA" class="java.lang.String"/>
+	<parameter name="TESTO_FIRMA_CIA" class="java.lang.String"/>
+	<parameter name="TESTO_INT_CIA" class="java.lang.String"/>
+	<parameter name="LOGO_CIA" class="java.io.InputStream" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT f_CIV_testo_atto($P{TIPO_ATTO}, A.ID_ATTO, 'S') AS TESTO
+FROM  CIV$P!{CODICE_TIPO_ATTO} A
+WHERE A.ID = $P{ID}]]>
+	</queryString>
+	<field name="TESTO" class="java.lang.String"/>
+	<pageHeader>
+		<band height="72">
+			<rectangle>
+				<reportElement mode="Transparent" x="368" y="0" width="198" height="72" isPrintWhenDetailOverflows="true" uuid="36004edc-4852-4dd1-bd94-ac1f77353d3e">
+					<printWhenExpression><![CDATA[$P{CORNICE_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement x="368" y="0" width="198" height="72" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f84d611e-24e0-49c1-b5e6-47cff2e4e879">
+					<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("NAS") || $P{CODICE_TIPO_ATTO}.equals("MOR") || $P{CODICE_TIPO_ATTO}.equals("CIT")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="LABEL_COGNOME">
+					<subreportParameterExpression><![CDATA[$P{LABEL_COGNOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="STATO">
+					<subreportParameterExpression><![CDATA[$P{STATO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CAMPO1_LUNGO">
+					<subreportParameterExpression><![CDATA[$P{CAMPO1_LUNGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SESSO">
+					<subreportParameterExpression><![CDATA[$P{SESSO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME">
+					<subreportParameterExpression><![CDATA[$P{NOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COGNOME">
+					<subreportParameterExpression><![CDATA[$P{COGNOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LABEL_NOME">
+					<subreportParameterExpression><![CDATA[$P{LABEL_NOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LABEL_SESSO">
+					<subreportParameterExpression><![CDATA[$P{LABEL_SESSO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID">
+					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODICE_TIPO_ATTO">
+					<subreportParameterExpression><![CDATA[$P{CODICE_TIPO_ATTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TIPO_ATTO">
+					<subreportParameterExpression><![CDATA[$P{TIPO_ATTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "occhiello_NAS_A4.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="false">
+				<reportElement x="368" y="0" width="198" height="72" uuid="327e85ab-9207-4e72-bf71-b83317afd3bd">
+					<printWhenExpression><![CDATA[$P{CODICE_TIPO_ATTO}.equals("MAT") || $P{CODICE_TIPO_ATTO}.equals("UCI")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="LABEL_COGNOME">
+					<subreportParameterExpression><![CDATA[$P{LABEL_COGNOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LABEL_NOME">
+					<subreportParameterExpression><![CDATA[$P{LABEL_NOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COGNOME_CONIUGE">
+					<subreportParameterExpression><![CDATA[$P{COGNOME_CONIUGE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CODICE_TIPO_ATTO">
+					<subreportParameterExpression><![CDATA[$P{CODICE_TIPO_ATTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID">
+					<subreportParameterExpression><![CDATA[$P{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TIPO_ATTO">
+					<subreportParameterExpression><![CDATA[$P{TIPO_ATTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_CONIUGE">
+					<subreportParameterExpression><![CDATA[$P{NOME_CONIUGE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CAMPO1_LUNGO">
+					<subreportParameterExpression><![CDATA[$P{CAMPO1_LUNGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME">
+					<subreportParameterExpression><![CDATA[$P{NOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COGNOME">
+					<subreportParameterExpression><![CDATA[$P{COGNOME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "occhiello_MAT_A4.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="42" y="0" width="326" height="72" isPrintWhenDetailOverflows="true" uuid="f24c3345-33e1-4bb0-bf97-3875754de521"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTREMI_ATTO}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="42" y="0" width="326" height="72" isPrintWhenDetailOverflows="true" uuid="6be6ae95-a0ed-40b0-9a8c-db4f32894dba">
+					<printWhenExpression><![CDATA[$P{CORNICE_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="696" splitType="Immediate">
+			<rectangle>
+				<reportElement mode="Transparent" x="42" y="0" width="524" height="696" isPrintWhenDetailOverflows="true" uuid="ab20c776-0d39-48f3-8d62-ee4cc46ba509">
+					<printWhenExpression><![CDATA[$P{CORNICE_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="42" y="0" width="524" height="590" uuid="73c64d91-e751-437d-8931-7bdb9bea6da3"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="5" rightIndent="5" spacingBefore="10" spacingAfter="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO}?:$F{TESTO}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement positionType="FixRelativeToBottom" x="46" y="590" width="516" height="100" forecolor="#0033CC" uuid="926ee734-274c-4fc2-818c-e047dc5ec4d9">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} == $V{PAGE_NUMBER} && $P{CIA_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="50" y="619" width="508" height="40" forecolor="#0033CC" uuid="61c035ae-3e8f-4421-b04d-99edfb637303">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} == $V{PAGE_NUMBER} && $P{CIA_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO_CIA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="50" y="594" width="508" height="28" forecolor="#0033CC" uuid="ed3371ab-d4cf-463c-8037-f1c4358cd825">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} == $V{PAGE_NUMBER} && $P{CIA_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO_INT_CIA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="50" y="660" width="508" height="28" forecolor="#0033CC" uuid="4a9f2f93-4418-48a1-81db-c10a22e39d0f">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} == $V{PAGE_NUMBER} && $P{CIA_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TESTO_FIRMA_CIA}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Left">
+				<reportElement positionType="FixRelativeToBottom" x="505" y="635" width="50" height="50" uuid="b045c188-e528-46d8-bf1c-a1a97aadf0fb">
+					<printWhenExpression><![CDATA[$V{PAGE_COUNT} == $V{PAGE_NUMBER} && $P{CIA_VISIBILE}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{LOGO_CIA}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

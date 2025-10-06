@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateSezioneIndividuoDettaglio" macroURI="/restrict/anagrafe/visualizzazione/templateSezioneIndividuoDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.visualizzazione.IndividuoDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="@load(vm.wCenterHeight)"
+            sizable="false" closable="false">
+
+        <vlayout width="100%" height="100%" sclass="scroll">
+            <hlayout sclass="navigazione" valign="middle">
+                <controlBar value="@load(vm.controlBarAttributes)"/>
+
+                <controlBar>
+                    <toolbarbutton image="/images/icon/action/22x22/desk.png"
+                                   tooltiptext="@load(vm.etichette['Provvedimenti_tooltip'])"
+                                   disabled="@load(not vm.provvedimentiButtonEnabled)"
+                                   onClick="@command('onOpenProvvedimenti')"/>
+                    <toolbarbutton image="/images/icon/action/22x22/people_home.png"
+                                   tooltiptext="@load(vm.etichette['Famiglia_tooltip'])"
+                                   onClick="@command('onOpenFamiglia')"/>
+                    <toolbarbutton image="/images/icon/action/22x22/synchronize.png"
+                                   tooltiptext="@load(vm.etichette['Convivenza_di_fatto_tooltip'])"
+                                   disabled="@load(not vm.convivenzaButtonEnabled)"
+                                   onClick="@command('onOpenConvivenzaDiFatto')"/>
+                    <toolbarbuttonDocumenti/>
+                    <toolbarbutton image="/images/icon/action/22x22/building.png"
+                                   tooltiptext="@load(vm.etichette['Storico_anagrafe_tooltip'])"
+                                   disabled="@load(not vm.storicoAnagrafeButtonEnabled)"
+                                   onClick="@command('onOpenAnagrafeStorico')"/>
+                    <toolbarbutton image="/images/icon/action/22x22/hall.png"
+                                   tooltiptext="@load(vm.etichette['Storico_Stato_Civile_tooltip'])"
+                                   disabled="@load(not vm.statoCivileButtonEnabled)"
+                                   onClick="@command('onOpenStatoCivile')"/>
+                    <toolbarbutton image="/images/icon/action/22x22/profile.png"
+                                   tooltiptext="@load(vm.etichette['Variazioni_tooltip'])"
+                                   disabled="@load(not vm.variazioniButtonEnabled)"
+                                   onClick="@command('onOpenVariazioni')"/>
+                    <toolbarbuttonAllegati/>
+                </controlBar>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+
+                <estremiIndividuoFormLabel/>
+            </hlayout>
+            <vlayout vflex="1" width="100%" sclass="scroll">
+                <borderlayout vflex="min">
+                    <center vflex="1"
+                            style="border: 1px solid #c5c5c5;">
+                        <caption sclass="mainCaption">
+                            <div>
+                                <label value="@load(vm.etichette['Anagrafe'])" sclass="captionLabel"/>
+                            </div>
+                        </caption>
+                        <templateSezioneIndividuoDettaglio/>
+                    </center>
+                    <east collapsible="true"
+                          size="50%"
+                          vflex="1"
+                          visible="@load(not empty vm.anpDettaglio)"
+                          style="background-color: #EDEFF5;">
+                        <caption sclass="mainCaption">
+                            <hlayout valign="middle">
+                                <image src="/images/de4gsdzk/18x18/anpr.png"/>
+                                <label value="@load(vm.etichette['ANPR'])" sclass="captionLabel"/>
+                            </hlayout>
+                        </caption>
+                        <templateSezioneIndividuoDettaglio showAnp="true"/>
+                    </east>
+                </borderlayout>
+            </vlayout>
+        </vlayout>
+    </window>
+</zk>

@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name=bandboxLuoghiMatrimonio extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxLuoghiMatrimonio?>
+<?component name=bandboxSacerdote extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxSacerdote?>
+<?component name=bandboxQualificaSacerdote extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxQualificaSacerdote?>
+<?component name="templateRowDicCompFirmMatUciDettaglio" macroURI="/restrict/statocivile/templateRowDicCompFirmMatUciDettaglio.zul" inline="true"?>
+<?component name="templateSezioneRowFCCPDVMatUci" macroURI="/restrict/statocivile/templateSezioneRowFCCPDVMatUci.zul" inline="true"?>
+<?component name="templateRowCivileXDelegaDettaglio" macroURI="/restrict/statocivile/templateRowCivileXDelegaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneTipoDocumentoFineOpposizione" macroURI="/restrict/statocivile/templateSezioneTipoDocumentoFineOpposizione.zul" inline="true"?>
+<?component name="templateRowDatiProvenienza" macroURI="/restrict/statocivile/templateRowDatiProvenienza.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+		<groupbox mold="3d" hflex="1" open="false" visible="@load(not empty vm.dettaglio.natura)">
+			<caption sclass="mainCaption">
+				<div>
+					<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+					<label value="@load(vm.etichette['SEZIONE_REDAZIONE'])" sclass="captionLabel"/>
+				</div>
+			</caption>
+
+			<!-- DICHIARANTE/COMPARENTE/FIRMATARIO -->
+			<zk if="${vm.anscOn}">
+				<groupbox closable="false" visible="@load(vm.dettaglio.isDichMatUciVisibile() or vm.dettaglio.isCompMatUciVisibile() or vm.dettaglio.isFirmMatUciVisibile() )">
+					<templateRowDicCompFirmMatUciDettaglio/>
+				</groupbox>
+			</zk>
+
+			<!--SEZIONE INTERPRETE -->
+			<zk if="${vm.anscOn}">
+				<grid sclass="form">
+					<rows visible="@load(vm.datiProvenienza.isComparenteInterprete())">
+						<templateRowInterpreteDettaglio/>
+					</rows>
+				</grid>
+			</zk>
+
+			<!-- Parte 2A - 2B -->
+			<zk if="${( vm.dettaglio.isSecondaA() or vm.dettaglio.isSecondaB() )}">
+				<groupbox closable="true" open="@load( vm.dettaglio.isSecondaA() or vm.dettaglio.isSecondaB() )">
+					<caption label="@load(vm.etichette['Provenienza'])" visible="@load( vm.dettaglio.isSecondaA() or vm.dettaglio.isSecondaB() )"/>
+					<grid sclass="form">
+						<rows>
+                            <templateRowDatiProvenienza/>
+
+							<!-- SOLO 2A -->
+							<zk if="${vm.dettaglio.isSecondaA()}">
+								<row visible="@load(vm.dettaglio.isSecondaA())">
+									<cell align="right">
+										<label value="@load(vm.etichette['Sacerdote'])"/>
+									</cell>
+									<cell colspan="2">
+										<hlayout valign="middle" hflex="1">
+											<bandboxSacerdote hflex="1" value="@bind(vm.datiProvenienza.ministro)"
+															  disabled="@load(not vm.dettaglio.isSecondaA() )"
+															  onSelect="@command('onSelectSacerdote')"/>
+											<button image="/images/icon/action/16x16/cancel.png"
+													disabled="@load(not vm.dettaglio.isSecondaA() )"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                                <custom-attributes proprieta="ministro"/>
+                                            </button>
+										</hlayout>
+									</cell>
+									<cell align="right">
+										<label value="@load(vm.etichette['Qualifica'])"/>
+									</cell>
+									<cell colspan="2">
+										<hlayout valign="middle" hflex="1">
+											<bandboxQualificaSacerdote hflex="1" value="@bind(vm.datiProvenienza.qualita)"
+																	   disabled="@load(not vm.dettaglio.isSecondaA() )"
+																	   onSelect="@command('onSelectQualificaSacerdote')"/>
+											<button image="/images/icon/action/16x16/cancel.png"
+													disabled="@load(not vm.dettaglio.isSecondaA() )"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                                <custom-attributes proprieta="qualita"/>
+                                            </button>
+										</hlayout>
+									</cell>
+								</row>
+							</zk>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<!-- SOLO 2A -->
+			<zk if="${vm.dettaglio.isSecondaA()}">
+				<groupbox closable="false" visible="@load(vm.dettaglio.isSecondaA())">
+					<caption label="@load(vm.etichette['Luogo_Celebrazione'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="150px">
+									<zk if="${vm.anscOn}">
+										<h:span class="mandatoryLabel">*</h:span>
+									</zk>
+									<label value="@load(vm.etichette['Luogo'])"/>
+								</cell>
+								<cell colspan="5">
+									<hlayout valign="middle" hflex="1">
+										<textbox width="25px" value="@bind(vm.datiProvenienza.nelLuogoMatrimonio)"
+												 tooltiptext="@load(vm.etichette['Nel'])"
+												 disabled="@load(not vm.dettaglio.isSecondaA() )"/>
+										<bandboxLuoghiMatrimonio hflex="1" value="@bind(vm.datiProvenienza.luogoMatrimonio)"
+																 disabled="@load(not vm.dettaglio.isSecondaA() )"
+																 onSelect="@command('onSelectLuogoMatrimonio')"/>
+										<!-- onChange="@command('onChangeLuogoMatrimonio')" -->
+										<button image="/images/icon/action/16x16/cancel.png"
+												disabled="@load(not vm.dettaglio.isSecondaA() )"
+												tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaLuogoMatrimonio')"
+										/>
+									</hlayout>
+								</cell>
+							</row>
+
+							<zk if="${vm.anscOn}">
+								<row>
+									<cell align="right">
+										<label value="@load(vm.etichette['Indirizzo'])"/>
+									</cell>
+									<cell colspan="3">
+										<hlayout valign="middle" hflex="1">
+											<textbox value="@bind(vm.datiProvenienza.indirizzo)" hflex="1"/>
+											<button image="/images/icon/action/16x16/cancel.png"
+													tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+												<custom-attributes proprieta="indirizzo"/>
+											</button>
+										</hlayout>
+									</cell>
+									<cell align="right">
+										<label value="@load(vm.etichette['Civico'])"/>
+									</cell>
+									<cell colspan="1">
+										<hlayout valign="middle" hflex="1">
+											<textbox value="@bind(vm.datiProvenienza.civico)" hflex="1"/>
+											<button image="/images/icon/action/16x16/cancel.png"
+													tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+												<custom-attributes proprieta="civico"/>
+											</button>
+										</hlayout>
+									</cell>
+								</row>
+							</zk>
+
+							<row>
+								<cell align="right">
+									<zk if="${vm.anscOn}">
+										<h:span class="mandatoryLabel">*</h:span>
+									</zk>
+									<label value="@load(vm.etichette['Celebrante'])"/>
+								</cell>
+								<cell colspan="2">
+									<hlayout valign="middle" hflex="1">
+										<bandboxSacerdote hflex="1" value="@bind(vm.datiProvenienza.celebrante)"
+														  disabled="@load(not vm.dettaglio.isSecondaA() )"
+														  onSelect="@command('onSelectCelebrante')"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												disabled="@load(not vm.dettaglio.isSecondaA() )"
+                                                tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                            <custom-attributes proprieta="celebrante"/>
+                                        </button>
+									</hlayout>
+								</cell>
+								<cell align="right">
+									<zk if="${vm.anscOn}">
+										<h:span class="mandatoryLabel">*</h:span>
+									</zk>
+									<label value="@load(vm.etichette['Rito'])"/>
+								</cell>
+								<cell colspan="2">
+									<combobox model="@load(vm.listaRito)" readonly="false" hflex="1"
+											  disabled="@load(not vm.dettaglio.isSecondaA() )"
+											  selectedItem="@bind(vm.datiProvenienza.rito)">
+										<template name="model">
+											<comboitem label="@load(each)" value="@load(each)"/>
+										</template>
+									</combobox>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<!-- CIVILE PER DELEGA O TRASCRIZIONE MATRIMONIO CIVILE PER DELEGA O ATTO A TESTO LIBERO -->
+			<zk if="${( vm.dettaglio.isCivileXDelega() or vm.dettaglio.isTrascrizioneMatrimonioCivileSuDelega() or vm.dettaglio.isTestoLibero() )}">
+				<templateRowCivileXDelegaDettaglio/>
+			</zk>
+
+			<!-- TRASCRIZIONE ESTERO (PRIVATO) -->
+			<templateRowTrascrizioneEsteroPrivatoDettaglio/>
+
+			<!-- TRASCRIZIONE ESTERO (AUTORITA’) -->
+			<zk if="${vm.dettaglio.isTrascrizioneEsteroDaAutorita()}">
+			    <templateRowTrascrizioneEsteroAutoritaDettaglio mandatory="true"/>
+			</zk>
+
+			<!-- FUORI CASA COMUNALE - PERICOLO DI VITA -->
+			<templateSezioneRowFCCPDVMatUci/>
+
+			<!-- SEZIONE RICONOSCIMENTO FIGLI -->
+			<zk if="${vm.anscOn and vm.dettaglio.isRiconoscimentoFigliVisibile()}">
+				<groupbox closable="false" visible="@load(not vm.datiProvenienza.flagInViaggio)">
+					<caption label="@load(vm.etichette['Riconoscimento_Figli'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="160px">
+									<h:span class="mandatoryLabel" >*</h:span><label value="@load(vm.etichette['Riconoscimento_Figli'])" />
+								</cell>
+								<cell colspan="9">
+									<hlayout height="20px">
+										<radiogroup model="@load(vm.listaSiNo)" hflex="1"
+													selectedItem="@bind(vm.dettaglio.riconoscimentoFigli) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+											<template name="model">
+												<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+											</template>
+										</radiogroup>
+									</hlayout>
+								</cell>
+							</row>
+							<!--<row visible="@load(vm.dettaglio.riconoscimentoFigli eq 'SI')">
+								<cell align="right" width="160px">
+									<h:span class="mandatoryLabel" >*</h:span><label value="Numero figli da riconoscere" />
+								</cell>
+								<cell colspan="9">
+									<hlayout valign="middle" hflex="1">
+										<intbox value="@bind(vm.dettaglio.numeroFigli)"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoAtto')">
+											<custom-attributes proprieta="numeroFigli"/>
+										</button>
+									</hlayout>
+								</cell>
+							</row>-->
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<!-- SEZIONE ALTRI DATI PER ANSC -->
+			<zk if="${vm.anscOn}">
+				<!-- IMPEDIMENTI: ETA - PARENTELA - DIVIETO TEMPORANEO -->
+				<groupbox closable="false"
+						  visible="@load(vm.dettaglio.isDifettoEtaParentelaDivietoTempVisibile() || vm.dettaglio.isStranieriNonResidentiVisible())">
+					<caption label="@load(vm.etichette['Altri_Dati'])"/>
+					<grid sclass="form">
+						<rows>
+							<zk if="${vm.dettaglio.isStranieriNonResidentiVisible()}">
+								<row>
+									<cell align="right">
+										<label value="Stranieri non domiciliati né residenti"/>
+									</cell>
+									<cell colspan="5" valign="middle">
+										<checkbox checked="@bind(vm.datiProvenienza.flagStranieriNonResidenti)"
+												  onCheck="@command('onCheckFlagStranieriNonResidenti')"/>
+									</cell>
+								</row>
+							</zk>
+							<zk if="${vm.anscOn and vm.dettaglio.isDifettoEtaParentelaDivietoTempVisibile()}">
+								<!-- DIFETTO ETA -->
+								<row>
+									<cell align="right" width="160px">
+										<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Difetto_eta'])"/>
+									</cell>
+									<cell>
+										<combobox model="@load(vm.listaDifettoEta)" readonly="true"
+												  selectedItem="@bind(vm.dettaglio.difettoEta) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+												  onChange="@command('onSelectDifettoEta')">
+											<template name="model">
+												<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+											</template>
+										</combobox>
+									</cell>
+									<cell align="right" width="160px">
+										<hlayout>
+											<hbox visible="@load((vm.dettaglio.difettoEta eq 'D2') or (vm.dettaglio.difettoEta eq 'D4') )">
+												<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+											</hbox>
+											<label value="@load(vm.etichette['Assistenza_minore_sposo'])"/>
+										</hlayout>
+									</cell>
+									<cell>
+										<combobox model="@load(vm.listaTipoAssistenzaMinore)" readonly="true"
+												  disabled="@load(empty vm.dettaglio.difettoEta or (vm.dettaglio.difettoEta eq 'D1') or (vm.dettaglio.difettoEta eq 'D3') )"
+												  selectedItem="@bind(vm.dettaglio.tipoAssistenzaMinore1) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+											<template name="model">
+												<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+											</template>
+										</combobox>
+									</cell>
+									<cell align="right" width="160px">
+										<hlayout>
+											<hbox visible="@load((vm.dettaglio.difettoEta eq 'D3') or (vm.dettaglio.difettoEta eq 'D4') )">
+												<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+											</hbox>
+											<label value="@load(vm.etichette['Assistenza_minore_sposa'])"/>
+										</hlayout>
+									</cell>
+									<cell>
+										<combobox model="@load(vm.listaTipoAssistenzaMinore)" readonly="true"
+												  disabled="@load(empty vm.dettaglio.difettoEta or (vm.dettaglio.difettoEta eq 'D1') or (vm.dettaglio.difettoEta eq 'D2') )"
+												  selectedItem="@bind(vm.dettaglio.tipoAssistenzaMinore2) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+											<template name="model">
+												<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+											</template>
+										</combobox>
+									</cell>
+								</row>
+								<row visible="@load(vm.dettaglio.difettoEta eq 'D2' or vm.dettaglio.difettoEta eq 'D3' or vm.dettaglio.difettoEta eq 'D4')">
+									<cell align="right">
+										<label value="@load(vm.etichette['Impedimento_Eta_doc'])"/>
+									</cell>
+									<cell colspan="5">
+										<groupbox closable="false">
+											<vlayout>
+												<grid sclass="form">
+													<rows>
+														<row>
+															<cell align="right" width="150px">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Nome_Ente'])"/>
+															</cell>
+															<cell colspan="6">
+																<hlayout valign="middle" hflex="1">
+																	<textbox hflex="1" value="@bind(vm.datiProvenienza.enteImpedimentoEta)"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="enteImpedimentoEta"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Comune_Ente'])"/>
+															</cell>
+															<cell colspan="5">
+																<hlayout valign="middle" hflex="1">
+																	<bandboxComuni hflex="1"
+																				   value="@load(vm.datiProvenienza.comuneAttoImpedimentoEta.descrizione)"
+																				   onSelect="@command('onSelectComune', campoRiferimento='CA_ETA')"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_ETA')"
+																	/>
+																</hlayout>
+															</cell>
+															<cell>
+																<textbox value="@load(vm.datiProvenienza.comuneAttoImpedimentoEta.siglaProvincia)" hflex="1" readonly="true"/>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Estremi_documento'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout>
+																	<textbox value="@bind(vm.datiProvenienza.estremiDocumentoImpedimentoEta)" hflex="1"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="estremiDocumentoImpedimentoEta"/>
+																	</button>
+																</hlayout>
+															</cell>
+                                                            <cell align="right" colspan="2">
+                                                                <h:span class="mandatoryLabel">*</h:span>
+                                                                <label value="@load(vm.etichette['Data_Formazione'])"/>
+                                                            </cell>
+                                                            <cell colspan="2">
+																<hlayout valign="middle" hflex="1">
+																	<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoImpedimentoEta)" width="100px"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="dataAttoImpedimentoEta"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</vlayout>
+										</groupbox>
+									</cell>
+								</row>
+								<!-- IMPEDIMENTO PARENTELA -->
+								<row>
+									<cell align="right">
+										<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Impedimento_Par'])"/>
+									</cell>
+									<cell colspan="5">
+										<combobox model="@load(vm.listaImpedimentoParentelaMatrimonio)" readonly="true" width="190px"
+												  selectedItem="@bind(vm.dettaglio.impedimentoParentelaMatrimonio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+												  onChange="@command('onSelectImpedimentoParentela')">
+											<template name="model">
+												<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+											</template>
+										</combobox>
+									</cell>
+								</row>
+								<row visible="@load(vm.dettaglio.impedimentoParentelaMatrimonio eq 'I1' or vm.dettaglio.impedimentoParentelaMatrimonio eq 'I2' or vm.dettaglio.impedimentoParentelaMatrimonio eq 'I3')">
+									<cell align="right">
+										<label value="@load(vm.etichette['Impedimento_Par_doc'])"/>
+									</cell>
+									<cell colspan="5">
+										<groupbox closable="false">
+											<vlayout>
+												<grid sclass="form">
+													<rows>
+														<row>
+															<cell align="right" width="150px">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Nome_Ente'])"/>
+															</cell>
+															<cell colspan="6">
+																<hlayout valign="middle" hflex="1">
+																	<textbox hflex="1" value="@bind(vm.datiProvenienza.enteImpedimentoParentela)"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="enteImpedimentoParentela"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Comune_Ente'])"/>
+															</cell>
+															<cell colspan="5">
+																<hlayout valign="middle" hflex="1">
+																	<bandboxComuni hflex="1"
+																				   value="@load(vm.datiProvenienza.comuneAttoImpedimentoParentela.descrizione)"
+																				   onSelect="@command('onSelectComune', campoRiferimento='CA_PAR')"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_PAR')"
+																	/>
+																</hlayout>
+															</cell>
+															<cell>
+																<textbox value="@load(vm.datiProvenienza.comuneAttoImpedimentoParentela.siglaProvincia)" hflex="1" readonly="true"/>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Estremi_documento'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout>
+																	<textbox value="@bind(vm.datiProvenienza.estremiDocumentoImpedimentoParentela)" hflex="1"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="estremiDocumentoImpedimentoParentela"/>
+																	</button>
+																</hlayout>
+															</cell>
+															<cell align="right" colspan="2">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Data_Formazione'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout valign="middle" hflex="1">
+																	<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoImpedimentoParentela)" width="100px"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="dataAttoImpedimentoParentela"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</vlayout>
+										</groupbox>
+									</cell>
+								</row>
+								<!-- DIVIETO TEMPORANEO-->
+								<row>
+									<cell align="right">
+										<hlayout>
+											<checkbox checked="@bind(vm.dettaglio.flagDivietoTemporaneo)" onCheck="@command('onSelectDivietoTemporaneo')" />
+										</hlayout>
+									</cell>
+									<cell colspan="5">
+										<hlayout>
+											<label value="@load(vm.etichette['Divieto_temporaneo'])"/>
+										</hlayout>
+									</cell>
+								</row>
+								<row visible="@load(vm.dettaglio.flagDivietoTemporaneo)">
+									<cell align="right">
+										<label value="@load(vm.etichette['Impedimento_Temp_doc'])"/>
+									</cell>
+									<cell colspan="5">
+										<groupbox closable="false">
+											<vlayout>
+												<grid sclass="form">
+													<rows>
+														<row>
+															<cell align="right" width="150px">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Nome_Ente'])"/>
+															</cell>
+															<cell colspan="6">
+																<hlayout valign="middle" hflex="1">
+																	<textbox hflex="1" value="@bind(vm.datiProvenienza.enteDivietoTemporaneo)"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="enteDivietoTemporaneo"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Comune_Ente'])"/>
+															</cell>
+															<cell colspan="5">
+																<hlayout valign="middle" hflex="1">
+																	<bandboxComuni hflex="1"
+																				   value="@load(vm.datiProvenienza.comuneAttoDivietoTemporaneo.descrizione)"
+																				   onSelect="@command('onSelectComune', campoRiferimento='CA_TMP')"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_TMP')"
+																	/>
+																</hlayout>
+															</cell>
+															<cell>
+																<textbox value="@load(vm.datiProvenienza.comuneAttoDivietoTemporaneo.siglaProvincia)" hflex="1" readonly="true"/>
+															</cell>
+														</row>
+														<row>
+															<cell align="right">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Estremi_documento'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout>
+																	<textbox value="@bind(vm.datiProvenienza.estremiDocumentoDivietoTemporaneo)" hflex="1"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="estremiDocumentoDivietoTemporaneo"/>
+																	</button>
+																</hlayout>
+															</cell>
+															<cell align="right" colspan="2">
+																<h:span class="mandatoryLabel">*</h:span>
+																<label value="@load(vm.etichette['Data_Formazione'])"/>
+															</cell>
+															<cell colspan="2">
+																<hlayout valign="middle" hflex="1">
+																	<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoDivietoTemporaneo)" width="100px"/>
+																	<button image="/images/icon/action/16x16/cancel.png"
+																			tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+																		<custom-attributes proprieta="dataAttoDivietoTemporaneo"/>
+																	</button>
+																</hlayout>
+															</cell>
+														</row>
+													</rows>
+												</grid>
+											</vlayout>
+										</groupbox>
+									</cell>
+								</row>
+							</zk>
+							<!--<row>
+								<cell align="right" width="160px">
+									<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Presentazione_documenti'])"/>
+								</cell>
+								<cell colspan="2">
+									<combobox model="@load(vm.listaPresentazioneDocumenti)" readonly="true" width="200px"
+											  selectedItem="@bind(vm.datiProvenienza.presentazioneDocumentiAnsc) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+										</template>
+									</combobox>
+								</cell>
+								<cell colspan="3"/>
+							</row>-->
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+			<zk if="${vm.anscOn}">
+				<!-- ESTREMI CERTIFICAZIONE -->
+				<groupbox id="gbEstremiCertificazione"
+						visible="@bind(vm.datiProvenienza.isStranieriNonResidenti())"
+						closable="false" open="true">
+					<caption label="@load(vm.etichette['Estremi_Certificazione'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="160px">
+									<customLabel mandatory="true" value="@load(vm.etichette['Ente_Straniero'])"/>
+								</cell>
+								<cell colspan="4">
+									<hlayout valign="middle" hflex="1">
+										<textbox hflex="1" value="@bind(vm.datiProvenienza.autoritaEnteStraniero)"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="autoritaEnteStraniero"/>
+										</button>
+									</hlayout>
+								</cell>
+								<cell align="right" width="165px">
+									<customLabel mandatory="true" value="@load(vm.etichette['Data_Formazione'])"/>
+								</cell>
+								<cell colspan="2">
+									<hlayout valign="middle" hflex="1">
+										<datebox format="dd/MM/yyyy"
+												 value="@bind(vm.datiProvenienza.dataAttoEnteStraniero)" width="100px"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="dataAttoEnteStraniero"/>
+										</button>
+									</hlayout>
+								</cell>
+							</row>
+							<row>
+								<cell align="right">
+									<customLabel mandatory="true" value="@load(vm.etichette['Comune_Ente_Straniero'])"/>
+								</cell>
+								<cell colspan="6">
+									<hlayout valign="middle" hflex="1">
+										<bandboxComuni hflex="1"
+													   value="@load(vm.datiProvenienza.comuneEnteStraniero.descrizione)"
+													   dataRiferimento="@load(vm.datiProvenienza.dataAttoEnteStraniero)"
+													   onSelect="@command('onSelectComune', campoRiferimento='CE_STRA')"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaComune', campoRiferimento='CE_STRA')"
+										/>
+									</hlayout>
+								</cell>
+								<cell>
+									<textbox value="@load(vm.datiProvenienza.comuneEnteStraniero.siglaProvincia)"
+											 hflex="1" readonly="true"/>
+								</cell>
+							</row>
+
+							<row>
+								<cell align="right">
+									<customLabel mandatory="true" value="@load(vm.etichette['Estremi_Atto_Straniero'])"/>
+								</cell>
+								<cell colspan="4" valign="middle">
+									<hlayout valign="middle" hflex="1">
+										<textbox hflex="1" value="@bind(vm.datiProvenienza.estremiAttoEnteStraniero)"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="estremiAttoEnteStraniero"/>
+										</button>
+									</hlayout>
+								</cell>
+								<cell align="right">
+									<customLabel mandatory="true" value="@load(vm.etichette['Descrizione_Atto_Straniero'])"/>
+								</cell>
+								<cell colspan="2" valign="middle">
+									<hlayout valign="middle" hflex="1">
+										<textbox hflex="1" value="@bind(vm.datiProvenienza.tipoAttoEnteStraniero)"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoProvenienza')">
+											<custom-attributes proprieta="tipoAttoEnteStraniero"/>
+										</button>
+									</hlayout>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+			</zk>
+
+			<!-- SEZIONE PUBBLICAZIONI -->
+			<zk if="${(not vm.dettaglio.isTrascrizioneEsteroDaPrivato()) and (not vm.dettaglio.isTrascrizioneEsteroDaAutorita())}">
+				<groupbox id="gbSezionePubblicazioni" closable="false"
+						  visible="@load(not vm.datiProvenienza.isStranieriNonResidenti())">
+					<caption label="@load(vm.etichette['Pubblicazioni'])"/>
+					<grid sclass="form">
+						<rows>
+							<row>
+								<cell align="right" width="160px">
+									<h:span class="mandatoryLabel">*</h:span>
+									<label value="@load(vm.etichette['Comuni_pubblicazione'])"/>
+								</cell>
+								<cell colspan="6">
+									<radiogroup model="@load(vm.listaDocumentiPresentati)"
+												onCheck="@command('onSelectDocumentoPresentato')"
+												selectedItem="@bind(vm.margine.documentoPresentatoMatrimonio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)"
+												   style="padding-left:10px"/>
+										</template>
+									</radiogroup>
+								</cell>
+								<cell width="100px"/>
+								<cell/>
+								<cell width="100px"/>
+								<cell/>
+								<cell colspan="3"/>
+							</row>
+							<row>
+								<cell align="right">
+									<label value="@load(vm.etichette['Affissione_nel_Comune_di'])"/>
+								</cell>
+								<cell colspan="4">
+									<hlayout valign="middle" hflex="1">
+										<bandboxComuni hflex="1"
+													   value="@load(vm.margine.comuneAffissione1.descrizione)"
+													   dataRiferimento="@load(vm.margine.dataAffissioneDa1)"
+													   disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+													   onSelect="@command('onSelectComune', campoRiferimento='CA_PUBB1')"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+												onClick="@command('onCancellaComune', campoRiferimento='CA_PUBB1')"
+										/>
+									</hlayout>
+								</cell>
+								<cell>
+									<textbox value="@load(vm.margine.comuneAffissione1.siglaProvincia)" hflex="1"
+											 readonly="true"/>
+								</cell>
+								<cell align="right">
+									<label value="@load(vm.etichette['Dal'])"/>
+								</cell>
+								<cell>
+									<datebox format="dd/MM/yyyy" width="100px"
+											 disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+											 value="@bind(vm.margine.dataAffissioneDa1)"/>
+								</cell>
+								<cell align="right">
+									<label value="@load(vm.etichette['Al'])"/>
+								</cell>
+								<cell>
+									<datebox format="dd/MM/yyyy" width="100px"
+											 disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+											 value="@bind(vm.margine.dataAffissioneA1)"/>
+								</cell>
+								<cell align="right">
+									<label if="${vm.anscOn}" value="@load(vm.etichette['Consolato'])"/>
+
+								</cell>
+								<cell colspan="3">
+									<hlayout if="${vm.anscOn}" valign="middle" hflex="1">
+										<bandboxConsolati hflex="1"
+														  value="@load(vm.margine.consolatoAffisione1.descrizione)"
+														  disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione() or not vm.comuneAffissione1Estero)"
+														  onSelect="@command('onSelectConsolato', campoRiferimento='AFFISSIONE1')"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												onClick="@command('onCancellaCampoProvenienza')"
+												disabled="@load(vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione() or not vm.comuneAffissione1Estero)">
+											<custom-attributes proprieta="consolatoAffisione1"/>
+										</button>
+									</hlayout>
+								</cell>
+							</row>
+							<row>
+								<cell align="right" width="150px">
+									<label value="@load(vm.etichette['Affissione_nel_Comune_di'])"/>
+								</cell>
+								<cell colspan="4">
+									<hlayout valign="middle" hflex="1">
+										<bandboxComuni hflex="1"
+													   value="@load(vm.margine.comuneAffissione2.descrizione)"
+													   dataRiferimento="@load(vm.margine.dataAffissioneDa2)"
+													   disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+													   onSelect="@command('onSelectComune', campoRiferimento='CA_PUBB2')"/>
+										<button image="/images/icon/action/16x16/cancel.png"
+												tooltiptext="@load(vm.etichette['Cancella'])"
+												disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+												onClick="@command('onCancellaComune', campoRiferimento='CA_PUBB2')"
+										/>
+									</hlayout>
+								</cell>
+								<cell>
+									<textbox value="@load(vm.margine.comuneAffissione2.siglaProvincia)" hflex="1"
+											 readonly="true"/>
+								</cell>
+								<cell align="right">
+									<label value="@load(vm.etichette['Dal'])"/>
+								</cell>
+								<cell>
+									<datebox format="dd/MM/yyyy" width="100px"
+											 disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+											 value="@bind(vm.margine.dataAffissioneDa2)"/>
+								</cell>
+								<cell align="right">
+									<label value="@load(vm.etichette['Al'])"/>
+								</cell>
+								<cell>
+									<datebox format="dd/MM/yyyy" width="100px"
+											 disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione())"
+											 value="@bind(vm.margine.dataAffissioneA2)"/>
+								</cell>
+								<cell align="right">
+									<label if="${vm.anscOn}" value="@load(vm.etichette['Consolato'])"/>
+								</cell>
+								<cell colspan="3">
+									<zk if="${vm.anscOn}">
+										<hlayout valign="middle" hflex="1">
+											<bandboxConsolati hflex="1"
+															  value="@load(vm.margine.consolatoAffisione2.descrizione)"
+															  disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione() or not vm.comuneAffissione2Estero)"
+															  onSelect="@command('onSelectConsolato', campoRiferimento='AFFISSIONE2')"/>
+											<button image="/images/icon/action/16x16/cancel.png"
+													tooltiptext="@load(vm.etichette['Cancella'])"
+													onClick="@command('onCancellaCampoProvenienza')"
+													disabled="@load(vm.margine.documentoPresentatoMatrimonio.isUno() or vm.margine.documentoPresentatoMatrimonio.isOmessaPubblicazione() or not vm.comuneAffissione2Estero)">
+												<custom-attributes proprieta="consolatoAffisione2"/>
+											</button>
+										</hlayout>
+									</zk>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<zk if="${vm.anscOn}">
+					<templateSezioneTipoDocumentoFineOpposizione/>
+				</zk>
+			</zk>
+
+			<!-- SEZIONE REDAZIONE -->
+			<groupbox closable="false">
+				<caption label="@load(vm.etichette['Dati_Redazione'])"/>
+				<grid sclass="form">
+					<rows>
+						<templateSezioneRowRedazioneDettaglio/>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<templateSezioneAccessoComposizioneDettaglio/>
+
+		</groupbox>
+
+</zk>

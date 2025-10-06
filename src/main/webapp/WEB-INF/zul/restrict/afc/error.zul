@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.afc.ErrorViewModel')"
+		apply="org.zkoss.bind.BindComposer"
+		position="center,middle"
+		mode="modal"
+		closable="false"
+		width="600px"
+		class="windowErrore"
+		contentStyle="background:#f2dede" >
+
+		<vlayout class="testoErrore">
+			<div>
+				<image src="/images/icon/presentation/16x16/alert.png"/>
+				<label value="@bind(vm.title)" style="word-wrap: break-word;" pre="true"/>
+			</div>
+			<!--<div style="text-align: right;">
+				<button label="Dettagli per l'assistenza" w:onClick="var s = zk.Widget.$('$stacktrace'); s.setVisible(!s.isVisible());" class="pulsanteErrore" visible="@load(not empty vm.stacktrace)" />
+			</div>-->
+			<div sclass="testo-a-dx">
+				<button label="Ok" onClick="@command('onClose')" class="pulsanteErrore" mold="default"/>
+			</div>
+			<!-- <vlayout width="99%" visible="@load(vm.showDetails)">
+				<label value="STACK TRACE" />
+				<textbox width="99%" rows="20" value="@load(vm.stacktrace)" readonly="true" />
+				<button label="Apri una richiesta" class="pulsanteErrore"/>
+			</vlayout> -->
+					
+		</vlayout>
+	</window>
+</zk>

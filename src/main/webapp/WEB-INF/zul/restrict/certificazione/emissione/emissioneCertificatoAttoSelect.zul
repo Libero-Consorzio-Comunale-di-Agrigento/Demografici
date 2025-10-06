@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.certificazione.emissione.EmissioneCertificatoAttoSelectViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="1100px" height="500px"
+			title="@load(vm.etichette['Seleziona'])"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1">
+
+			<controlBarLista/>
+
+			<groupbox visible="@load(not empty vm.anscRichiedenteWarning or not empty vm.anscMorteRichiedenteWarning)">
+				<caption>
+					<hlayout valign="middle">
+						<div class="z-msgbox z-msgbox-exclamation z-div"/>
+						<label value="@load('Avviso')"/>
+					</hlayout>
+				</caption>
+				<grid>
+					<rows>
+						<row>
+							<cell>
+								<label value="@load(vm.anscRichiedenteWarning)"
+									   visible="@load(not empty vm.anscRichiedenteWarning)"/>
+								<label value="@load(vm.anscMorteRichiedenteWarning)"
+									   visible="@load(not empty vm.anscMorteRichiedenteWarning)"/>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<hlayout sclass="navigazione" valign="middle">
+				<totalSizeBlock/>
+			</hlayout>
+
+			<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1" hflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead>
+					<listheader label="@load(vm.etichette['Tipo_Atto'])" width="120px"/>
+					<listheader label="@load(vm.etichetteCustom['Cognome1'])" hflex="5"/>
+					<listheader label="@load(vm.etichetteCustom['Nome1'])" hflex="4"/>
+					<zk if="${vm.tipoAttoEnum.isDoppioSoggetto()}">
+						<listheader label="@load(vm.etichetteCustom['Cognome2'])" hflex="5"/>
+						<listheader label="@load(vm.etichetteCustom['Nome2'])" hflex="4"/>
+					</zk>
+					<listheader label="@load(vm.etichette['Numero_Atto'])" hflex="min"/>
+					<listheader label="@load(vm.etichette['Parte'])" hflex="min"/>
+					<zk if="${vm.tipoAttoEnum.hasSerie()}">
+						<listheader label="@load(vm.etichette['Serie'])" hflex="min"/>
+					</zk>
+					<listheader label="@load(vm.etichette['Anno'])" hflex="min"/>
+					<listheader label="@load(vm.etichette['Ufficio'])" hflex="min"/>
+					<zk if="${vm.anscOn}">
+						<listheader label="@load(vm.etichette['Id_Atto_Ansc'])" width="160px"/>
+					</zk>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem onClick="@command('onClickDettaglio')" onDoubleClick="@command('onClickSeleziona')">
+						<listcell>
+							<label value="@load(vm.getEtichettaEnum(item.getTipoAttoEnum()))" />
+						</listcell>
+						<listcell label="@load(item.cognome1)" />
+						<listcell label="@load(item.nome1)"/>
+						<zk if="${vm.tipoAttoEnum.isDoppioSoggetto()}">
+							<listcell label="@load(item.cognome2)"/>
+							<listcell label="@load(item.nome2)"/>
+						</zk>
+						<listcell label="@load(item.atto)"/>
+						<listcell label="@load(item.parte)"/>
+						<zk if="${vm.tipoAttoEnum.hasSerie()}">
+							<listcell label="@load(item.serie)"/>
+						</zk>
+						<listcell label="@load(item.anno)"/>
+						<listcell label="@load(item.ufficio)"/>
+						<zk if="${vm.anscOn}">
+							<listcell label="@load(item.idAttoAnsc)"/>
+						</zk>
+						<listcell>
+							<button image="/images/icon/action/16x16/forward.png"
+									tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+									visible="@load(not empty item.id)"
+									disabled="@load(not vm.attoInvioEnabled[item.id])"
+									onClick="@command('onClickSeleziona')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="@load(vm.etichette['Seleziona'])" onClick="@command('onClickSeleziona')"
+						image="/images/icon/action/16x16/ok.png"
+						disabled="@load(not vm.attoInvioEnabled[vm.dettaglio.id])"/>
+				<button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+						image="/images/icon/action/16x16/close.png"/>
+			</h:div>
+		</h:div>
+
+	</window>
+
+</zk>

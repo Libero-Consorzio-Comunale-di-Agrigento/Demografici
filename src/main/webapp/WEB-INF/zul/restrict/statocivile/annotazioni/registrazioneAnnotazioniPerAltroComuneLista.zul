@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.annotazioni.RegistrazioneAnnotazioniPerAltroComuneListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1">
+
+			<controlBarAnnotazioni/>
+
+			<groupbox closable="false">
+				<grid sclass="form">
+					<rows>
+						<row>
+							<cell align="right" width="100px">
+								<label value="@load(vm.etichette['Generata_da'])"/>
+							</cell>
+							<cell colspan="10">
+								<hlayout hflex="1">
+									<radiogroup model="@load(vm.listaTipiAttoRiferimento)" onCheck="@command('onSelectTipoAtto')"
+                                                selectedItem="@bind(vm.tipoAttoEnumRiferimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+										<template name="model">
+											<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding:10px"/>
+										</template>
+									</radiogroup>
+								</hlayout>
+							</cell>
+							<cell width="80px"/>
+							<cell colspan="3"/>
+							<cell width="40px"/>
+						</row>
+                        <row>
+                            <cell align="right">
+								<label value="@load(vm.etichette['Ufficio'])"/>
+							</cell>
+							<cell>
+								<combobox model="@load(vm.listaUffici)" readonly="true" hflex="1"
+										  selectedItem="@bind(vm.ricercaAtto.ufficio) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+										  onChange="@command('onRicerca')">
+									<template name="model">
+										<comboitem label="@load(each)" value="@load(each)"/>
+									</template>
+								</combobox>
+							</cell>
+                            <cell align="right">
+								<label value="@load(vm.etichette['Anno'])"/>
+							</cell>
+							<cell>
+								<intbox value="@bind(vm.ricercaAtto.anno)" onOK="@command('onRicerca')" maxlength="4" hflex="1"/>
+							</cell>
+                            <cell align="right">
+								<label value="@load(vm.etichette['Parte'])" />
+							</cell>
+							<cell align="right">
+								<intbox value="@bind(vm.ricercaAtto.parte)" onOK="@command('onRicerca')" width="40px"
+										disabled="@load(not vm.ricercaAtto.hasParte())"/>
+							</cell>
+                            <cell align="right">
+								<label value="@load(vm.etichette['Serie'])" />
+							</cell>
+							<cell>
+								<textbox value="@bind(vm.ricercaAtto.serie)" style="text-transform:uppercase" onOK="@command('onRicerca')"
+								         width="50px" disabled="@load(not vm.ricercaAtto.hasSerie())"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Numero_Atto'])"/>
+							</cell>
+							<cell colspan="2">
+								<intbox value="@bind(vm.ricercaAtto.atto)" width="70px" onOK="@command('onRicerca')"/>
+							</cell>
+							<cell align="right">
+								<label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+							</cell>
+							<cell colspan="3">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.ricercaAtto.idAttoAnsc)" onOK="@command('onRicerca')" hflex="1"/>
+								</hlayout>
+							</cell>
+							<cell width="40px"/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Cognome'])"/>
+							</cell>
+							<cell colspan="14">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.ricercaAtto.cognome)" hflex="1" onOK="@command('onRicerca')"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+										<custom-attributes proprieta="cognome"/>
+									</button>
+									<space/>
+								</hlayout>
+							</cell>
+							<cell/>
+						</row>
+						<row>
+							<cell align="right">
+								<label value="@load(vm.etichette['Nome'])"/>
+							</cell>
+							<cell colspan="14">
+								<hlayout valign="middle" hflex="1">
+									<textbox value="@bind(vm.ricercaAtto.nome)" hflex="1" onOK="@command('onRicerca')"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+										<custom-attributes proprieta="nome"/>
+									</button>
+									<space/>
+								</hlayout>
+							</cell>
+							<cell align="right">
+								<hlayout valign="middle">
+									<button image="/images/icon/action/16x16/search.png"
+											tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+								</hlayout>
+							</cell>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+			<orderByBlock/>
+
+			<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead>
+					<listheader label="@load(vm.etichette['Generata_su'])" width="90px"/>
+					<listheader label="@load(vm.etichette['Estremi_Atto'])"/>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem>
+						<listcell label="@load(vm.getEtichettaEnum(item.getTipoAttoAnnotazioneEnum()))"/>
+						<listcell label="@load( c:cat5(vm.getEstremiAtto(item),
+                                                c:cat4(' - ', vm.etichette['Anno'],': ', item.anno),
+                                                c:cat4(' ', vm.etichette['Numero_Atto'],': ', item.atto),
+                                                c:cat3((empty item.parte?'':' / '), item.parte, (empty item.serie?'':item.serie)),
+                                                (empty item.idAttoAnsc?'': c:cat4(' - ', vm.etichette['Id_Atto_Ansc'],': ', item.idAttoAnsc)) ) )"/>
+						<listcell>
+							<button image="/images/icon/action/18x18/edit.png"
+									tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+									visible="@load(not empty item.id)"
+									onClick="@command('onModifica')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+		</vlayout>
+
+	</window>
+
+</zk>

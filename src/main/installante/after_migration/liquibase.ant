@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" xmlns:liquibase="antlib:liquibase.integration.ant">
+    <taskdef resource="liquibase/integration/ant/antlib.xml" uri="antlib:liquibase.integration.ant"/>
+
+    <!-- Classpath dove sono salvati gli script liquibase -->
+    <path id="classpath-liquibase">
+        <pathelement path="../db"/>
+    </path>
+
+    <!-- Connessioni al db -->
+    <liquibase:database id="target-database" driver="${global.db.target.driver}" url="${global.db.target.url}"
+                        user="${global.db.target.username}" password="${global.db.target.password}"/>
+    <liquibase:database id="ad4-database" driver="${global.db.ad4.driver}" url="${global.db.ad4.url}"
+                        user="${global.db.ad4.username}" password="${global.db.ad4.password}"/>
+
+    <target name="-liquibase">
+
+        <!--
+        <integrazione nome="si" changelogfile="integration/si/master.xml">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+        -->
+
+        <!--
+        <integrazione nome="a00" changelogfile="integration/a00/master.xml">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+        -->
+
+        <!-- <integrazione nome="ad4" changelogfile="integration/ad4/master.xml"> -->
+        <integrazione nome="ad4" changelogfile="integration/ad4/sql/00_AD4_GRANT.sql">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+        <integrazione nome="as4" changelogfile="integration/as4/00_AS4_GRANT.sql">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+        <integrazione nome="so4" changelogfile="integration/so4/00_SO4_GRANT.sql">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+        <integrazione nome="gdm" changelogfile="integration/gdm/00_GDM_GRANT.sql">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+        <integrazione nome="stats" changelogfile="integration/stats/master.xml">
+            <params>
+                <liquibase:changeLogParameter name="targetUser" value="${global.db.target.username}"/>
+            </params>
+        </integrazione>
+
+        <liquibase:updateDatabase databaseref="target-database" changelogfile="master.xml" classpathref="classpath-liquibase">
+            <liquibase:changeLogParameters>
+                <liquibase:changeLogParameter name="global.db.si.username"    value="${global.db.si.username}"/>
+                <liquibase:changeLogParameter name="global.db.a00.username"   value="${global.db.a00.username}"/>
+                <liquibase:changeLogParameter name="global.db.ad4.username"   value="${global.db.ad4.username}"/>
+                <liquibase:changeLogParameter name="global.db.as4.username"   value="${global.db.as4.username}"/>
+                <liquibase:changeLogParameter name="global.db.so4.username"   value="${global.db.so4.username}"/>
+                <liquibase:changeLogParameter name="global.db.gdm.username"   value="${global.db.gdm.username}"/>
+                <liquibase:changeLogParameter name="global.db.stats.username" value="${global.db.stats.username}"/>
+                <liquibase:changeLogParameter name="istanzaAD4"               value="${progetto.istanza.codice}"/>
+            </liquibase:changeLogParameters>
+        </liquibase:updateDatabase>
+    </target>
+</project>

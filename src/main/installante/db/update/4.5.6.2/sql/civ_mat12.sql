@@ -1,0 +1,40 @@
+--liquibase formatted sql
+--changeset amonopoli:202306131615 runOnChange:true stripComments:false
+declare
+w_oracle_ver	varchar2(255) := f_GSD_versione_oracle();
+
+w_tipo_ogg	varchar2(255) := 'COL';
+w_nome_ogg	varchar2(255) := 'CIVMAT';
+w_nome_col      varchar2(255) := 'RICONOSCIMENTO_FIGLI';
+
+w_des_ogg       varchar2(255) := w_tipo_ogg||'.'||w_nome_ogg||'.'||w_nome_col;
+w_check_db	number := f_GSD_check_db(w_tipo_ogg,w_nome_ogg,w_nome_col);
+
+w_sql           varchar2(32000);
+w_result        varchar2(32000);
+
+begin
+  if w_check_db = 0 then
+dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
+
+     w_sql := 'alter table civmat
+add 
+(RICONOSCIMENTO_FIGLI                               varchar2(2)
+,NUMERO_FIGLI                                       number(2)
+,DIFETTO_ETA                                        varchar2(2)
+,IMPEDIMENTO_MAT                                    varchar2(2)
+)';
+
+     begin
+       execute immediate w_sql;
+dbms_output.put_line('oggetto '||w_des_ogg||' creato');
+     exception
+       when others then
+dbms_output.put_line('oggetto '||w_des_ogg||' non creato ('||SQLERRM||')');
+     end;
+
+  elsif w_check_db = 1 then
+dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
+  end if;
+end;
+/

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+	<includeAll path="anpr" relativeToChangelogFile="true"/>
+	<includeAll path="ansc" relativeToChangelogFile="true"/>
+	<includeAll path="gsd" relativeToChangelogFile="true"/>
+	<!--	<includeAll path="gsdana" relativeToChangelogFile="true"/> -->
+	<includeAll path="gsdarc" relativeToChangelogFile="true"/>
+	<includeAll path="gsdana" relativeToChangelogFile="true"/>
+	<includeAll path="gsdcer" relativeToChangelogFile="true"/>
+	<includeAll path="gsdist" relativeToChangelogFile="true"/>
+	<includeAll path="gsdciv" relativeToChangelogFile="true"/>
+	<includeAll path="gsdciv_ansc" relativeToChangelogFile="true"/>
+	<!-- tables GTE hanno FK verso table CIV / CER / etc... -->
+	<includeAll path="gte" relativeToChangelogFile="true"/>
+	<!-- -->
+	<includeAll path="aodi" relativeToChangelogFile="true"/>
+	<includeAll path="wspa" relativeToChangelogFile="true"/>
+</databaseChangeLog>

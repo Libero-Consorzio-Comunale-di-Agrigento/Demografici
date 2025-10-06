@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!--SEZIONE OPERATORE SANITARIO -->
+    <row>
+        <cell>
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Generalita_sanitario'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <label value="@load(vm.etichette['Cognome'])"/>
+                            </cell>
+                            <cell colspan="7">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.sanitario.cognome)" hflex="1" style="@load(vm.minuscole.cognomeSanitario?'text-transform:none':'text-transform:uppercase')"
+                                             onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='OS')">
+                                        <custom-attributes proprieta="cognomeSanitario"/>
+                                    </textbox>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='OS')">
+                                        <custom-attributes proprieta="cognome"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Minuscole'])"/>
+                                    <checkbox checked="@bind(vm.minuscole.cognomeSanitario)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='OS')" >
+                                        <custom-attributes proprieta="cognomeSanitario"/>
+                                    </checkbox>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nome'])"/>
+                            </cell>
+                            <cell colspan="7">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.sanitario.nome)" hflex="1" style="@load(vm.minuscole.nomeSanitario?'text-transform:none':'text-transform:uppercase')"
+                                             onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='OS')">
+                                        <custom-attributes proprieta="nomeSanitario"/>
+                                    </textbox>
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='SANITARIO')"
+                                    />
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='OS')">
+                                        <custom-attributes proprieta="nome"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Minuscole'])"/>
+                                    <checkbox checked="@bind(vm.minuscole.nomeSanitario)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='OS')" >
+                                        <custom-attributes proprieta="nomeSanitario"/>
+                                    </checkbox>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Sesso'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <combobox model="@load(vm.listaSessoSoggettoCollegato)" readonly="true" width="100px"
+                                          selectedItem="@bind(vm.sanitario.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Data_Nascita'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.sanitario.dataNascita)" width="95px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='OS')">
+                                        <custom-attributes proprieta="dataNascita"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Ruolo'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <combobox model="@load(vm.listaQualifica)" readonly="true" width="150px"
+                                          selectedItem="@bind(vm.sanitario.qualifica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Nascita'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.sanitario.comuneNascita.descrizione)"
+                                                   dataRiferimento="@load(vm.sanitario.dataNascita)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CN_SAN')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CN_SAN')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.sanitario.comuneNascita.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                            <cell colspan="2"/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Residenza'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.sanitario.comuneResidenza.descrizione)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CR_SAN')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_SAN')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.sanitario.comuneResidenza.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nazionalita'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+                                          selectedItem="@bind(vm.sanitario.nazionalita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+        <cell width="42px">
+            <button image="/images/icon/action/16x16/cancel.png"
+                    tooltiptext="@load(vm.etichette['Cancella'])"
+                    onClick="@command('onCancellaAnagrafica', tipoSoggetto='SANITARIO')"/>
+        </cell>
+    </row>
+
+</zk>

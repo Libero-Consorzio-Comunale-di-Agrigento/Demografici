@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <import file="liquibase.ant"/>
+
+    <!--<target name="install:db" depends="-liquibase"/>-->
+    <target name="install:db" depends="-install-area,-liquibase" />
+
+    <!-- l'integrazione con gdm è pesante e molto problematica anche per errori non gestiti
+         quindi faccio girare solo se si verifica la condizione "da.installare" -->
+    <target name="-install-area" depends="-da-installare" if="da.installare">
+        <echo message="CARICO AREA GSD"/>
+        <gdm-carica-area area="DE4" file="../webapp/XAREA_DE4.zip" username="${global.db.gdm.username}" password="${global.db.gdm.password}" />
+    </target>
+
+    <!-- l'integrazione con gdm è pesante e molto problematica anche per errori non gestiti
+     quindi faccio girare solo nelle versioni in cui il file ha subito variazioni -->
+    <target name="-da-installare">
+        <condition property="da.installare">
+            <or>
+                <matches string="${versione}" pattern="^4\.5\.8\.0(-SNAPSHOT)?$"/>
+                <!-- <matches string="${versione}" pattern="^4\.5\.8\.1(-SNAPSHOT)?$"/>-->
+            </or>
+        </condition>
+    </target>
+
+    <!-- Questo Target viene eseguito da AntInstaller solo per installare i file su filesystem. -->
+    <target name="install:fs">
+        <!-- aggiungo la connessione sul server.xml: provato su svi, ha comunque modificato la data di modifica del server.xml -->
+        <!--<tomcat-aggiungi-connessione-jndi resource-name="${global.db.target.jndi-name}"
+                                          username="${global.db.target.username}"
+                                          password="${global.db.target.password}"
+                                          url="${global.db.target.url}"
+                                          driver="${global.db.target.driver}"/>-->
+
+        <!-- scompatto il contesto nel war -->
+        <!-- Installo il contesto -->
+        <!--<tomcat-installa-contesto war-file="../webapp/de4gsdzk.war" />-->
+        <tomcat-installa-contesto war-file="../webapp/de4gsdzk.war" context-file="../webapp/context.xml"/>
+
+    </target>
+
+</project>

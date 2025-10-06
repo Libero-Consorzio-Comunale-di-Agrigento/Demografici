@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.dizionari.configurazione.ConfigurazioneViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<tabbox hflex="1" vflex="1">
+			<tabs>
+				<tab label="@load(vm.etichette['Parametri'])" 				/>
+				<tab label="@load(vm.etichette['Parametri_Protocollo'])"	/>
+				<tab label="@load(vm.etichette['Loghi'])" 		/>
+				<tab label="@load(vm.etichette['Etichette'])" 		visible="@load(vm.attivaGestioneEtichette)"/>
+				<tab label="Log" 					                        />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/parametroLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/parametroProtocolloLista.zul" />
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/logoLista.zul"/>
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/etichettaLista.zul"
+							 visible="@load(vm.attivaGestioneEtichette)"/>
+				</tabpanel>
+				<tabpanel>
+					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/logsLista.zul" />
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+
+	</window>
+
+</zk>

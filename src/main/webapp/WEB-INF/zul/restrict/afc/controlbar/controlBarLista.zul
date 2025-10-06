@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="navigazione" valign="middle">
+		<hlayout sclass="afc-control-bar" valign="middle">
+
+			<zk if="${vm.pagingEnabled}">
+				<paging sclass="afc-paging"
+					onPaging="@command('onPagina')"
+					activePage="@bind(vm.activePage)"
+					pageSize="@bind(vm.pageSize)"
+					totalSize="@load(vm.totalSize)"/>
+			</zk>
+
+			<zk if="${vm.searchPopupEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/search.png"
+				   	tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+				   	onClick="@command('onRicercaPlus')"/>
+			</zk>
+
+			<zk if="${vm.searchEnabled}">
+				<hlayout sclass="campo-ricerca">
+					<textbox hflex="1" vflex="1"
+						width="120px"
+						value="@bind(vm.filtro)"
+					 	tooltiptext="@load(vm.etichette['filtro_ricerca_tooltip'])"
+						placeholder="@load(vm.etichette['filtro_ricerca_placeholder'])"
+					 	mold="default"
+					 	onOK="@command('onFiltro')"
+						style="border-width:0px;"/>
+					<image src="/images/de4gsdzk/10x10/cancelSimple.png"
+						style="padding:5px;"
+						sclass="toolbar-mini-button"
+						onClick="@command('onResetFiltro')"/>
+				</hlayout>
+
+				<toolbarbutton image="/images/icon/action/22x22/search.png"
+					tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+					onClick="@command('onFiltro')" />
+			</zk>
+
+			<include hflex="1" vflex="1" src="@load(vm.additionalSearchFilter)"
+					 if="${not empty vm.additionalSearchFilter}"/>
+
+			<include src="@load(vm.additionalSearchFilter2)"
+					 if="${not empty vm.additionalSearchFilter2}"/>
+
+			<zk if="${vm.modifyEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/edit.png"
+				   	tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+					onClick="@command('onModifica')"
+					disabled="@load(empty vm.dettaglio)" />
+			</zk>
+
+			<zk if="${vm.addEnabled}">
+				<toolbarbuttonInsFromList/>
+			</zk>
+
+			<zk if="${vm.addPlusEnabled}">
+				<toolbarbuttonAddPlus/>
+			</zk>
+
+			<zk if="${vm.addCustomEnabled}">
+				<toolbarbutton image="/images/de4gsdzk/22x22/d.png"
+				   	tooltiptext="@load(empty vm.etichetteCustom['inserisci_custom']?'':vm.etichetteCustom['inserisci_custom'] )"
+				   	popup="sceltaNuovoCustom"/>
+			</zk>
+
+			<zk if="${vm.deleteEnabled}">
+				<toolbarbuttonDeleteFromList/>
+			</zk>
+
+			<!--<zk if="${vm.infoEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/info.png"
+					tooltiptext="@load(vm.etichette['info_tooltip'])"
+					onClick="@command('onInfo')"/>
+			</zk> -->
+
+			<zk if="${vm.excelExportEnabled}">
+				<toolbarbuttonExportXls/>
+			</zk>
+
+			<zk if="${vm.csvExportEnabled}">
+				<toolbarbuttonExportCsv/>
+			</zk>
+
+			<zk if="${vm.filtriExtraEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/open.png"
+							   tooltiptext="@load(vm.etichette['filtri_extra_tooltip'])"
+							   popup="sceltaFiltri"/>
+			</zk>
+
+			<zk if="${vm.printEnabled}">
+				<toolbarbutton id="btnStampa" image="/images/icon/action/22x22/print.png"
+							   tooltiptext="@load(vm.etichette['print_tooltip'])"
+							   onClick="@command('onStampa')"/>
+			</zk>
+
+			<zk if="${vm.printPlusEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/print.png"
+							   tooltiptext="@load(vm.etichette['print_tooltip'])"
+							   popup="sceltaStampa"/>
+			</zk>
+
+			<include src="@load(vm.additionalListaToolbarbutton)"
+					 if="${not empty vm.additionalListaToolbarbutton}"/>
+
+		</hlayout>
+
+		<zk if="${vm.filtriExtraEnabled}">
+			<menupopup id="sceltaFiltri" children="@load(vm.filtriList)">
+				<template name="children" var="i">
+					<menuitem label="@load(i.descrizione)" onClick="@command('onFiltriPlus', codice=i.codice)"/>
+				</template>
+			</menupopup>
+		</zk>
+
+		<zk if="${vm.printPlusEnabled}">
+			<menupopup id="sceltaStampa" children="@load(vm.printList)">
+				<template name="children" var="i">
+					<menuitem label="@load(i.descrizione)" onClick="@command('onStampaPlus', codice=i.codice)"/>
+				</template>
+			</menupopup>
+		</zk>
+	</hlayout>
+
+	<zk if="${vm.addCustomEnabled}">
+		<menupopup id="sceltaNuovoCustom" children="@load(vm.addPlusCustomList)">
+			<template name="children" var="i">
+				<menuitem label="@load(i.descrizione)" visible="@load(i.tipo eq 'T')" onClick="@command('onInserisciCustomPlus', idDomain=i.idDomain, tipo=i.tipo)"/>
+
+				<menu label="@load(i.descrizione)" visible="@load(i.tipo eq 'C')">
+					<menupopup children="@load(i.subList)">
+						<template name="children" var="ii">
+							<menuitem label="@load(ii.descrizione)" onClick="@command('onInserisciCustomPlus', idDomain=ii.id, tipo=i.tipo)"/>
+						</template>
+					</menupopup>
+				</menu>
+
+				<!--<menuseparator visible="@load(i.tipo eq 'P')"/>  -->
+
+				<menu label="@load(i.descrizione)" visible="@load(i.tipo eq 'P')">
+					<menupopup children="@load(i.subList)">
+						<template name="children" var="ii">
+							<menuitem label="@load(ii.descrizione)" onClick="@command('onInserisciCustomPlus', idDomain=ii.id, tipo=i.tipo)"/>
+						</template>
+					</menupopup>
+				</menu>
+			</template>
+		</menupopup>
+	</zk>
+
+</zk>

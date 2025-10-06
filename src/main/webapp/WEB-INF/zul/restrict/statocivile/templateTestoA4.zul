@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<vlayout>
+		<!-- TESTO -->
+		<textbox rows="@load(vm.numRighe)" value="@bind(vm.dettaglio.testo)" hflex="1" sclass="testoAttoA4" disabled="@load(not vm.testoEditable)"/>
+		<!-- MARGINE -->
+		<vlayout children="@load(vm.formuleMargine)">
+			<template name="children" var="s">
+				<textbox rows="@load(s.numeroRighe)"
+						 value="@bind(s.testo)" hflex="1" sclass="testoAttoA4" disabled="@load(not vm.margineEditable)"/>
+			</template>
+		</vlayout>
+		<!-- ANNOTAZIONI -->
+		<vlayout children="@load(vm.formuleAnnotazioni)">
+			<template name="children" var="s">
+				<textbox rows="@load(s.numeroRighe)"
+						 value="@load(s.testoAtto)" hflex="1" sclass="testoAttoA4" disabled="true"/>
+			</template>
+		</vlayout>
+	</vlayout>
+
+</zk>

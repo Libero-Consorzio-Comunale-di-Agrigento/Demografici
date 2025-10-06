@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main">
+<head>
+    <title th:text="#{label.titoloApplicazione}"/>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="login_message"><p th:text="${message}"></p></div>
+</div>
+</body>
+</html>

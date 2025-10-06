@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout hflex="1" vflex="1" sclass="footer-text">
+		<hlayout hflex="1" vflex="1">
+			<label sclass="home-footer-titolo">SERVE AIUTO?</label>
+			<space bar="true"/>
+			<hlayout sclass="footer-button">
+				<a href="http://www.ads.it/area-clienti/" target="_blank">
+					<image src="/images/de4gsdzk/18x18/tools.png" tooltiptext="Apri una richiesta di assistenza"/>
+				</a>
+			</hlayout>
+
+			<hlayout sclass="footer-button">
+				<image src="/images/de4gsdzk/18x18/phone.png" tooltiptext="Telefona al numero 0516307411" popup="msg"/>
+			</hlayout>
+		</hlayout>
+		<hlayout hflex="1">
+			<a href="http://www.ads.it/" target="_blank" sclass="home-footer-link">
+				<label  value="© Gruppo Finmatica" />
+			</a>
+			<label sclass="home-footer-titolo" value="@load(vm.versioneApplicazione)" />
+		</hlayout>
+		<hlayout hflex="1">
+			<label sclass="home-footer-titolo">HAI DUBBI?</label>
+			<space bar="true"/>
+			<hlayout sclass="footer-button">
+				<a href="http://vega.ads.it/faq/faqde4gsdzk.nsf" target="_blank">
+					<image src="/images/de4gsdzk/18x18/doc.png" tooltiptext="Manuali"/>
+				</a>
+			</hlayout>
+		</hlayout>
+	</hlayout>
+
+</zk>

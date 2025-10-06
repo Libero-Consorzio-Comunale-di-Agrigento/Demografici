@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="intestazioneDx" height="32px">
+
+		<!--<button mold="default" label="@load(vm.etichette['Nuovo'])" sclass="afc-button-header"
+				image="@load(c:cat('/images/icon/presentation/36x36/', 'doc_add.png'))" popup="openNewMenu"/>
+
+		<menupopup id="openNewMenu" children="@load(vm.headerFunctions.hfList)">
+			<template name="children" var="hf">
+				<menuitem image="@load(c:cat('/images/icon/presentation/16x16/', hf.img))" label="@load(hf.label)"
+						  onClick="@command('onSelectHeaderFunction', hf=hf)"/>
+				<menuseparator/>
+			</template>
+		</menupopup>
+
+		<space/>
+
+		<button mold="default" label="Vai a" sclass="afc-button-header"
+				image="/images/icon/presentation/36x36/home.png" popup="homePagePopup"/>
+		<menupopup id="homePagePopup" children="@load(vm.moduli)">
+			<template name="children" var="m">
+				<menuitem image="@load(c:cat('/images/icon/presentation/16x16/', m.img))" label="@load(m.label)"
+						  href="@load(m.uri)" target="_blank"/>
+				<menuseparator/>
+			</template>
+		</menupopup> -->
+
+		<button mold="default" label="@load(vm.etichette['Apri_home'])" sclass="afc-button-header" image="/images/icon/presentation/36x36/home.png"
+				href="/index.zul" target="_blank"/>
+
+	</hlayout>
+
+</zk>

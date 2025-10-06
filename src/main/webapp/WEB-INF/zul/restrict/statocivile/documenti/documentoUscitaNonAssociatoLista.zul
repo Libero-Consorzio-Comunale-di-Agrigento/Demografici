@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.documenti.DocumentoUscitaNonAssociatoListaViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="@load(vm.wCenterHeight)"
+			sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarLista/>
+
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+		</hlayout>
+
+		<groupbox closable="false">
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="120px">
+							<label value="@load(vm.etichette['Tipo_Documento'])"/>
+						</cell>
+						<cell colspan="3">
+							<hlayout hflex="1">
+								<radiogroup onCheck="@command('onRicarica')" selectedItem="@bind(vm.flagDtsPresente)">
+									<radio label="@load(vm.etichette['Dati_parzialmente_compilati'])" value="${true}" style="padding:20px"/>
+									<radio label="@load(vm.etichette['Dati_da_compilare'])" value="${false}" style="padding:20px"/>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<!--cell width="40px">
+							<hlayout valign="middle">
+								<button image="/images/icon/action/16x16/search.png"
+										tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+							</hlayout>
+						</cell-->
+					</row>
+				</rows>
+			</grid>
+
+		</groupbox>
+
+		<include src="documenti/templateDocumentoUscitaLista.zul" vflex="1"/>
+
+	</window>
+
+</zk>

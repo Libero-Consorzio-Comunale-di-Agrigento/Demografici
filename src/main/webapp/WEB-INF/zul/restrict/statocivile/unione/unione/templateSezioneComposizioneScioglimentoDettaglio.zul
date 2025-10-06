@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="addFormulaScioglimento" class="it.finmatica.de4gsdzk.utils.FormulaUtils" signature="java.lang.Boolean addFormulaScioglimento(java.lang.String chiave, it.finmatica.de4gsdzk.utils.ETipoOperazione tipoOperazione, it.finmatica.de4gsdzk.statocivile.CivUnioneCivile obj)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - COMPOSIZIONE - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<groupbox mold="3d" hflex="1" open="true" visible="@load(vm.tipoOperazione.isUpdate())">
+			<caption>
+				<hlayout hflex="1" sclass="customCaption25">
+					<hlayout sclass="testo-a-sx" hflex="1">
+						<updownbutton onClick="@command(self.openClose())" />
+						<label value="@load(vm.etichette['SEZIONE_COMPOSIZIONE'])" sclass="captionLabel"/>
+					</hlayout>
+					<hlayout sclass="testo-a-dx" hflex="1" style="padding-right:8px">
+						<button onClick="@command('onRefreshAllFormule')"
+							image="/images/icon/action/16x16/refresh.png"
+							tooltiptext="@load(vm.etichette['Aggiorna_Formule'])"/>
+					</hlayout>
+				</hlayout>
+			</caption>
+			<grid sclass="form">
+				<rows>
+					<!-- TESTO LIBERO -->
+					<row visible="@load(c:addFormulaScioglimento('formulaTestoLibero', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right" width="150px">
+							<label value="@load(vm.etichette['Testo_Libero'])"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout hflex="1" valign="middle">
+								<textbox placeholder="@load(vm.etichette['Testo_Libero_placeholder'])"
+										 rows="@load(not empty vm.mapFormule.formulaTestoLibero.numeroRighe?vm.mapFormule.formulaTestoLibero.numeroRighe:5)"
+										 sclass="testoAtto"
+										 value="@bind(vm.mapFormule.formulaTestoLibero.testo)" hflex="1"
+										 disabled="@load(not (c:addFormulaScioglimento('formulaTestoLibero', vm.tipoOperazione, vm.dettaglio)) )"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/grid.png"
+											tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaTestoLibero')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaTestoLibero', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<button image="/images/icon/action/16x16/refresh.png"
+											tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaTestoLibero')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaTestoLibero', vm.tipoOperazione, vm.dettaglio)) )"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+					<!-- TESTATA TRASCRIZIONE -->
+					<row visible="@load(c:addFormulaScioglimento('formulaTestataTrascrizione', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right">
+							<label value="@load(vm.etichette['Testata_Trascrizione'])"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout hflex="1" valign="middle">
+								<textbox rows="@load(not empty vm.mapFormule.formulaTestataTrascrizione.numeroRighe?vm.mapFormule.formulaTestataTrascrizione.numeroRighe:5)"
+										 sclass="testoAtto"
+										 value="@bind(vm.mapFormule.formulaTestataTrascrizione.testo)" hflex="1"
+										 disabled="@load(not (c:addFormulaScioglimento('formulaTestataTrascrizione', vm.tipoOperazione, vm.dettaglio)) )"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/grid.png"
+											tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaTestataTrascrizione')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaTestataTrascrizione', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<button image="/images/icon/action/16x16/refresh.png"
+											tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaTestataTrascrizione')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaTestataTrascrizione', vm.tipoOperazione, vm.dettaglio)) )"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+					<!-- TESTATA -->
+					<row visible="@load(c:addFormulaScioglimento('formulaTestata', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right" width="150px">
+							<label value="@load(vm.etichette['Testata'])"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout hflex="1" valign="middle">
+								<textbox rows="@load(not empty vm.mapFormule.formulaTestata.numeroRighe?vm.mapFormule.formulaTestata.numeroRighe:5)"
+									sclass="testoAtto"
+									value="@bind(vm.mapFormule.formulaTestata.testo)" hflex="1"
+									disabled="@load(not (c:addFormulaScioglimento('formulaTestata', vm.tipoOperazione, vm.dettaglio)) )"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/grid.png"
+											tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaTestata')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaTestata', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<button image="/images/icon/action/16x16/refresh.png"
+										tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaTestata')"
+										disabled="@load(not (c:addFormulaScioglimento('formulaTestata', vm.tipoOperazione, vm.dettaglio)) )"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+
+					<!-- RICHIEDENTI -->
+					<row visible="@load(c:addFormulaScioglimento('formulaRichiedentiFissa', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right">
+							<label value="@load(vm.etichette['Richiedenti'])"/>
+						</cell>
+						<cell colspan="5">
+							<vlayout hflex="1">
+								<hlayout hflex="1" valign="middle">
+									<textbox rows="@load(not empty vm.mapFormule.formulaRichiedentiFissa.numeroRighe?vm.mapFormule.formulaRichiedentiFissa.numeroRighe:5)"
+											 sclass="testoAtto"
+											 value="@bind(vm.mapFormule.formulaRichiedentiFissa.testo)" hflex="1"
+											 disabled="@load(not (c:addFormulaScioglimento('formulaRichiedentiFissa', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<hlayout sclass="testo-a-dx" width="85px">
+										<button image="/images/icon/action/16x16/refresh.png"
+												tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaRichiedentiFissa')"
+												disabled="@load(not (c:addFormulaScioglimento('formulaRichiedentiFissa', vm.tipoOperazione, vm.dettaglio)) )"/>
+									</hlayout>
+								</hlayout>
+							</vlayout>
+						</cell>
+					</row>
+
+					<!-- RICHIESTA -->
+					<row visible="@load(c:addFormulaScioglimento('formulaRichiesta', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right">
+							<label value="@load(vm.etichette['Richiesta'])"/>
+						</cell>
+						<cell colspan="5">
+							<vlayout hflex="1">
+								<hlayout hflex="1" valign="middle">
+									<textbox rows="@load(not empty vm.mapFormule.formulaRichiesta.numeroRighe?vm.mapFormule.formulaRichiesta.numeroRighe:8)"
+											 sclass="testoAtto"
+											 value="@bind(vm.mapFormule.formulaRichiesta.testo)" hflex="1"
+											 disabled="@load(not (c:addFormulaScioglimento('formulaRichiesta', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<hlayout sclass="testo-a-dx" width="85px">
+										<button image="/images/icon/action/16x16/grid.png"
+												tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaRichiesta')"
+												disabled="@load(not (c:addFormulaScioglimento('formulaRichiesta', vm.tipoOperazione, vm.dettaglio)) )"/>
+										<button image="/images/icon/action/16x16/refresh.png"
+												tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaRichiesta')"
+												disabled="@load(not (c:addFormulaScioglimento('formulaRichiesta', vm.tipoOperazione, vm.dettaglio)) )"/>
+									</hlayout>
+								</hlayout>
+							</vlayout>
+						</cell>
+					</row>
+					<!-- DOCUMENTI -->
+					<row visible="@load(c:addFormulaScioglimento('formulaDocumentiAltro', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right">
+							<label value="@load(vm.etichette['Documenti'])"/>
+						</cell>
+						<cell colspan="5">
+							<vlayout hflex="1">
+								<hlayout hflex="1" valign="middle">
+									<textbox rows="@load(not empty vm.mapFormule.formulaDocumentiAltro.numeroRighe?vm.mapFormule.formulaDocumentiAltro.numeroRighe:8)"
+											 sclass="testoAtto"
+											 value="@bind(vm.mapFormule.formulaDocumentiAltro.testo)" hflex="1"
+											 disabled="@load(not (c:addFormulaScioglimento('formulaDocumentiAltro', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<hlayout sclass="testo-a-dx" width="85px">
+										<button image="/images/icon/action/16x16/grid.png"
+												tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaDocumentiAltro')"
+												disabled="@load(not (c:addFormulaScioglimento('formulaDocumentiAltro', vm.tipoOperazione, vm.dettaglio)) )"/>
+										<button image="/images/icon/action/16x16/refresh.png"
+												tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaDocumentiAltro')"
+												disabled="@load(not (c:addFormulaScioglimento('formulaDocumentiAltro', vm.tipoOperazione, vm.dettaglio)) )"/>
+									</hlayout>
+								</hlayout>
+							</vlayout>
+						</cell>
+					</row>
+					<!-- CHIUSURA -->
+					<row visible="@load(c:addFormulaScioglimento('formulaChiusura', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right">
+							<label value="@load(vm.etichette['Chiusura'])"/>
+						</cell>
+						<cell colspan="5" align="center">
+							<hlayout hflex="1" valign="middle">
+								<textbox rows="@load(not empty vm.mapFormule.formulaChiusura.numeroRighe?vm.mapFormule.formulaChiusura.numeroRighe:4)"
+									sclass="testoAtto"
+									value="@bind(vm.mapFormule.formulaChiusura.testo)" hflex="1"
+									disabled="@load(not (c:addFormulaScioglimento('formulaChiusura', vm.tipoOperazione, vm.dettaglio)) )"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/grid.png"
+										tooltiptext="@load(vm.etichette['Seleziona_Formula'])" onClick="@command('onCaricaFormuleFrammento', chiave='formulaChiusura')"
+										disabled="@load(not (c:addFormulaScioglimento('formulaChiusura', vm.tipoOperazione, vm.dettaglio)) )"/>
+									<button image="/images/icon/action/16x16/refresh.png"
+										tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaChiusura')"
+										disabled="@load(not (c:addFormulaScioglimento('formulaChiusura', vm.tipoOperazione, vm.dettaglio)) )"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+					<!-- FIRMA -->
+					<row visible="@load(c:addFormulaScioglimento('formulaFirma', vm.tipoOperazione, vm.dettaglio))">
+						<cell align="right" width="150px">
+							<label value="@load(vm.etichette['Firma'])"/>
+						</cell>
+						<cell colspan="5">
+							<hlayout hflex="1" valign="middle">
+								<textbox rows="@load(not empty vm.mapFormule.formulaFirma.numeroRighe?vm.mapFormule.formulaFirma.numeroRighe:5)"
+										 sclass="testoAtto"
+										 value="@bind(vm.mapFormule.formulaFirma.testo)" hflex="1"
+										 disabled="@load(not (c:addFormulaScioglimento('formulaFirma', vm.tipoOperazione, vm.dettaglio)) )"/>
+								<hlayout sclass="testo-a-dx" width="85px">
+									<button image="/images/icon/action/16x16/refresh.png"
+											tooltiptext="@load(vm.etichette['Aggiorna_Formula'])" onClick="@command('onRefreshFormula', chiave='formulaFirma')"
+											disabled="@load(not (c:addFormulaScioglimento('formulaFirma', vm.tipoOperazione, vm.dettaglio)) )"/>
+								</hlayout>
+							</hlayout>
+						</cell>
+					</row>
+
+					<!-- RIEPILOGO -->
+					<templateRowRiepilogoAttoDettaglio/>
+
+					<row>
+						<cell colspan="3">
+							<hlayout hflex="1" sclass="testo-al-centro">
+								<button label="@load(vm.etichette['Preview'])"
+										height="35px" width="150px"
+										style="font-size:12px; font-weight: bold;"
+										disabled="@load(vm.tipoOperazione.isInsert())"
+										onClick="@command('onPreviewRecord')"
+								/>
+							</hlayout>
+						</cell>
+						<cell colspan="3">
+							<hlayout hflex="1" sclass="testo-al-centro">
+								<button label="@load(vm.buttonConsolidamentoLabel)"
+										height="35px" width="150px"
+										style="font-size:12px; font-weight: bold;"
+										visible="@load(not empty vm.buttonConsolidamentoLabel)"
+										disabled="@load(vm.tipoOperazione.isInsert())"
+										onClick="@command('onCheckConsolidamento')"
+								/>
+							</hlayout>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+</zk>

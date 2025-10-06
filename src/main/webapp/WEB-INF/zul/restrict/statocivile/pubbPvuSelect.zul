@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.PubPvuSelectViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="860px" height="400px"
+			title="@load(vm.windowTitle)"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1">
+
+			<controlBarLista/>
+
+			<hlayout sclass="navigazione" valign="middle">
+				<totalSizeBlock/>
+			</hlayout>
+
+			<listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+				<listhead>
+					<listheader label="@load(vm.etichetteCustom['Cognome1'])"				/>
+					<listheader label="@load(vm.etichetteCustom['Nome1'])"					/>
+					<listheader label="@load(vm.etichetteCustom['Cognome2'])"				/>
+					<listheader label="@load(vm.etichetteCustom['Nome2'])"					/>
+					<listheader label="@load(vm.etichette['Numero_Atto'])" 	   		width="5%"/>
+					<listheader label="@load(vm.etichette['Anno'])"					width="5%"/>
+					<listheader label="@load(vm.etichette['Ufficio'])"				width="5%"/>
+					<listheader label="@load(vm.etichette['Data_Pubblicazione'])"	width="12%"/>
+					<listheader label="" width="52px"/>
+				</listhead>
+				<template name="model" var="item">
+					<listitem onDoubleClick="@command('onSeleziona')">
+						<listcell label="@load(item.cognome1)" />
+						<listcell label="@load(item.nome1)"/>
+						<listcell label="@load(item.cognome2)" />
+						<listcell label="@load(item.nome2)"/>
+						<listcell label="@load(item.atto)"/>
+						<listcell label="@load(item.anno)"/>
+						<listcell label="@load(item.ufficio)"/>
+						<listcell label="@load(empty item.dataPubblicazione? null:(c:formatDate(item.dataPubblicazione, 'dd/MM/yyyy')))"/>
+						<listcell>
+							<button image="/images/icon/action/16x16/forward.png"
+									tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+									visible="@load(not empty item.id)"
+									onClick="@command('onSeleziona')"/>
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+
+		</vlayout>
+
+		<h:div sclass="barraPulsanti">
+			<h:div>
+				<button label="@load(vm.etichette['Seleziona'])"		onClick="@command('onSeleziona')" 	image="/images/icon/action/16x16/ok.png" />
+				<button label="@load(vm.etichette['Chiudi'])"			onClick="@command('onChiudi')" 		image="/images/icon/action/16x16/close.png"/>
+			</h:div>
+		</h:div>
+
+	</window>
+
+</zk>

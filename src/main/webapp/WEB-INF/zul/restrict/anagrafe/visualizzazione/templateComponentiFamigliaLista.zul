@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout valign="middle">
+        <totalSizeBlock/>
+    </hlayout>
+
+    <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+        <listhead sizable="true">
+            <listheader label="@load(vm.etichette['Cognome'])"/>
+            <listheader label="@load(vm.etichette['Nome'])"/>
+            <listheader label="@load(vm.etichette['Sesso'])" width="48px"/>
+            <listheader label="@load(vm.etichette['Data_Nascita'])" width="85px"/>
+            <listheader label="@load(vm.etichette['Rapporto_Parentela'])"/>
+            <zk if="${not vm.showAnp}">
+                <listheader label="@load(vm.etichette['CdF'])" width="48px"/>
+            </zk>
+            <listheader label="@load(vm.etichette['Dal'])" width="100px"/>
+            <zk if="${not vm.showAnp}">
+                <listheader label="@load(vm.etichette['Stato_Anagrafico'])"/>
+                <listheader label="" width="52px"/>
+            </zk>
+        </listhead>
+        <template name="model" var="item">
+            <listitem>
+                <listcell label="@load(item.cognome)"/>
+                <listcell label="@load(item.nome)"/>
+                <listcell label="@load(item.sesso)"/>
+                <listcell>
+                    <dateLabel value="@load(item.dataNascita)"/>
+                </listcell>
+                <listcell label="@load(item.rapportoParentela)"/>
+                <zk if="${not vm.showAnp}">
+                    <listcell>
+                        <checkbox checked="@load(not empty item.convivenzaDiFatto)" disabled="true"/>
+                    </listcell>
+                </zk>
+                <listcell>
+                    <hlayout>
+                        <dateLabel value="@load(item.dataInizioParentela)"/>
+                        <image src="/images/icon/presentation/16x16/alert.png"
+                               tooltiptext="@load(empty item.dataInizioParentela ? '' : c:cat3(vm.etichette['Data_Convenzionale_tooltip'], ' ', c:formatDate(item.dataInizioParentela, 'dd/MM/yyyy')))"
+                               visible="@load(not vm.showAnp and item.flagDataConvenzionaleFam)"/>
+                    </hlayout>
+
+                </listcell>
+                <zk if="${not vm.showAnp}">
+                    <listcell label="@load(item.descrizioneStatoAnagrafico)"/>
+                    <listcell>
+                        <button image="/images/icon/action/16x16/forward.png"
+                                tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+                                onClick="@command('onSeleziona')"/>
+                    </listcell>
+                </zk>
+            </listitem>
+        </template>
+    </listbox>
+</zk>

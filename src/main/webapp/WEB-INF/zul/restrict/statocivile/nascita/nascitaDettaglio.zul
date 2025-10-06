@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateSezioneFiliazioneNascitaDettaglio" macroURI="/restrict/statocivile/nascita/templateSezioneFiliazioneNascitaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneGenitoriNascitaDettaglio" macroURI="/restrict/statocivile/nascita/templateSezioneGenitoriNascitaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneDatiNascitaDettaglio" macroURI="/restrict/statocivile/nascita/templateSezioneDatiNascitaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneRedazioneNascitaDettaglio" macroURI="/restrict/statocivile/nascita/templateSezioneRedazioneNascitaDettaglio.zul" inline="true"?>
+<?component name="templateSezioneComposizioneNascitaDettaglio" macroURI="/restrict/statocivile/nascita/templateSezioneComposizioneNascitaDettaglio.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.nascita.NascitaDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+			<hlayout valign="middle">
+				<controlBarDettaglio/>
+
+				<controlBarAtto/>
+
+				<label value="@load(vm.formLabel)" sclass="@load(vm.attoSclass)"/>
+
+				<estremiAttoFormLabel/>
+			</hlayout>
+
+			<vlayout vflex="1" width="100%" sclass="scroll">
+
+				<templateSezioneInformazioniDettaglio/>
+
+				<templateSezioneFiliazioneNascitaDettaglio/>
+
+				<templateSezioneGenitoriNascitaDettaglio/>
+
+				<templateSezioneDatiNascitaDettaglio/>
+
+				<templateSezioneAttoOriginaleDettaglio/>
+
+				<templateSezioneRedazioneNascitaDettaglio/>
+
+				<vlayout hflex="1" visible="@load((vm.statoFrammenti eq 2) and (vm.dettaglio.natura ne 'N'))">
+					<templateSezioneComposizioneNascitaDettaglio/>
+				</vlayout>
+
+				<templateIdDomain/>
+
+			</vlayout>
+
+	</window>
+
+</zk>

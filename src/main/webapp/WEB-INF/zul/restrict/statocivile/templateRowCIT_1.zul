@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <row>
+        <cell align="right">
+            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Cittadinanza'])"/>
+        </cell>
+        <cell colspan="3">
+            <label value="@load(vm.atto.nazionalita1.descrizione)" hflex="1" sclass="grassetto" />
+        </cell>
+        <cell colspan="4">
+            <hlayout height="20px">
+                <h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+                <radiogroup model="@load(vm.listaTipoCittadinanza)" hflex="1"
+                            selectedItem="@bind(vm.dettaglio.nazionalitaItaliana1) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                    <template name="model">
+                        <radio label="@load(each.descrizione)" value="@load(each.codice)" style="padding-left:20px;"/>
+                    </template>
+                </radiogroup>
+            </hlayout>
+        </cell>
+    </row>
+</zk>

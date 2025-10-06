@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2024-10-01T10:36:16 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Stampa Indici" language="groovy" columnCount="2" pageWidth="595" pageHeight="842" columnWidth="262" leftMargin="42" rightMargin="28" topMargin="0" bottomMargin="32" whenResourceMissingType="Empty" uuid="7b16e643-89a4-41ad-bb26-25cfe518ad53">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="border1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$P{CORNICE_VISIBILE}]]></conditionExpression>
+			<style>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<parameter name="TITOLO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Indice Annuale"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TIPO_ATTO" class="java.lang.String"/>
+	<parameter name="CORNICE_VISIBILE" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ATTO" class="java.lang.String"/>
+	<parameter name="QUERY" class="java.lang.String"/>
+	<parameter name="label_cognome1Lista" class="java.lang.String"/>
+	<parameter name="label_nome1Lista" class="java.lang.String"/>
+	<parameter name="label_atto" class="java.lang.String"/>
+	<parameter name="label_parteRomana" class="java.lang.String"/>
+	<parameter name="label_serie" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[$P!{QUERY}]]>
+	</queryString>
+	<field name="cognome1Lista" class="java.lang.String"/>
+	<field name="nome1Lista" class="java.lang.String"/>
+	<field name="cognome2Lista" class="java.lang.String"/>
+	<field name="nome2Lista" class="java.lang.String"/>
+	<field name="atto" class="java.lang.Integer"/>
+	<field name="parteRomana" class="java.lang.String"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="idAtto" class="java.lang.String"/>
+	<variable name="DOPPIO" class="java.lang.Boolean">
+		<variableExpression><![CDATA[$P{TIPO_ATTO}=="MAT" || $P{TIPO_ATTO}=="UCI"]]></variableExpression>
+	</variable>
+	<group name="keep_details_together" keepTogether="true">
+		<groupExpression><![CDATA[$F{idAtto}]]></groupExpression>
+	</group>
+	<background>
+		<band height="810">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$P{CORNICE_VISIBILE}]]></printWhenExpression>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="38" width="525" height="772" uuid="7822e5eb-b4ec-4f80-9c30-dc8f399ef04c">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</rectangle>
+			<line>
+				<reportElement x="0" y="110" width="525" height="1" uuid="01b75279-6fdb-4040-af48-03b7658512af">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="172" y="38" width="1" height="772" uuid="2d2d0f82-1532-43ae-bf99-db570cfd2049">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="216" y="75" width="1" height="734" uuid="730d0abf-4405-4837-8796-ced9002cc566">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="238" y="75" width="1" height="734" uuid="d23ccd35-2457-478d-a174-d01c143c6cda">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="262" y="38" width="1" height="772" uuid="11f22cdd-d420-498d-998a-aee2e6cbd1ac">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="433" y="38" width="1" height="772" uuid="6023e4a0-7876-4f30-a41b-834535184d81">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="172" y="74" width="90" height="1" uuid="7a0e1d0e-a83b-464d-ba65-fd0c6448c026">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="479" y="75" width="1" height="734" uuid="aa6f1cb8-96df-451c-830f-5193e94e05d2">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="434" y="74" width="90" height="1" uuid="54e1e95a-7cfc-46b7-80ec-1ca47e7ca9ff">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="502" y="75" width="1" height="734" uuid="a3d56219-9382-46af-bc58-bd438f9eea1f">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="38">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="106" y="10" width="312" height="25" uuid="d27beebe-fd38-4aee-bb1a-aea644802797"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITOLO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="72">
+			<textField>
+				<reportElement x="0" y="0" width="172" height="72" isPrintWhenDetailOverflows="true" uuid="f24c3345-33e1-4bb0-bf97-3875754de521">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+					<paragraph leftIndent="3" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_cognome1Lista} + " " + $P{label_nome1Lista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="36" width="45" height="36" uuid="45798ddb-04ca-4d10-b32d-5a60c901f180">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_atto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="217" y="36" width="23" height="36" uuid="4bc072f9-732d-4a1c-aeda-f0cec37816cc">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_parteRomana}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="36" width="23" height="36" uuid="de498c3a-c782-4001-b50e-faba1f577d26">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_serie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="0" width="89" height="35" uuid="89ae218c-ef33-44ff-8c9c-073913f5be3a">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ATTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="0" width="89" height="35" uuid="dd4c6032-8430-4128-a1e6-47569b280005">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ATTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="0" width="172" height="72" isPrintWhenDetailOverflows="true" uuid="02ac5502-bff5-4ea8-ac23-1b8af25b37ba">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" isPdfEmbedded="true"/>
+					<paragraph leftIndent="3" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_cognome1Lista} + " " + $P{label_nome1Lista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="36" width="23" height="36" uuid="181e32b7-5edd-40cf-bca0-0bb9f3c23ad3">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_serie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="36" width="45" height="36" uuid="d978d229-abb6-4d55-8f8c-dd8a85cd243a">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_atto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="36" width="23" height="36" uuid="013ba14e-073c-48de-b1a6-ca2657574a96">
+					<printWhenExpression><![CDATA[$V{COLUMN_NUMBER}%2==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{label_parteRomana}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Immediate">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="172" height="15" isPrintInFirstWholeBand="true" uuid="7bd307b1-9a2c-4746-bcf6-c65983fd38f8"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="3" spacingBefore="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cognome1Lista} + " " + $F{nome1Lista}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="0" width="45" height="15" uuid="b7960c41-9f1d-40e4-8a1e-bcbe7d962597"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial"/>
+					<paragraph rightIndent="5" spacingBefore="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{atto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="217" y="0" width="22" height="15" uuid="07f006b7-5e60-4254-92d5-bea1591d7777"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="3" spacingBefore="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parteRomana}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="22" height="15" uuid="fecd101b-c647-4f69-a73d-0a6899553c9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial"/>
+					<paragraph leftIndent="3" spacingBefore="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[$V{DOPPIO}]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="23" y="0" width="150" height="15" isPrintInFirstWholeBand="true" uuid="c2bed133-a5b2-4933-9c1d-a0bd46731b95"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="12.0" leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cognome2Lista} + " " + $F{nome2Lista}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,7 @@
+package it.finmatica.de4gsdzk.pagamento.depag
+
+
+import it.finmatica.de4gsdzk.pagamento.WspaPagamentoDaInviareCustomRepository
+
+interface DepagPagamentoDaInviareCustomRepository extends WspaPagamentoDaInviareCustomRepository {
+}

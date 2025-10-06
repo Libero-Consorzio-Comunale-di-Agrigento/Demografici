@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- SEZIONE DOCUMENTAZIONE PUBBLICO IMPIEGO -->
+    <row visible="@load(vm.dettaglio.motivoCittadinanza.flagPubblicoImpiego)">
+        <cell colspan="2" visible="@load(vm.dettaglio.motivoCittadinanza.flagPubblicoImpiego)">
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Documentazione_PU'])" visible="@load(vm.dettaglio.motivoCittadinanza.flagPubblicoImpiego)"/>
+                <grid visible="@load(vm.dettaglio.motivoCittadinanza.flagPubblicoImpiego)">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nome_Ente'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox hflex="1" value="@bind(vm.datiProvenienza.entePubblicoImpiego)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="entePubblicoImpiego"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Ente'])"/>
+                            </cell>
+                            <cell colspan="4">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.datiProvenienza.comunePubblicoImpiego.descrizione)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CA_PIM')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CA_PIM')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.datiProvenienza.comunePubblicoImpiego.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span> <label value="@load(vm.etichette['Estremi_documento'])"/>
+                            </cell>
+                            <cell>
+                                <textbox value="@bind(vm.datiProvenienza.estremiDocumentoPubblicoImpiego)" hflex="1"/>
+                            </cell>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span> <label value="@load(vm.etichette['Data_Formazione'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle" hflex="1">
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataDocumentoPubblicoImpiego)" width="100px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="dataDocumentoPubblicoImpiego"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Tempistica_assunzione'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaTempisticaAssunzione)" readonly="true" width="120px"
+                                          selectedItem="@bind(vm.datiProvenienza.tempisticaAssunzionePubblicoImpiego) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+    </row>
+
+</zk>

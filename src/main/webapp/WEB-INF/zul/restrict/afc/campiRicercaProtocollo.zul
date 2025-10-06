@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid sclass="form">
+        <rows>
+            <row>
+                <cell align="right" width="90px">
+                    <label value="@load(vm.etichette['Anno'])"/>
+                </cell>
+                <cell colspan="3">
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaProtocollo.anno)" mold="rounded" cols="4" maxlength="4" onOK="@command('onRicerca')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="anno"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell width="40px"/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Numero'])"/>
+                </cell>
+                <cell colspan="3">
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox value="@bind(vm.ricercaProtocollo.numeroDal)" mold="rounded" width="100%" onOK="@command('onRicerca')"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox value="@bind(vm.ricercaProtocollo.numeroAl)" mold="rounded" width="100%" onOK="@command('onRicerca')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="numeroDal,numeroAl"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Data'])"/>
+                </cell>
+                <cell colspan="3">
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaProtocollo.dal)" mold="rounded" width="110px" onOK="@command('onRicerca')"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaProtocollo.al)" mold="rounded" width="110px" onOK="@command('onRicerca')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="dal,al"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Oggetto'])"/>
+                </cell>
+                <cell colspan="3">
+                    <textbox value="@bind(vm.ricercaProtocollo.oggetto)" mold="rounded" hflex="1" onOK="@command('onRicerca')"/>
+                </cell>
+                <cell align="right">
+                    <hlayout valign="middle">
+                        <button image="/images/icon/action/16x16/search.png"
+                                tooltiptext="@load(vm.etichette['Effettua_Ricerca'])" onClick="@command('onRicerca')"/>
+                    </hlayout>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

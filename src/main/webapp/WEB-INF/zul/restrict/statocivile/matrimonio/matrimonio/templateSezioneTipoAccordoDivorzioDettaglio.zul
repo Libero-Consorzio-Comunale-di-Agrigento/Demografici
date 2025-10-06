@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<!-- TIPO ACCORDO -->
+	<!-- refs #73501 ai fini del passaggio ad ANSC nascondiamo la sezione del tipo accordo e prevalorizziamo il campo in inserimento -->
+	<!-- <zk if="${vm.dettaglio.isUfficialeConferma() or vm.dettaglio.isUfficialeAltro()}"> -->
+	<zk if="${vm.dettaglio.isUfficialeConferma()}">
+		<groupbox mold="3d" hflex="1" open="false">
+			<caption sclass="mainCaption">
+				<div>
+					<updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+					<label value="@load(vm.etichette['SEZIONE_TIPO_ACCORDO'])" sclass="captionLabel"/>
+				</div>
+			</caption>
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="120px">
+							<hlayout>
+								<hbox>
+									<h:span class="mandatoryLabel" style="top:0.15em;right:0px;">*</h:span>
+								</hbox>
+								<label value="@load(vm.etichette['Tipo_Accordo'])"/>
+							</hlayout>
+						</cell>
+						<cell colspan="5">
+							<hlayout height="20px">
+								<radiogroup model="@load(vm.listaTipiAccordo)" hflex="1"
+											selectedItem="@bind(vm.datiProvenienza.tipoAccordo) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+									<template name="model">
+										<radio label="@load(vm.getEtichettaEnum(each))" disabled="@load(vm.dettaglio.isUfficialeAltro())"
+											   value="@load(each)" style="padding-left:10px"/>
+									</template>
+								</radiogroup>
+							</hlayout>
+						</cell>
+						<cell colspan="3"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</zk>
+
+</zk>

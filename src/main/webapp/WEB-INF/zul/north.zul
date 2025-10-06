@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<hlayout sclass="intestazione" hflex="3">
+		<hlayout hflex="1">
+			<hbox align="center" pack="center" sclass="logoApplicazione" vflex="1">
+				<image content="@load(vm.logoEnte)"/>
+			</hbox>
+			<vlayout hflex="1" width="100%">
+				<label class="titoloApplicazione"  		value="@load(c:l('label.titoloApplicazione'))" style="cursor: pointer;"/>
+				<label class="descrizioneApplicazione" 	value="@load(c:l('label.descrizioneApplicazione'))" />
+				<label class="descrizioneEnte" 			value="@load(vm.denominazioneEnteCorrente)"/>
+			</vlayout>
+		</hlayout>
+
+		<hbox align="center" pack="center" hflex="1" vflex="1">
+			<image src="@load(c:cat('/images/icon/presentation/36x36/', vm.selectedModulo.img))"/>
+			<label sclass="titoloPagina" style="color: #666666;" value="@load(vm.selectedModulo.label)"/>
+		</hbox>
+
+		<hlayout hflex="1" sclass="intestazioneDx">
+			<vlayout>
+				<include hflex="1" vflex="1" src="@load(vm.headerFunctions.uri)"/>
+				<div style="margin-right:30px;">
+					<a onClick="@command('onOpenInformazioniUtente')"><label value="@load(vm.nominativoUtenteCorrente)" sclass="utente"/></a>
+					<space spacing="3px"/>
+					<a onClick="@command('doLogout')" sclass="utente"><image src="/images/icon/action/16x16/logout.png" tooltiptext="Logout" style="vertical-align:middle;"/></a>
+				</div>
+			</vlayout>
+		</hlayout>
+
+	</hlayout>
+</zk>

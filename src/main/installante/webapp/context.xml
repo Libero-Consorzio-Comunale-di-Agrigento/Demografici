@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Realm className="it.finmatica.login.tomcat.DSRealm" dataSourceName="jdbc/ad4" debug="0" validate="false"/>
+
+    <Environment name="modulo@istanza" override="false" type="java.lang.String" value="${modulo.codice}@${progetto.istanza.codice}"/>
+
+    <ResourceLink global="jdbc/de4gsdzk" name="jdbc/de4gsdzk" type="javax.sql.DataSource"/>
+
+    <ResourceLink global="jdbc/ad4" name="jdbc/ad4" type="javax.sql.DataSource"/>
+
+    <ResourceLink global="jdbc/gdm" name="jdbc/gdm" type="javax.sql.DataSource"/>
+</Context>

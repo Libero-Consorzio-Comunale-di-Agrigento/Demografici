@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="utf-8"?>
+<documentRoot>
+  <descrizione>Test</descrizione>
+  <connections>
+    <connectionJNDI>jdbc/de4gsdzk</connectionJNDI>
+  </connections>
+  <testStaticData>
+    <documentRoot>
+      <info>
+        <COGNOME>XXXX</COGNOME>
+        <NOME>YYYY</NOME> 
+      </info>
+    </documentRoot>
+  </testStaticData>
+  <definitions>
+    <!-- DEFINIZIONE PARAMETRI DI INPUT --> 
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>idDat</nomeSimbolico>
+      <tipo>int</tipo>
+      <descrizione>id di riferimento</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato tipoParametro="input">
+      <nomeSimbolico>codUtente</nomeSimbolico>
+      <tipo>int</tipo>
+      <descrizione>id utente</descrizione>
+      <path/>
+    </metaDato>
+    <!-- DEFINIZIONE CAMPI DELLA QUERY -->
+    <metaDato>
+      <nomeSimbolico>IL_LA_SIGNOR_A</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>IL_LA_SOTTOSCRITTO_A</nomeSimbolico>
+      <tipo>int</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME_NOME</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NOME</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NAT_OA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>             
+    <metaDato>
+      <nomeSimbolico>COMUNE_NASCITA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CODICE_FISCALE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_RESIDENZA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_RESIDENZA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CAP_RESIDENZA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_TEL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_MAIL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>TIPO_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>ENTE_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>              
+    <metaDato>
+      <nomeSimbolico>DATA_RILASCIO_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_SCADENZA_DOCUMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>              
+    <metaDato>
+      <nomeSimbolico>CONSENSO_TRATTAMENTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>IL_LA_SIGNOR_A_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>IL_LA_SOTTOSCRITTO_A_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME_NOME_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NOME_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NAT_OA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_NASCITA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_NASCITA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CODICE_FISCALE_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_RESIDENZA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_RESIDENZA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CAP_RESIDENZA_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_TEL_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_MAIL_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>TIPO_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>ENTE_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_RILASCIO_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_SCADENZA_DOCUMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CONSENSO_TRATTAMENTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DAT_SOTTOSCRITTO_FID_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>IL_LA_SIGNOR_A_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>IL_LA_SOTTOSCRITTO_A_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME_NOME_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COGNOME_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NOME_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NAT_OA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_NASCITA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_NASCITA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CODICE_FISCALE_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_RESIDENZA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_RESIDENZA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CAP_RESIDENZA_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_TEL_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_MAIL_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>TIPO_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>ENTE_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_RILASCIO_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_SCADENZA_DOCUMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CONSENSO_TRATTAMENTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DAT_SOTTOSCRITTO_FID_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>PROTOCOLLO_REGISTRO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_REGISTRO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_PRESENTAZIONE_DAT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_MODIFICA_DAT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA_REVOCA_DAT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>TIPO_ATTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NOTE_TIPO_ATTO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CONSENSO_INVIO_DAT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>REPERIBILITA_DAT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CONSENSO_RICEZIONE_MAIL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NOTAIO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_NOTAIO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_NOTAIO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_COLLEGGIO_NOTARILE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE_DATA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COMUNE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>DATA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>PROVINCIA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>LOGO_CIV</nomeSimbolico>
+      <tipo>image</tipo>
+      <descrizione>logo ente</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>TERMINALISTA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>NUMERO_TEL_TERMINALISTA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>INDIRIZZO_MAIL_TERMINALISTA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_NOME_SERVIZIO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_NOME_SERVIZIO_ALT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_RESPONSABILE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_NUMERO_TEL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_NUMERO_FAX</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_INDIRIZZO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_INDIRIZZO_MAIL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_INDIRIZZO_PEC</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_ORARI_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_ORARI_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_ORARI_3</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_ORARI_4</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>CIV_ORARI_5</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>CIV_ORARI_6</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>CIV_ORARI_7</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_NOME_COMUNE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_NOME_COMUNE_ALT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_NUMERO_TEL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_NUMERO_FAX</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_INDIRIZZO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_INDIRIZZO_MAIL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_INDIRIZZO_PEC</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_COD_FISCALE_PIVA</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_ORARI_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_ORARI_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_ORARI_3</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_ORARI_4</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+   <metaDato>
+      <nomeSimbolico>COM_ORARI_5</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_ORARI_6</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>COM_ORARI_7</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_NOME_SERVIZIO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_NOME_SERVIZIO_ALT</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_RESPONSABILE</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_NUMERO_TEL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_NUMERO_FAX</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_INDIRIZZO</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_INDIRIZZO_MAIL</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_INDIRIZZO_PEC</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_1</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_2</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_3</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_4</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_5</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_6</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+    <metaDato>
+      <nomeSimbolico>URP_ORARI_7</nomeSimbolico>
+      <tipo>string</tipo>
+      <descrizione>voce generica</descrizione>
+      <path/>
+    </metaDato>
+  </definitions>
+  <queryes>
+    <query id='info'
+         help_query_alias="i"
+         help_field_aliases="DAT"><![CDATA[
+      SELECT IL_LA_SIGNOR_A,IL_LA_SOTTOSCRITTO_A,
+              D.COGNOME_NOME,D.COGNOME,D.NOME,
+              NAT_OA,DATA_NASCITA,COMUNE_NASCITA,
+              CODICE_FISCALE,
+              COMUNE_RESIDENZA,INDIRIZZO_RESIDENZA,CAP_RESIDENZA ,
+              D.NUMERO_TEL,D.INDIRIZZO_MAIL,
+              TIPO_DOCUMENTO,NUMERO_DOCUMENTO,
+              ENTE_DOCUMENTO,COMUNE_DOCUMENTO,
+              DATA_RILASCIO_DOCUMENTO,DATA_SCADENZA_DOCUMENTO,
+              CONSENSO_TRATTAMENTO,
+              IL_LA_SIGNOR_A_FID_1,IL_LA_SOTTOSCRITTO_A_FID_1,
+              COGNOME_NOME_FID_1,COGNOME_FID_1,NOME_FID_1,
+              NAT_OA_FID_1,DATA_NASCITA_FID_1,COMUNE_NASCITA_FID_1,
+              CODICE_FISCALE_FID_1,
+              COMUNE_RESIDENZA_FID_1,INDIRIZZO_RESIDENZA_FID_1,CAP_RESIDENZA_FID_1,
+              NUMERO_TEL_FID_1,INDIRIZZO_MAIL_FID_1,
+              TIPO_DOCUMENTO_FID_1,NUMERO_DOCUMENTO_FID_1,
+              ENTE_DOCUMENTO_FID_1,COMUNE_DOCUMENTO_FID_1,
+              DATA_RILASCIO_DOCUMENTO_FID_1,DATA_SCADENZA_DOCUMENTO_FID_1,
+              CONSENSO_TRATTAMENTO_FID_1,DAT_SOTTOSCRITTO_FID_1,
+              IL_LA_SIGNOR_A_FID_2,IL_LA_SOTTOSCRITTO_A_FID_2,
+              COGNOME_NOME_FID_2,COGNOME_FID_2,NOME_FID_2,
+              NAT_OA_FID_2,DATA_NASCITA_FID_2,COMUNE_NASCITA_FID_2,
+              CODICE_FISCALE_FID_2,
+              COMUNE_RESIDENZA_FID_2,INDIRIZZO_RESIDENZA_FID_2,CAP_RESIDENZA_FID_2,
+              NUMERO_TEL_FID_2,INDIRIZZO_MAIL_FID_2,
+              TIPO_DOCUMENTO_FID_2,NUMERO_DOCUMENTO_FID_2,
+              ENTE_DOCUMENTO_FID_2,COMUNE_DOCUMENTO_FID_2,
+              DATA_RILASCIO_DOCUMENTO_FID_2,DATA_SCADENZA_DOCUMENTO_FID_2,
+              CONSENSO_TRATTAMENTO_FID_2,DAT_SOTTOSCRITTO_FID_2,
+              PROTOCOLLO_REGISTRO,DATA_REGISTRO,
+              DATA_PRESENTAZIONE_DAT,DATA_MODIFICA_DAT,DATA_REVOCA_DAT,
+              TIPO_ATTO,NOTE_TIPO_ATTO,
+              CONSENSO_INVIO_DAT,REPERIBILITA_DAT,
+              CONSENSO_RICEZIONE_MAIL,
+              NOTAIO,INDIRIZZO_NOTAIO,COMUNE_NOTAIO,COMUNE_COLLEGGIO_NOTARILE,
+              COMUNE_DATA,COMUNE,DATA,PROVINCIA, INP.ALLEGATO_BLOB AS LOGO_CIV,
+              DTE.NOME||' '||DTE.COGNOME AS TERMINALISTA, DTE.INDIRIZZO_MAIL AS INDIRIZZO_MAIL_TERMINALISTA, DTE.NUMERO_TEL AS NUMERO_TEL_TERMINALISTA,
+              CIV_NOME_SERVIZIO,CIV_NOME_SERVIZIO_ALT,CIV_RESPONSABILE,CIV_NUMERO_TEL,CIV_NUMERO_FAX,CIV_INDIRIZZO,CIV_INDIRIZZO_MAIL,CIV_INDIRIZZO_PEC,
+              CIV_ORARI_1,CIV_ORARI_2,CIV_ORARI_3,CIV_ORARI_4,CIV_ORARI_5,CIV_ORARI_6,CIV_ORARI_7,COM_NOME_COMUNE,COM_NOME_COMUNE_ALT,COM_NUMERO_TEL,COM_NUMERO_FAX,
+              COM_INDIRIZZO,COM_INDIRIZZO_MAIL,COM_INDIRIZZO_PEC,COM_COD_FISCALE_PIVA,COM_ORARI_1,COM_ORARI_2,COM_ORARI_3,COM_ORARI_4,COM_ORARI_5,COM_ORARI_6,COM_ORARI_7,
+              URP_NOME_SERVIZIO,URP_NOME_SERVIZIO_ALT,URP_RESPONSABILE,URP_NUMERO_TEL,URP_NUMERO_FAX,URP_INDIRIZZO,URP_INDIRIZZO_MAIL,URP_INDIRIZZO_PEC,
+              URP_ORARI_1,URP_ORARI_2,URP_ORARI_3,URP_ORARI_4,URP_ORARI_5,URP_ORARI_6,URP_ORARI_7
+         FROM CERDAT D, ARCINP INP, CERDTE DTE, CERSER_V
+        WHERE D.ID_DAT = #idDat AND rownum  = 1 AND INP.PARAMETRO = 'LOGO_CIV' 
+          AND DTE.COD_UTENTE = #codUtente
+    ]]></query>
+  </queryes>
+  <staticData />
+</documentRoot>

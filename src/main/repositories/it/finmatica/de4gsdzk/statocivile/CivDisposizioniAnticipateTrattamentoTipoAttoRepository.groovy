@@ -1,0 +1,8 @@
+package it.finmatica.de4gsdzk.statocivile
+
+import it.finmatica.de4gsdzk.statocivile.CivDisposizioniAnticipateTrattamentoTipoAtto
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface CivDisposizioniAnticipateTrattamentoTipoAttoRepository extends JpaRepository<CivDisposizioniAnticipateTrattamentoTipoAtto, Integer> {
+
+}

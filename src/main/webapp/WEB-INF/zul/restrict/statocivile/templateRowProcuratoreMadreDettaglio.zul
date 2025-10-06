@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!--SEZIONE PROCURATORE MADRE -->
+    <row>
+        <cell>
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Generalita_procuratore_madre'])"/>
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <label value="@load(vm.etichette['Cognome'])"/>
+                            </cell>
+                            <cell colspan="7">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.procuratoreMadre.cognome)" hflex="1" style="@load(vm.minuscole.cognomeProcuratoreMadre?'text-transform:none':'text-transform:uppercase')"
+                                             onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='PM')">
+                                        <custom-attributes proprieta="cognomeProcuratoreMadre"/>
+                                    </textbox>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='PM')">
+                                        <custom-attributes proprieta="cognome"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Minuscole'])"/>
+                                    <checkbox checked="@bind(vm.minuscole.cognomeProcuratoreMadre)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='PM')" >
+                                        <custom-attributes proprieta="cognomeProcuratoreMadre"/>
+                                    </checkbox>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nome'])"/>
+                            </cell>
+                            <cell colspan="7">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.procuratoreMadre.nome)" hflex="1" style="@load(vm.minuscole.nomeProcuratoreMadre?'text-transform:none':'text-transform:uppercase')"
+                                             onChange="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='PM')">
+                                        <custom-attributes proprieta="nomeProcuratoreMadre"/>
+                                    </textbox>
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onCaricaSoggetti', tipoSoggetto='PROCURATORE_MADRE')"
+                                    />
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='PM')">
+                                        <custom-attributes proprieta="nome"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Minuscole'])"/>
+                                    <checkbox checked="@bind(vm.minuscole.nomeProcuratoreMadre)" onCheck="@command('onAggiornaCaseSoggettoCollegato', tipoSoggettoCollegato='PM')" >
+                                        <custom-attributes proprieta="nomeProcuratoreMadre"/>
+                                    </checkbox>
+                                </hlayout>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Sesso'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <combobox model="@load(vm.listaSessoSoggettoCollegato)" readonly="true" width="100px"
+                                          selectedItem="@bind(vm.procuratoreMadre.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Data_Nascita'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.procuratoreMadre.dataNascita)" width="95px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoSoggettoCollegato', tipoSoggettoCollegato='PM')">
+                                        <custom-attributes proprieta="dataNascita"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Nascita'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.procuratoreMadre.comuneNascita.descrizione)"
+                                                   dataRiferimento="@load(vm.procuratoreMadre.dataNascita)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CN_PM')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CN_PM')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.procuratoreMadre.comuneNascita.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                            <cell colspan="2"/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Comune_Residenza'])"/>
+                            </cell>
+                            <cell colspan="5">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxComuni hflex="1"
+                                                   value="@load(vm.procuratoreMadre.comuneResidenza.descrizione)"
+                                                   onSelect="@command('onSelectComune', campoRiferimento='CR_PM')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CR_PM')"
+                                    />
+                                </hlayout>
+                            </cell>
+                            <cell>
+                                <textbox value="@load(vm.procuratoreMadre.comuneResidenza.siglaProvincia)" hflex="1" readonly="true"/>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Nazionalita'])"/>
+                            </cell>
+                            <cell>
+                                <combobox model="@load(vm.listaNazionalita)" readonly="false" hflex="1"
+                                          selectedItem="@bind(vm.procuratoreMadre.nazionalita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Dati_procura'])"/>
+                            </cell>
+                            <cell colspan="8">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.datiProvenienza.datiProcura)" hflex="1" />
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="datiProcura"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+        <cell width="42px">
+            <button image="/images/icon/action/16x16/cancel.png"
+                    tooltiptext="@load(vm.etichette['Cancella'])"
+                    onClick="@command('onCancellaAnagrafica', tipoSoggetto='PROCURATORE_MADRE')"/>
+        </cell>
+    </row>
+
+</zk>

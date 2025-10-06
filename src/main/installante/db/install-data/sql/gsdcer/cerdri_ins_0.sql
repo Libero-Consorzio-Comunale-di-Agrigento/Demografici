@@ -1,0 +1,9 @@
+--liquibase formatted sql
+--changeset amonopoli:202411081505 runOnChange:true stripComments:false
+INSERT INTO cerdri ( COD_RI, DESCRIZIONE_1, DESCRIZIONE_2, DESCR_STAMPA_1, DESCR_STAMPA_2, FASCIA_TARIFFARIA, ESENZIONE_DIRITTI,
+                     FLAG_ON_LINE, COMPETENZA, CODICE_ANPR, FLAG_DISMESSO, ID_CERCTC, FLAG_DESCR_STAMPA_LIBERA)
+SELECT 0,'RILASCIATO IN CARTA LIBERA','(uso libero in emissione certificato)','ALTRO MOTIVO ESENZIONE:','',NULL,'NO',
+       '', 'AN', '99', '', '', 'S'
+  FROM DUAL
+  WHERE NOT EXISTS (SELECT 1 FROM cerdri WHERE COD_RI=0)
+/

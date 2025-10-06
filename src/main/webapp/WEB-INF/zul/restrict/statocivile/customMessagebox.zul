@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.statocivile.CustomMessageboxViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			width="350px"
+			title="@load(vm.titolo)"
+			sizable="false" closable="true">
+
+		<vlayout sclass="testo-al-centro" spacing="20px" style="padding:12px">
+			<hbox>
+				<div class="z-msgbox z-msgbox-question z-div"></div>
+				<label value="@load(vm.msg)" multiline="true"/>
+			</hbox>
+			<hlayout children="@load(vm.listaOpzioni)">
+				<template name="children" var="o">
+					<button width="65px" label="@load(vm.etichette[o.codice])" onClick="@command('onSeleziona', opzione=o)"/>
+				</template>
+			</hlayout>
+		</vlayout>
+
+	</window>
+
+</zk>

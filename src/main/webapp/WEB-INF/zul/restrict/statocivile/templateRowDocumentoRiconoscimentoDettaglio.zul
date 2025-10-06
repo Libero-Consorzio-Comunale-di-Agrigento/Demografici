@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- SEZIONE DOCUMENTO DI RICONOSCIMENTO -->
+    <row visible="@load(vm.dettaglio.motivoCittadinanza.flagDocumentoIdentita)">
+        <cell colspan="2" visible="@load(vm.dettaglio.motivoCittadinanza.flagDocumentoIdentita)">
+            <groupbox closable="false">
+                <caption label="@load(vm.etichette['Documento_riconoscimento'])" visible="@load(vm.dettaglio.motivoCittadinanza.flagDocumentoIdentita)"/>
+                <grid visible="@load(vm.dettaglio.motivoCittadinanza.flagDocumentoIdentita)">
+                    <rows>
+                        <row>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Tipo'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <combobox model="@load(vm.listaDocumentoRiconoscimento)" readonly="true" width="250px"
+                                          selectedItem="@bind(vm.datiProvenienza.tipoDocumentoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                            <cell align="right" width="150px">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Numero'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.datiProvenienza.numeroDocumentoDichiarante)" hflex="1" style="text-transform:uppercase"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="numeroDocumentoDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Data_Rilascio'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle">
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataEmissioneDocumentoDichiarante)" width="100px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="dataEmissioneDocumentoDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Data_Scadenza'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle">
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataScadenzaDocumentoDichiarante)" width="100px"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoProvenienza')">
+                                        <custom-attributes proprieta="dataScadenzaDocumentoDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                        </row>
+
+                        <row>
+                            <cell align="right">
+                                <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Rilasciato_da'])"/>
+                            </cell>
+                            <cell colspan="7">
+                                <combobox model="@load(vm.listaEnteEmissioneDocumento)" readonly="true" width="250px"
+                                          selectedItem="@bind(vm.datiProvenienza.enteDocumentoDichiarante) @converter('it.finmatica.zk.utils.PropertyConverter', property='valore')">
+                                    <template name="model">
+                                        <comboitem label="@load(empty each?'- -':vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                    </template>
+                                </combobox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </cell>
+    </row>
+
+</zk>
