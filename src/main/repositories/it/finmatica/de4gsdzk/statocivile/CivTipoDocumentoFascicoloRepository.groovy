@@ -1,7 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivTipoDocumentoFascicolo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -22,8 +21,7 @@ interface CivTipoDocumentoFascicoloRepository extends JpaRepository<CivTipoDocum
                        WHERE c.tipoAtto = :tipoAtto
                          AND (:filtro IS NULL OR UPPER(COALESCE(c.descrizione, '%')) LIKE UPPER(:filtro)) 
                          AND (:ricorrente IS NULL OR c.flagRicorrente = :ricorrente) 
-                         AND (:isPv IS NULL OR c.isProcessoVerbale = :isPv) 
-                       ORDER BY c.descrizione """,
+                         AND (:isPv IS NULL OR c.isProcessoVerbale = :isPv) """,
             countQuery = """SELECT count(c) FROM CivTipoDocumentoFascicolo c LEFT OUTER JOIN c.tipoAllegatoANSC
                              WHERE c.tipoAtto = :tipoAtto
                                AND (:filtro IS NULL OR UPPER(COALESCE(c.descrizione, '%')) LIKE UPPER(:filtro)) 

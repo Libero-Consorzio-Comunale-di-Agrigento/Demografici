@@ -34,6 +34,6 @@ class CivMessaggio extends GsdBaseDomain implements IMessaggio {
     }
 
 
-    static final List<Map> etichetteDomain = [Etichette.Bloccante, Etichette.Messaggio, Etichette.Dettaglio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Bloccante"), Etichette.getEtichetta("Messaggio"), Etichette.getEtichetta("Dettaglio")]
 
 }

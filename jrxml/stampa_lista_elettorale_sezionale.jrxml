@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListaSez" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="5" uuid="8a6c112e-fd47-4137-a5d4-c5ce7581d5a6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="TIPO_PRESIDENTE_VISTO" class="java.lang.String"/>
+	<parameter name="STAMPA_VISTO" class="java.lang.Boolean"/>
+	<parameter name="NOME_PRESIDENTE_VISTO" class="java.lang.String"/>
+	<parameter name="BOLLO_CC" class="byte[]"/>
+	<parameter name="FIRMA_VISTO" class="byte[]"/>
+	<parameter name="MOSTRA_FIRMA_SEGGIO" class="java.lang.Boolean"/>
+	<parameter name="COMUNE" class="java.lang.String"/>
+	<parameter name="MOSTRA_MATRICOLA" class="java.lang.Boolean"/>
+	<parameter name="MOSTRA_LINEA_CANCELLAZIONE" class="java.lang.Boolean"/>
+	<parameter name="BOLLO_UC" class="java.lang.Object"/>
+	<parameter name="MOSTRA_NUM_PAG" class="java.lang.Boolean"/>
+	<parameter name="MOSTRA_PROGR_SEZ" class="java.lang.Boolean"/>
+	<parameter name="TITOLO" class="java.lang.String"/>
+	<parameter name="PAGINA_INIZIALE" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipoRiga" class="java.lang.String"/>
+	<field name="numeroOrdine" class="java.lang.Integer"/>
+	<field name="progressivoSezionale" class="java.lang.Long"/>
+	<field name="progressivo" class="java.lang.Long"/>
+	<field name="anno" class="java.lang.Integer"/>
+	<field name="fascicolo" class="java.lang.Long"/>
+	<field name="sezione" class="java.lang.Integer"/>
+	<field name="matricola" class="java.lang.Long"/>
+	<field name="cognomeNome" class="java.lang.String"/>
+	<field name="luogoDataNascita" class="java.lang.String"/>
+	<field name="atto" class="java.lang.String"/>
+	<field name="tribunale" class="java.lang.String"/>
+	<field name="indirizzo" class="java.lang.String"/>
+	<field name="stato" class="java.lang.String"/>
+	<field name="emigrato" class="java.lang.String"/>
+	<field name="motivo1" class="java.lang.String"/>
+	<field name="motivo2" class="java.lang.String"/>
+	<field name="verbale1" class="java.lang.String"/>
+	<field name="verbale2" class="java.lang.String"/>
+	<field name="tipoSezioneTimbro" class="java.lang.String"/>
+	<field name="intestazioneTestoTimbro" class="java.lang.String"/>
+	<field name="testoTimbro" class="java.lang.String"/>
+	<field name="intestazioneFirma" class="java.lang.String"/>
+	<field name="testoFirma1" class="java.lang.String"/>
+	<field name="testoFirma2" class="java.lang.String"/>
+	<field name="testoFirma3" class="java.lang.String"/>
+	<field name="numFirme" class="java.lang.Integer"/>
+	<field name="riduciFontTesto" class="java.lang.Boolean"/>
+	<variable name="RIGA_NUMERO" class="java.lang.Integer" resetType="Page">
+		<variableExpression><![CDATA[$V{REPORT_COUNT}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="800" splitType="Stretch">
+			<frame>
+				<reportElement x="500" y="0" width="60" height="750" uuid="8d430e9a-8c67-4b8f-8e2d-e7088fbac47b">
+					<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == true]]></printWhenExpression>
+				</reportElement>
+				<line>
+					<reportElement x="50" y="95" width="1" height="620" uuid="00000000-0000-0000-0000-000000000212"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="10" y="200" width="36" height="100" uuid="d8cff749-0964-4375-8229-a9562986074c"/>
+					<textElement rotation="Left">
+						<font fontName="Arial" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["2° SCRUTATORE"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="10" y="400" width="36" height="100" uuid="1ee36664-a21e-4b84-9f9d-c042178822c9"/>
+					<textElement rotation="Left">
+						<font fontName="Arial" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["1° SCRUTATORE"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="10" y="600" width="36" height="100" uuid="9c4bfc53-b284-41bf-82df-280fed9cdaa5"/>
+					<textElement rotation="Left">
+						<font fontName="Arial" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["IL PRESIDENTE"]]></textFieldExpression>
+				</textField>
+				<ellipse>
+					<reportElement x="10" y="715" width="33" height="34" uuid="c731db11-2628-436f-806a-58a819014e94"/>
+				</ellipse>
+				<textField>
+					<reportElement x="20" y="710" width="14" height="30" uuid="f77a951a-7bd6-43e3-b998-d1ecee77509f"/>
+					<textElement rotation="Left">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bollo"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="00000000-0000-0000-0000-000000000001"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITOLO} + ($P{COMUNE} != null ? " - Comune di " + $P{COMUNE} : "")]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="40" height="50" uuid="97316ca3-7aca-4bd5-8598-0b43bdfbc5ba">
+					<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == true]]></printWhenExpression>
+				</reportElement>
+				<rectangle>
+					<reportElement x="0" y="0" width="20" height="50" uuid="00000000-0000-0000-0000-000000000003"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="1" width="20" height="48" uuid="00000000-0000-0000-0000-000000000100"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Num. ordine]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="20" y="0" width="20" height="50" uuid="a4b48497-3a0f-44b8-9a41-afb0b372f5c2"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="20" y="1" width="20" height="48" uuid="57b032de-37e2-459e-832c-f294d8991bef"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prog. Sez.]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="40" height="50" uuid="20a22375-7118-4c53-a9f2-e89d6464fc68">
+					<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == false]]></printWhenExpression>
+				</reportElement>
+				<rectangle>
+					<reportElement x="0" y="0" width="40" height="50" uuid="b520ec0b-ba3d-4c6c-8295-61aec7fa40ed"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="0" y="0" width="40" height="50" uuid="ac337aee-ff40-4ec3-ad20-6c0fc03838be"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Num. ordine]]></text>
+				</staticText>
+			</frame>
+			<rectangle>
+				<reportElement x="40" y="0" width="244" height="50" uuid="00000000-0000-0000-0000-000000000004"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="41" y="0" width="242" height="50" uuid="00000000-0000-0000-0000-000000000101"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GENERALITA']]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="284" y="0" width="56" height="50" uuid="00000000-0000-0000-0000-000000000005"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="285" y="0" width="54" height="50" uuid="00000000-0000-0000-0000-000000000102"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estremi del documento di identificazione o firma di chi attesta l'identità dell'elettore o dell'elettrice]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="340" y="0" width="54" height="50" uuid="00000000-0000-0000-0000-000000000006"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="340" y="0" width="54" height="50" uuid="00000000-0000-0000-0000-000000000103"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma di uno dei membri dell'Ufficio elettorale attestante che l'elettore o l'elettrice ha votato]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="394" y="0" width="161" height="50" uuid="b9833b4d-c799-461f-9f95-df27d7996cf6">
+					<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == true]]></printWhenExpression>
+				</reportElement>
+				<rectangle>
+					<reportElement x="0" y="0" width="108" height="8" uuid="00000000-0000-0000-0000-000000000007"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="0" width="106" height="8" uuid="fc3dd9c8-5a27-4a9d-9eb7-42e5d1543309"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="false"/>
+					</textElement>
+					<text><![CDATA[ANNOTAZIONI]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="0" y="8" width="54" height="42" uuid="00000000-0000-0000-0000-000000000205"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="54" y="8" width="54" height="42" uuid="00000000-0000-0000-0000-000000000206"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="8" width="52" height="42" uuid="00000000-0000-0000-0000-000000000105"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[dell'Ufficio Comunale o della Commissione Elettorale Circondariale]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="55" y="8" width="52" height="42" uuid="00000000-0000-0000-0000-000000000106"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[dell'Ufficio elettorale e firma del membro dell'Ufficio che effettua l'annotazione]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="108" y="0" width="53" height="50" uuid="00000000-0000-0000-0000-000000000010"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="109" y="0" width="51" height="50" uuid="00000000-0000-0000-0000-000000000107"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Firma componenti del seggio elettorale]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement x="394" y="0" width="160" height="50" uuid="815ee817-e9af-4314-a183-5f48d204eb1c">
+					<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == false]]></printWhenExpression>
+				</reportElement>
+				<rectangle>
+					<reportElement x="0" y="0" width="160" height="8" uuid="e3ca2f8f-cba9-45c1-ab02-54161f27b3f4"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="0" width="150" height="8" uuid="5668efd7-50c8-4104-b71c-d95b7ed8c8d7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="false"/>
+					</textElement>
+					<text><![CDATA[ANNOTAZIONI]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="0" y="8" width="80" height="42" uuid="38d6fb9d-4042-45a7-b67b-0ec5cd6248fd"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="80" y="8" width="80" height="42" uuid="65c8656f-76e8-42ce-8828-cc2b9d37cb5e"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="8" width="78" height="42" uuid="00b735ba-067e-460c-81f1-2a9e1495b267"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[dell'Ufficio Comunale o della Commissione Elettorale Circondariale]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="81" y="8" width="78" height="42" uuid="a399a669-44e7-45af-8f13-2fdc3f2045ba"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[dell'Ufficio elettorale e firma del membro dell'Ufficio che effettua l'annotazione]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="72" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="72" uuid="a8527c95-640a-4cc1-adab-468d76561d9f">
+					<printWhenExpression><![CDATA["ELETTORE".equals($F{tipoRiga})]]></printWhenExpression>
+				</reportElement>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="965a1ce8-97c3-41c5-ad21-2c2cf17cf776">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="20" height="72" uuid="9b929212-7e19-41b7-9b57-5a300f0f20ce"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement x="0" y="0" width="20" height="72" uuid="00000000-0000-0000-0000-000000000300"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="Arial" size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{numeroOrdine}]]></textFieldExpression>
+					</textField>
+					<rectangle>
+						<reportElement x="20" y="0" width="20" height="72" uuid="22ee5755-bff2-4714-a308-62dae0f3458d"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement x="20" y="0" width="20" height="72" uuid="8031c443-a751-4a93-846a-2571e8a32440"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="Arial" size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{progressivoSezionale}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="7e807965-0f14-4bc4-ae05-876c5bc26eac">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="40" height="72" uuid="bd2a75a0-4271-4328-9308-ce2af4e3819d"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement x="0" y="0" width="40" height="72" uuid="17383898-ab71-48da-9cc3-764a2e58b759"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{progressivoSezionale}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<rectangle>
+					<reportElement x="40" y="0" width="244" height="72" uuid="00000000-0000-0000-0000-000000000201"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<textField isBlankWhenNull="true">
+					<reportElement x="42" y="2" width="40" height="10" uuid="c6789016-9abc-def0-1234-567890123456"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{progressivo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="108" y="2" width="60" height="10" uuid="c6789016-9abc-def0-1234-567890123457"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{anno} + " /" + $F{fascicolo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="185" y="2" width="20" height="10" uuid="c6789016-9abc-def0-1234-567890123458"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sezione}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="225" y="2" width="58" height="10" uuid="c6789016-9abc-def0-1234-567890123459">
+						<printWhenExpression><![CDATA[$P{MOSTRA_MATRICOLA} == true]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["( " + $F{matricola} + " )"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="42" y="12" width="240" height="60" uuid="d6789017-abcd-ef01-2345-678901234567"/>
+					<textElement verticalAlignment="Top" markup="html">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>" + $F{cognomeNome} + "</b><br/>" + "Nato/a a " + $F{luogoDataNascita} + "<br/>" + "Atto n. " + $F{atto} + " - Trib. " + $F{tribunale} + "<br/>" + $F{indirizzo}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="43" y="69" width="238" height="-66" forecolor="#FF0000" uuid="96789013-6789-abcd-ef01-234567890123">
+						<printWhenExpression><![CDATA[$P{MOSTRA_LINEA_CANCELLAZIONE} == true && "C".equals($F{stato})]]></printWhenExpression>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<rectangle>
+					<reportElement x="284" y="0" width="56" height="72" uuid="00000000-0000-0000-0000-000000000202"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="340" y="0" width="54" height="72" uuid="00000000-0000-0000-0000-000000000203"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<frame>
+					<reportElement x="394" y="0" width="161" height="72" uuid="092a42e6-be5d-45cf-8f80-1bb8312ceaf4">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="54" height="72" uuid="8b321c06-660b-48eb-9195-258ec057adf9"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="54" y="0" width="54" height="72" uuid="c225604c-689a-40bf-90cc-0d6f835d02d9"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<textField isBlankWhenNull="true">
+						<reportElement x="2" y="0" width="110" height="35" uuid="c6789020-def0-1234-5678-901234567892"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Arial" size="8"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{emigrato}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="2" y="35" width="110" height="35" uuid="3ada9513-27dd-4643-ae05-98c877fb7d7c"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Arial" size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{motivo1} != null ? $F{motivo1} + "\n" : "") + ($F{motivo2} != null ? $F{motivo2} + "\n" : "") + ($F{verbale1} != null ? $F{verbale1} + "\n" : "") + ($F{verbale2} != null ? $F{verbale2} : "")]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement x="108" y="0" width="1" height="72" uuid="00000000-0000-0000-0000-000000000208"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="160" y="0" width="1" height="72" uuid="00000000-0000-0000-0000-000000000209"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="108" y="71" width="53" height="1" uuid="00000000-0000-0000-0000-000000000410">
+							<printWhenExpression><![CDATA[($V{RIGA_NUMERO} % 10 == 0)]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement x="394" y="0" width="160" height="72" uuid="19cfc794-a60b-4eed-8588-d1e6ab336180">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="80" height="72" uuid="2c3075e4-8694-4dad-a1f2-da39e194c3be"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="80" y="0" width="80" height="72" uuid="11ab48e7-c5c1-4d4e-857c-dad1d2d3c712"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<textField isBlankWhenNull="true">
+						<reportElement x="2" y="0" width="110" height="35" uuid="38e783f2-52f5-487c-85c5-ff452804c6a7"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Arial" size="9"/>
+							<paragraph leftIndent="2" rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{emigrato}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="2" y="35" width="110" height="35" uuid="c6789020-def0-1234-5678-901234567891"/>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font fontName="Arial" size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{motivo1} != null ? $F{motivo1} + "\n" : "") + ($F{motivo2} != null ? $F{motivo2} + "\n" : "") + ($F{verbale1} != null ? $F{verbale1} + "\n" : "") + ($F{verbale2} != null ? $F{verbale2} : "")]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="72" uuid="cdf441c0-6ccd-424e-b4cb-4e0ea118273f">
+					<printWhenExpression><![CDATA["VUOTA".equals($F{tipoRiga})]]></printWhenExpression>
+				</reportElement>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="67a37a82-bd9d-4c46-a8c1-c8bcc3a109ec">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="20" height="72" uuid="2b81faf1-ec56-49ba-8a21-974dad517b7d"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="20" y="0" width="20" height="72" uuid="40b204ac-d7b7-455e-ad9e-11f470f02d3d"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="597a82a6-7d80-4d08-b3da-2398717b47f4">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="40" height="72" uuid="6193b967-330b-4600-93b3-2318adf3b1a3"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+				<rectangle>
+					<reportElement x="40" y="0" width="244" height="72" uuid="a0d360d5-1eff-4126-91e1-e1d90a927bc7"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="284" y="0" width="56" height="72" uuid="6973e4f1-e85b-4d9a-99d0-48af131cc4c8"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement x="340" y="0" width="54" height="72" uuid="776c288b-8b16-42b0-8c3a-5e4a52cfffbd"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<frame>
+					<reportElement x="394" y="0" width="161" height="72" uuid="00000000-0000-0000-0000-000000000104">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="54" height="72" uuid="78af9af8-1a84-4584-9311-6be007ab56bb"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="54" y="0" width="54" height="72" uuid="d4af77ba-9b31-4493-a9f8-592a60084122"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<line>
+						<reportElement x="108" y="0" width="1" height="72" uuid="2080b71a-7af7-4297-8ac8-3151c3c546ca"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="160" y="0" width="1" height="72" uuid="524ab5a3-efeb-45e9-8751-9b76e78416d7"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="108" y="71" width="53" height="1" uuid="3a90819d-a28b-44cc-a648-0f7c35357358">
+							<printWhenExpression><![CDATA[($V{RIGA_NUMERO} % 10 == 0)]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement x="394" y="0" width="160" height="72" uuid="eb261214-b10a-4c4f-aa8b-ddce1f332c00">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="80" height="72" uuid="84b9866e-75cc-43af-baa1-453c4b552548"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="80" y="0" width="80" height="72" uuid="be306df7-97cd-4298-ac2a-401ca8db0b28"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="72" uuid="bc0bd552-f375-4646-a316-623b3df6666f">
+					<printWhenExpression><![CDATA["TIMBRO".equals($F{tipoRiga})]]></printWhenExpression>
+				</reportElement>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="9aaf8017-ffd5-40b0-be34-bf6da6d103ca">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="20" height="72" uuid="268c7dd3-3913-491f-b1b5-83f525c8250f"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="20" y="0" width="20" height="72" uuid="12f7c387-41df-4706-a634-92be72e4f483"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+				<frame>
+					<reportElement x="0" y="0" width="40" height="72" uuid="cf609766-3a8a-41f3-ba3f-da8be57dd4b0">
+						<printWhenExpression><![CDATA[$P{MOSTRA_PROGR_SEZ} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="40" height="72" uuid="cbc63769-7945-4205-9567-30e2ec9948d8"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+				<rectangle>
+					<reportElement x="40" y="0" width="244" height="72" uuid="db3debd1-0910-4334-94c1-48e904a5c472"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<textField isBlankWhenNull="true">
+					<reportElement x="41" y="2" width="240" height="11" isRemoveLineWhenBlank="true" uuid="fe94f2ba-aadc-4be4-9feb-6cc4c3aa9ddd">
+						<printWhenExpression><![CDATA[$F{intestazioneTestoTimbro} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{intestazioneTestoTimbro}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="41" y="12" width="240" height="60" isRemoveLineWhenBlank="true" uuid="6ad5b521-ee6f-4a7d-99e7-bf402202651b">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{testoTimbro} != null && ($F{riduciFontTesto} == null || $F{riduciFontTesto} == false)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+						<paragraph leftIndent="3" rightIndent="3" spacingBefore="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoTimbro}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="41" y="12" width="240" height="60" isRemoveLineWhenBlank="true" uuid="6ad5b521-ee6f-4a7d-99e7-bf402202651b">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$F{testoTimbro} != null && $F{riduciFontTesto} == true]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font fontName="Arial" size="7" isBold="false"/>
+						<paragraph leftIndent="3" rightIndent="3" spacingBefore="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoTimbro}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="41" y="2" width="240" height="11" isRemoveLineWhenBlank="true" uuid="ead138df-ff76-4a95-9ef0-4126df17eccb">
+						<printWhenExpression><![CDATA[$F{intestazioneFirma} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{intestazioneFirma}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="44" y="12" width="240" height="11" isRemoveLineWhenBlank="true" uuid="a76e16e5-ceac-4a31-92be-86a218cd4e35">
+						<printWhenExpression><![CDATA[$F{numFirme} == 1 && $F{testoFirma1} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="60" y="2" width="80" height="25" isRemoveLineWhenBlank="true" uuid="9106dbc9-423c-42ce-8d7b-8d1377474adc">
+						<printWhenExpression><![CDATA[$F{numFirme} == 2 && $F{testoFirma1} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="175" y="2" width="80" height="25" isRemoveLineWhenBlank="true" uuid="3aa56417-2d8f-4d18-a5ca-83da6121fc98">
+						<printWhenExpression><![CDATA[$F{numFirme} == 2 && $F{testoFirma2} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="40" y="2" width="80" height="25" isRemoveLineWhenBlank="true" uuid="ded18a74-3e4e-4a9f-a1a5-a025abc37947">
+						<printWhenExpression><![CDATA[$F{numFirme} == 3 && $F{testoFirma1} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="120" y="2" width="80" height="25" isRemoveLineWhenBlank="true" uuid="ba8309eb-3544-40ba-b0ab-4f547c4c466a">
+						<printWhenExpression><![CDATA[$F{numFirme} == 3 && $F{testoFirma2} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="206" y="2" width="80" height="25" isRemoveLineWhenBlank="true" uuid="05534df8-12e9-435c-a60f-d73b1d171769">
+						<printWhenExpression><![CDATA[$F{numFirme} == 3 && $F{testoFirma3} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{testoFirma3}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="284" y="0" width="56" height="72" uuid="1f9565cd-946e-43f5-91ea-5af896c99900"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<image>
+					<reportElement x="288" y="4" width="30" height="30" uuid="5b6c5585-3da8-403a-b864-7464355d0d4d">
+						<printWhenExpression><![CDATA["UC_FIRMA".equals($F{tipoSezioneTimbro})]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{BOLLO_UC}]]></imageExpression>
+				</image>
+				<rectangle>
+					<reportElement x="340" y="0" width="54" height="72" uuid="ed41b3dc-9d09-44fe-aabc-a00a7a1d2b9c"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<frame>
+					<reportElement x="394" y="0" width="161" height="72" uuid="2617bf3d-9e24-4581-89a4-d451aac52988">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == true]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="54" height="72" uuid="b4372e5b-b71e-4c55-aed2-83e8f00bd0db"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="54" y="0" width="54" height="72" uuid="180e8874-542a-4d40-ae3c-1bb63b0b108c"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<line>
+						<reportElement x="108" y="0" width="1" height="72" uuid="bdda8d2d-a477-4210-9495-2ab33f4095eb"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="160" y="0" width="1" height="72" uuid="4466ae38-79e9-40f1-a530-8aa8ef9fed82"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+					<line>
+						<reportElement x="108" y="71" width="53" height="1" uuid="fa3210ec-1423-44c6-a3d6-b87433993845">
+							<printWhenExpression><![CDATA[($V{RIGA_NUMERO} % 10 == 0)]]></printWhenExpression>
+						</reportElement>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</line>
+				</frame>
+				<frame>
+					<reportElement x="394" y="0" width="160" height="72" uuid="0e3dc629-afd8-496d-b83b-b5451a91ba16">
+						<printWhenExpression><![CDATA[$P{MOSTRA_FIRMA_SEGGIO} == false]]></printWhenExpression>
+					</reportElement>
+					<rectangle>
+						<reportElement x="0" y="0" width="80" height="72" uuid="b677b266-2a63-4c93-ad59-85b807e31703"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+					<rectangle>
+						<reportElement x="80" y="0" width="80" height="72" uuid="1c2afb4c-ec3d-4540-a3cf-fb2b454e5b65"/>
+						<graphicElement>
+							<pen lineWidth="0.5"/>
+						</graphicElement>
+					</rectangle>
+				</frame>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="35" splitType="Stretch">
+			<image>
+				<reportElement x="100" y="2" width="35" height="33" uuid="c6607738-85ea-4dd9-b160-906f4df9d7d8">
+					<printWhenExpression><![CDATA[$P{STAMPA_VISTO} == true && $P{BOLLO_CC} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[new java.io.ByteArrayInputStream($P{BOLLO_CC})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="150" y="5" width="26" height="10" uuid="00000000-0000-0000-0000-000000000016"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Visto: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="175" y="5" width="200" height="10" uuid="00000000-0000-0000-0000-000000000015"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TIPO_PRESIDENTE_VISTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="15" width="225" height="10" uuid="00000000-0000-0000-0000-000000000018">
+					<printWhenExpression><![CDATA[$P{STAMPA_VISTO} == true && $P{NOME_PRESIDENTE_VISTO} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOME_PRESIDENTE_VISTO}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="400" y="5" width="90" height="30" uuid="c6607738-85ea-4dd9-b160-906f4df9d7d8">
+					<printWhenExpression><![CDATA[$P{STAMPA_VISTO} == true && $P{FIRMA_VISTO} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[new java.io.ByteArrayInputStream($P{FIRMA_VISTO})]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="175" y="25" width="310" height="1" uuid="b6789016-89ab-cdef-0123-456789012347"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="490" y="20" width="40" height="10" uuid="648b7a2b-81a2-4211-ab3d-00472c74c6cf">
+					<printWhenExpression><![CDATA[$P{MOSTRA_NUM_PAG} == true]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + ($V{PAGE_NUMBER} + ($P{PAGINA_INIZIALE} != null ? $P{PAGINA_INIZIALE} : 1) - 1)]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

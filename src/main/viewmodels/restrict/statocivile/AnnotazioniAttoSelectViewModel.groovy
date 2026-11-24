@@ -60,7 +60,7 @@ class AnnotazioniAttoSelectViewModel extends AbstractSelectViewModel{
         addAnnotazioneEnabled = false
         modifyAnnotazioneEnabled = false
 
-        List<Map> eList = [Etichette.Annotazioni, Etichette.Formula_crescente, Etichette.Formula_decrescente, Etichette.Salva]
+        List<Map> eList = [Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("Formula_crescente"), Etichette.getEtichetta("Formula_decrescente"), Etichette.getEtichetta("Salva")]
 
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarAnnotazioniAttributes.etichetteCbAnnListDesc)
@@ -83,13 +83,13 @@ class AnnotazioniAttoSelectViewModel extends AbstractSelectViewModel{
 
         anscOn = arcParametroService.isIntegrazioneAnscAttiva()
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
         totalSizeLabel = ""
 
         this.atto = atto
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Formula_crescente),      SortUtils.formulaAsc) )
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Formula_decrescente),    SortUtils.formulaDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Formula_crescente")),      SortUtils.formulaAsc) )
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Formula_decrescente")),    SortUtils.formulaDesc))
 
         //Default: formula crescente
         selectedOrder = listaOrder[0]
@@ -136,13 +136,17 @@ class AnnotazioniAttoSelectViewModel extends AbstractSelectViewModel{
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [idAnnotazione: aa.id] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     void resetDettaglio(){
         dettaglio = null
         refreshDettaglio()
+    }
+
+    boolean getCanSaveRecord() {
+        return true
     }
 
 }

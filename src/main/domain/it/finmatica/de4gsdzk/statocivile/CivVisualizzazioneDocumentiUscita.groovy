@@ -42,7 +42,7 @@ class CivVisualizzazioneDocumentiUscita extends CivVisualizzazioneDocumentiBaseD
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Anno, Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie,
-                                              Etichette.Data, Etichette.Registro, Etichette.Protocollo, Etichette.Anno_Protocollo, Etichette.Cognome_Nome]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"),
+                                              Etichette.getEtichetta("Data"), Etichette.getEtichetta("Registro"), Etichette.getEtichetta("Protocollo"), Etichette.getEtichetta("Anno_Protocollo"), Etichette.getEtichetta("Cognome_Nome")]
 
 }

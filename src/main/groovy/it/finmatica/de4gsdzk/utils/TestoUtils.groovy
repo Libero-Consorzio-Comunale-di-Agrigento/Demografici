@@ -308,13 +308,13 @@ class TestoUtils {
         } else {
             if (atto.hasParte() && (atto.parte != null)) {
                 d.append(" - ")
-                d.append(getEtichetta(etichette, Etichette.Parte).toUpperCase())
+                d.append(getEtichetta(etichette, Etichette.getEtichetta("Parte")).toUpperCase())
                 d.append(spazio)
                 d.append(getParteRomana(atto.parte.intValue()))
             }
             if (atto.hasSerie() && ((atto.serie ?: "") != "")) {
                 d.append(" - ")
-                d.append(getEtichetta(etichette, Etichette.Serie).toUpperCase())
+                d.append(getEtichetta(etichette, Etichette.getEtichetta("Serie")).toUpperCase())
                 d.append(spazio)
                 d.append(atto.serie.toUpperCase())
             }

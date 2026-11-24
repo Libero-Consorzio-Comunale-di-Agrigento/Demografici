@@ -1,7 +1,9 @@
 package it.finmatica.de4gsdzk.statocivile
 
+import it.finmatica.de4gsdzk.utils.Etichette
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.IAttoCertificabileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivMorteService implements IAttoCertificabileService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivTipoAttoService civTipoAttoService
 
@@ -51,17 +53,17 @@ class CivMorteService implements IAttoCertificabileService {
 
 	private final CivMorteRepository civMorteRepository
 
-	CivMorteService(CivMorteRepository civMorteRepository, StatoCivileService statoCivileService,
-					CivMargineService civMargineService, CivAnagrafeService civAnagrafeService,
-					CivTipoAttoService civTipoAttoService, ArcComuneBaseService arcComuneBaseService,
-					CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
-					CivComunicazioneAttoService civComunicazioneAttoService, CivTrasportoESeppellimentoService civTrasportoESeppellimentoService,
-					CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
-					ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
-					CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+	CivMorteService(CivMorteRepository civMorteRepository, GsdService gsdService,
+                    CivMargineService civMargineService, CivAnagrafeService civAnagrafeService,
+                    CivTipoAttoService civTipoAttoService, ArcComuneBaseService arcComuneBaseService,
+                    CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
+                    CivComunicazioneAttoService civComunicazioneAttoService, CivTrasportoESeppellimentoService civTrasportoESeppellimentoService,
+                    CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
+                    ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
+                    CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civMorteRepository = civMorteRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civMargineService = civMargineService
 		this.civAnagrafeService = civAnagrafeService
 		this.civTipoAttoService = civTipoAttoService
@@ -182,7 +184,7 @@ class CivMorteService implements IAttoCertificabileService {
 		civValidazioneAttoService.checkCfTroppoLungoSoggetto1(obj, "Codice Fiscale")
 
 		if (DataUtils.isDataFutura(obj.dataMorte)){
-			throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_data_futura)
+			throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_data_futura"))
 		}
 
 		// IN FUNZIONE DI PARTE E SERIE / CATEGORIA
@@ -190,7 +192,7 @@ class CivMorteService implements IAttoCertificabileService {
 		if ((obj.isEstremiDecessoDecisionVisible()) && obj.estremiDecessoNoti.equals(ETipoSiNo.NO)) {
 			log.info ("Non è obbligatorio indicare le generalità del deceduto; es: è stato rinvenuto un cadavere tra la via xxx e la via yyyy")
 			if ( ((obj.descrizioneEventoMorte?:"") == "") && ((obj.descrizioneDataMorte?:"") == "") && ((obj.descrizioneOrarioMorte?:"") == "") ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_salvataggio, ": non è stato compilato alcun campo della sezione 'Dati Decesso'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_salvataggio"), ": non è stato compilato alcun campo della sezione 'Dati Decesso'")
 			}
 		} else {
 			Boolean checkResidenza1 = Boolean.TRUE
@@ -200,11 +202,11 @@ class CivMorteService implements IAttoCertificabileService {
 
 			String sezioneDatiDecesso = "'Dati Decesso'"
             if (!datiProvenienza.flagInViaggio && (obj.dataMorte == null) && (!(obj.giornoMorteImprecisato || obj.meseMorteImprecisato || obj.annoMorteImprecisato ) ) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDecesso)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDecesso)
             }
 
 			if ((obj.comuneMorte?.codice == null) || (obj.comuneMorte?.codiceProvincia == null)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDecesso)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDecesso)
 			}
 		}
 
@@ -212,36 +214,36 @@ class CivMorteService implements IAttoCertificabileService {
 		// Per Ansc refs #60743
 		if (anscOn && obj.isConiugeMandatory() && obj.isCodRec3()) {
 			if ( (!(obj.cognomeConiuge?.trim())) && (!(obj.nomeConiuge?.trim())) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if ( (!(obj.cognomeConiuge?.trim())) && (!(obj.senzaCognomeConiuge)) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if ( (!(obj.cognomeConiuge?.trim())) && (!(obj.senzaNomeConiuge)) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 			/*
 			Non più obbligatori dalla relesae 1.8.1 di ANSC
 			if (obj.sessoConiuge == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if (obj.dataNascitaConiuge == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if ((obj.comuneNascitaConiuge.codice == null) || (obj.comuneNascitaConiuge.codiceProvincia == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if ((obj.comuneResidenzaConiuge.codice == null) || (obj.comuneResidenzaConiuge.codiceProvincia == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 
 			if (obj.nazionalitaConiuge == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_coniuge)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"))
 			}
 			*/
 		}
@@ -249,7 +251,7 @@ class CivMorteService implements IAttoCertificabileService {
 		if ( (datiProvenienza.tipoComparente?:"") == ""){
 			if ( obj.isPartePrima() || obj.isSecondaA() ) {
 				if (obj.isCodRec3()){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campo_comparente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campo_comparente"))
 				} else {
 					if (obj.isCodRec0() && composizioneTestoAttiva ){
 						datiProvenienza.tipoComparente = ETipoDichiaranteMorte.C1
@@ -261,7 +263,7 @@ class CivMorteService implements IAttoCertificabileService {
 		if ( (datiProvenienza.tipoFirmatario?:"") == ""){
 			if ( obj.isPartePrima() || obj.isSecondaA() ) {
 				if (obj.isCodRec3()){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campo_firmatario)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campo_firmatario"))
 				} else {
 					if (obj.isCodRec0() && composizioneTestoAttiva ){
 						datiProvenienza.tipoFirmatario = datiProvenienza.tipoComparente
@@ -274,7 +276,7 @@ class CivMorteService implements IAttoCertificabileService {
 		// 2B
 		if (anscOn && obj.isSecondaB() && obj.isCodRec3()) {
 			if ( ((datiProvenienza.documentoDecesso ?: "") == "" ) || (datiProvenienza.dataDocumentoDecesso == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Dati per Redazione'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Dati per Redazione'")
 			}
 		}
 
@@ -297,7 +299,7 @@ class CivMorteService implements IAttoCertificabileService {
 		log.info("Lancio salvataggio dello storico su CIVMOR per id " + obj.id)
 
 		CivMorte newest = DomainUtils.copyAtto(obj) as CivMorte
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civMorteRepository.save(newest)
@@ -494,12 +496,13 @@ class CivMorteService implements IAttoCertificabileService {
 
         if (tipoOperazione.isInsert()){
             // solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
         }
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVMOR per id " + obj.id)
@@ -557,7 +560,7 @@ class CivMorteService implements IAttoCertificabileService {
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java

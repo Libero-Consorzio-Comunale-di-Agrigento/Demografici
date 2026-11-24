@@ -17,5 +17,5 @@ class CerFondoCassaTerminalista extends GsdBaseDomain {
     @Column(name = "FONDO_CASSA", nullable = false)
     BigDecimal fondoCassa
 
-    static final List<Map> etichetteDomain = [Etichette.Data, Etichette.Terminalista, Etichette.Fondo_Cassa]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data"), Etichette.getEtichetta("Terminalista"), Etichette.getEtichetta("Fondo_Cassa")]
 }

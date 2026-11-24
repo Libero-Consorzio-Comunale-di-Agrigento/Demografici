@@ -17,6 +17,10 @@ class CivComunicazioneFormula extends CivComunicazioneRelazione2BaseDomain {
     @JoinColumn(name = "FORMULA", nullable = false)
     CivFormulaAnnotazione formula
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CODICE_CO", nullable = false)
+    CivComunicazione comunicazione
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ID_CIVDDO_RIF", nullable = true)
     CivTipoDocumentoFascicolo tipoDocumentoFascicoloRif
@@ -25,6 +29,6 @@ class CivComunicazioneFormula extends CivComunicazioneRelazione2BaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Formula]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Formula")]
 
 }

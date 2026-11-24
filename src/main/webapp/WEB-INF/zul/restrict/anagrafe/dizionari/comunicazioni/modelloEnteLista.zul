@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="x" name="min" class="java.lang.Math" signature="int min(int,int)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.dizionari.comunicazioni.ModelloEnteListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="90px">
+                                <label value="@load(vm.etichette['Tipo_Modello'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout hflex="1">
+                                    <radiogroup model="@load(vm.listaTipiModello)" onCheck="@command('onSelectTipoModello')"
+                                                selectedItem="@bind(vm.tipoModello) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                        <template name="model">
+                                            <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding:10px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <listheader label="@load(vm.etichette['Codice'])" width="70px"/>
+                    <listheader label="@load(vm.etichette['Descrizione'])"/>
+                    <listheader label="@load(vm.etichette['Ente'])"/>
+                    <listheader label="@load(vm.etichette['Sequenza'])" width="80px"/>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem onDoubleClick="@command('onModifica')">
+                        <listcell label="@load(item.codModello)"/>
+                        <listcell label="@load(item.modello.descrizione)"/>
+                        <listcell label="@load(item.ente.descrizione)"/>
+                        <listcell label="@load(item.sequenza)"/>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/edit.png"
+                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                    visible="@load(not empty item.id)"
+                                    onClick="@command('onModifica')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

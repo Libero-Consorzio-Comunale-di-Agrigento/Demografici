@@ -9,10 +9,10 @@ enum ETipoDichiarantePubblicazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case SO: return Etichette.Solo_Sposo
-            case SA: return Etichette.Solo_Sposa
-            case SI: return Etichette.Entrambi
-            case AL: return Etichette.Altro
+            case SO: return Etichette.getEtichetta("Solo_Sposo")
+            case SA: return Etichette.getEtichetta("Solo_Sposa")
+            case SI: return Etichette.getEtichetta("Entrambi")
+            case AL: return Etichette.getEtichetta("Altro")
         }
         return null
     }

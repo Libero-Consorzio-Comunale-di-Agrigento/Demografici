@@ -4,7 +4,7 @@ create or replace view civdpa_v
 as
 SELECT dpa.*,
 -- flag_rito_cattolico
-       decode(dpa.tipo_atto, 4, decode(upper(dpa.rito),'CATTOLICO','S')) flag_rito_cattolico,
+       decode(dpa.tipo_atto, 4, f_CIV_flag_rito_cattolico(dpa.rito)) flag_rito_cattolico,
 -- tipo_trasmissione
        decode(dpa.tipo_atto, 5, f_CIV_tipo_trasmissione(dpa.tipo_atto, dpa.id_atto)) tipo_trasmissione,
 -- des_com_atto_orig

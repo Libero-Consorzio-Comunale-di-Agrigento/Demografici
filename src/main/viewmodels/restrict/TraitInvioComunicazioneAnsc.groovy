@@ -19,9 +19,9 @@ trait TraitInvioComunicazioneAnsc {
 
     abstract Boolean isInvioServizioDisabled(AnscEndPointServizioArchivio servizioCdu, ETipoArchivioAnsc archivioRif, Long idRif)
 
-    abstract void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione)
+    abstract void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione)
 
-    abstract void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre, Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione, Boolean skip)
+    abstract void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre, Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione, Boolean skip)
 
     Boolean isInvioServizioBaseDisabled(AnscEndPointServizioArchivio servizioCdu, ETipoArchivioAnsc taRifCom, Long idRifDomain){
         return isInvioServizioDisabled(servizioCdu, taRifCom, idRifDomain)
@@ -44,7 +44,7 @@ trait TraitInvioComunicazioneAnsc {
     }
 
     void recuperaCredenzialiEInviaComunicazione(AnscUtente ansUte, ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, Long idRif,
-                                                Long idComunicazione = null, IRicercaNotificheAnsc r = null, IAnscPaginazione paginazione = null, Boolean skip = Boolean.FALSE, Boolean force = Boolean.FALSE) {
+                                                Long idComunicazione = null, IRicercaAnsc r = null, IAnscPaginazione paginazione = null, Boolean skip = Boolean.FALSE, Boolean force = Boolean.FALSE) {
         if (ansUte && servizioCdu?.servizio){
             Boolean otpValido = Boolean.FALSE
             if (ansUte.anscDataOtp != null){
@@ -67,22 +67,22 @@ trait TraitInvioComunicazioneAnsc {
             }
         } else {
             if (!(ansUte)) {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_ANSC_abilitazione_utente), getEtichetta(etichette, Etichette.ANSC), Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_ANSC_abilitazione_utente")), getEtichetta(etichette, Etichette.getEtichetta("ANSC")), Messagebox.OK, Messagebox.EXCLAMATION)
             }
             if (!(servizioCdu?.servizio)) {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Compilare_servizio_ANSC), getEtichetta(etichette, Etichette.ANSC), Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Compilare_servizio_ANSC")), getEtichetta(etichette, Etichette.getEtichetta("ANSC")), Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
 
     void tentaInvio(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre, Long idRif,
-                    Long idComunicazione = null, IRicercaNotificheAnsc r = null, IAnscPaginazione paginazione = null, Boolean skip = Boolean.FALSE) {
+                    Long idComunicazione = null, IRicercaAnsc r = null, IAnscPaginazione paginazione = null, Boolean skip = Boolean.FALSE) {
         try {
             inviaComunicazione(taRifCom, servizioCdu, cre, idRif, idComunicazione, r, paginazione, skip)
         } catch (AnscRuntimeException arex){
             if (arex.codificaErrore?.flagOtpUser && (!(arex.codificaErrore?.flagGestito)) ){
                 recuperaCredenzialiEInviaComunicazione(cre.getAnscUtente(), taRifCom, servizioCdu, idRif, idComunicazione, r, paginazione, skip, Boolean.TRUE)
-                Messagebox.show(arex.getMessage(), getEtichetta(etichette, Etichette.ANSC), Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(arex.getMessage(), getEtichetta(etichette, Etichette.getEtichetta("ANSC")), Messagebox.OK, Messagebox.ERROR)
             } else {
                 throw arex
             }
@@ -101,7 +101,7 @@ trait TraitInvioComunicazioneAnsc {
         }
     }
 
-    List<Map> etichetteIcomANSCDefault = [Etichette.ANSC, Etichette.Servizi_allegati, Etichette.Servizi_obbligatori, Etichette.Servizi_aggiuntivi,
-                                          EtichetteMessaggi.Errore_ANSC_abilitazione_utente, EtichetteMessaggi.Compilare_servizio_ANSC]
+    List<Map> etichetteIcomANSCDefault = [Etichette.getEtichetta("ANSC"), Etichette.getEtichetta("Servizi_allegati"), Etichette.getEtichetta("Servizi_obbligatori"), Etichette.getEtichetta("Servizi_aggiuntivi"),
+                                          Etichette.getEtichetta("Errore_ANSC_abilitazione_utente"), Etichette.getEtichetta("Compilare_servizio_ANSC")]
 
 }

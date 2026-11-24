@@ -26,13 +26,13 @@ class AnnotazioneSDSUDettaglioViewModel extends IstatDettaglioParentViewModel{
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_MODELLO_SDSU, Etichette.SEZIONE_DATI_PROCEDURA,
-                           Etichette.SEZIONE_DATI_MATRIMONIO, Etichette.SEZIONE_MARITO, Etichette.SEZIONE_MOGLIE,
-                           Etichette.SEZIONE_DATI_UNIONE_CIVILE, Etichette.SEZIONE_CONTRAENTE_1, Etichette.SEZIONE_CONTRAENTE_2]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_MODELLO_SDSU"), Etichette.getEtichetta("SEZIONE_DATI_PROCEDURA"),
+                           Etichette.getEtichetta("SEZIONE_DATI_MATRIMONIO"), Etichette.getEtichetta("SEZIONE_MARITO"), Etichette.getEtichetta("SEZIONE_MOGLIE"),
+                           Etichette.getEtichetta("SEZIONE_DATI_UNIONE_CIVILE"), Etichette.getEtichetta("SEZIONE_CONTRAENTE_1"), Etichette.getEtichetta("SEZIONE_CONTRAENTE_2")]
 
         eList.addAll(IstMscMsuBaseDomain.etichetteDomain)
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.PROVV, Etichette.SEZIONE_MODELLO_SDSU)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.PROVV, Etichette.getEtichetta("SEZIONE_MODELLO_SDSU"))
 
         if (pkAtto && pkAnnotazione){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita1', tipo: JoinType.LEFT], [campo:'nazionalita2', tipo: JoinType.LEFT]]])

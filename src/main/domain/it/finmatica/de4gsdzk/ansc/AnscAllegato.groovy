@@ -33,6 +33,6 @@ class AnscAllegato {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Allegato]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Allegato")]
 
 }

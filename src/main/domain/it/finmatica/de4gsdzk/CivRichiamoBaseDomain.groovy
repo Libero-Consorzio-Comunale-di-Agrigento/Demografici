@@ -25,6 +25,6 @@ class CivRichiamoBaseDomain extends GsdBaseDomain{
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Richiamo, Etichette.Progressivo, Etichette.Tipo_Atto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Richiamo"), Etichette.getEtichetta("Progressivo"), Etichette.getEtichetta("Tipo_Atto")]
 
 }

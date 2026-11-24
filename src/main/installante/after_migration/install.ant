@@ -18,8 +18,8 @@
     <target name="-da-installare">
         <condition property="da.installare">
             <or>
-                <matches string="${versione}" pattern="^4\.5\.8\.0(-SNAPSHOT)?$"/>
-                <!-- <matches string="${versione}" pattern="^4\.5\.8\.1(-SNAPSHOT)?$"/>-->
+                <matches string="${versione}" pattern="^5\.0\.0\.\d+(-SNAPSHOT)?$"/>
+                <!-- <matches string="${versione}" pattern="^5\.0\.[\d\.]+(-SNAPSHOT)?$"/>-->
             </or>
         </condition>
     </target>

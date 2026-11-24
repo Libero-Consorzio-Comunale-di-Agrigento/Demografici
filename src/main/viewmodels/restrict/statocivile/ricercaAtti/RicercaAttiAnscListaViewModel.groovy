@@ -1,5 +1,6 @@
 package restrict.statocivile.ricercaAtti
 
+import it.finmatica.de4gsdzk.utils.Etichette
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
@@ -8,7 +9,7 @@ import it.finmatica.de4gsdzk.ansc.AnscEntitaService
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAtto
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAttoService
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
@@ -61,7 +62,7 @@ class RicercaAttiAnscListaViewModel extends AbstractListaViewModel implements Tr
     private GsdEtichettaService gsdEtichettaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w){
         self = w
@@ -71,8 +72,8 @@ class RicercaAttiAnscListaViewModel extends AbstractListaViewModel implements Tr
 
         ricercaAtto = new RicercaAtto(DataUtils.getAnnoCorrente())
 
-        List<Map<String, String>> eList = [Etichette.Atti_Divorzio, Etichette.Atti_Scioglimento,
-                                           Etichette.Numero_unico_crescente, Etichette.Numero_unico_decrescente, Etichette.Gestione_Registrazioni_comunali]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Atti_Divorzio"), Etichette.getEtichetta("Atti_Scioglimento"),
+                                           Etichette.getEtichetta("Numero_unico_crescente"), Etichette.getEtichetta("Numero_unico_decrescente"), Etichette.getEtichetta("Gestione_Registrazioni_comunali")]
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
         // Aggiungo etichette domain
@@ -87,12 +88,12 @@ class RicercaAttiAnscListaViewModel extends AbstractListaViewModel implements Tr
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Registrazioni_comunali)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Registrazioni_comunali"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Numero_unico_decrescente),    SortUtils.numeroUnicoDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Numero_unico_crescente),      SortUtils.numeroUnicoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Numero_unico_decrescente")),    SortUtils.numeroUnicoDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Numero_unico_crescente")),      SortUtils.numeroUnicoAsc))
 
         selectedOrder = listaOrder[0]
 
@@ -107,7 +108,7 @@ class RicercaAttiAnscListaViewModel extends AbstractListaViewModel implements Tr
         updateTotalSize(p.count)
 
         buchiNumerazioneXAnno = ""
-        List<Long> buchi = statoCivileService.listBuchiNumerazione(ricercaAtto.anno)
+        List<Long> buchi = gsdService.listBuchiNumerazione(ricercaAtto.anno)
         if (buchi.size() > 0){
             StringBuilder msg = new StringBuilder("Per l'anno ${ricercaAtto.anno} occorre recuperare i seguenti numeri unici comunali: ")
             msg.append(buchi.join(", "))
@@ -240,7 +241,7 @@ class RicercaAttiAnscListaViewModel extends AbstractListaViewModel implements Tr
                     apriDettaglio(uri, params)
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

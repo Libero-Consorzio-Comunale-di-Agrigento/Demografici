@@ -39,14 +39,14 @@ class AnaAnagrafeRepositoryImpl implements AnaAnagrafeCustomRepository {
     }
 
     @Override
-    List<AnaAnagrafe> findAllRettificatiByRicercaIndividuo(RicercaIndividuo r) {
+    List<Integer> findAllRettificatiByRicercaIndividuo(RicercaIndividuo r) {
         String cognomeNome = null
         if (!TestoUtils.isVuoto(r.cognome) || !TestoUtils.isVuoto(r.nome)) {
-            cognomeNome = "${TestoUtils.isVuoto(r.cognome) ? "%" : r.cognome}/${TestoUtils.isVuoto(r.nome) ? "%" : r.nome}"
+            cognomeNome = "${TestoUtils.isVuoto(r.cognome) ? "%" : r.cognome+"%"}/${TestoUtils.isVuoto(r.nome) ? "%" : r.nome+"%"}"
         }
 
         String sql = """
-            select distinct ana.*
+            select distinct ana.matricola
               from anaana_v ana, anamov_v mov
              where ana.cognome_nome_ric != upper(mov.cognome_nome)
                and ana.matricola = mov.matricola
@@ -59,7 +59,7 @@ class AnaAnagrafeRepositoryImpl implements AnaAnagrafeCustomRepository {
                ${r.dataNascitaDal != null ? 'and ana.d_data_nas >= :dataNascitaDal' : ''}
                ${r.dataNascitaAl != null ? 'and ana.d_data_nas <= :dataNascitaAl' : ''}
           UNION
-            select distinct ana.*
+            select distinct ana.matricola
               from anaana_v ana, anamov_v mov
              where ana.cognome_nome_ric != upper(mov.cognome_nome_prec)
                and ana.matricola = mov.matricola
@@ -73,10 +73,10 @@ class AnaAnagrafeRepositoryImpl implements AnaAnagrafeCustomRepository {
                ${r.dataNascitaAl != null ? 'and ana.d_data_nas <= :dataNascitaAl' : ''}
         """
 
-        Query query = entityManager.createNativeQuery(sql, AnaAnagrafe.class)
+        Query query = entityManager.createNativeQuery(sql)
 
         if (!TestoUtils.isVuoto(cognomeNome)) {
-            query.setParameter("cognomeNome", cognomeNome)
+            query.setParameter("cognomeNome", cognomeNome.toUpperCase())
         }
         if (!TestoUtils.isVuoto(r.codiceFiscale)) {
             query.setParameter("codiceFiscale", r.codiceFiscale)
@@ -101,7 +101,7 @@ class AnaAnagrafeRepositoryImpl implements AnaAnagrafeCustomRepository {
         }
 
         // Create query and set parameters
-        return query.getResultList()
+        return query.getResultList().collect { ((Number) it).intValue() }
     }
 
 }

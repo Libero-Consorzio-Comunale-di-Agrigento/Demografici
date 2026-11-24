@@ -150,6 +150,6 @@ class TipoAttoUtils {
 
     final static List<ETipoAtto> listaTipiAttoDefault = [ETipoAtto.NAS, ETipoAtto.PUB, ETipoAtto.MAT, ETipoAtto.UCI, ETipoAtto.MOR, ETipoAtto.CIT]
 
-    final static List<ETipoAtto> listaTipiAttoCertificabili = [ETipoAtto.NAS, ETipoAtto.MAT, ETipoAtto.UCI, ETipoAtto.MOR]
+    final static List<ETipoAtto> listaTipiAttoCertificabili = [ETipoAtto.NAS, ETipoAtto.MAT, ETipoAtto.UCI, ETipoAtto.MOR, ETipoAtto.CIT]
 
 }

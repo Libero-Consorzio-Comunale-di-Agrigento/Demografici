@@ -9,7 +9,7 @@ import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviatoService
 import it.finmatica.de4gsdzk.pagamento.error.AnnullaPagamentoRuntimeException
 import it.finmatica.de4gsdzk.pagamento.error.VerificaPagamentoRuntimeException
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviatoRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Funzioni
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.stereotype.Service
@@ -20,15 +20,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class DepagPagamentoInviatoService extends WspaPagamentoInviatoService {
 
-    DepagPagamentoInviatoService(StatoCivileService statoCivileService,
+    DepagPagamentoInviatoService(GsdService gsdService,
                                  UtenteCustomService utenteCustomService,
                                  WspaPagamentoInviatoRepository wspaPagamentoInviatoRepository) {
-        super(statoCivileService, utenteCustomService, wspaPagamentoInviatoRepository)
+        super(gsdService, utenteCustomService, wspaPagamentoInviatoRepository)
     }
 
     @Override
     String getUrl(WspaPagamentoInviato wspaPagamentoInviato) {
-        return statoCivileService.getUrlWspa(wspaPagamentoInviato.chiaveServizioEsterno)
+        return gsdService.getUrlWspa(wspaPagamentoInviato.chiaveServizioEsterno)
     }
 
     @Override
@@ -63,7 +63,7 @@ class DepagPagamentoInviatoService extends WspaPagamentoInviatoService {
     @Override
     void verificaPagamento(WspaPagamentoInviato wspaPagamentoInviato) {
         try {
-            String response = statoCivileService.verificaPagamentoWspa(wspaPagamentoInviato.chiaveServizioEsterno, utenteCustomService.loggedUserId)
+            String response = gsdService.verificaPagamentoWspa(wspaPagamentoInviato.chiaveServizioEsterno, utenteCustomService.loggedUserId)
             if (!TestoUtils.isVuoto(response)) {
                 throw new VerificaPagamentoRuntimeException(response)
             }
@@ -78,7 +78,7 @@ class DepagPagamentoInviatoService extends WspaPagamentoInviatoService {
     @Override
     void annullaPagamento(WspaPagamentoInviato wspaPagamentoInviato) {
         try {
-            String response = statoCivileService.annullaPagamentoWspa(wspaPagamentoInviato.chiaveServizioEsterno, utenteCustomService.loggedUserId)
+            String response = gsdService.annullaPagamentoWspa(wspaPagamentoInviato.chiaveServizioEsterno, utenteCustomService.loggedUserId)
             if (!TestoUtils.isVuoto(response)) {
                 throw new AnnullaPagamentoRuntimeException(response)
             }

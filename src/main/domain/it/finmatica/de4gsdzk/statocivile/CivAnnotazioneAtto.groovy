@@ -313,9 +313,9 @@ class CivAnnotazioneAtto extends GsdBaseDomain implements IEntitaAnsc{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Formula, Etichette.Stato, Etichette.Testo, Etichette.Data_Registrazione,
-                                              Etichette.Sequenza, Etichette.Numero_comunale, Etichette.Istat, Etichette.Secretato,
-                                              Etichette.Comune_Ente, Etichette.In_data, Etichette.Estremi_documento,
-                                              Etichette.Stampa_Su_Estratto, Etichette.Stampa_Su_Atto, Etichette.Genere, Etichette.Caso_Uso_Ansc]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Formula"), Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Data_Registrazione"),
+                                              Etichette.getEtichetta("Sequenza"), Etichette.getEtichetta("Numero_comunale"), Etichette.getEtichetta("Istat"), Etichette.getEtichetta("Secretato"),
+                                              Etichette.getEtichetta("Comune_Ente"), Etichette.getEtichetta("In_data"), Etichette.getEtichetta("Estremi_documento"),
+                                              Etichette.getEtichetta("Stampa_Su_Estratto"), Etichette.getEtichetta("Stampa_Su_Atto"), Etichette.getEtichetta("Genere"), Etichette.getEtichetta("Caso_Uso_Ansc")]
 
 }

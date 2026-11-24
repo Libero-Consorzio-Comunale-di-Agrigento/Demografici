@@ -1,6 +1,7 @@
 package restrict.statocivile.unione.unione
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.archivi.ArcComune
@@ -38,7 +39,7 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
     final List<ETipoProvvedimentoAutoritaGiudiziaria> listaTipoProvvedimentoAutoritaGiudiziaria = [null] + Arrays.asList(ETipoProvvedimentoAutoritaGiudiziaria.values())
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivScioglimentoService civScioglimentoService
@@ -53,22 +54,22 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
 
         List<Map> eList = []
         eList.addAll(CivUnioneCivile.etichetteDomain)
-        eList.addAll([Etichette.Comune, Etichette.Recupero_da_accordo, Etichette.Comune_Atto,
-                      Etichette.Sede, Etichette.Annotazione, Etichette.Tipo_Accordo, Etichette.Caso_specifico,
-                      Etichette.Estremi_Accordo, Etichette.Estremi_Atto_Unione_Civile, Etichette.Recupera_Estremi_Atto_Unione_Civile])
+        eList.addAll([Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Recupero_da_accordo"), Etichette.getEtichetta("Comune_Atto"),
+                      Etichette.getEtichetta("Sede"), Etichette.getEtichetta("Annotazione"), Etichette.getEtichetta("Tipo_Accordo"), Etichette.getEtichetta("Caso_specifico"),
+                      Etichette.getEtichetta("Estremi_Accordo"), Etichette.getEtichetta("Estremi_Atto_Unione_Civile"), Etichette.getEtichetta("Recupera_Estremi_Atto_Unione_Civile")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivMargine.etichetteDomain)
         eList.addAll(CivTestimoniAtto.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Richiedenti, Etichette.Richiesta, Etichette.Documenti, Etichette.Provvedimento_Autorita])
+        eList.addAll([Etichette.getEtichetta("Richiedenti"), Etichette.getEtichetta("Richiesta"), Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Provvedimento_Autorita")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_TIPO_ACCORDO, Etichette.SEZIONE_CONTRAENTI, Etichette.SEZIONE_SPOSI, Etichette.SEZIONE_DATI_ATTO,
-                      Etichette.SEZIONE_AVVOCATI, Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_ANNOTAZIONI_DA_ATTO])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_TIPO_ACCORDO"), Etichette.getEtichetta("SEZIONE_CONTRAENTI"), Etichette.getEtichetta("SEZIONE_SPOSI"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"),
+                      Etichette.getEtichetta("SEZIONE_AVVOCATI"), Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_DA_ATTO")])
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_obbligatori_contraenti])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_obbligatori_contraenti")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriScioglimento()
@@ -99,8 +100,8 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
         //etichette custom
         etichetteCustom = FormUtils.getAttoCustomLabels(ETipoAtto.UCI, etichette)
 
-        msgTitle = getEtichetta(Etichette.Atto_Scioglimento)
-        tipoAttoLabel = getEtichetta(Etichette.Atto_Scioglimento)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Scioglimento"))
+        tipoAttoLabel = getEtichetta(Etichette.getEtichetta("Atto_Scioglimento"))
 
         listaComparente = [null]
         listaFirmatario = [null]
@@ -135,7 +136,7 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
 
     protected void setComuneAttoAuto(){
         if (dettaglio.isAvvocati()){
-            ArcComune comune = statoCivileService.getComuneCliente()
+            ArcComune comune = gsdService.getComuneCliente()
             if (comune) {
                 dettaglio.codiceComuneMatrimonio = comune.codiceComune
                 dettaglio.codiceProvinciaMatrimonio = comune.codiceProvincia
@@ -209,7 +210,7 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleScioglimento(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleScioglimento(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -285,10 +286,10 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
         if ( dettaglio.dataNascita1 && dettaglio.cognome1?.trim() && dettaglio.nome1?.trim() &&
              dettaglio.dataNascita2 && dettaglio.cognome2?.trim() && dettaglio.nome2?.trim() ){
             if ( recuperaEstremiMatrimonioDaAttoDiMatrimonio() == 0 ){
-                Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_contraenti), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_contraenti")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -298,7 +299,7 @@ abstract class ScioglimentoDettaglioParentViewModel extends AttoSoggettiDettagli
             CivUnioneCivile mat = civUnioneCivileService.getXDatiAnagraficiSposi(dettaglio.cognome1, dettaglio.nome1, dettaglio.dataNascita1,
                     dettaglio.cognome2, dettaglio.nome2, dettaglio.dataNascita2)
             if (mat){
-                ArcComune comune = statoCivileService.getComuneCliente()
+                ArcComune comune = gsdService.getComuneCliente()
                 CivDatiProvenienzaAtto dpaMat = civUnioneCivileService.getDatiProvenienzaByUkAtto(mat.idAtto)
                 if (arcParametroService.isNuovaGestioneAnnotazioniSuAttoAttiva()) {
                     DomainUtils.initEstremiAttoMatrimonioFromMatUciNuovaGestioneAnnotazioni(sposi, mat, comune, dpaMat, anscOn)

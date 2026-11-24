@@ -3,10 +3,11 @@ package restrict.statocivile.dizionari.generale
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivUfficio
 import it.finmatica.de4gsdzk.statocivile.CivUfficioService
-import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.OrderBy
 import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.SortUtils
+import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -28,6 +29,9 @@ class UfficioListaViewModel extends DizionarioListaViewModel{
     CivUfficio dettaglio
     List<CivUfficio> lista
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -39,16 +43,24 @@ class UfficioListaViewModel extends DizionarioListaViewModel{
 
         searchEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Uffici, Etichette.Funzione_non_abilitata]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Uffici"), Etichette.getEtichetta("Funzione_non_abilitata")]
         eList.addAll(CivUfficio.etichetteDomain)
+
+        eList.addAll([Etichette.getEtichetta("Ufficio_crescente"), Etichette.getEtichetta("Ufficio_decrescente")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Uffici)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Uffici"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Ufficio_crescente")), SortUtils.idAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Ufficio_decrescente")), SortUtils.idDesc)])
+
+        selectedOrder = listaOrder[0]
 
         caricaLista()
     }
@@ -62,7 +74,7 @@ class UfficioListaViewModel extends DizionarioListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging){
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.idAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page<CivUfficio> p = civUfficioService.listAllBySedeLike(filtro, pr)
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
@@ -81,7 +93,7 @@ class UfficioListaViewModel extends DizionarioListaViewModel{
         if (addEnabled && userModifyEnabled){
             apriDettaglio(getUriDettaglio(), [:])
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -90,7 +102,7 @@ class UfficioListaViewModel extends DizionarioListaViewModel{
             if (userModifyEnabled){
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

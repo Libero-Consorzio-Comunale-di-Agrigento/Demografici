@@ -1,6 +1,7 @@
 package restrict.statocivile.matrimonio.matrimonio
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.archivi.ArcComune
@@ -43,7 +44,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
     final List<ETipoProvvedimentoSeparazione> listaTipoProvvedimentoSeparazione = [null] + Arrays.asList(ETipoProvvedimentoSeparazione.values())
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivDivorzioService civDivorzioService
@@ -58,26 +59,26 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
 
         List<Map> eList = []
         eList.addAll(CivMatrimonio.etichetteDomain)
-        eList.addAll([Etichette.Comune, Etichette.Celebrato_da, Etichette.Recupero_da_accordo, Etichette.Comune_Atto,
-                      Etichette.Sede, Etichette.Annotazione, Etichette.Tipo_Accordo, Etichette.Tipo_Divorzio, Etichette.Estremi_separazione,
-                      Etichette.Estremi_Accordo, Etichette.Estremi_Atto_Matrimonio,
+        eList.addAll([Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Celebrato_da"), Etichette.getEtichetta("Recupero_da_accordo"), Etichette.getEtichetta("Comune_Atto"),
+                      Etichette.getEtichetta("Sede"), Etichette.getEtichetta("Annotazione"), Etichette.getEtichetta("Tipo_Accordo"), Etichette.getEtichetta("Tipo_Divorzio"), Etichette.getEtichetta("Estremi_separazione"),
+                      Etichette.getEtichetta("Estremi_Accordo"), Etichette.getEtichetta("Estremi_Atto_Matrimonio"),
 
-                      Etichette.Estremi_Accordo_Separazione, Etichette.Estremi_Conferma_Accordo_Separazione,
-                      Etichette.Recupera_Estremi_Atto_Matrimonio, Etichette.Caso_specifico])
+                      Etichette.getEtichetta("Estremi_Accordo_Separazione"), Etichette.getEtichetta("Estremi_Conferma_Accordo_Separazione"),
+                      Etichette.getEtichetta("Recupera_Estremi_Atto_Matrimonio"), Etichette.getEtichetta("Caso_specifico")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivMargine.etichetteDomain)
         eList.addAll(CivTestimoniAtto.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Sposi, Etichette.Richiesta, Etichette.Documenti, Etichette.Provvedimento_Autorita, Etichette.Altri_Dati])
+        eList.addAll([Etichette.getEtichetta("Sposi"), Etichette.getEtichetta("Richiesta"), Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Provvedimento_Autorita"), Etichette.getEtichetta("Altri_Dati")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_TIPO_ACCORDO, Etichette.SEZIONE_SPOSI, Etichette.SEZIONE_DATI_ATTO,
-                      Etichette.SEZIONE_AVVOCATI, Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_ANNOTAZIONI_DA_ATTO])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_TIPO_ACCORDO"), Etichette.getEtichetta("SEZIONE_SPOSI"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"),
+                      Etichette.getEtichetta("SEZIONE_AVVOCATI"), Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_DA_ATTO")])
 
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_obbligatori_sposi, EtichetteMessaggi.Errore_tipo_divorzio])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_obbligatori_sposi"), Etichette.getEtichetta("Errore_tipo_divorzio")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriDivorzio()
@@ -92,7 +93,8 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
 
         // Aggiungo etichette tipo di divorzio
         eList.addAll((Arrays.asList(ETipoDivorzio.values()))*.etichettaDesc)
-        eList.addAll(Etichette.Cessazione_Annullamento)
+        eList.addAll(Etichette.getEtichetta("Cessazione_Annullamento"))
+        eList.addAll(Etichette.getEtichetta("Annullamento"))
 
         // Aggiungo etichette per il tipo di atto (se mancata conferma accordo o modifica accordo)
         // nella categoria a testo libero dei divorzi (UAL)
@@ -115,16 +117,16 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
         //etichette custom
         etichetteCustom = FormUtils.getAttoCustomLabels(ETipoAtto.MAT, etichette)
 
-        msgTitle = getEtichetta(Etichette.Atto_Divorzio)
-        tipoAttoLabel = getEtichetta(Etichette.Atto_Divorzio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Divorzio"))
+        tipoAttoLabel = getEtichetta(Etichette.getEtichetta("Atto_Divorzio"))
 
         listaComparente = []
 
         listaFirmatario = []
 
-        listaRicezioneAtto = [null] + [[label: getEtichetta(Etichette.Avvocato_Marito), value: new Integer(1)],
-                                       [label: getEtichetta(Etichette.Avvocato_Moglie), value: new Integer(2)],
-                                       [label: getEtichetta(Etichette.Entrambi), value: new Integer(3)]]
+        listaRicezioneAtto = [null] + [[label: getEtichetta(Etichette.getEtichetta("Avvocato_Marito")), value: new Integer(1)],
+                                       [label: getEtichetta(Etichette.getEtichetta("Avvocato_Moglie")), value: new Integer(2)],
+                                       [label: getEtichetta(Etichette.getEtichetta("Entrambi")), value: new Integer(3)]]
 
         resize()
 
@@ -134,7 +136,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
             creaDettaglio([tipoAttoDomain:tipoAttoDomain])
         }
 
-        etichetteCustom += FormUtils.getTipoDivorzioCustomLabels(dettaglio.tipoAttoDomain.categoriaDomain, etichette)
+        etichetteCustom += FormUtils.getTipoDivorzioCustomLabels(dettaglio.tipoAttoDomain?.categoriaDomain, etichette)
     }
 
     protected void caricaListaTipiDivorzioAltro(){
@@ -164,7 +166,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
 
     protected void setComuneAttoAuto(){
         if (dettaglio.isAvvocati()){
-            ArcComune comune = statoCivileService.getComuneCliente()
+            ArcComune comune = gsdService.getComuneCliente()
             if (comune) {
                 dettaglio.codiceComuneMatrimonio = comune.codiceComune
                 dettaglio.codiceProvinciaMatrimonio = comune.codiceProvincia
@@ -238,7 +240,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleDivorzio(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleDivorzio(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -322,10 +324,10 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
         if ( dettaglio.dataNascita1 && dettaglio.cognome1?.trim() && dettaglio.nome1?.trim() &&
              dettaglio.dataNascita2 && dettaglio.cognome2?.trim() && dettaglio.nome2?.trim() ){
             if ( recuperaEstremiMatrimonioDaAttoDiMatrimonio() == 0 ){
-                Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sposi), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sposi")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -334,7 +336,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
         if ( (d.getAttoAttoMatrimonio() == null) && ( d.getParteAttoMatrimonio() == null ) && (d.getAnnoAttoMatrimonio() == null) && ( (d.getDescrizioneComuneAttoMatrimonio()?:"") == "") ){
             CivMatrimonio mat = civMatrimonioService.getXDatiAnagraficiSposi(dettaglio.cognome1, dettaglio.nome1, dettaglio.dataNascita1, dettaglio.cognome2, dettaglio.nome2, dettaglio.dataNascita2)
             if (mat){
-                ArcComune comune = statoCivileService.getComuneCliente()
+                ArcComune comune = gsdService.getComuneCliente()
                 CivDatiProvenienzaAtto dpaMat = civMatrimonioService.getDatiProvenienzaByUkAtto(mat.idAtto)
                 if (arcParametroService.isNuovaGestioneAnnotazioniSuAttoAttiva()) {
                     DomainUtils.initEstremiAttoMatrimonioFromMatUciNuovaGestioneAnnotazioni(sposi, mat, comune, dpaMat, anscOn)
@@ -366,7 +368,7 @@ abstract class DivorzioDettaglioParentViewModel extends AttoSoggettiDettaglioPar
 
     @Command void onSelectTipoDivorzio() {
         if ((datiProvenienza.tipoDivorzio == ETipoDivorzio.X) && dettaglio.isTribunale()) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_tipo_divorzio), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_tipo_divorzio")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
         // Se tipoDivorzio NON vale 'Altro' (ma 'separazione', 'scioglimento', 'cessazione'), devo resettare tipoDivorzioAltro
         // per evitare che rimangano visibili le sezioni legate al valore di tale flag

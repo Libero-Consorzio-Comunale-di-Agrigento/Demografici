@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
@@ -16,7 +17,7 @@ class CivPubblicazioneService implements IAttoService{
 
 	private final ArcParametroService arcParametroService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -40,15 +41,15 @@ class CivPubblicazioneService implements IAttoService{
 
 	private final CivPubblicazioneRepository civPubblicazioneRepository
 
-	CivPubblicazioneService(ArcParametroService arcParametroService, CivPubblicazioneRepository civPubblicazioneRepository, StatoCivileService statoCivileService,
-							CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
-							CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
-							CivSposiAttoService civSposiAttoService, CivDocumentoPubblicazioneService civDocumentoPubblicazioneService,
-							CivComunicazioneAttoService civComunicazioneAttoService,
-							CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+	CivPubblicazioneService(ArcParametroService arcParametroService, CivPubblicazioneRepository civPubblicazioneRepository, GsdService gsdService,
+                            CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
+                            CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
+                            CivSposiAttoService civSposiAttoService, CivDocumentoPubblicazioneService civDocumentoPubblicazioneService,
+                            CivComunicazioneAttoService civComunicazioneAttoService,
+                            CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 		this.arcParametroService = arcParametroService
 		this.civPubblicazioneRepository = civPubblicazioneRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -135,7 +136,7 @@ class CivPubblicazioneService implements IAttoService{
 				}
 			}
 			if (!found){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_documenti_presentati)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_documenti_presentati"))
 			}
 		}
 
@@ -149,7 +150,7 @@ class CivPubblicazioneService implements IAttoService{
 		log.info("Lancio salvataggio dello storico su CIVPUB per id " + obj.id)
 
 		CivPubblicazione newest = DomainUtils.copyAtto(obj) as CivPubblicazione
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civPubblicazioneRepository.save(newest)
@@ -251,12 +252,13 @@ class CivPubblicazioneService implements IAttoService{
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVPUB per id " + obj.id)

@@ -2,9 +2,12 @@ package it.finmatica.de4gsdzk.anagrafe
 
 import it.finmatica.de4gsdzk.ArcComuneBaseDomain
 import it.finmatica.de4gsdzk.GsdFirmaService
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnte
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnteService
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.DataUtils
 import it.finmatica.de4gsdzk.utils.ENaturaDocumento
@@ -23,20 +26,23 @@ class AnaDocumentoService {
     private final AnaEnteService anaEnteService
     private final ArcComuneBaseService arcComuneBaseService
     private final GsdFirmaService gsdFirmaService
-    private final StatoCivileService statoCivileService
+    private final IntegrazioneDocumentaleService integrazioneDocumentaleService
+    private final GsdService gsdService
 
     AnaDocumentoService(AnaDocumentoRepository anaDocumentoRepository,
                         AnaDocumentoAllegatoService anaDocumentoAllegatoService,
                         AnaEnteService anaEnteService,
                         ArcComuneBaseService arcComuneBaseService,
                         GsdFirmaService gsdFirmaService,
-                        StatoCivileService statoCivileService) {
+                        IntegrazioneDocumentaleService integrazioneDocumentaleService,
+                        GsdService gsdService) {
         this.anaDocumentoRepository = anaDocumentoRepository
         this.anaDocumentoAllegatoService = anaDocumentoAllegatoService
         this.anaEnteService = anaEnteService
         this.arcComuneBaseService = arcComuneBaseService
         this.gsdFirmaService = gsdFirmaService
-        this.statoCivileService = statoCivileService
+        this.integrazioneDocumentaleService = integrazioneDocumentaleService
+        this.gsdService = gsdService
     }
 
     AnaDocumento create(AnaAnagrafe anagrafe, AnaTipoDocumento tipoDocumento) {
@@ -73,7 +79,7 @@ class AnaDocumentoService {
     }
 
     String calculateNumero(AnaTipoDocumento tipoDocumento) {
-        return statoCivileService.getNumeroDocumentoAnagrafico(tipoDocumento)
+        return gsdService.getNumeroDocumentoAnagrafico(tipoDocumento)
     }
 
     Page<AnaDocumento> listRecentiByAnagrafe(AnaAnagrafe anagrafe, Pageable pageable) {
@@ -139,7 +145,7 @@ class AnaDocumentoService {
 
         if (obj.id == null) {
             // solo in caso di inserimento
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
 
         if (obj.progressivo == null) {
@@ -156,6 +162,29 @@ class AnaDocumentoService {
         String name = "${obj.anagrafe.cognome}${obj.anagrafe.nome ? "_${obj.anagrafe.nome}" : ""}_${obj.tipoDocumento.id}${obj.numero ? "_${obj.numero}" : ""}"
         List<AnaDocumentoAllegato> allegati = obj.allegati.findAll { it.canDownload() }
         gsdFirmaService.scaricaAllegati(name, obj, allegati)
+    }
+
+    List<AnaDocumento> listDocumentiSoggettoByAnagrafe(AnaAnagrafe anagrafe) {
+        RicercaDocumento r = new RicercaDocumento()
+        r.anagrafe = anagrafe
+        r.storico = false
+        return anaDocumentoRepository.listAllByAnagrafe(r)
+    }
+
+    List<AnaDocumento> listDocumentiCDFByAnagrafe(AnaAnagrafe anagrafe) {
+        RicercaDocumento r = new RicercaDocumento()
+        r.anagrafe = anagrafe
+        r.convivenzaDiFatto = true
+        return anaDocumentoRepository.listAllByAnagrafe(r)
+    }
+
+    void delete(AnaDocumento documento){
+        /*for(AnaDocumentoAllegato a : documento.allegati){
+            anaDocumentoAllegatoService.delete(a)
+        }*/
+        //Al momento non esiste una cancellazione fisica del documento perciò elimino solo il collegamento al documentale
+        //integrazioneDocumentaleService.eliminaDocumento(documento, true)
+        anaDocumentoRepository.delete(documento.id)
     }
 
 

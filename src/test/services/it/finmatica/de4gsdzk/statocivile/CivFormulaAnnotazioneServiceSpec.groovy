@@ -19,7 +19,7 @@ class CivFormulaAnnotazioneServiceSpec extends AbstractServiceSpec<CivFormulaAnn
         }
 
         service = new CivFormulaAnnotazioneService(
-                repo, statoCivileService,
+                repo, gsdService,
                 Mock(CivNotaFormulaService), Mock(CivTestoFormulaService), Mock(ArcParametroService), Mock(GsdValidazioneTestoService))
     }
 
@@ -56,7 +56,6 @@ class CivFormulaAnnotazioneServiceSpec extends AbstractServiceSpec<CivFormulaAnn
         thrown(CampoMandatoryRuntimeException)
     }
 
-    //TODO
     void todo_test() {
         when:
         def formula = service.get("F1")

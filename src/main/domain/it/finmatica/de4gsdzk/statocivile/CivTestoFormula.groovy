@@ -30,6 +30,6 @@ class CivTestoFormula {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Testo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Testo")]
 
 }

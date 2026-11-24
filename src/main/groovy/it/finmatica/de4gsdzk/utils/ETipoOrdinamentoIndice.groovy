@@ -14,9 +14,9 @@ enum ETipoOrdinamentoIndice {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case M_C1: return Etichette.M_C1
-            case F_C2: return Etichette.F_C2
-            case EN: return Etichette.Entrambi
+            case M_C1: return Etichette.getEtichetta("M_C1")
+            case F_C2: return Etichette.getEtichetta("F_C2")
+            case EN: return Etichette.getEtichetta("Entrambi")
         }
         return null
     }

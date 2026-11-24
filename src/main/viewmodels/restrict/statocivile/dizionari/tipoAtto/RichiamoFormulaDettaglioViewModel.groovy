@@ -3,6 +3,7 @@ package restrict.statocivile.dizionari.tipoAtto
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivRichiamoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
@@ -44,7 +45,7 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
     private CivFormulaAnnotazioneService civFormulaAnnotazioneService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private GsdEtichettaService gsdEtichettaService
@@ -54,9 +55,9 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
 
         this.richiamoComposizione = richiamoComposizione
 
-        List<Map<String, String>> eList = [Etichette.Formula_Composizione, Etichette.Testo, Etichette.Variabili_Cerca, Etichette.Formula_Associata]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Formula_Composizione"), Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Variabili_Cerca"), Etichette.getEtichetta("Formula_Associata")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_Inserimento_Formula_Duplicata])
+        eList.addAll([Etichette.getEtichetta("Errore_Inserimento_Formula_Duplicata")])
         eList.addAll(etichetteDettaglioDefault)
         eList.addAll(CivRichiamoBaseDomain.etichetteDomain)
         eList.addAll(CivRichiamoFormula.etichetteDomain)
@@ -72,7 +73,7 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
 
         listaTipoAnnotazione = [ETipoAnnotazione.A, ETipoAnnotazione.W]
 
-        msgTitle = getEtichetta(Etichette.Formula_Composizione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formula_Composizione"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -112,7 +113,7 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
             try {
                 civRichiamoFormulaService.validaFormula(dettaglio)
             } catch(RecordDuplicatoRuntimeException rde) {
-                notaTesto = getEtichetta((rde.getEtichetta()?:EtichetteMessaggi.Errore_Inserimento_Formula_Duplicata))
+                notaTesto = getEtichetta((rde.getEtichetta()?:Etichette.getEtichetta("Errore_Inserimento_Formula_Duplicata")))
             } catch(De4gsdzkRuntimeException e) {
                 notaTesto = e.getMessage()
             }
@@ -144,9 +145,9 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
 
     private void caricaVariabili() {
         if (dettaglio.formula){
-            setListaStringhe(statoCivileService.listVariabili(CivTestoFormula.class, dettaglio.tipoAtto), getEtichetta(Etichette.Variabili_Cerca))
+            setListaStringhe(gsdService.listVariabili(CivTestoFormula.class, dettaglio.tipoAtto), getEtichetta(Etichette.getEtichetta("Variabili_Cerca")))
         } else {
-            setListaStringhe([], getEtichetta(Etichette.Variabili_Cerca))
+            setListaStringhe([], getEtichetta(Etichette.getEtichetta("Variabili_Cerca")))
         }
     }
 
@@ -157,7 +158,7 @@ class RichiamoFormulaDettaglioViewModel extends AbstractDettaglioViewModel imple
     private void salvaRecord(boolean forzaSave=false) {
         try {
             CivRichiamoFormula c = civRichiamoFormulaService.save(dettaglio, forzaSave)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         } catch(FormulaUsataException fue) {
             log.info(fue.getMessage())

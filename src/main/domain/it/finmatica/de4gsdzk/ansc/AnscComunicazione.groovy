@@ -54,10 +54,10 @@ class AnscComunicazione extends GsdBaseDomain{
     @Type(type = "numeric_boolean")
     Boolean httpError
 
-    @Column(name = "NOTE_WS", nullable = true)
+    @Column(name = "NOTE_WS_VIS", nullable = true, updatable = false, insertable = false)
     String noteWSAnsc
 
-    @Column(name = "INFO_WS", nullable = true)
+    @Column(name = "INFO_WS_VIS", nullable = true, updatable = false, insertable = false)
     String infoWSAnsc
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,6 +71,6 @@ class AnscComunicazione extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Servizio, Etichette.Data_Invio, Etichette.Data_Registrazione, Etichette.Esito, Etichette.Note]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Id"), Etichette.getEtichetta("Servizio"), Etichette.getEtichetta("Data_Invio"), Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Esito"), Etichette.getEtichetta("Note")]
 }
 

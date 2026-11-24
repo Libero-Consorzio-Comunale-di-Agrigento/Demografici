@@ -2,12 +2,12 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivRichiamoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.GsdValidazioneTestoService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormulaRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivRichiamoFormulaService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final GsdValidazioneTestoService gsdValidazioneTestoService
 
@@ -28,12 +28,12 @@ class CivRichiamoFormulaService {
 	}
 
     CivRichiamoFormulaService(CivRichiamoFormulaRepository civRichiamoFormulaRepository, GsdValidazioneTestoService gsdValidazioneTestoService,
-							  CivTestoFormulaService civTestoFormulaService, StatoCivileService statoCivileService){
+							  CivTestoFormulaService civTestoFormulaService, GsdService gsdService){
 
 		this.civRichiamoFormulaRepository = civRichiamoFormulaRepository
 		this.gsdValidazioneTestoService = gsdValidazioneTestoService
 		this.civTestoFormulaService = civTestoFormulaService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivRichiamoFormula get (Long id){
@@ -76,7 +76,7 @@ class CivRichiamoFormulaService {
 
 		// segnala che la formula è duplicata (solo in inserimento)
 		if (found && obj.id==null) {
-			throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Formula_Duplicata)
+			throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Formula_Duplicata"))
 		}
 
 		//segnala che la formula è già usata
@@ -98,7 +98,7 @@ class CivRichiamoFormulaService {
 
 		validaFormula(obj, force)
 
-		gsdValidazioneTestoService.checkWrongVar(obj.formula.testo?.testoA4, statoCivileService.listVariabili(CivTestoFormula.class, obj.tipoAtto))
+		gsdValidazioneTestoService.checkWrongVar(obj.formula.testo?.testoA4, gsdService.listVariabili(CivTestoFormula.class, obj.tipoAtto))
 	}
 
 	CivRichiamoFormula save(CivRichiamoFormula obj, boolean force=false) {
@@ -106,7 +106,7 @@ class CivRichiamoFormulaService {
 
 		if (obj.id == null) {
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		//salva il testo

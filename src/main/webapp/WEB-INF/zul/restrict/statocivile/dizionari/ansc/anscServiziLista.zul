@@ -19,6 +19,8 @@
             <label value="@load(vm.formLabel)" sclass="formTitle"/>
         </hlayout>
 
+        <orderByBlock/>
+
         <vlayout vflex="1">
             <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
                      emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">

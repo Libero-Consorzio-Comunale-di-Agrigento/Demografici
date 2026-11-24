@@ -4,6 +4,7 @@ import it.finmatica.ad4.autenticazione.Ad4Utente
 import it.finmatica.ad4.hibernate.UtenteIns
 import it.finmatica.ad4.hibernate.UtenteUpd
 import it.finmatica.de4gsdzk.GsdFileDocumentoEsternoBaseDomain
+import it.finmatica.de4gsdzk.allegati.IAllegato
 import it.finmatica.de4gsdzk.integrazioni.documentale.IDocumentoEsterno
 import it.finmatica.de4gsdzk.utils.Etichette
 import org.hibernate.annotations.CreationTimestamp
@@ -13,7 +14,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "CIVFAS_ALLE_V")
-class CivFascicoloAttoAllegato extends GsdFileDocumentoEsternoBaseDomain{
+class CivFascicoloAttoAllegato extends GsdFileDocumentoEsternoBaseDomain implements IAllegato{
 
     @GeneratedValue
     @Id
@@ -82,6 +83,6 @@ class CivFascicoloAttoAllegato extends GsdFileDocumentoEsternoBaseDomain{
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Registrazione, Etichette.Data_Modifica, Etichette.Note, Etichette.Da_Attestare]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Data_Modifica"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Da_Attestare"), Etichette.getEtichetta("Terminalista")]
 
 }

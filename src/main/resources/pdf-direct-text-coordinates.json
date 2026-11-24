@@ -1,0 +1,23 @@
+{
+  "B0": {
+    "x1": 25,
+    "x2": 60,
+    "y": 465.5,
+    "fontSize": 7,
+    "template": "DUE_COMPONENTI"
+  },
+  "A8": {
+    "x1": 25,
+    "x2": 60,
+    "y": 294.5,
+    "fontSize": 7,
+    "template": "DUE_COMPONENTI"
+  },
+  "C4": {
+    "x1": 25,
+    "x2": 60,
+    "y": 342.5,
+    "fontSize": 7,
+    "template": "UN_COMPONENTE"
+  }
+}

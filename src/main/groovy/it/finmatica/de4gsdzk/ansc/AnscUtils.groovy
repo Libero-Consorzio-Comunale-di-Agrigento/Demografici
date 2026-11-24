@@ -37,6 +37,10 @@ class AnscUtils {
 	static final String parametroIdGenereRicercaNot 		= "idGenereRicercaNot"
 	static final String parametroIdStatoFlussoRicercaNot 	= "idStatoFlussoRicercaNot"
 	static final String parametroIdTipoContenutoRicercaNot 	= "idTipoContenutoRicercaNot"
+	static final String parametroCognomeSoggettoPar 		= "cognomePar"
+	static final String parametroNomeSoggettoPar 			= "nomePar"
+	static final String parametroDataNascitaSoggettoPar 	= "dataNascitaPar"
+	static final String parametroSessoSoggettoPar		 	= "sessoPar"
 	static final String parametroNumPaginaRicercaNot 		= "numPaginaRicercaNot"
 	static final String parametroNumRecordPaginaRicercaNot 	= "numRecordPaginaRicercaNot"
 	static final String parametroNumRecordTotaliRicercaNot 	= "numRecordTotaliRicercaNot"
@@ -76,7 +80,7 @@ class AnscUtils {
 			String tipoDocumento = null
 			switch (atto.getTipoAttoEnum()) {
 				case ETipoAtto.NAS:
-					if (datiProvenienza.flagInViaggio ) {
+					if (datiProvenienza?.flagInViaggio ) {
 						tipoDocumento = datiProvenienza?.tipoLuogoNascita?.name()
 					} else {
 						tipoDocumento = datiProvenienza?.tipoAccertamento?.name()

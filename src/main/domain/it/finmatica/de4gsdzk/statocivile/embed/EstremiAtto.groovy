@@ -27,12 +27,15 @@ class EstremiAtto {
         if (this.is(obj)) return true
         if (obj == null || getClass() != obj.getClass()) return false
         EstremiAtto that = (EstremiAtto) obj;
-        return Objects.equals(ufficio, that.ufficio) &&
-                Objects.equals(anno, that.anno) &&
-                Objects.equals(atto, that.atto) &&
-                Objects.equals(parte, that.parte) &&
-                Objects.equals(serie, that.serie) &&
-                Objects.equals(idAttoAnsc, that.idAttoAnsc)
+        if(idAttoAnsc != null) {
+            return Objects.equals(idAttoAnsc, that.idAttoAnsc)
+        } else {
+            return Objects.equals(ufficio, that.ufficio) &&
+                    Objects.equals(anno, that.anno) &&
+                    Objects.equals(atto, that.atto) &&
+                    Objects.equals(parte, that.parte) &&
+                    Objects.equals(serie, that.serie)
+        }
     }
 
 }

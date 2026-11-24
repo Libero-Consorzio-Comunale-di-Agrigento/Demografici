@@ -43,7 +43,7 @@ class AnscCasiUsoSelectViewModel extends AbstractSelectViewModel {
         modifyEnabled = false
         searchEnabled = true
 
-        List<Map> eList = [Etichette.ANSC]
+        List<Map> eList = [Etichette.getEtichetta("ANSC")]
         eList.addAll(AnscCasoUsoBaseDomain.etichetteDomain)
 
         // Aggiungo etichette della Controlbar
@@ -51,7 +51,7 @@ class AnscCasiUsoSelectViewModel extends AbstractSelectViewModel {
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.ANSC)
+        msgTitle = getEtichetta(Etichette.getEtichetta("ANSC"))
 
         totalSizeLabel = ""
 
@@ -85,7 +85,7 @@ class AnscCasiUsoSelectViewModel extends AbstractSelectViewModel {
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [casoUso: dettaglio] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

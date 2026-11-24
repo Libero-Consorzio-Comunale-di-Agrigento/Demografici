@@ -55,13 +55,13 @@ class PopupCollegaIdAnscViewModel extends AbstractDettaglioViewModel implements 
 
         this.dettaglio = entitaAnsc
 
-        List<Map> eList = [Etichette.Salva, Etichette.Chiudi]
-        eList.addAll(Etichette.Collega_Ansc)
+        List<Map> eList = [Etichette.getEtichetta("Salva"), Etichette.getEtichetta("Chiudi")]
+        eList.addAll(Etichette.getEtichetta("Collega_Ansc"))
         // Aggiungo etichette invio ANSC
         eList.addAll(etichetteIcomANSCDefault)
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        this.msgTitle = getEtichetta(Etichette.Collega_Ansc)
+        this.msgTitle = getEtichetta(Etichette.getEtichetta("Collega_Ansc"))
 
     }
 
@@ -92,7 +92,7 @@ class PopupCollegaIdAnscViewModel extends AbstractDettaglioViewModel implements 
         newIdAnsc = newIdAnsc?.trim()
 
         if (TestoUtils.isVuoto(newIdAnsc)) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
         }
 
         Boolean existsAtto = civAttoService.existsIdAttoAnsc(newIdAnsc)
@@ -120,7 +120,7 @@ class PopupCollegaIdAnscViewModel extends AbstractDettaglioViewModel implements 
 
     @Override
     void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu,
-                                                     Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione) {
+                                                     Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione) {
         AnscUtente ansUte = anscUtenteService.getAnscUtenteCorrente()
         recuperaCredenzialiEInviaComunicazione(ansUte, taRifCom, servizioCdu, idRif, idComunicazione, r, paginazione, Boolean.FALSE, Boolean.FALSE)
     }
@@ -134,7 +134,7 @@ class PopupCollegaIdAnscViewModel extends AbstractDettaglioViewModel implements 
     }
 
     @Override
-    void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioArchivio, AnscCredenziali cre, Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione, Boolean skip) {
+    void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioArchivio, AnscCredenziali cre, Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione, Boolean skip) {
         AnscEndPointServizio servizio = servizioArchivio?.servizio
         if (taRifCom && servizio && idRif && cre) {
 

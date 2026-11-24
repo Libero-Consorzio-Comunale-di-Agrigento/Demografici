@@ -3,9 +3,8 @@ package it.finmatica.de4gsdzk.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivRegistroDocumentiEntrataRepository
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.SortUtils
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.data.domain.Page
@@ -51,13 +50,13 @@ class CivRegistroDocumentiEntrataService implements IRegistroDocumentiService<Ci
 		ValidationUtils.validaDatiObbligatori(obj)
 
 		if ( (obj.descrizione?:"") == ""){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
 		}
 
 		if (tipoOperazione.isInsert()){
 			long n = civRegistroDocumentiEntrataRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Registro_Duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Registro_Duplicato"))
 			}
 		}
 	}

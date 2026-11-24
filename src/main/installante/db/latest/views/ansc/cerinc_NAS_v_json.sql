@@ -29,6 +29,16 @@ select inc.id id
      , to_char(null) RIC_dataScadenza
      , to_char(null) RIC_rilasciatoDa
      , to_char(null) RIC_dataRilascio
+-- Ente Richiedente
+     , cem.ente_richiedente ENT_nomeEnte
+     , f_ANSC_id_comune_al(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_idComuneEnte
+     , f_ANSC_comune_italiano(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_nomeComuneEnte
+     , f_ANSC_id_provincia_al(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_idProvinciaEnte
+     , f_ANSC_provincia_al(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_siglaProvinciaEnte
+     , f_ANSC_id_stato_al(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_nazioneEnte
+     , f_ANSC_stato_al(cem.cod_pro_ente_richiedente,cem.cod_com_ente_richiedente,'') ENT_nomeNazioneEnte
+     , cem.id_consolato_ansc_richiedente ENT_idAnagraficaConsolato
+     , t97_er.descrizione ENT_nomeAnagraficaConsolato
 -- ANSC
      , nas.id_atto_ansc idAttoAnsc
      , nas.id_atto_ansc idAnsc
@@ -47,9 +57,11 @@ select inc.id id
      , cerdce dce
      , cercem cem
      , cerinc_zk inc
+     , anst97 t97_er
  where dci_ric.cod_ci (+)  = cem.nazionalita_richiedente
+   and t97_er.id      (+)  = cem.id_consolato_ansc_richiedente
    and nas.id_atto_ansc    is not null
-   and nas.ufficio         = inc.ufficio
+   and nvl(nas.ufficio,0)  = nvl(inc.ufficio,0)
    and nas.anno            = inc.anno
    and nas.atto            = inc.atto
    and nvl(nas.parte,0)    = nvl(inc.parte,0)

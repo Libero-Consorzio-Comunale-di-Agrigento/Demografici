@@ -4,7 +4,10 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.CivTipoDocumentoFascicolo
 import it.finmatica.de4gsdzk.statocivile.CivTipoDocumentoFascicoloService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -46,13 +49,13 @@ class TipoDocumentoFascicoloSelectViewModel extends AbstractSelectViewModel{
 
         this.tipoAttoEnum = tipoAttoEnum
 
-        List<Map<String, String>> eList = [Etichette.Tutti, Etichette.Ricorrenti]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tutti"), Etichette.getEtichetta("Ricorrenti")]
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
         eList.addAll(CivTipoDocumentoFascicolo.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Tipo_Documento)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Tipo_Documento"))
 
         totalSizeLabel = ""
 
@@ -93,7 +96,7 @@ class TipoDocumentoFascicoloSelectViewModel extends AbstractSelectViewModel{
             Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, dettaglio)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

@@ -3,10 +3,12 @@ package restrict.statocivile.documenti
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ArcComuneBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.*
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnte
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnteService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.CivDisposizioniAnticipateTrattamento
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.statocivile.embed.SoggettoDAT
 import it.finmatica.de4gsdzk.utils.*
 import org.zkoss.bind.annotation.*
@@ -45,7 +47,7 @@ class SoggettoDATViewModel extends AbstractDettaglioViewModel implements TraitCa
     private GsdEtichettaService gsdEtichettaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private AnaTipoDocumentoService anaTipoDocumentoService
@@ -76,8 +78,8 @@ class SoggettoDATViewModel extends AbstractDettaglioViewModel implements TraitCa
 
         ricercaSoggettoInANPROn = arcParametroService.isRicercaSoggettoInANPRAttiva()
 
-        List<Map<String, String>> eList = [Etichette.Minuscole, Etichette.Cancella, EtichetteMessaggi.Compilare_campi_cf, Etichette.Recupera_Documento_Anagrafe,
-                                           Etichette.Gestione_Documenti_Entrata, Etichette.Dati_Anagrafici, Etichette.Documenti]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Minuscole"), Etichette.getEtichetta("Cancella"), Etichette.getEtichetta("Compilare_campi_cf"), Etichette.getEtichetta("Recupera_Documento_Anagrafe"),
+                                           Etichette.getEtichetta("Gestione_Documenti_Entrata"), Etichette.getEtichetta("Dati_Anagrafici"), Etichette.getEtichetta("Documenti")]
 
         eList.addAll(SoggettoDAT.etichetteDomain)
 
@@ -89,7 +91,7 @@ class SoggettoDATViewModel extends AbstractDettaglioViewModel implements TraitCa
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Entrata)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Entrata"))
     }
 
     @Override
@@ -139,10 +141,10 @@ class SoggettoDATViewModel extends AbstractDettaglioViewModel implements TraitCa
     }
 
     @Command void onCalcolaCf() {
-        String cf = statoCivileService.calcolaCf(dettaglio.cognome, dettaglio.nome, dettaglio.sesso, dettaglio.dataNascita,
+        String cf = gsdService.calcolaCf(dettaglio.cognome, dettaglio.nome, dettaglio.sesso, dettaglio.dataNascita,
                 dettaglio.comuneNascita.codiceProvincia, dettaglio.comuneNascita.codice)
-        if ( (cf?:StatoCivileService.ERRORE_CAMPI_CF) == StatoCivileService.ERRORE_CAMPI_CF ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_cf), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+        if ( (cf?:GsdService.ERRORE_CAMPI_CF) == GsdService.ERRORE_CAMPI_CF ){
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_cf")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             dettaglio.codiceFiscale = cf
         }

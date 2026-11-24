@@ -7,7 +7,6 @@ import it.finmatica.de4gsdzk.certificazione.CerTerminalista
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.utils.DataUtils
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -35,11 +34,11 @@ class PopupFondoCassaViewModel extends AbstractPopupViewModel {
 
         List<Map<String, String>> eList = []
         eList.addAll(CerFondoCassaTerminalista.etichetteDomain)
-        eList.addAll([EtichetteMessaggi.Ask_Modifica_fondo_cassa])
+        eList.addAll([Etichette.getEtichetta("Ask_Modifica_fondo_cassa")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Fondo_Cassa)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Fondo_Cassa"))
 
         formLabel = msgTitle
 
@@ -62,7 +61,7 @@ class PopupFondoCassaViewModel extends AbstractPopupViewModel {
             return
         }
 
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifica_fondo_cassa), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifica_fondo_cassa")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK.equals(e.getName())) {

@@ -15,9 +15,9 @@ enum ETipoEmissioneCertificato {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PAR: return Etichette.ISTANZA_PARTE
-            case RIC: return Etichette.ALTRO_RICHIEDENTE
-            case UFF: return Etichette.ISTANZA_UFFICIO
+            case PAR: return Etichette.getEtichetta("ISTANZA_PARTE")
+            case RIC: return Etichette.getEtichetta("ALTRO_RICHIEDENTE")
+            case UFF: return Etichette.getEtichetta("ISTANZA_UFFICIO")
         }
         return null
     }

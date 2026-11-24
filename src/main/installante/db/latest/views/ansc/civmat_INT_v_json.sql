@@ -11,11 +11,19 @@ select 1 w_ord
      , mat.atto
 -- sposo
      , mat.cod_fiscale_m codiceFiscale
-     , nvl(occ.cognome,mat.cognome_m) cognome
-     , nvl(occ.nome,mat.nome_m) nome
+     , f_ANSC_stringa_unicode('CIVMAT',mat.id,'COGNOME_1',nvl(occ.cognome,mat.cognome_m)) cognome
+     , f_ANSC_stringa_unicode('CIVMAT',mat.id,'NOME_1',nvl(occ.nome,mat.nome_m)) nome
      , 'M' sesso
      , 'maschile' descrizioneSesso
-     , to_char(mat.d_data_nas_m,'yyyy-mm-dd') dataNascita
+--     , to_char(mat.d_data_nas_m,'yyyy-mm-dd') dataNascita
+     , decode(mat.anno_nas_m,'',
+         decode(mat.d_data_nas_m,'',
+           decode(mat.anni_m,'','',to_number(to_char(mat.d_data_mat,'yyyy'))-mat.anni_m||'-01-01'),
+           to_char(mat.d_data_nas_m,'yyyy-mm-dd')),
+         to_char(mat.d_data_nas_m,'yyyy')||'-01-01') dataNascita
+     , decode(mat.d_data_nas_m,'', 
+         decode(mat.anni_m,'','','3'),
+         decode(mat.anno_nas_m,'','1','3')) idFormatoData
      , f_ANSC_id_comune_al(mat.cod_pro_nas_m,mat.cod_com_nas_m,mat.d_data_nas_m) idComuneNascita
      , f_ANSC_comune_italiano(mat.cod_pro_nas_m,mat.cod_com_nas_m,mat.d_data_nas_m) nomeComuneNascita
      , f_ANSC_id_provincia_al(mat.cod_pro_nas_m,mat.cod_com_nas_m,mat.d_data_nas_m) idProvinciaNascita
@@ -84,11 +92,19 @@ select 2 w_ord
      , mat.atto
 -- sposa
      , mat.cod_fiscale_f codiceFiscale
-     , nvl(occ.cognome_cn,mat.cognome_f) cognome
-     , nvl(occ.nome_cn,mat.nome_f) nome
+     , f_ANSC_stringa_unicode('CIVMAT',mat.id,'COGNOME_2',nvl(occ.cognome_cn,mat.cognome_f)) cognome
+     , f_ANSC_stringa_unicode('CIVMAT',mat.id,'NOME_2',nvl(occ.nome_cn,mat.nome_f)) nome
      , 'F' sesso
      , 'femminile' descrizioneSesso
-     , to_char(mat.d_data_nas_f,'yyyy-mm-dd') dataNascita
+--     , to_char(mat.d_data_nas_f,'yyyy-mm-dd') dataNascita
+     , decode(mat.anno_nas_f,'',
+         decode(mat.d_data_nas_f,'',
+           decode(mat.anni_f,'','',to_number(to_char(mat.d_data_mat,'yyyy'))-mat.anni_f||'-01-01'),
+           to_char(mat.d_data_nas_f,'yyyy-mm-dd')),
+         to_char(mat.d_data_nas_f,'yyyy')||'-01-01') dataNascita
+     , decode(mat.d_data_nas_f,'', 
+         decode(mat.anni_f,'','','3'),
+         decode(mat.anno_nas_f,'','1','3')) idFormatoData
      , f_ANSC_id_comune_al(mat.cod_pro_nas_f,mat.cod_com_nas_f,mat.d_data_nas_f) idComuneNascita
      , f_ANSC_comune_italiano(mat.cod_pro_nas_f,mat.cod_com_nas_f,mat.d_data_nas_f) nomeComuneNascita
      , f_ANSC_id_provincia_al(mat.cod_pro_nas_f,mat.cod_com_nas_f,mat.d_data_nas_f) idProvinciaNascita

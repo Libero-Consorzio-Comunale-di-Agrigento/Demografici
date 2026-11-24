@@ -8,7 +8,6 @@ import it.finmatica.de4gsdzk.utils.ETipoArchivioDocumento
 import it.finmatica.de4gsdzk.utils.ETipoDocumento
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -44,8 +43,8 @@ class RegistroDocumentoDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Tipo_Documento,  Etichette.Registro_Documenti_Uscita, Etichette.Registro_Documenti_Entrata,
-                                           Etichette.Numeratori, Etichette.Anno, Etichette.Protocollo]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tipo_Documento"),  Etichette.getEtichetta("Registro_Documenti_Uscita"), Etichette.getEtichetta("Registro_Documenti_Entrata"),
+                                           Etichette.getEtichetta("Numeratori"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Protocollo")]
         eList.addAll(CivRegistroDocumentiBaseDomain.etichetteDomain)
 
         // Aggiungo etichetta tipo documento
@@ -66,10 +65,10 @@ class RegistroDocumentoDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         switch (tipoDocumento) {
             case ETipoDocumento.Entrata:
-                msgTitle = getEtichetta(Etichette.Registro_Documenti_Entrata)
+                msgTitle = getEtichetta(Etichette.getEtichetta("Registro_Documenti_Entrata"))
                 break
             case ETipoDocumento.Uscita:
-                msgTitle = getEtichetta(Etichette.Registro_Documenti_Uscita)
+                msgTitle = getEtichetta(Etichette.getEtichetta("Registro_Documenti_Uscita"))
                 break
         }
 
@@ -107,7 +106,7 @@ class RegistroDocumentoDettaglioViewModel extends DizionarioDettaglioViewModel {
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivRegistroDocumentiBaseDomain c = civRegistroDocumentiService.save(tipoDocumento, tipoOperazione, dettaglio, listaNumeriDaSalvare)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

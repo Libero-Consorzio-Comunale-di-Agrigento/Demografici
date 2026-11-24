@@ -41,7 +41,7 @@ class CivFormulaAggiuntiva extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Atto, Etichette.Testo, Etichette.Sequenza,
-                                              Etichette.Formula_CIA, Etichette.Visibile_in_CIA]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Sequenza"),
+                                              Etichette.getEtichetta("Formula_CIA"), Etichette.getEtichetta("Visibile_in_CIA")]
 
 }

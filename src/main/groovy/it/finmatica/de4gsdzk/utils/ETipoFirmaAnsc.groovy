@@ -13,8 +13,8 @@ enum ETipoFirmaAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case CA: return Etichette.Firma_Cartacea
-            case EL: return Etichette.Firma_Elettronica
+            case CA: return Etichette.getEtichetta("Firma_Cartacea")
+            case EL: return Etichette.getEtichetta("Firma_Elettronica")
         }
         return null
     }

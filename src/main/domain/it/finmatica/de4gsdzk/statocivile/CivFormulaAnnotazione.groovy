@@ -73,7 +73,7 @@ class CivFormulaAnnotazione extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Formula, Etichette.Descrizione, Etichette.Genere, Etichette.Istat,
-                                              Etichette.Secretato, Etichette.Tipo, Etichette.Nuovo_Ordinamento, Etichette.Provenienza,
-                                              Etichette.Tipo_Atto, Etichette.Testo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Formula"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Genere"), Etichette.getEtichetta("Istat"),
+                                              Etichette.getEtichetta("Secretato"), Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Nuovo_Ordinamento"), Etichette.getEtichetta("Provenienza"),
+                                              Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Testo")]
 }

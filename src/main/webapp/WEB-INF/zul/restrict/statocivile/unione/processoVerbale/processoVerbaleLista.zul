@@ -35,7 +35,7 @@
 					<listheader label="@load(vm.etichette['Sesso'])"					width="3%"/>
 					<listheader label="@load(vm.etichetteCustom['DataEvento'])" 		width="7%"/>
 					<listheader label="@load(vm.etichette['Anno'])" 					width="4%"/>
-					<listheader label="@load(vm.etichette['Numero_Atto'])" 				width="5%"/>
+					<listheader label="@load(vm.etichette['Numero'])" 				width="5%"/>
 					<listheader label="@load(vm.etichette['Ufficio'])" 					width="4%"/>
 					<listheader label="@load(vm.etichette['Comunicazioni_pendenti'])"	width="5%"/>
 					<listheader label="" width="52px"/>

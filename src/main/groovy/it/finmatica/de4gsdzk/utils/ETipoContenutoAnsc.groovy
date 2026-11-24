@@ -20,11 +20,11 @@ enum ETipoContenutoAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case ATTO: return Etichette.Atto
-            case ANNOTAZIONE: return Etichette.Annotazione
-            case TRASCRIZIONE: return Etichette.Trascrizione
-            case ANNOTAZIONE_AUTO: return Etichette.Annotazione_auto
-            case RIFIUTO: return Etichette.Rifiuto
+            case ATTO: return Etichette.getEtichetta("Atto")
+            case ANNOTAZIONE: return Etichette.getEtichetta("Annotazione")
+            case TRASCRIZIONE: return Etichette.getEtichetta("Trascrizione")
+            case ANNOTAZIONE_AUTO: return Etichette.getEtichetta("Annotazione_auto")
+            case RIFIUTO: return Etichette.getEtichetta("Rifiuto")
         }
         return null
     }

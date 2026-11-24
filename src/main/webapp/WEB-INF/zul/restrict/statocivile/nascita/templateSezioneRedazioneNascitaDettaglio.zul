@@ -157,7 +157,7 @@
 							</row>
 							<row>
 								<cell align="right">
-									<label value="@load(vm.etichette['Data_Dichiarazione'])" />
+									<customLabel mandatory="true" value="@load(vm.etichette['Data_Dichiarazione'])" />
 								</cell>
 								<cell>
 									<datebox format="dd/MM/yyyy" value="@bind(vm.datiProvenienza.dataAttoOriginale)" width="100px"

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption
+                label="@load(vm.etichette['Genitori'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column width="170px"/>
+                <column/>
+                <column width="100px"/>
+                <column width="130px"/>
+                <column width="150px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Cognome_Padre'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.cognomePadre)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='P')"
+                                     onChange="@command('onAggiornaCase')"
+                                     style="@load(vm.minuscole.cognomePadre?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="cognomePadre"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="cognomePadre"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.cognomePadre)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="cognomePadre"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@bind(vm.etichette['Senza_Cognome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaCognomePadre)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.etichette['Matricola'])"/>
+                        <space/>
+                        <textbox value="@bind(vm.soggetto.padre.matricola)"
+                                 readonly="true" hflex="1"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Nome_Padre'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.nomePadre)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='P')"
+                                     onChange="@command('onAggiornaCase')"
+                                     style="@load(vm.minuscole.nomePadre?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="nomePadre"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="nomePadre"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.nomePadre)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="nomePadre"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Nome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaNomePadre)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Seleziona'])"
+                                onClick="@command('onRicercaSoggetto', sezione='P')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Cognome_Madre'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.cognomeMadre)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='M')"
+                                     onChange="@command('onAggiornaCase')"
+                                     style="@load(vm.minuscole.cognomeMadre?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="cognomeMadre"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="cognomeMadre"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.cognomeMadre)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="cognomeMadre"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@bind(vm.etichette['Senza_Cognome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaCognomeMadre)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.etichette['Matricola'])"/>
+                        <space/>
+                        <textbox value="@bind(vm.soggetto.madre.matricola)"
+                                 readonly="true" hflex="1"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Nome_Madre'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.nomeMadre)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='M')"
+                                     onChange="@command('onAggiornaCase')"
+                                     style="@load(vm.minuscole.nomeMadre?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="nomeMadre"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="nomeMadre"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.nomeMadre)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="nomeMadre"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Nome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaNomeMadre)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Seleziona'])"
+                                onClick="@command('onRicercaSoggetto', sezione='M')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

@@ -1,15 +1,11 @@
 package it.finmatica.de4gsdzk.anagrafe
 
-import it.finmatica.de4gsdzk.utils.Etichette
-
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
-
 enum EStatoConvivenza {
-    ANNULLATA("A"),
+
     DICHIARATA("D"),
+    ATTIVA("I"),
     CESSATA("F"),
-    ATTIVA("I")
+    ANNULLATA("A")
 
     final String id
 
@@ -19,10 +15,10 @@ enum EStatoConvivenza {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case ANNULLATA: return Etichette.Annullato
-            case DICHIARATA: return Etichette.Dichiarata
-            case CESSATA: return Etichette.Cessata
-            case ATTIVA: return Etichette.Attiva
+            case ANNULLATA: return Etichette.getEtichetta("Annullato")
+            case DICHIARATA: return Etichette.getEtichetta("Dichiarata")
+            case CESSATA: return Etichette.getEtichetta("Cessata")
+            case ATTIVA: return Etichette.getEtichetta("Attiva")
         }
         return null
     }
@@ -48,3 +44,8 @@ enum EStatoConvivenza {
         }
     }
 }
+
+import it.finmatica.de4gsdzk.utils.Etichette
+import javax.persistence.AttributeConverter
+
+import javax.persistence.Converter

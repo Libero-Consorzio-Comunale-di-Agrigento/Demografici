@@ -3,6 +3,8 @@ package it.finmatica.de4gsdzk.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdFirmaService
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.allegati.IAllegatoService
 import it.finmatica.de4gsdzk.ansc.AnscCasoUsoBaseDomain
 import it.finmatica.de4gsdzk.ansc.AnscComunicazioneAllegatoService
 import it.finmatica.de4gsdzk.ansc.AnscEndPointServizio
@@ -12,8 +14,7 @@ import it.finmatica.de4gsdzk.errors.ErroreDatiComunicazioneRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreDatiFascicoloRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
 import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
-import it.finmatica.de4gsdzk.statocivile.CivFascicoloAttoAllegatoRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.MetadatiGdmUtils
 import it.finmatica.smartdoc.api.struct.Campo
 import org.springframework.data.domain.PageRequest
@@ -23,11 +24,11 @@ import org.springframework.transaction.annotation.Transactional
 @Slf4j
 @Transactional
 @Service
-class CivFascicoloAttoAllegatoService {
+class CivFascicoloAttoAllegatoService implements IAllegatoService {
 
 	private final IntegrazioneDocumentaleService integrazioneDocumentaleService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivFascicoloAttoService civFascicoloAttoService
 
@@ -38,13 +39,13 @@ class CivFascicoloAttoAllegatoService {
 	private final CivFascicoloAttoAllegatoRepository civFascicoloAttoAllegatoRepository
 
     CivFascicoloAttoAllegatoService(CivFascicoloAttoAllegatoRepository civFascicoloAttoAllegatoRepository,
-									StatoCivileService statoCivileService, GsdFirmaService gsdFirmaService,
+									GsdService gsdService, GsdFirmaService gsdFirmaService,
 									AnscComunicazioneAllegatoService anscComunicazioneAllegatoService,
-                                    CivFascicoloAttoService civFascicoloAttoService, IntegrazioneDocumentaleService integrazioneDocumentaleService) {
+									CivFascicoloAttoService civFascicoloAttoService, IntegrazioneDocumentaleService integrazioneDocumentaleService) {
 		this.civFascicoloAttoAllegatoRepository = civFascicoloAttoAllegatoRepository
 		this.gsdFirmaService = gsdFirmaService
 		this.anscComunicazioneAllegatoService = anscComunicazioneAllegatoService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civFascicoloAttoService = civFascicoloAttoService
 		this.integrazioneDocumentaleService = integrazioneDocumentaleService
 	}
@@ -71,7 +72,7 @@ class CivFascicoloAttoAllegatoService {
 		return fal
 	}
 
-	CivFascicoloAttoAllegato getByFascicoloAndComunicazioneAllegato(Long idFascicoloAtto, idComAlle){
+	CivFascicoloAttoAllegato getByFascicoloAndComunicazioneAllegato(Long idFascicoloAtto, Long idComAlle){
 		CivFascicoloAttoAllegato fal = civFascicoloAttoAllegatoRepository.findByIdFascicoloAttoAndIdComunicazioneAllegato(idFascicoloAtto, idComAlle)
 		return fal
 	}
@@ -127,16 +128,16 @@ class CivFascicoloAttoAllegatoService {
 	private void bloccaSeProtocollataOInviataAlbo(CivFascicoloAttoAllegato obj){
 		CivFascicoloAtto fa = civFascicoloAttoService.get(obj.getFascicoloAtto().id)
 		if (fa.archivioComunicazione?.isProtocollato()){
-			throw new ErroreDatiComunicazioneRuntimeException(EtichetteMessaggi.Errore_modifica_comunicazioni_protocollate)
+			throw new ErroreDatiComunicazioneRuntimeException(Etichette.getEtichetta("Errore_modifica_comunicazioni_protocollate"))
 		}
 		if (fa.archivioComunicazione?.isInviatoAlbo()){
-			throw new ErroreDatiComunicazioneRuntimeException(EtichetteMessaggi.Errore_modifica_comunicazioni_inviate_albo)
+			throw new ErroreDatiComunicazioneRuntimeException(Etichette.getEtichetta("Errore_modifica_comunicazioni_inviate_albo"))
 		}
 	}
 
 	private void bloccaSeInviataAnsc(CivFascicoloAttoAllegato obj){
 		if (anscComunicazioneAllegatoService.existsComunicazioneByIdAllegatoAndInviatoANSC(obj.id)){
-			throw new ErroreDatiFascicoloRuntimeException(EtichetteMessaggi.Errore_cancellazione_allegato_fascicolo_atto)
+			throw new ErroreDatiFascicoloRuntimeException(Etichette.getEtichetta("Errore_cancellazione_allegato_fascicolo_atto"))
 		}
 	}
 
@@ -149,7 +150,7 @@ class CivFascicoloAttoAllegatoService {
 	private void validaDati(CivFascicoloAttoAllegato obj){
         Boolean emptyMandatoryFields = (obj.fascicoloAtto == null)
         if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_allegato_fascicolo)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_allegato_fascicolo"))
         }
 
 		// Check nome allegato
@@ -158,7 +159,7 @@ class CivFascicoloAttoAllegatoService {
 			nAlle = new Integer(0)
 		}
 		if ( nAlle.intValue() > 0) {
-			throw new ErroreAllegatoDocumentaleRuntimeException(EtichetteMessaggi.Errore_inserimento_nome_allegato_fascicolo_atto)
+			throw new ErroreAllegatoDocumentaleRuntimeException(Etichette.getEtichetta("Errore_inserimento_nome_allegato_fascicolo_atto"))
 		}
 	}
 
@@ -167,7 +168,7 @@ class CivFascicoloAttoAllegatoService {
 
 		if (salvaSuDocumentale) {
 			CivFascicoloAtto savedFas = civFascicoloAttoService.save(obj.getFascicoloAtto(), salvaSuDocumentale)
-			String identificativo = (savedFas.idAtto?:statoCivileService.getIdentificativoAtto(savedFas.tipoAtto, savedFas.ufficio, savedFas.anno, savedFas.parte, savedFas.serie, savedFas.atto))
+			String identificativo = (savedFas.idAtto?:gsdService.getIdentificativoAtto(savedFas.tipoAtto, savedFas.ufficio, savedFas.anno, savedFas.parte, savedFas.serie, savedFas.atto))
 			List<Campo> metadati = MetadatiGdmUtils.listMetadatiAtto(savedFas, identificativo)
 			integrazioneDocumentaleService.addFileToDocumentale(savedFas, obj, is, metadati, true, EModelloGdm.FascicoliStatoCivile)
 		}
@@ -191,7 +192,7 @@ class CivFascicoloAttoAllegatoService {
 		if ((fascicoloAtto?.id) != null) {
 			long n = civFascicoloAttoAllegatoRepository.countByFascicoloAtto(fascicoloAtto)
 			if (n > 0) {
-				throw new ErroreDatiFascicoloRuntimeException(EtichetteMessaggi.Errore_cancellazione_fascicolo_atto)
+				throw new ErroreDatiFascicoloRuntimeException(Etichette.getEtichetta("Errore_cancellazione_fascicolo_atto"))
 			}
 			/*
 			List<CivFascicoloAttoAllegato> l = listAllByIdFascicoloAttoOrderByDataModifica(fascicoloAtto.id)

@@ -64,7 +64,7 @@ class AnscEntita extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Anno, Etichette.Cognome, Etichette.Nome,
-                                              Etichette.Archivio, Etichette.Numero_comunale]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"),
+                                              Etichette.getEtichetta("Archivio"), Etichette.getEtichetta("Numero_comunale"),]
 
 }

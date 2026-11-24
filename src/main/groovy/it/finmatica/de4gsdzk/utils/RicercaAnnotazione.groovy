@@ -36,7 +36,7 @@ class RicercaAnnotazione {
         idAttoAnsc = null
     }
 
-    static final List<Map> etichetteRicercaAnnDesc = [Etichette.Id_Atto_Ansc, Etichette.Ufficio, Etichette.Anno, Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie,
-                                                      Etichette.Effettua_Ricerca, Etichette.Stato, Etichette.Da, Etichette.A, Etichette.Tutte]
+    static final List<Map> etichetteRicercaAnnDesc = [Etichette.getEtichetta("Id_Atto_Ansc"), Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"),
+                                                      Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A"), Etichette.getEtichetta("Tutte")]
 
 }

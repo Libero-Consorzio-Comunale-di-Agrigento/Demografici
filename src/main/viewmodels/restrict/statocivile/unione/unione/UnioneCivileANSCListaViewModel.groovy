@@ -31,7 +31,7 @@ class UnioneCivileANSCListaViewModel extends AnscAttoListaParentViewModel {
 
         backFromListANSCEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_DATI_UNIONE_CIVILE, Etichette.SEZIONE_CONTRAENTE_1, Etichette.SEZIONE_CONTRAENTE_2]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_DATI_UNIONE_CIVILE"), Etichette.getEtichetta("SEZIONE_CONTRAENTE_1"), Etichette.getEtichetta("SEZIONE_CONTRAENTE_2")]
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams())
 

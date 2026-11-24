@@ -15,10 +15,10 @@ enum EDocumentoMatrimonio {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case UNO: return Etichette.UNO
-            case DUE: return Etichette.DUE
-            case OME: return Etichette.OMESSA_PUBBLICAZIONE
-            case ALT: return Etichette.Altro
+            case UNO: return Etichette.getEtichetta("UNO")
+            case DUE: return Etichette.getEtichetta("DUE")
+            case OME: return Etichette.getEtichetta("OMESSA_PUBBLICAZIONE")
+            case ALT: return Etichette.getEtichetta("Altro")
         }
         return null
     }

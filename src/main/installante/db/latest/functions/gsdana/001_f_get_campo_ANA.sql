@@ -15,7 +15,12 @@ w_valore	varchar2(255);
 begin
   begin
     select decode(w_campo,
-             'SESSO', ana.sesso)
+             'SESSO', ana.sesso,
+             'COGNOME_NOME', ana.cognome_nome,
+             'COGNOME_NOME_PD', ana.paternita,
+             'COGNOME_NOME_MD', ana.maternita,
+             'COGNOME_NOME_CN', ana.cognome_nome_cn
+           )
       into w_valore
       from anaana ana
      where ana.matricola = a_matricola

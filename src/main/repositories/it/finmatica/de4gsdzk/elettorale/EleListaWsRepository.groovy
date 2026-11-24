@@ -1,0 +1,29 @@
+package it.finmatica.de4gsdzk.elettorale
+
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+
+interface EleListaWsRepository extends JpaRepository<EleListaWs, Long> {
+
+    @Query(
+            value = """
+            SELECT e FROM EleListaWs e
+            LEFT OUTER JOIN FETCH e.elezioneAds
+            WHERE (:elezione IS NULL OR e.elezione = :elezione)
+            AND (:elezioneAds IS NULL OR e.elezioneAds = :elezioneAds)
+              AND UPPER(e.descrizioneLista) LIKE UPPER(:filtro)
+        """,
+            countQuery = """
+            SELECT COUNT(e) FROM EleListaWs e
+            WHERE (:elezione IS NULL OR e.elezione = :elezione)
+            AND (:elezioneAds IS NULL OR e.elezioneAds = :elezioneAds)
+              AND UPPER(e.descrizioneLista) LIKE UPPER(:filtro)
+        """
+    )
+    Page<EleListaWs> findAllByElezioneAndElezioneAdsAndFiltroLike(@Param("elezione") EleElezione elezione,
+                                                                  @Param("elezioneAds") De4Elezione elezioneAds,
+                                                                  @Param("filtro") String filtro, Pageable pageable)
+}

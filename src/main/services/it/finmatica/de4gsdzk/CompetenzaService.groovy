@@ -19,7 +19,7 @@ class CompetenzaService {
 	}
 
 	private Boolean hasRuolo(ERuoloSo4 ruolo) {
-		if (ruolo in [ERuoloSo4.CIV_SUPERUSER, ERuoloSo4.CER_SUPERUSER, ERuoloSo4.ANA_SUPERUSER] &&
+		if (ruolo in [ERuoloSo4.CIV_SUPERUSER, ERuoloSo4.CER_SUPERUSER, ERuoloSo4.ANA_SUPERUSER, ERuoloSo4.ELE_SUPERUSER, ERuoloSo4.LEV_SUPERUSER] &&
 				so4SpringSecurityService.principal.uo().isEmpty() &&
 				so4SpringSecurityService.principal.utente.ruoli*.ruolo.contains(ERuoloAd4.RGSD.id)) {
 			return true
@@ -49,6 +49,18 @@ class CompetenzaService {
 
 	Boolean isAnaAny() {
 		return ERuoloSo4.anagrafe.any { hasRuolo(it) }
+	}
+
+    Boolean isEleAny() {
+		return ERuoloSo4.elettorale.any { hasRuolo(it) }
+	}
+
+    Boolean isLevAny() {
+		return ERuoloSo4.levaMilitare.any { hasRuolo(it) }
+	}
+
+    Boolean isTopAny() {
+		return ERuoloSo4.toponomastica.any { hasRuolo(it) }
 	}
 
 	Set<ECompetenzaCertificazione> getCompetenzeCertificazioneByRuoli() {

@@ -17,11 +17,11 @@ enum ETipoAssistenzaMinore {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PD: return Etichette.Padre
-            case MD: return Etichette.Madre
-            case PDMD: return Etichette.Entrambi_genitori
-            case TU: return Etichette.Tutore
-            case PS: return Etichette.Procuratore_speciale
+            case PD: return Etichette.getEtichetta("Padre")
+            case MD: return Etichette.getEtichetta("Madre")
+            case PDMD: return Etichette.getEtichetta("Entrambi_genitori")
+            case TU: return Etichette.getEtichetta("Tutore")
+            case PS: return Etichette.getEtichetta("Procuratore_speciale")
         }
         return null
     }

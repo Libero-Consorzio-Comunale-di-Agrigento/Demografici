@@ -16,11 +16,11 @@ enum EImpossibilitato {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case C1: return Etichette.Contraente_1
-            case C2: return Etichette.Contraente_2
-            case SO: return Etichette.Sposo
-            case SA: return Etichette.Sposa
-            case EN: return Etichette.Entrambi
+            case C1: return Etichette.getEtichetta("Contraente_1")
+            case C2: return Etichette.getEtichetta("Contraente_2")
+            case SO: return Etichette.getEtichetta("Sposo")
+            case SA: return Etichette.getEtichetta("Sposa")
+            case EN: return Etichette.getEtichetta("Entrambi")
         }
         return null
     }

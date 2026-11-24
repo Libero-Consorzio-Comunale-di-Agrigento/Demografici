@@ -2,6 +2,7 @@ package restrict.statocivile.unione.unione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
@@ -26,7 +27,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivScioglimentoService civScioglimentoService
@@ -74,7 +75,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
         try {
             dettaglio = new CivUnioneCivile(anno: Calendar.getInstance().get(Calendar.YEAR), codiceRecord: new Integer(3),
                     certificabile: ETipoSiNo.NO, natura: ENaturaAtto.D, divorzio: Boolean.TRUE)
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
             // Solo per atti in inserimento e integrazione ANSC attiva
             if (anscOn){
                 // ulteriori inizializzazioni in funzione di parte/serie/cat dopo il recupero del tipo atto
@@ -124,7 +125,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
         listaAnnotazioniNascita = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if ( isCaricamentoFormuleAnnotazioneAbilitato() ) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, flagDivorzio: true, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, flagDivorzio: true, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
             if (l.size() > 0) {
                 listaAnnotazioniNascita.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -135,7 +136,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
         listaAnnotazioniMatrimonio = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if ( isCaricamentoFormuleAnnotazioneAbilitato() ) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, flagDivorzio: true, tipoAttoAnnotazione: ETipoAtto.UCI.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, flagDivorzio: true, tipoAttoAnnotazione: ETipoAtto.UCI.valore])
             if (l.size() > 0) {
                 listaAnnotazioniMatrimonio.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -203,7 +204,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -220,7 +221,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
                 try {
                     c = civScioglimentoService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, sposi, mapFormule, mapAnnotazioniDaAtto, gc, margineMandatory, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (statoFrammenti == 1) {
                         statoFrammenti = 2
@@ -240,7 +241,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
     }
 
     void numera(){
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null){
             numeraAtto = null
         }
@@ -335,7 +336,7 @@ class ScioglimentoDettaglioViewModel extends ScioglimentoDettaglioParentViewMode
                         DomainUtils.allineaTestoMinuscole(dettaglio, minuscole)
 
                         // per chiarezza ai fini dell'integrazione con ANSC
-                        riempiComune(datiProvenienza.comuneAccordo, statoCivileService.getComuneCliente())
+                        riempiComune(datiProvenienza.comuneAccordo, gsdService.getComuneCliente())
                     }
                     refreshUi()
                 }

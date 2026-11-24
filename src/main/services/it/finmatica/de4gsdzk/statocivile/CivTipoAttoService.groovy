@@ -2,10 +2,10 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreTipoAttoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivTipoAttoRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
@@ -16,16 +16,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivTipoAttoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivTipoAttoRepository civTipoAttoRepository
 
 	private final ArcParametroService arcParametroService
 
-	CivTipoAttoService(CivTipoAttoRepository civTipoAttoRepository, StatoCivileService statoCivileService, ArcParametroService arcParametroService) {
+	CivTipoAttoService(CivTipoAttoRepository civTipoAttoRepository, GsdService gsdService, ArcParametroService arcParametroService) {
 
 		this.civTipoAttoRepository = civTipoAttoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.arcParametroService = arcParametroService
 	}
 
@@ -244,12 +244,12 @@ class CivTipoAttoService {
 		}
 
 		if (obj.categoriaDomain.divorzio && (obj.natura != ENaturaAtto.D) ){
-			throw new ErroreTipoAttoRuntimeException(EtichetteMessaggi.Errore_natura_vs_categoria)
+			throw new ErroreTipoAttoRuntimeException(Etichette.getEtichetta("Errore_natura_vs_categoria"))
 		}
 		// Duplico il controllo perché il campo di db FLAG_DIVORZIO è stato creato fin da principio sulla CIVCTA
 		// e solo in un secondo momento sulla CIVDTA
 		if (obj.divorzio && (obj.natura != ENaturaAtto.D) ){
-			throw new ErroreTipoAttoRuntimeException(EtichetteMessaggi.Errore_natura_vs_categoria)
+			throw new ErroreTipoAttoRuntimeException(Etichette.getEtichetta("Errore_natura_vs_categoria"))
 		}
 
 		if ( (tipoAttoEnumSource == ETipoAtto.MAT) && obj.divorzio ){
@@ -258,7 +258,7 @@ class CivTipoAttoService {
 			}
 			Boolean isRiconciliazione = ( obj.isSecondaC() && ((obj.categoriaDomain?.codice?:"") == CivCategoriaTipoAtto.RCN) )
 			if (isRiconciliazione && (obj.tipoDivorzio != ETipoDivorzio.A)){
-				throw new ErroreTipoAttoRuntimeException(EtichetteMessaggi.Errore_tipo_divorzio)
+				throw new ErroreTipoAttoRuntimeException(Etichette.getEtichetta("Errore_tipo_divorzio"))
 			}
 		}
 	}
@@ -268,7 +268,7 @@ class CivTipoAttoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
         log.info("Lancio salvataggio su CIVDTA per id " + obj.id)
@@ -277,14 +277,14 @@ class CivTipoAttoService {
 
 	void delete(CivTipoAtto obj){
 		if  ( (obj.categoriaDomain?.codice?:"") == CivCategoriaTipoAtto.ATL ){
-			String s = statoCivileService.existsAttoXIdTipoAtto(obj.tipoAtto, obj.id)
+			String s = gsdService.existsAttoXIdTipoAtto(obj.tipoAtto, obj.id)
 			if ((s?.trim()?: "") != "") {
-				throw new ErroreTipoAttoRuntimeException(EtichetteMessaggi.Errore_cancellazione_tipo_atto)
+				throw new ErroreTipoAttoRuntimeException(Etichette.getEtichetta("Errore_cancellazione_tipo_atto"))
 			} else {
 				civTipoAttoRepository.delete(obj)
 			}
 		} else {
-			throw new ErroreTipoAttoRuntimeException(EtichetteMessaggi.Errore_cancellazione_tipo_atto)
+			throw new ErroreTipoAttoRuntimeException(Etichette.getEtichetta("Errore_cancellazione_tipo_atto"))
 		}
 	}
 

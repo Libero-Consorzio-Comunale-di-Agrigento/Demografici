@@ -5,6 +5,8 @@ AS
 select e.*
      , f_cognome(e.cognome_nome_cn) cognome_cn
      , f_nome(e.cognome_nome_cn) nome_cn
+     , decode(f_cognome(e.cognome_nome_cn),'','S','') senza_cognome_cn
+     , decode(f_nome(e.cognome_nome_cn),'','S','') senza_nome_cn
      , to_date(e.DATA_REG,'j') d_data_reg
      , to_date(e.DATA_EVE,'j') d_data_eve
      , to_date(e.DATA_MAT,'j') d_data_mat
@@ -87,5 +89,4 @@ select e.*
   from anaesc e
 /
 comment on table anaesc_VANA is 'Anagrafe - Eventi di Stato Civie dell''Individuo per Visualizzazione (view)'
-
 /

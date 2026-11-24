@@ -2,11 +2,11 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivTestimoniAttoRepository
 import it.finmatica.de4gsdzk.statocivile.embed.Testimone
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,17 +15,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivTestimoniAttoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final ArcParametroService arcParametroService
 
 	private final CivTestimoniAttoRepository civTestimoniAttoRepository
 
     CivTestimoniAttoService(CivTestimoniAttoRepository civTestimoniAttoRepository,
-							StatoCivileService statoCivileService, ArcParametroService arcParametroService) {
+                            GsdService gsdService, ArcParametroService arcParametroService) {
 
 		this.civTestimoniAttoRepository = civTestimoniAttoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.arcParametroService = arcParametroService
 	}
 
@@ -48,23 +48,23 @@ class CivTestimoniAttoService {
 
 	private void checkDatiObbligatoriIncompletiTestimone(Testimone testimone, String sezione){
 		if ((!(testimone.cognome?.trim())) && (!(testimone.nome?.trim()))) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 		}
 
 		if (testimone.dataNascita == null) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 		}
 
 		if (testimone.sesso == null) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 		}
 
 		if ((testimone.comuneNascita.codice == null) || (testimone.comuneNascita.codiceProvincia == null)) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 		}
 
 		if ((testimone.comuneResidenza.codice == null) || (testimone.comuneResidenza.codiceProvincia == null)) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 		}
 	}
 
@@ -72,7 +72,7 @@ class CivTestimoniAttoService {
 		Boolean emptyMandatoryFields = ( (obj.tipoAtto == null) || (obj.ufficio == null) || (obj.anno == null)  || (obj.atto == null) || (obj.parte == null) )
 
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 
 		Boolean anscOn = arcParametroService.isIntegrazioneAnscAttiva()
@@ -81,7 +81,7 @@ class CivTestimoniAttoService {
 			String sezioneTestimoni = "'Testimoni'"
 
 			if (obj.numeroTestimoni == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTestimoni)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTestimoni)
 			}
 
 			if (obj.numeroTestimoni.compareTo(new Integer(0)) > 0) {
@@ -108,7 +108,7 @@ class CivTestimoniAttoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su CIVTTA per id " + obj.id)
 		return  civTestimoniAttoRepository.save(obj)

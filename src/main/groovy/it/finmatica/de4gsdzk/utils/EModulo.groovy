@@ -3,12 +3,13 @@ package it.finmatica.de4gsdzk.utils
 enum EModulo {
 
     ARCHIVI("ARCHIVI" , "/restrict/archivi/index.zul","archive.png"),
-    ANAGRAFE("ANAGRAFE", "/restrict/anagrafe/index.zul","user.png"),
+    ANAGRAFE("ANAGRAFE", "/restrict/anagrafe/index.zul","group.png"),
     STATO_CIVILE("STATO_CIVILE", "/restrict/statocivile/index.zul","contract.png"),
     SMART_STATS("SMART_STATS", "","chart.png"),
-    ELETTORALE("ELETTORALE", "","reports.png"),
-    LEVA_MILITARE("LEVA_MILITARE", "","process.png"),
-    CERTIFICAZIONE("CERTIFICAZIONE", "/restrict/certificazione/index.zul","legitimate.png")
+    ELETTORALE("ELETTORALE", "/restrict/elettorale/index.zul","reports.png"),
+    LEVA_MILITARE("LEVA_MILITARE", "/restrict/levamilitare/index.zul","process.png"),
+    CERTIFICAZIONE("CERTIFICAZIONE", "/restrict/certificazione/index.zul","legitimate.png"),
+    TOPONOMASTICA("TOPONOMASTICA", "/restrict/toponomastica/index.zul","dictionary.png")
 
     String id
     String uri
@@ -22,13 +23,14 @@ enum EModulo {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case ARCHIVI: return Etichette.ARCHIVI
-            case ANAGRAFE: return Etichette.ANAGRAFE
-            case STATO_CIVILE: return Etichette.STATO_CIVILE
-            case SMART_STATS: return Etichette.SMART_STATS
-            case ELETTORALE: return Etichette.ELETTORALE
-            case LEVA_MILITARE: return Etichette.LEVA_MILITARE
-            case CERTIFICAZIONE: return Etichette.CERTIFICAZIONE
+            case ARCHIVI: return Etichette.getEtichetta("ARCHIVI")
+            case ANAGRAFE: return Etichette.getEtichetta("ANAGRAFE")
+            case STATO_CIVILE: return Etichette.getEtichetta("STATO_CIVILE")
+            case SMART_STATS: return Etichette.getEtichetta("SMART_STATS")
+            case ELETTORALE: return Etichette.getEtichetta("ELETTORALE")
+            case LEVA_MILITARE: return Etichette.getEtichetta("LEVA_MILITARE")
+            case CERTIFICAZIONE: return Etichette.getEtichetta("CERTIFICAZIONE")
+            case TOPONOMASTICA: return Etichette.getEtichetta("TOPONOMASTICA")
         }
         return null
     }

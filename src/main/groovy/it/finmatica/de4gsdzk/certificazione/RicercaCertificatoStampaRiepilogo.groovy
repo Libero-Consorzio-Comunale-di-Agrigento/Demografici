@@ -52,5 +52,5 @@ class RicercaCertificatoStampaRiepilogo {
         this.dataRiepilogoAl = null
     }
 
-    static final List<Map> etichetteRicercaCerStampaRiepilogoDesc = [Etichette.Stampa_Riepilogo]
+    static final List<Map> etichetteRicercaCerStampaRiepilogoDesc = [Etichette.getEtichetta("Stampa_Riepilogo")]
 }

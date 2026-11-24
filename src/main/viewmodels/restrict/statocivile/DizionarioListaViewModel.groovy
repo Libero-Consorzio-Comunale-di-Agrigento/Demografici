@@ -59,7 +59,7 @@ abstract class DizionarioListaViewModel extends AbstractListaViewModel {
                 )
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

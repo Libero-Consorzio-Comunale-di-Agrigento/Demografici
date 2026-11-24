@@ -29,6 +29,8 @@ class VariazioneListaViewModel extends AbstractListaViewModel implements TraitCo
     List<OrderBy> listaOrder = []
     OrderBy selectedOrder
 
+    boolean provvedimento = false
+
     @WireVariable
     private AnaVariazioneAnagrafeService anaVariazioneAnagrafeService
 
@@ -44,7 +46,7 @@ class VariazioneListaViewModel extends AbstractListaViewModel implements TraitCo
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Variazioni]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Variazioni")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaVariazioneAnagrafe.etichetteDomain)
@@ -52,18 +54,18 @@ class VariazioneListaViewModel extends AbstractListaViewModel implements TraitCo
         // Aggiungo etichette della lista
         eList.addAll(etichetteListaDefault)
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato, Etichette.Ordina_per])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato"), Etichette.getEtichetta("Ordina_per")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Variazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Variazioni"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento), SortUtils.dataAnaEventoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento")), SortUtils.dataAnaEventoAsc))
         selectedOrder = listaOrder[0]
 
         totalSizeLabel = ""

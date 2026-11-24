@@ -4,6 +4,7 @@ import it.finmatica.ad4.autenticazione.Ad4Utente
 import it.finmatica.ad4.hibernate.UtenteUpd
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAtto
 import it.finmatica.de4gsdzk.statocivile.CivTipoAtto
+import it.finmatica.de4gsdzk.statocivile.embed.EstremiAtto
 import it.finmatica.de4gsdzk.utils.*
 import org.hibernate.annotations.Formula
 import org.hibernate.annotations.Type
@@ -28,6 +29,17 @@ abstract class CivAttoBaseDomain extends GsdBaseDomain{
 
     @Column(name = "ATTO", nullable = false)
     Integer atto
+
+
+    @AttributeOverrides([
+            @AttributeOverride(name = "ufficio", column = @Column(name = "UFFICIO_LISTA", updatable = false, insertable = false)),
+            @AttributeOverride(name = "anno", column = @Column(name = "ANNO_LISTA", updatable = false, insertable = false)),
+            @AttributeOverride(name = "atto", column = @Column(name = "ATTO_LISTA", updatable = false, insertable = false)),
+            @AttributeOverride(name = "parte", column = @Column(name = "PARTE_LISTA", updatable = false, insertable = false)),
+            @AttributeOverride(name = "serie", column = @Column(name = "SERIE_LISTA", updatable = false, insertable = false)),
+            @AttributeOverride(name = "idAttoAnsc", column = @Column(name = "ID_ATTO_ANSC_LISTA", updatable = false, insertable = false))
+    ])
+    EstremiAtto attoLista
 
     abstract Integer getParte()
 
@@ -105,6 +117,10 @@ abstract class CivAttoBaseDomain extends GsdBaseDomain{
 
     @Column(name = "VERSIONE", nullable = true)
     Integer versioneRettifica
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "D_DATA_VERSIONE", nullable = true)
+    Date dataVersioneRettifica
 
     Boolean isProvvisorio(){
         return  ( (this.atto != null) && (this.atto.compareTo(new Integer(0)) < 1) )
@@ -206,12 +222,33 @@ abstract class CivAttoBaseDomain extends GsdBaseDomain{
         return (atto + parteSerie + (ufficio ? "-$ufficio" : "") + (anno?"/" + String.valueOf(anno):""))
     }
 
+    abstract String getIdAttoAnsc()
+
+    abstract Long getNumeroUnico()
+
+    String getEstremiAttoListaNotAnsc() {
+        String parteSerie = ((parte != null)? "-" + String.valueOf(parte)+(serie?:"") : "")
+        return (atto + parteSerie + (ufficio ? "-$ufficio" : "") + (anno?"/" + String.valueOf(anno):""))
+    }
+
+    String getEstremiAttoListaPdf() {
+        String result
+        if(idAttoAnsc != null) {
+            result = idAttoAnsc
+        } else if (numeroUnico != null) {
+            result = numeroUnico + (anno?"/" + String.valueOf(anno):"")
+        } else {
+            result = estremiAttoListaNotAnsc
+        }
+        return result
+    }
+
     abstract Boolean isUfficialeStatoCivileMandatory()
 
     ////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Numero_comunale, Etichette.Id_Atto_Ansc, Etichette.Caso_Uso_Ansc, Etichette.Motivo_recupero]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Numero_comunale"), Etichette.getEtichetta("Id_Atto_Ansc"), Etichette.getEtichetta("Caso_Uso_Ansc"), Etichette.getEtichetta("Motivo_recupero")]
 
 }

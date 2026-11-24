@@ -76,7 +76,7 @@ class ValidationUtils {
         validaEstremiAttoData(eac.datiValidazioneDataAtto, sezione)
         if (eac.formulaMandatory) {
             if (TestoUtils.isVuoto(eac.formula)) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
         }
     }
@@ -85,10 +85,10 @@ class ValidationUtils {
         Boolean isAttoAnalogAnyFilled = (eac.numeroAtto != null || eac.parteAtto != null || !TestoUtils.isVuoto(eac.serieAtto) || eac.annoAtto != null || eac.ufficioAtto)
         Boolean isAttoDigitalAnyFilled = !TestoUtils.isVuoto(eac.idAttoAnsc)
         if (eac.estremiMandatory && !(isAttoAnalogAnyFilled || isAttoDigitalAnyFilled)) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
         }
         if (isAttoAnalogAnyFilled && isAttoDigitalAnyFilled) {
-            Map<String, String> etichetta = EtichetteMessaggi.Errore_atto_analogico_digitale
+            Map<String, String> etichetta = Etichette.getEtichetta("Errore_atto_analogico_digitale")
             String additionalInfo = etichetta.defaultValue + " ( " + sezione + " )"
             throw new De4gsdzkRuntimeException(etichetta, additionalInfo)
         }
@@ -97,33 +97,33 @@ class ValidationUtils {
                 throw new ErroreLunghezzaCampiRuntimeException("Atto in " + sezione)
             }
             if (!(TipoAttoUtils.isAttoOk(eac.numeroAtto, false))) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
             if (!(TipoAttoUtils.isAnnoOk(eac.annoAtto))) {
                 throw new ErroreLunghezzaCampiRuntimeException("Anno in " + sezione)
             }
             if (!(TipoAttoUtils.isAnnoOk(eac.annoAtto, false))) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
             if (!(TipoAttoUtils.isParteOk(eac.tipoAtto, eac.parteAtto))) {
-                throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, "( " + sezione + " )")
+                throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), "( " + sezione + " )")
             }
             if (!(TipoAttoUtils.isParteOk(eac.tipoAtto, eac.parteAtto, false))) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
             Boolean serieOk = TipoAttoUtils.isSerieOk(eac.tipoAtto, eac.serieAtto)
             if (!(serieOk)) {
-                throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, "Serie in " + sezione)
+                throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), "Serie in " + sezione)
             }
             if (eac.ufficioMandatory) {
                 if (TestoUtils.isVuoto(eac.ufficioAtto)) {
-                    throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                    throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
                 }
             }
         }
         if (isAttoDigitalAnyFilled) {
             if (TestoUtils.isVuoto(eac.idAttoAnsc)) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
         }
     }
@@ -131,7 +131,7 @@ class ValidationUtils {
     static void validaEstremiAttoData(DatiValidazioneDataAtto eac, String sezione) {
         if (eac.dataAttoMandatory) {
             if (eac.dataAtto == null) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
         }
     }
@@ -139,9 +139,28 @@ class ValidationUtils {
     static void validaEstremiAttoComune(DatiValidazioneComune eac, String sezione) {
         if (eac.comuneMandatory) {
             if (eac.codiceComune == null || eac.codiceProvincia == null) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
             }
         }
+    }
+
+    // Controllo la presenza sia degli estremi che del comune o l'assenza di entrambi
+    // i controlli più specifici verranno effettuati successivamente
+    static boolean validaEstremiAttoEComune(DatiValidazioneEstremi dve, DatiValidazioneComune dvc, String sezione) {
+        Boolean estremiAttoFilled = estremiAttoFill(dve)
+
+        Boolean comuneFilled = dvc.codiceComune != null || dvc.codiceProvincia != null
+
+        if((estremiAttoFilled && !comuneFilled) || (!estremiAttoFilled && comuneFilled)) {
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_estremi_atto"), " - ${sezione}")
+        }
+
+        return estremiAttoFilled && comuneFilled
+    }
+
+    static boolean estremiAttoFill(DatiValidazioneEstremi dve) {
+        return (dve.numeroAtto != null || dve.parteAtto != null || !TestoUtils.isVuoto(dve.serieAtto) || dve.annoAtto != null || dve.ufficioAtto) ||
+                !TestoUtils.isVuoto(dve.idAttoAnsc)
     }
 
 

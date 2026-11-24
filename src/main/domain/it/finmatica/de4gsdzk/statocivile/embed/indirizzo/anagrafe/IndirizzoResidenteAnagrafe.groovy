@@ -41,6 +41,6 @@ class IndirizzoResidenteAnagrafe implements IIndirizzoResidente, IIndirizzoAnagr
         return via
     }
 
-    static final List<Map> etichetteDomain = [Etichette.Via]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via")]
 
 }

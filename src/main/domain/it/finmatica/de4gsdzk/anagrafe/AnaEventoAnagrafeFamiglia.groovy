@@ -27,7 +27,7 @@ class AnaEventoAnagrafeFamiglia {
     Date dataEvento
 
     @Column(name = "DES_RAPPORTO_PAR", updatable = false, insertable = false)
-    String rapportoParentela
+    String rapportoParentelaDescrizione
 
     @Column(name = "SEQUENZA_PAR")
     Integer sequenzaParentela
@@ -39,6 +39,6 @@ class AnaEventoAnagrafeFamiglia {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Evento, Etichette.Rapporto_Parentela, Etichette.Descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Evento"), Etichette.getEtichetta("Rapporto_Parentela"), Etichette.getEtichetta("Descrizione")]
 
 }

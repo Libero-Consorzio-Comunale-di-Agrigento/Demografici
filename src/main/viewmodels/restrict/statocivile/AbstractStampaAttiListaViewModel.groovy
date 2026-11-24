@@ -5,7 +5,7 @@ import it.finmatica.de4gsdzk.utils.*
 import restrict.AbstractStampaListaViewModel
 
 @Slf4j
-abstract class AbstractStampaAttiListaViewModel extends AbstractStampaListaViewModel implements TraitStampaAttoCampi {
+abstract class AbstractStampaAttiListaViewModel extends AbstractStampaListaViewModel implements TraitStampaCampi {
 
     IRicercaAtto ricerca
     Boolean anscOn = Boolean.FALSE
@@ -22,7 +22,7 @@ abstract class AbstractStampaAttiListaViewModel extends AbstractStampaListaViewM
     }
 
     protected String getNomeFileXUfficio() {
-        return (ricerca.ufficio ? getEtichetta(Etichette.Ufficio)+" "+ricerca.ufficio : getEtichetta(Etichette.Tutti_gli_uffici))
+        return (ricerca.ufficio ? getEtichetta(Etichette.getEtichetta("Ufficio"))+" "+ricerca.ufficio : getEtichetta(Etichette.getEtichetta("Tutti_gli_uffici")))
     }
 
     protected String getParametri(List<Map> ranges) {
@@ -31,9 +31,9 @@ abstract class AbstractStampaAttiListaViewModel extends AbstractStampaListaViewM
             if (range.da || range.a) {
                 String p = range.label + ":"
                 if (range.da)
-                    p += " " + getEtichetta(Etichette.Dal) + " " + DataUtils.toString(range.da)
+                    p += " " + getEtichetta(Etichette.getEtichetta("Dal")) + " " + DataUtils.toString(range.da)
                 if (range.a)
-                    p += " " + getEtichetta(Etichette.Al) + " " + DataUtils.toString(range.a)
+                    p += " " + getEtichetta(Etichette.getEtichetta("Al")) + " " + DataUtils.toString(range.a)
                 parametri.add(p)
             }
         return parametri.join(" - ")

@@ -13,8 +13,8 @@ enum EStatoProtocollazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case D: return Etichette.Da_Protocollare
-            case P: return Etichette.Protocollato
+            case D: return Etichette.getEtichetta("Da_Protocollare")
+            case P: return Etichette.getEtichetta("Protocollato")
         }
         return null
     }

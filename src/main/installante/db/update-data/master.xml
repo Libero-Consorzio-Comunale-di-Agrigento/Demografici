@@ -11,6 +11,8 @@
 	<include file="4.5.7.8/master.xml" relativeToChangelogFile="true"/>
 	<include file="4.5.8.0/master.xml" relativeToChangelogFile="true"/>
     <include file="4.5.8.1/master.xml" relativeToChangelogFile="true"/>
-    <include file="5.0.0.0/master.xml" relativeToChangelogFile="true"/>
+	<include file="5.0.0.0/master.xml" relativeToChangelogFile="true"/>
+	<include file="5.0.1.0/master.xml" relativeToChangelogFile="true"/>
+	<include file="5.1.0.0/master.xml" relativeToChangelogFile="true"/>
 	<include file="alltime/master.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -1,5 +1,3 @@
---liquibase formatted sql
---changeset snocca:202302031830 runOnChange:true stripComments:false
 create or replace procedure CIVMAT_FI
 (a_ufficio		IN	number,
  a_anno			IN	number,
@@ -304,6 +302,18 @@ begin
            and parte          = a_parte_old
            and nvl(serie,' ') = nvl(a_serie_old,' ')
            and atto           = a_atto_old
+        ;
+        update istmd3
+           set ufficio_mat = a_ufficio,
+               anno_mat    = a_anno,
+               atto_mat    = a_atto,
+               parte_mat   = a_parte,
+               serie_mat   = a_serie
+         where anno_mat           = a_anno_old
+           and ufficio_mat        = a_ufficio_old
+           and parte_mat          = a_parte_old
+           and nvl(serie_mat,' ') = nvl(a_serie_old,' ')
+           and atto_mat           = a_atto_old
         ;
       end;
     end if;

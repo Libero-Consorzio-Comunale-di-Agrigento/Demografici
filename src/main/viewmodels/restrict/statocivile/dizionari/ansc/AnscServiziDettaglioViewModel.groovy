@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ansc.AnscEndPointServizio
 import it.finmatica.de4gsdzk.ansc.AnscEndPointServizioService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -30,13 +29,13 @@ class AnscServiziDettaglioViewModel extends DizionarioDettaglioViewModel{
         saveRecordEnabled = true
         deleteRecordEnabled = true
 
-        List<Map<String, String>> eList = [EtichetteMessaggi.Ask_Cancellazione_Record, Etichette.Servizi_Ansc]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Ask_Cancellazione_Record"), Etichette.getEtichetta("Servizi_Ansc")]
 
         eList.addAll(AnscEndPointServizio.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Servizi_Ansc)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Servizi_Ansc"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -58,7 +57,7 @@ class AnscServiziDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord(){
         if (dettaglio){
             AnscEndPointServizio c = anscEndPointServizioService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }
@@ -69,7 +68,7 @@ class AnscServiziDettaglioViewModel extends DizionarioDettaglioViewModel{
 
     @Command void onEliminaRecord(){
         if (dettaglio) {
-            Messagebox.show(dettaglio.descrizioneEstesa + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(dettaglio.descrizioneEstesa + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_OK.equals(e.getName())) {

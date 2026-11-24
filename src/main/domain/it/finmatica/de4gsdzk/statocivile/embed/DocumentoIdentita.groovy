@@ -1,8 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile.embed
 
-
 import it.finmatica.de4gsdzk.GsdBaseDomain
-import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.Etichette
 
 import javax.persistence.*
@@ -22,9 +20,9 @@ class DocumentoIdentita {
 
     @Embedded
     @AttributeOverrides([
-            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_ENTE_DI")),
+            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_ENTE_DI", updatable = false, insertable = false)),
             @AttributeOverride(name = "descrizione", column = @Column(name = "DES_COM_ENTE_DI", updatable = false, insertable = false)),
-            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_ENTE_DI")),
+            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_ENTE_DI", updatable = false, insertable = false)),
             @AttributeOverride(name = "siglaProvincia", column = @Column(name = "SIGLA_PRO_ENTE_DI", updatable = false, insertable = false))
     ])
     private Comune comune
@@ -44,7 +42,7 @@ class DocumentoIdentita {
     @Column(name = "FLAG_VAL_ESPATRIO_DI", updatable = false, insertable = false)
     Boolean validitaPerEspatrio
 
-    static final List<Map> etichetteDomain = [Etichette.Numero, Etichette.Data_emissione,
-                                              Etichette.Data_scadenza, Etichette.Comune,
-                                              Etichette.Espatrio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Data_emissione"),
+                                              Etichette.getEtichetta("Data_scadenza"), Etichette.getEtichetta("Comune"),
+                                              Etichette.getEtichetta("Espatrio")]
 }

@@ -1,6 +1,6 @@
 package it.finmatica.de4gsdzk
 
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ESesso
 
 public interface ISoggettoAtto2 extends ISoggettoAtto2Base{
@@ -53,7 +53,7 @@ public interface ISoggettoAtto2 extends ISoggettoAtto2Base{
     Boolean getCfCalcolato2()
     void setCfCalcolato2(Boolean val)
 
-    AnaNazionalita getNazionalita2()
-    void setNazionalita2(AnaNazionalita n)
+    AnaCittadinanza getNazionalita2()
+    void setNazionalita2(AnaCittadinanza n)
 
 }

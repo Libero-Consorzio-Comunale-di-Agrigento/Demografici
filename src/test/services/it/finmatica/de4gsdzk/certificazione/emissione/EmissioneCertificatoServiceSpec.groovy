@@ -11,7 +11,7 @@ import it.finmatica.de4gsdzk.certificazione.generazione.GenerazioneCertificatoSe
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAttoService
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
@@ -37,7 +37,7 @@ class EmissioneCertificatoServiceSpec extends Specification {
         AnaDocumentoAllegatoService anaDocumentoAllegatoService = Mock(AnaDocumentoAllegatoService)
         ArcParametroService arcParametroService = Mock(ArcParametroService)
         GsdMenuDittaService gsdMenuDittaService = Mock(GsdMenuDittaService)
-        StatoCivileService statoCivileService = Mock(StatoCivileService)
+        GsdService gsdService = Mock(GsdService)
         UtenteCustomService utenteCustomService = Mock(UtenteCustomService)
 
         emissioneCertificatoService = new EmissioneCertificatoService(
@@ -57,7 +57,7 @@ class EmissioneCertificatoServiceSpec extends Specification {
                 anaDocumentoAllegatoService,
                 arcParametroService,
                 gsdMenuDittaService,
-                statoCivileService,
+                gsdService,
                 utenteCustomService)
     }
 

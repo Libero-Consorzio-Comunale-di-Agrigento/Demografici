@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<?component name="templateRowProprietario" macroURI="/restrict/anagrafe/pratiche/templateRowProprietario.zul" inline="true"?>
+<?component name="templateRowContratto" macroURI="/restrict/anagrafe/pratiche/templateRowContratto.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Occupazione_Immobile_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <groupbox closable="false">
+            <grid sclass="form">
+                <columns>
+                    <column width="150px"/>
+                    <column/>
+                    <column width="150px"/>
+                    <column/>
+                    <column width="150px"/>
+                    <column/>
+                    <column width="150px"/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row>
+                        <cell align="right" width="200px">
+                            <label value="@load(vm.etichette['Flag_Legittima'])"/>
+                        </cell>
+                        <cell colspan="7">
+                            <hlayout height="20px">
+                                <radiogroup model="@load(vm.listaSiNo)" hflex="1"
+                                            onCheck="@command('onSelectLegittima')"
+                                            selectedItem="@bind(vm.legittima) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                    <template name="model">
+                                        <radio label="@load(vm.etichette[each.name()])" value="@load(each)"
+                                               style="padding-left:10px" disabled="@load(vm.readOnly)"/>
+                                    </template>
+                                </radiogroup>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <templateRowProprietario legittima="true"/>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagProprietario)"
+                          label="@load(vm.etichette['Flag_Proprietario'])" onCheck="@command('onCheck', check=1)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagProprietario)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <templateRowProprietario proprietario="true"/>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagLocazione)"
+                          label="@load(vm.etichette['Flag_Locazione'])" onCheck="@command('onCheck', check=2)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <templateRowContratto/>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagLocazioneErp)"
+                          label="@load(vm.etichette['Flag_Locazione_Erp'])" onCheck="@command('onCheck', check=3)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagLocazioneErp)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <cell align="right">
+                                <customLabel value="@load(vm.etichette['Titolo'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox value="@bind(vm.pratica.occupazioneImmobile.noteLocazioneErp)" multiline="true"
+                                         rows="4" hflex="1" readonly="@load(vm.readOnly)"/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagComodato)"
+                          label="@load(vm.etichette['Flag_Comodato'])" onCheck="@command('onCheck', check=4)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <templateRowContratto/>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagUsufrutto)"
+                          label="@load(vm.etichette['Flag_Usufrutto'])" onCheck="@command('onCheck', check=5)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagUsufrutto)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <cell align="right">
+                                <customLabel value="@load(vm.etichette['Titolo'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox value="@bind(vm.pratica.occupazioneImmobile.noteUsufrutto)" multiline="true"
+                                         rows="4" hflex="1" readonly="@load(vm.readOnly)"/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+        <div visible="@bind(vm.pratica.occupazioneImmobile.flagLegittima)">
+            <groupbox closable="false">
+                <checkbox checked="@bind(vm.pratica.occupazioneImmobile.flagTitolo)"
+                          label="@load(vm.etichette['Flag_Titolo'])" onCheck="@command('onCheck', check=6)" disabled="@load(vm.readOnly)"/>
+                <grid sclass="form" visible="@load(vm.pratica.occupazioneImmobile.flagTitolo)">
+                    <columns>
+                        <column width="150px"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <cell align="right">
+                                <customLabel value="@load(vm.etichette['Titolo'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <textbox value="@bind(vm.pratica.occupazioneImmobile.noteTitolo)" multiline="true"
+                                         rows="4"
+                                         hflex="1" readonly="@load(vm.readOnly)"/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </div>
+
+    </groupbox>
+
+</zk>

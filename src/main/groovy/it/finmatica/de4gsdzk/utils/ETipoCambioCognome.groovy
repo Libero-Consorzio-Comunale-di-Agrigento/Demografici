@@ -13,8 +13,8 @@ enum ETipoCambioCognome {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case A: return Etichette.Antepone
-            case P: return Etichette.Pospone
+            case A: return Etichette.getEtichetta("Antepone")
+            case P: return Etichette.getEtichetta("Pospone")
         }
         return null
     }

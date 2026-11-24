@@ -5,7 +5,10 @@ import it.finmatica.de4gsdzk.ansc.AnscCasoUsoBaseDomain
 import it.finmatica.de4gsdzk.ansc.AnscEndPointServizioArchivio
 import it.finmatica.de4gsdzk.ansc.AnscInfoAllegatoCdu
 import it.finmatica.de4gsdzk.ansc.AnscInfoStepInvio
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.FormUtils
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarANSCAttributes
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.Executions
@@ -44,13 +47,13 @@ class AllegatiANSCListaViewModel extends AnscAttoListaParentViewModel {
         saveANSCEnabled = false
         goToANSCEnabled = anscFlow == Boolean.TRUE
 
-        List<Map> eList = [Etichette.Allegati_Ansc]
+        List<Map> eList = [Etichette.getEtichetta("Allegati_Ansc")]
 
-        eList.addAll([EtichetteMessaggi.Ask_salvataggio_allegati_obbligatori_incompleti_ANSC, EtichetteMessaggi.Ask_salvataggio_allegati_non_obbligatori_incompleti_ANSC])
+        eList.addAll([Etichette.getEtichetta("Ask_salvataggio_allegati_obbligatori_incompleti_ANSC"), Etichette.getEtichetta("Ask_salvataggio_allegati_non_obbligatori_incompleti_ANSC")])
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams(tipoAttoEnum))
 
-        msgTitle = getEtichetta(Etichette.Allegati_Ansc)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Allegati_Ansc"))
         formLabel = msgTitle?.toUpperCase()
     }
 
@@ -110,10 +113,10 @@ class AllegatiANSCListaViewModel extends AnscAttoListaParentViewModel {
 
     private String getMessageForNextAnscPageConfirm() {
         if (containsAllegatiObbligatoriNonInviati()) {
-            return getEtichetta(EtichetteMessaggi.Ask_salvataggio_allegati_obbligatori_incompleti_ANSC)
+            return getEtichetta(Etichette.getEtichetta("Ask_salvataggio_allegati_obbligatori_incompleti_ANSC"))
         }
         if (containsNoneAllegatiObbligatori() && containsAllegatiNonObbligatoriNonInviati()) {
-            return getEtichetta(EtichetteMessaggi.Ask_salvataggio_allegati_non_obbligatori_incompleti_ANSC)
+            return getEtichetta(Etichette.getEtichetta("Ask_salvataggio_allegati_non_obbligatori_incompleti_ANSC"))
         }
         return null
     }

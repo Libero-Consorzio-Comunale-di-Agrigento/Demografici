@@ -22,6 +22,9 @@ abstract class TipoAttoListaParentViewModel extends DizionarioListaViewModel {
     CivTipoAtto dettaglio
     List<CivTipoAtto> lista
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -42,12 +45,12 @@ abstract class TipoAttoListaParentViewModel extends DizionarioListaViewModel {
     Paginazione eseguiQuery(Boolean usePaging){
         Page p = null
         if (tipoAttoEnum == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             List<ENaturaAtto> listaNatura = NaturaUtils.getValoriByTipoAtto(tipoAttoEnum)
             if ((tipoAttoEnum != null) && (listaNatura?.size() > 0) ){
                 Map params = [activePage:(usePaging?activePage:null), pageSize: (usePaging?pageSize:null),
-                              natura    : listaNatura, filtro: filtro, order: SortUtils.sequenzaAsc,
+                              natura    : listaNatura, filtro: filtro, order: selectedOrder?.campi,
                               fetch     : [[campo:'categoriaDomain', tipo: JoinType.LEFT]]]
                 params << getAdditionalFilters()
                 p = civTipoAttoService.list(new Integer(tipoAttoEnum.valore), params)
@@ -67,10 +70,10 @@ abstract class TipoAttoListaParentViewModel extends DizionarioListaViewModel {
             if (tipoAttoEnum != null) {
                 apriDettaglio(getUriDettaglio(), [tipoAttoEnum: tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -79,10 +82,10 @@ abstract class TipoAttoListaParentViewModel extends DizionarioListaViewModel {
             if (dettaglio.tipoAtto.intValue() == tipoAttoEnum?.valore) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id, tipoAttoEnum: tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -93,7 +96,7 @@ abstract class TipoAttoListaParentViewModel extends DizionarioListaViewModel {
 
     String getMessaggioCancellazione(){
         if (dettaglio) {
-            return (dettaglio.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

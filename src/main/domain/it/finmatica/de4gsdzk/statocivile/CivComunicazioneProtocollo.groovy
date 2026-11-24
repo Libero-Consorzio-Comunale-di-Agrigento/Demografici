@@ -1,12 +1,14 @@
 package it.finmatica.de4gsdzk.statocivile
 
+
+import it.finmatica.de4gsdzk.IComunicazioneProtocollo
 import it.finmatica.de4gsdzk.utils.Etichette
 
 import javax.persistence.*
 
 @Entity
 @Table(name = "CIVCOM_PROT_V")
-class CivComunicazioneProtocollo {
+class CivComunicazioneProtocollo implements IComunicazioneProtocollo {
 
     @Id
     @Column(name = "ID")
@@ -57,6 +59,6 @@ class CivComunicazioneProtocollo {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Oggetto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Oggetto")]
 
 }

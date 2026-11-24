@@ -3,7 +3,6 @@ package restrict.afc
 import groovy.util.logging.Slf4j
 import it.finmatica.ad4.utility.UtenteService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.MessaggioUtils
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -45,9 +44,10 @@ class InformazioniUtenteViewModel extends AbstractPopupViewModel {
 	@Init init(@ContextParam(ContextType.COMPONENT) Window w) {
 		self 		= w
 
-		List<Map> eList = [Etichette.Informazioni, Etichette.Preferenze, Etichette.Cambio_Password, Etichette.Codice, Etichette.Valore, Etichette.Chiudi,
-						   Etichette.Nuova_Password, Etichette.Password_Corrente, Etichette.Nuova_Password, Etichette.Conferma_Password,
-						   Etichette.Password_Coincidono_tooltip, Etichette.Password_Diverse_tooltip, EtichetteMessaggi.Info_Cambio_Password]
+		List<Map> eList = [Etichette.getEtichetta("Informazioni"), Etichette.getEtichetta("Preferenze"), Etichette.getEtichetta("Cambio_Password"), 
+						   Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Valore"), Etichette.getEtichetta("Chiudi"),
+						   Etichette.getEtichetta("Nuova_Password"), Etichette.getEtichetta("Password_Corrente"), Etichette.getEtichetta("Nuova_Password"), Etichette.getEtichetta("Conferma_Password"),
+						   Etichette.getEtichetta("Password_Coincidono_tooltip"), Etichette.getEtichetta("Password_Diverse_tooltip"), Etichette.getEtichetta("Info_Cambio_Password")]
 		doInitEtichette(eList)
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
@@ -90,10 +90,10 @@ class InformazioniUtenteViewModel extends AbstractPopupViewModel {
 		try {
 			utenteService.updatePassword(vecchiaPassword, nuovaPassword, confermaPassword)
 		} catch (Exception e) {
-            MessaggioUtils.showMsgBox(getEtichetta(Etichette.Cambio_Password), MessaggioUtils.E, decodeSqlExceptionMessage(e.message, getSQLException(e), etichette))
+            MessaggioUtils.showMsgBox(getEtichetta(Etichette.getEtichetta("Cambio_Password")), MessaggioUtils.E, decodeSqlExceptionMessage(e.message, getSQLException(e), etichette))
             return
 		}
-		MessaggioUtils.showMsgBox(getEtichetta(Etichette.Cambio_Password), MessaggioUtils.I, getEtichetta(EtichetteMessaggi.Info_Cambio_Password))
+		MessaggioUtils.showMsgBox(getEtichetta(Etichette.getEtichetta("Cambio_Password")), MessaggioUtils.I, getEtichetta(Etichette.getEtichetta("Info_Cambio_Password")))
 	}
 
 }

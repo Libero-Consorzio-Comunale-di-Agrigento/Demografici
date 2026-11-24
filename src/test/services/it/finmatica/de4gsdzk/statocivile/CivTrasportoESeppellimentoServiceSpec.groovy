@@ -23,9 +23,9 @@ class CivTrasportoESeppellimentoServiceSpec extends AbstractServiceSpec<CivTrasp
         //mock repo numerazione
         def numerazioneRepo = Mock(CivNumerazioneDocumentiUscitaRepository)
         //service numerazione
-        def numerazioneService = new CivNumerazioneDocumentiUscitaService(numerazioneRepo, statoCivileService)
+        def numerazioneService = new CivNumerazioneDocumentiUscitaService(numerazioneRepo, gsdService)
         //service
-        service = new CivTrasportoESeppellimentoService(repo, numerazioneService, statoCivileService)
+        service = new CivTrasportoESeppellimentoService(repo, numerazioneService, gsdService)
     }
 
     void "save: cancella il record se trasporto e cremazione non sono settati"() {

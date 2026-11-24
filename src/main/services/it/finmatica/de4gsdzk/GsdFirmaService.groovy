@@ -11,7 +11,6 @@ import it.finmatica.de4gsdzk.integrazioni.documentale.IFileDocumentoEsterno
 import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
 import it.finmatica.de4gsdzk.statocivile.CivComunicazioneAllegato
 import it.finmatica.de4gsdzk.utils.*
-import it.finmatica.gestionetesti.GestioneTestiService
 import it.finmatica.jsign.api.SignedObjectReaderFactory
 import it.finmatica.jsign.api.SignedObjectReaderI
 import it.finmatica.smartdoc.api.struct.File
@@ -25,12 +24,9 @@ import org.zkoss.zkmax.zul.Filedownload
 @Service
 class GsdFirmaService {
 
-    private final GestioneTestiService gestioneTestiService
-
     private final IntegrazioneDocumentaleService integrazioneDocumentaleService
 
-    GsdFirmaService(GestioneTestiService gestioneTestiService, IntegrazioneDocumentaleService integrazioneDocumentaleService) {
-        this.gestioneTestiService = gestioneTestiService
+    GsdFirmaService(IntegrazioneDocumentaleService integrazioneDocumentaleService) {
         this.integrazioneDocumentaleService = integrazioneDocumentaleService
     }
 
@@ -62,7 +58,7 @@ class GsdFirmaService {
         InputStream inputStream = getInputStreamAllegato(documento, fileDocumento)
 
         if (inputStream == null) {
-            throw new NoRecordFoundRuntimeException(EtichetteMessaggi.Errore_recupero_file_documentale)
+            throw new NoRecordFoundRuntimeException(Etichette.getEtichetta("Errore_recupero_file_documentale"))
         }
 
         File fileRet = new File()
@@ -74,7 +70,7 @@ class GsdFirmaService {
             //boolean v = FirmaUtils.verify(inputStream, false)
             if (FirmaUtils.isSigned(inputStream)) {
                 if (segnalaSbustamento) {
-                    throw new FileNonValidoRuntimeException(EtichetteMessaggi.Errore_sbustamento_file)
+                    throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Errore_sbustamento_file"))
                 }
                 try {
                     inputStream = getInputStreamAllegato(documento, fileDocumento)
@@ -122,6 +118,26 @@ class GsdFirmaService {
         String contentType = FileUtils.getMimeType(FilenameUtils.getExtension(filename))
 
         Filedownload.save(zipContent, contentType, nome)
+    }
+
+    // Crea uno ZIP con i principali allegati di comunicazioni diverse (un documento per allegato).
+    void scaricaAllegatiZip(String nomeZip, List<IComunicazioneAllegato> allegati) {
+        if (allegati.isEmpty()) {
+            return
+        }
+        if (allegati.size() == 1) {
+            IComunicazioneAllegato alle = allegati.first()
+            scaricaAllegato(alle.archivioComunicazione as IDocumentoEsterno, alle as IFileDocumentoEsterno, true)
+            return
+        }
+        List<ZipUtils.VirtualFile> virtualFiles = allegati.collect { IComunicazioneAllegato alle ->
+            File smartDocFile = getSmartDocFile(alle.archivioComunicazione as IDocumentoEsterno, alle as IFileDocumentoEsterno, true, true)
+            return new ZipUtils.VirtualFile(smartDocFile.nome, smartDocFile.inputStream)
+        }
+        String filename = "${nomeZip}.${ETipoFile.ZIP.estensione}"
+        byte[] zipContent = ZipUtils.zipFiles(virtualFiles)
+        String contentType = FileUtils.getMimeType(FilenameUtils.getExtension(filename))
+        Filedownload.save(zipContent, contentType, filename)
     }
 
 }

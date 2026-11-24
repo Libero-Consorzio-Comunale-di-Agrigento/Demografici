@@ -1,7 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivFormulaAggiuntiva
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -13,6 +12,6 @@ interface CivFormulaAggiuntivaRepository extends JpaRepository<CivFormulaAggiunt
 
     CivFormulaAggiuntiva findById(Long id)
 
-    Page<CivFormulaAggiuntiva> findAllByTipoAttoOrderBySequenza(Integer tipoAtto, Pageable pageable)
+    Page<CivFormulaAggiuntiva> findAllByTipoAtto(Integer tipoAtto, Pageable pageable)
 
 }

@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.certificazione.emissione
 
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.certificazione.embed.Richiedente
 
 class RichiedenteViewState {
     Richiedente richiedente
-    GsdAnagrafeBaseDomain anagrafe
+    AnagrafeBaseDomain anagrafe
     boolean documentoMandatory = false
     boolean datiAnagraficiMandatory = false
 

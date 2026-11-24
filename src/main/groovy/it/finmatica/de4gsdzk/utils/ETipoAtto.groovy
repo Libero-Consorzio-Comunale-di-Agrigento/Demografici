@@ -20,26 +20,26 @@ enum ETipoAtto {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NAS: return Etichette.Atto_Nascita
-            case MAT: return Etichette.Atto_Matrimonio
-            case PUB: return Etichette.Verbale_Pubblicazione
-            case MOR: return Etichette.Atto_Morte
-            case UCI: return Etichette.Atto_Unione_Civile
-            case PVU: return Etichette.Processo_Verbale
-            case CIT: return Etichette.Atto_Cittadinanza
+            case NAS: return Etichette.getEtichetta("Atto_Nascita")
+            case MAT: return Etichette.getEtichetta("Atto_Matrimonio")
+            case PUB: return Etichette.getEtichetta("Verbale_Pubblicazione")
+            case MOR: return Etichette.getEtichetta("Atto_Morte")
+            case UCI: return Etichette.getEtichetta("Atto_Unione_Civile")
+            case PVU: return Etichette.getEtichetta("Processo_Verbale")
+            case CIT: return Etichette.getEtichetta("Atto_Cittadinanza")
         }
         return null
     }
 
     Map getEtichettaPluralDesc(){
         switch(this) {
-            case NAS: return Etichette.Atti_Nascita
-            case MAT: return Etichette.Atti_Matrimonio
-            case PUB: return Etichette.Verbali_Pubblicazione
-            case MOR: return Etichette.Atti_Morte
-            case UCI: return Etichette.Atti_Unione_Civile
-            case PVU: return Etichette.Processi_Verbali
-            case CIT: return Etichette.Atti_Cittadinanza
+            case NAS: return Etichette.getEtichetta("Atti_Nascita")
+            case MAT: return Etichette.getEtichetta("Atti_Matrimonio")
+            case PUB: return Etichette.getEtichetta("Verbali_Pubblicazione")
+            case MOR: return Etichette.getEtichetta("Atti_Morte")
+            case UCI: return Etichette.getEtichetta("Atti_Unione_Civile")
+            case PVU: return Etichette.getEtichetta("Processi_Verbali")
+            case CIT: return Etichette.getEtichetta("Atti_Cittadinanza")
         }
         return null
     }

@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivNotaFormulaRepository
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivNotaFormulaService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivNotaFormulaRepository civNotaFormulaRepository
 
-    CivNotaFormulaService(CivNotaFormulaRepository civNotaFormulaRepository, StatoCivileService statoCivileService) {
+    CivNotaFormulaService(CivNotaFormulaRepository civNotaFormulaRepository, GsdService gsdService) {
 
 		this.civNotaFormulaRepository = civNotaFormulaRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivNotaFormula get (Long id){
@@ -52,7 +52,7 @@ class CivNotaFormulaService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		return  civNotaFormulaRepository.save(obj)
 	}

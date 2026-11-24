@@ -2,9 +2,14 @@
 --changeset amonopoli:202310061035_2 runOnChange:true stripComments:false
 create or replace view ceruci_filtro
 AS 
+select uci.*, 'ANS' filtro 
+  from civuci uci
+ where cod_rec = 5 
+   and atto > 0 
+UNION
 select uci.*, 'TUT' filtro 
   from civuci uci
- where cod_rec in (0,3) 
+ where cod_rec in (0,3,5) 
    and atto > 0 
    and natura in ('O','T','D') 
    and nvl(flag_certificabile,'S') = 'S'

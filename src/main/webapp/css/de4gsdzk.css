@@ -1145,3 +1145,46 @@ tr.innerForm.z-row, tr.innerForm.z-row td.z-cell {
 ::-ms-reveal, ::-ms-clear {
     display: none;
 }
+
+.dettagliCivicoLabel {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+}
+
+.dettagliCivicoItem {
+    display: inline-flex;
+    align-items: center;
+    width: 425px;
+}
+
+.dettagliCivicoItem .z-checkbox {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.dettagliCivicoContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    min-height: 28px;
+}
+
+.row-no-border {
+    border-color: white;
+}
+
+.hlayout-indirizzo {
+    min-width: 408px;
+    width: auto;
+}
+
+.bandbox-via-spacing {
+    padding-right: 0.3em;
+}
+
+.uppercase-text {
+    text-transform: uppercase;
+}

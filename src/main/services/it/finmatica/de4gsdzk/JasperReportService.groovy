@@ -9,14 +9,13 @@ import it.finmatica.de4gsdzk.errors.EmptyReportException
 import it.finmatica.de4gsdzk.errors.MultiplePagesException
 import it.finmatica.de4gsdzk.export.JasperExporter
 import it.finmatica.de4gsdzk.utils.ETipoFile
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.JasperReportUtils
 import net.sf.jasperreports.engine.JRDataSource
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
 import net.sf.jasperreports.engine.JasperReport
 import net.sf.jasperreports.engine.util.JRLoader
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
@@ -34,11 +33,13 @@ class JasperReportService {
     private static final String REPORT_DIR = "WEB-INF"+ File.separator + "reports"
     private static final String APP_DIR = "de4gsdzk"
 
-    @Autowired
-    private DataSource dataSource
+    private final DataSource dataSource
+    private final Environment env
 
-    @Autowired
-    private Environment env
+    JasperReportService(DataSource dataSource, Environment env) {
+        this.dataSource = dataSource
+        this.env = env
+    }
 
     /**
      * <P>
@@ -76,7 +77,7 @@ class JasperReportService {
         if (customMandatoryParams){
             for (val in customMandatoryParams.values()) {
                 if (val == null){
-                    throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+                    throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
                 }
             }
         }
@@ -134,7 +135,7 @@ class JasperReportService {
             }
 
             if (!print.getPages()) {
-                throw new EmptyReportException(EtichetteMessaggi.Errore_report_vuoto)
+                throw new EmptyReportException(Etichette.getEtichetta("Errore_report_vuoto"))
             }
 
             if (options.get(JasperReportUtils.OPTION_CHECK_SINGLE_PAGE) && print.getPages().size() > 1) {

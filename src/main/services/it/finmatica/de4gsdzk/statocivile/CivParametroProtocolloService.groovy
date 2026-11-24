@@ -3,7 +3,7 @@ package it.finmatica.de4gsdzk.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ParametroProtocolloDiz
 import it.finmatica.de4gsdzk.ParametroProtocolloDizRepository
-import it.finmatica.de4gsdzk.statocivile.CivParametroProtocolloRepository
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.EGruppo
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.data.domain.Page
@@ -20,14 +20,14 @@ class CivParametroProtocolloService {
 
     private final ParametroProtocolloDizRepository parametroProtocolloDizRepository
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     CivParametroProtocolloService(CivParametroProtocolloRepository civParametroProtocolloRepository,
                                   ParametroProtocolloDizRepository parametroProtocolloDizRepository,
-                                  StatoCivileService statoCivileService) {
+                                  GsdService gsdService) {
         this.civParametroProtocolloRepository = civParametroProtocolloRepository
         this.parametroProtocolloDizRepository = parametroProtocolloDizRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     CivParametroProtocollo get(Long id) {
@@ -99,7 +99,7 @@ class CivParametroProtocolloService {
         validaDati(obj)
 
         if (obj.id == null) {
-            obj.id = statoCivileService.getIdFromSequence(obj, "PARAMETRI_PROTOCOLLO")
+            obj.id = gsdService.getIdFromSequence(obj, "PARAMETRI_PROTOCOLLO")
         }
 
         civParametroProtocolloRepository.save(obj)

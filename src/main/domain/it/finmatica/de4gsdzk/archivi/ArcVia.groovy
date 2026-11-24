@@ -23,6 +23,12 @@ class ArcVia {
     @Column(name = "DENOM_ORD", nullable = false)
     String denominazioneOrdinamento
 
-    static final List<Map> etichetteDomain = [Etichette.Via]
+    @Column(name = "SPECIE_AREA")
+    String specieArea
+
+    @Column(name = "TOPONIMO")
+    String toponimo
+
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via")]
 
 }

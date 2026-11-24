@@ -3,6 +3,7 @@ package it.finmatica.de4gsdzk.statocivile
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdValidazioneTestoService
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggetto1Domain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
@@ -28,7 +29,7 @@ class CivAnnotazioneAttoServiceSuNascita1Spec extends Specification {
 
     void setup() {
         CivAnnotazioneAttoRepository civAnnotazioneAttoRepository = Mock(CivAnnotazioneAttoRepository)
-        StatoCivileService statoCivileService = Mock(StatoCivileService)
+        GsdService gsdService = Mock(GsdService)
         CivAnagrafeService civAnagrafeService = Mock(CivAnagrafeService)
         GsdValidazioneTestoService gsdValidazioneTestoService = Mock(GsdValidazioneTestoService)
         CivArchivioComunicazioneService civArchivioComunicazioneService = Mock(CivArchivioComunicazioneService)
@@ -39,7 +40,7 @@ class CivAnnotazioneAttoServiceSuNascita1Spec extends Specification {
 
         civAnnotazioneAttoService = Spy(CivAnnotazioneAttoService, constructorArgs: [arcParametroService,
                                                                                      civAnnotazioneAttoRepository,
-                                                                                     statoCivileService,
+                                                                                     gsdService,
                                                                                      civAnagrafeService,
                                                                                      gsdValidazioneTestoService,
                                                                                      civArchivioComunicazioneService,

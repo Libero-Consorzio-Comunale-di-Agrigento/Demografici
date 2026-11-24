@@ -6,10 +6,10 @@ import it.finmatica.de4gsdzk.ICertificabile
 import it.finmatica.de4gsdzk.certificazione.*
 import it.finmatica.de4gsdzk.certificazione.generazione.ETipoGenerazioneCertificato
 import it.finmatica.de4gsdzk.certificazione.generazione.TipoGenerazioneCertificatoService
-import it.finmatica.de4gsdzk.statocivile.CivMessaggioService
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAttoService
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
 import it.finmatica.de4gsdzk.statocivile.CivMessaggio
+import it.finmatica.de4gsdzk.statocivile.CivMessaggioService
 import it.finmatica.de4gsdzk.utils.ETipoAnnotazione
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import org.springframework.stereotype.Service
@@ -46,8 +46,8 @@ class EmissioneCertificatoStatoCivileService {
         return civAttoService.listAllByStatoCivileFiltroList(statoCivileFiltroList)
     }
 
-    CivAttoBaseDomain getAtto(ETipoAtto tipoAttoEnum, Long pkAtto, Map params = null) {
-        civAttoService.getAtto(tipoAttoEnum, pkAtto, params)
+    CivAttoBaseDomain getAtto(ETipoAtto tipoAttoEnum, Long pkAtto) {
+        civAttoService.getAttoCertificazione(tipoAttoEnum, pkAtto)
     }
 
     List<CivMessaggio> listMessaggiStatoCivileByAtto(CivAttoBaseDomain atto) {

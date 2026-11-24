@@ -214,6 +214,32 @@ insert into civcta
         FLAG_ISTAT, COD_MODELLO_ISTAT, TIPO_ACCORDO_ISTAT,
         FLAG_VERBALE
        )
+select 109,
+       1,
+       '',
+       '',
+       'A',
+       'TAM',
+       'TRASCRIZIONE ATTI MULTIPLI',
+       '',
+       '',
+       '',
+       'S',
+       '',
+       '',
+       '',
+       ''
+  from dual
+ where not exists (select 1 from civcta b
+                    where b.id = 109
+                  )
+/
+insert into civcta
+       (ID, TIPO_ATTO, PARTE, SERIE, NATURA, SIGLA, DESCRIZIONE,
+        FLAG_FORMULE, FLAG_PREGRESSO, FLAG_DIVORZIO, FLAG_ANAGRAFE,
+        FLAG_ISTAT, COD_MODELLO_ISTAT, TIPO_ACCORDO_ISTAT,
+        FLAG_VERBALE
+       )
 select 201,
        2,
        '1',

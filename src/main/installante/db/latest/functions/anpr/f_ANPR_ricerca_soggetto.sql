@@ -20,6 +20,7 @@ w_flag_anaana_ins	varchar2(255) := upper(a_flag_anaana_ins);
 
 w_id_operazione 	varchar2(255) := '';
 w_id_operazione_cn 	varchar2(255) := '';
+w_id_operazione_FAM 	varchar2(255) := '';
 
 w_archivio_rif  	varchar2(255) := nvl(a_archivio_rif,'ANPR');
 w_cod_fiscale   	varchar2(255) := a_cod_fiscale; --nvl(a_cod_fiscale,'RGGGLD66E59D548H');
@@ -30,8 +31,8 @@ w_data_rif      	varchar2(255) := to_char(nvl(to_date(a_data_rif,'dd/mm/yyyy'),s
 w_terminalista  	varchar2(255) := a_terminalista; --nvl(a_terminalista,'GSDWIN11');
 
 w_flag_ws       	varchar2(255);
-w_cod_errore_ws     	varchar2(255);
-w_des_errore_ws     	varchar2(32000);
+w_cod_errore_ws     	varchar2(255);	
+w_des_errore_ws     	varchar2(32000);	
 
 w_idSoggetto		number;
 w_idSoggetto_CN		number;
@@ -39,6 +40,18 @@ w_idSoggetto_UC		number;
 w_idSoggetto_CV		number;
 w_idSoggetto_PD		number;
 w_idSoggetto_MD		number;
+
+w_dataIscrANPR		varchar2(255);
+w_dataCancANPR		varchar2(255);
+w_idFamigliaANPR	varchar2(255);
+w_tipoSchedaANPR	varchar2(255);
+w_num_componenti_fam	number;
+
+w_codFiscaleANPR	varchar2(255);
+w_cognomeANPR		varchar2(255);
+w_nomeANPR		varchar2(255);
+w_sessoANPR		varchar2(255);
+w_dataNascitaANPR	varchar2(255);
 
 w_matricola_ads		number;
 w_matricola_ctr		number;
@@ -94,8 +107,12 @@ begin
 
   if w_flag_ws is not null then
      begin
-       select a.idSoggettoANPR, a.idSoggettoANPR_CN, a.idSoggettoANPR_UC, a.idSoggettoANPR_CV, a.idSoggettoANPR_PD, a.idSoggettoANPR_MD
-         into w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD
+       select a.idSoggettoANPR, a.idSoggettoANPR_CN, a.idSoggettoANPR_UC, a.idSoggettoANPR_CV, a.idSoggettoANPR_PD, a.idSoggettoANPR_MD,
+              a.ISC_dataIscrizione, a.CAN_dataDecorrenza, a.FAM_idFamigliaANPR, a.FAM_tipoScheda,
+              a.codFiscale, a.cognome, a.nome, a.sesso, substr(a.dataNascita,1,10)
+         into w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD,
+              w_dataIscrANPR, w_dataCancANPR, w_idFamigliaANPR, w_tipoSchedaANPR,
+              w_codFiscaleANPR, w_cognomeANPR, w_nomeANPR, w_sessoANPR, w_dataNascitaANPR
          from anpana a
         where tra_cognome||tra_nome||tra_denominazioneToponimo||tra_denominazioneComune is not null
           and id_operazione = w_id_operazione
@@ -108,30 +125,74 @@ begin
        values (w_id_operazione, w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD)
        ;
        if nvl(w_flag_anaana_ins,'N') = 'S' then
-          w_matricola_ctr := f_ADS_matricola(w_idSoggetto,'','','','','');
+          w_matricola_ctr := f_ADS_matricola(w_idSoggetto,w_codFiscaleANPR,w_cognomeANPR,w_nomeANPR,w_sessoANPR,w_dataNascitaANPR);
+
+          if w_dataIscrANPR is not null and w_dataCancANPR is null and w_idFamigliaANPR is not null and w_tipoSchedaANPR is not null then
+             w_num_componenti_fam := '';
+             w_id_operazione_fam := f_ANPR_ricerca_componenti('ANPR','','','',w_idSoggetto,w_idFamigliaANPR,w_tipoSchedaANPR);
+             begin
+               select count(*)
+                 into w_num_componenti_fam
+                 from anpana
+                where id_operazione = w_id_operazione_fam
+               ;
+             exception
+               when others then
+                    w_num_componenti_fam := '';
+             end;
+          end if;
+
           if w_matricola_ctr is null then
-             anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', '');
+             anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', w_num_componenti_fam);
              commit;
+
+          elsif w_matricola_ctr is not null then
+             anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,null,'Individuale','','');
+             anpr_pkg.upd_anpads('VANP',w_matricola_ctr,w_idSoggetto,null,null,null,null,null);
+             anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,w_idFamigliaANPR,'Famiglia ANPR','','',w_num_componenti_fam,'');
+
           end if;
           w_matricola_1 := w_matricola_ads;
 
        elsif nvl(w_integrazione_ansc,'N') = 'S' then
           w_ambiente_ansc := rtrim(f_ANSC_valore_inp('AMBIENTE',1,10,'X','S'));
           w_matricola_ctr := '';
-          w_matricola_ctr := f_ADS_matricola(w_idSoggetto,'','','','','');
+          w_matricola_ctr := f_ADS_matricola(w_idSoggetto,w_codFiscaleANPR,w_cognomeANPR,w_nomeANPR,w_sessoANPR,w_dataNascitaANPR);
+
+          if w_dataIscrANPR is not null and w_dataCancANPR is null and w_idFamigliaANPR is not null and w_tipoSchedaANPR is not null then
+             w_num_componenti_fam := '';
+             w_id_operazione_fam := f_ANPR_ricerca_componenti('ANPR','','','',w_idSoggetto,w_idFamigliaANPR,w_tipoSchedaANPR);
+             begin
+               select count(*)
+                 into w_num_componenti_fam
+                 from anpana
+                where id_operazione = w_id_operazione_fam
+               ;
+             exception
+               when others then
+                    w_num_componenti_fam := '';
+             end;
+          end if;
+
           if w_matricola_ctr is null then
              if nvl(w_ambiente_ansc,'PROD') = 'PRE' then
                 w_comune_cliente := f_get_comune_cliente('COD_COMUNE');
                 w_ambiente_anpr  := f_ANPR_valore_inp('TIPO_INVIO',1,10,'X','S');
                 if w_ambiente_anpr = 'TEST' then
-                   anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', '');
+                   anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', w_num_componenti_fam);
                    commit;
                 end if;
              else
-                anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', '');
+                anaana_anpr_ins(w_idSoggetto, w_id_operazione, w_matricola_ads, 'ANP', w_num_componenti_fam);
                 commit;
              end if; --if nvl(w_ambiente_ansc,'PROD') = 'PRE' then
              w_matricola_1 := w_matricola_ads;
+
+          elsif w_matricola_ctr is not null then
+             anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,null,'Individuale','','');
+             anpr_pkg.upd_anpads('VANP',w_matricola_ctr,w_idSoggetto,null,null,null,null,null);
+             anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,w_idFamigliaANPR,'Famiglia ANPR','','',w_num_componenti_fam,'');
+
           end if;
        end if; --if nvl(w_integrazione_ansc,'N') = 'S' then
      exception
@@ -153,8 +214,12 @@ begin
         commit;
 
         begin
-          select a.idSoggettoANPR, a.idSoggettoANPR_CN, a.idSoggettoANPR_UC, a.idSoggettoANPR_CV, a.idSoggettoANPR_PD, a.idSoggettoANPR_MD
-            into w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD
+          select a.idSoggettoANPR, a.idSoggettoANPR_CN, a.idSoggettoANPR_UC, a.idSoggettoANPR_CV, a.idSoggettoANPR_PD, a.idSoggettoANPR_MD,
+                 a.ISC_dataIscrizione, a.CAN_dataDecorrenza, a.FAM_idFamigliaANPR, a.FAM_tipoScheda,
+                 a.codFiscale, a.cognome, a.nome, a.sesso, a.dataNascita
+            into w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD,
+                 w_dataIscrANPR, w_dataCancANPR, w_idFamigliaANPR, w_tipoSchedaANPR,
+                 w_codFiscaleANPR, w_cognomeANPR, w_nomeANPR, w_sessoANPR, w_dataNascitaANPR
             from anpana a
            where tra_cognome||tra_nome||tra_denominazioneToponimo||tra_denominazioneComune is not null
              and id_operazione  = w_id_operazione_cn
@@ -168,32 +233,75 @@ begin
           values (w_id_operazione_cn, w_idSoggetto, w_idSoggetto_CN, w_idSoggetto_UC, w_idSoggetto_CV, w_idSoggetto_PD, w_idSoggetto_MD)
           ;
 
---          if nvl(w_flag_anaana_ins,'N') = 'S' then
---             w_matricola_ctr := f_ADS_matricola(w_idSoggetto,'','','','','');
---             if w_matricola_ctr is null then
---                anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', '');
---                commit;
---             end if;
---             w_matricola_2 := w_matricola_ads;
---          elsif nvl(w_integrazione_ansc,'N') = 'S' then
-          if nvl(w_integrazione_ansc,'N') = 'S' then
+          if nvl(w_flag_anaana_ins,'N') = 'S' then
+             w_matricola_ctr := f_ADS_matricola(w_idSoggetto,w_codFiscaleANPR,w_cognomeANPR,w_nomeANPR,w_sessoANPR,w_dataNascitaANPR);
+             if w_matricola_ctr is null then
+                if w_dataIscrANPR is not null and w_dataCancANPR is null and w_idFamigliaANPR is not null and w_tipoSchedaANPR is not null then
+                   w_num_componenti_fam := '';
+                   w_id_operazione_fam := f_ANPR_ricerca_componenti('ANPR','','','',w_idSoggetto,w_idFamigliaANPR,w_tipoSchedaANPR);
+                   begin
+                     select count(*)
+                       into w_num_componenti_fam
+                       from anpana
+                      where id_operazione = w_id_operazione_fam
+                     ;
+                   exception
+                     when others then
+                          w_num_componenti_fam := '';
+                   end;
+                end if;
+                anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', w_num_componenti_fam);
+                commit;
+
+             elsif w_matricola_ctr is not null then
+                anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,null,'Individuale','','');
+                anpr_pkg.upd_anpads('VANP',w_matricola_ctr,w_idSoggetto,null,null,null,null,null);
+                anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,w_idFamigliaANPR,'Famiglia ANPR','','',w_num_componenti_fam,'');
+
+             end if;
+             w_matricola_2 := w_matricola_ads;
+
+          elsif nvl(w_integrazione_ansc,'N') = 'S' then
              w_ambiente_ansc := rtrim(f_ANSC_valore_inp('AMBIENTE',1,10,'X','S'));
              w_matricola_ctr := '';
-             w_matricola_ctr := f_ADS_matricola(w_idSoggetto,'','','','','');
+             w_matricola_ctr := f_ADS_matricola(w_idSoggetto,w_codFiscaleANPR,w_cognomeANPR,w_nomeANPR,w_sessoANPR,w_dataNascitaANPR);
+
+             if w_dataIscrANPR is not null and w_dataCancANPR is null and w_idFamigliaANPR is not null and w_tipoSchedaANPR is not null then
+                w_num_componenti_fam := '';
+                w_id_operazione_fam := f_ANPR_ricerca_componenti('ANPR','','','',w_idSoggetto,w_idFamigliaANPR,w_tipoSchedaANPR);
+                begin
+                  select count(*)
+                    into w_num_componenti_fam
+                    from anpana
+                   where id_operazione = w_id_operazione_fam
+                  ;
+                exception
+                  when others then
+                       w_num_componenti_fam := '';
+                end;
+             end if;
+
              if w_matricola_ctr is null then
                 if nvl(w_ambiente_ansc,'PROD') = 'PRE' then
                    w_comune_cliente := f_get_comune_cliente('COD_COMUNE');
                    w_ambiente_anpr  := f_ANPR_valore_inp('TIPO_INVIO',1,10,'X','S');
                    if w_ambiente_anpr = 'TEST' then
-                      anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', '');
+                      anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', w_num_componenti_fam);
                       commit;
                    end if;
                 else
-                   anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', '');
+                   anaana_anpr_ins(w_idSoggetto, w_id_operazione_cn, w_matricola_ads, 'ANP', w_num_componenti_fam);
                    commit;
                 end if; --if nvl(w_ambiente_ansc,'PROD') = 'PRE' then
-                w_matricola_2 := w_matricola_ads;
+
+             elsif w_matricola_ctr is not null then
+                anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,null,'Individuale','','');
+                anpr_pkg.upd_anpads('VANP',w_matricola_ctr,w_idSoggetto,null,null,null,null,null);
+                anpr_pkg.ins_anpads('VANP',w_matricola_ctr,null,null,null,w_idFamigliaANPR,'Famiglia ANPR','','',w_num_componenti_fam,'');
+
              end if;
+             w_matricola_2 := w_matricola_ads;
+
           end if;
         exception
           when others then
@@ -225,7 +333,7 @@ begin
                null;
         end;
      end if;
-
+       
      return w_id_operazione;
   else
 --     return null;

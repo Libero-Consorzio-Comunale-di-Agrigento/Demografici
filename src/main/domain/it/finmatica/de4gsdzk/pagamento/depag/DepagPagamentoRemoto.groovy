@@ -98,12 +98,12 @@ class DepagPagamentoRemoto {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Iuv, Etichette.Esito_operazione, Etichette.Chiave, Etichette.Tipo_pagatore, Etichette.Codice_pagatore,
-                                              Etichette.Anagrafica_pagatore, Etichette.Email_pagatore, Etichette.Tipo_dovuto, Etichette.Tipo_versamento,
-                                              Etichette.Causale_versamento, Etichette.Data_scadenza, Etichette.Importo_totale,
-                                              Etichette.IP_importo_pagato, Etichette.IP_data_pagamento, Etichette.IP_codice_versante,
-                                              Etichette.IP_anagrafica_versante, Etichette.IP_Iur, Etichette.IP_Iuv_Spc,
-                                              Etichette.SV_servizio, Etichette.SV_causale, Etichette.SV_importo, Etichette.SV_commissione_carico_PA,
-                                              Etichette.SV_dati_riscossione, Etichette.SV_accertamento, Etichette.SV_bilancio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Iuv"), Etichette.getEtichetta("Esito_operazione"), Etichette.getEtichetta("Chiave"), Etichette.getEtichetta("Tipo_pagatore"), Etichette.getEtichetta("Codice_pagatore"),
+                                              Etichette.getEtichetta("Anagrafica_pagatore"), Etichette.getEtichetta("Email_pagatore"), Etichette.getEtichetta("Tipo_dovuto"), Etichette.getEtichetta("Tipo_versamento"),
+                                              Etichette.getEtichetta("Causale_versamento"), Etichette.getEtichetta("Data_scadenza"), Etichette.getEtichetta("Importo_totale"),
+                                              Etichette.getEtichetta("IP_importo_pagato"), Etichette.getEtichetta("IP_data_pagamento"), Etichette.getEtichetta("IP_codice_versante"),
+                                              Etichette.getEtichetta("IP_anagrafica_versante"), Etichette.getEtichetta("IP_Iur"), Etichette.getEtichetta("IP_Iuv_Spc"),
+                                              Etichette.getEtichetta("SV_servizio"), Etichette.getEtichetta("SV_causale"), Etichette.getEtichetta("SV_importo"), Etichette.getEtichetta("SV_commissione_carico_PA"),
+                                              Etichette.getEtichetta("SV_dati_riscossione"), Etichette.getEtichetta("SV_accertamento"), Etichette.getEtichetta("SV_bilancio")]
 
 }

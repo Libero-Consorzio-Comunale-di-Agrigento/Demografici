@@ -43,6 +43,6 @@ class CivNotaFormula {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Valore, Etichette.Testo_fisso,
-                                              Etichette.Testo_Fisso_Maschile, Etichette.Testo_Fisso_Femminile, Etichette.Note]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Valore"), Etichette.getEtichetta("Testo_fisso"),
+                                              Etichette.getEtichetta("Testo_Fisso_Maschile"), Etichette.getEtichetta("Testo_Fisso_Femminile"), Etichette.getEtichetta("Note")]
 }

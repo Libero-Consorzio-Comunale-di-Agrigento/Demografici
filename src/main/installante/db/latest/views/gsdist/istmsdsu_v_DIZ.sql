@@ -24,18 +24,18 @@ select 'TCI', 'Tipo Cittadinanza'         , 2, 'Acquisita'       , to_char(null)
 select 'TCI', 'Tipo Cittadinanza'         , 3, 'Straniera'       , to_char(null), 1800, 9999, 2023 from dual
 UNION
 -- 'SCM', 'Stato civile M'
-select 'SCM', 'Stato civile'         , 1, 'Celibe'                                             , 'CE', 2017, 9999, 2023 from dual UNION
-select 'SCM', 'Stato civile'         , 3, 'Vedovo'                                             , 'VE', 2017, 9999, 2023 from dual UNION
-select 'SCM', 'Stato civile'         , 4, 'Divorziato'                                         , 'DV', 2017, 9999, 2023 from dual UNION
-select 'SCM', 'Stato civile'         , 7, 'Gia'' in unione civile (per decesso del partner)'   , 'VU', 2017, 9999, 2023 from dual UNION
-select 'SCM', 'Stato civile'         , 8, 'Gia'' in unione civile (per scioglimento unione)'   , 'GU', 2017, 9999, 2023 from dual
+select 'SCM', 'Stato civile'         , 1, 'Celibe'                                             , 'CE', 1800, 9999, 2023 from dual UNION
+select 'SCM', 'Stato civile'         , 3, 'Vedovo'                                             , 'VE', 1800, 9999, 2023 from dual UNION
+select 'SCM', 'Stato civile'         , 4, 'Divorziato'                                         , 'DV', 1800, 9999, 2023 from dual UNION
+select 'SCM', 'Stato civile'         , 7, 'Gia'' in unione civile (per decesso del partner)'   , 'VU', 1800, 9999, 2023 from dual UNION
+select 'SCM', 'Stato civile'         , 8, 'Gia'' in unione civile (per scioglimento unione)'   , 'GU', 1800, 9999, 2023 from dual
 UNION
 -- 'SCF', 'Stato civile F'
-select 'SCF', 'Stato civile'         , 1, 'Nubile'                                             , 'NU', 2017, 9999, 2023 from dual UNION
-select 'SCF', 'Stato civile'         , 3, 'Vedova'                                             , 'VE', 2017, 9999, 2023 from dual UNION
-select 'SCF', 'Stato civile'         , 4, 'Divorziata'                                         , 'DV', 2017, 9999, 2023 from dual UNION
-select 'SCF', 'Stato civile'         , 7, 'Gia'' in unione civile (per decesso del partner)'   , 'VU', 2017, 9999, 2023 from dual UNION
-select 'SCF', 'Stato civile'         , 8, 'Gia'' in unione civile (per scioglimento unione)'   , 'GU', 2017, 9999, 2023 from dual
+select 'SCF', 'Stato civile'         , 1, 'Nubile'                                             , 'NU', 1800, 9999, 2023 from dual UNION
+select 'SCF', 'Stato civile'         , 3, 'Vedova'                                             , 'VE', 1800, 9999, 2023 from dual UNION
+select 'SCF', 'Stato civile'         , 4, 'Divorziata'                                         , 'DV', 1800, 9999, 2023 from dual UNION
+select 'SCF', 'Stato civile'         , 7, 'Gia'' in unione civile (per decesso del partner)'   , 'VU', 1800, 9999, 2023 from dual UNION
+select 'SCF', 'Stato civile'         , 8, 'Gia'' in unione civile (per scioglimento unione)'   , 'GU', 1800, 9999, 2023 from dual
 UNION
 -- 'TAC', 'Tipo di accordo extragiudiziale - divorzio/separazione'
 select 'TAC', 'Tipo Accordo'         , 1, 'Accordo extragiudiziale di separazione'                                    , to_char(null), 1800, 9999, 2023 from dual UNION

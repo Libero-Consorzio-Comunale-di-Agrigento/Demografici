@@ -18,9 +18,9 @@ class ControlBarListaAttributes extends ControlBarAttributes {
 		this.additionalToolbarbutton = additionalListaToolbarbutton
 	}
 
-	static List<Map> etichetteCbDesc = [Etichette.filtro_ricerca_placeholder, Etichette.filtro_ricerca_tooltip, Etichette.ricerca_tooltip,
-										Etichette.modifica_tooltip, Etichette.inserisci_tooltip, Etichette.elimina_tooltip, Etichette.seleziona_tooltip,
-										Etichette.print_tooltip, Etichette.csv_export_tooltip, Etichette.xls_export_tooltip, Etichette.filtri_extra_tooltip,
-										Etichette.Ordina_per]
+	static List<Map> etichetteCbDesc = [Etichette.getEtichetta("filtro_ricerca_placeholder"), Etichette.getEtichetta("filtro_ricerca_tooltip"), Etichette.getEtichetta("ricerca_tooltip"),
+										Etichette.getEtichetta("modifica_tooltip"), Etichette.getEtichetta("inserisci_tooltip"), Etichette.getEtichetta("elimina_tooltip"), Etichette.getEtichetta("seleziona_tooltip"),
+										Etichette.getEtichetta("print_tooltip"), Etichette.getEtichetta("csv_export_tooltip"), Etichette.getEtichetta("xls_export_tooltip"), Etichette.getEtichetta("filtri_extra_tooltip"),
+										Etichette.getEtichetta("Ordina_per")]
 
 }

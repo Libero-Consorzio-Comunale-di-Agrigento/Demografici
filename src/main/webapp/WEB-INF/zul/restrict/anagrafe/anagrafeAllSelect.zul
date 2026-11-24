@@ -154,7 +154,7 @@
                     <listheader label="@load(vm.etichette['Sesso'])" width="52px"/>
                     <listheader label="@load(vm.etichette['Data_Nascita'])" width="104px"/>
                     <listheader label="@load(vm.etichette['Stato_Civile'])"/>
-                    <listheader label="@load(vm.etichette['Stato_Anagrafico'])"/>
+                    <listheader label="@load(vm.anagrafeEstesa ? vm.etichette['Posizione'] : vm.etichette['Stato_Anagrafico'])" />
                     <listheader label="@load(vm.etichette['Comune_Residenza'])" visible="@load(vm.isAnpr())"/>
                     <listheader label="@load(vm.etichette['Archivio'])" visible="@load(vm.isGsd())"/>
                     <listheader label="" width="52px"/>
@@ -185,6 +185,8 @@
             <h:div>
                 <button label="@load(vm.etichette['Seleziona'])" onClick="@command('onSeleziona')"
                         image="/images/icon/action/16x16/ok.png"/>
+                <button label="@load(vm.etichette['Prosegui'])" onClick="@command('onProsegui')"
+                        image="/images/icon/action/16x16/forward.png" visible="@load(vm.inserimentoSoggetto)"/>
                 <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
                         image="/images/icon/action/16x16/close.png"/>
             </h:div>

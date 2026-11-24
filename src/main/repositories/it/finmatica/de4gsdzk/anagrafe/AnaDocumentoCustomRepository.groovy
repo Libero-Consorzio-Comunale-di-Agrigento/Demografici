@@ -8,4 +8,6 @@ interface AnaDocumentoCustomRepository {
     Page<AnaDocumento> findAllByAnagrafe(RicercaDocumento r, Pageable pageable)
 
     long countByAnagrafe(RicercaDocumento r)
+
+    List<AnaDocumento> listAllByAnagrafe(RicercaDocumento r)
 }

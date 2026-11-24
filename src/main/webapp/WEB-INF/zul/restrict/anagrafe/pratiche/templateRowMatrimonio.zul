@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoSoggettoPratica" macroURI="/restrict/anagrafe/pratiche/templateRowEstremiAttoSoggettoPratica.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false"
+              visible="@bind(vm.soggetto.statoCivile.hasConiugeContraente())">
+        <caption
+                label="@load(vm.soggetto.statoCivile.isUnioneCivile() ? vm.etichette['Unione_Civile'] : vm.etichette['Matrimonio'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column width="150px"/>
+                <column width="135px"/>
+                <column/>
+                <column width="100px"/>
+                <column width="130px"/>
+                <column width="150px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(c:cat3(vm.etichette['Cognome'], ' ',(vm.soggetto.statoCivile.isUnioneCivile() ? vm.etichette['Contraente'] : vm.etichette['Coniuge'])))"/>
+                    </cell>
+                    <cell colspan="3">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.coniuge.cognome)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='CONI')"
+                                     onChange="@command('onAggiornaCaseCustom', sezione='CONI')"
+                                     style="@load(vm.minuscole.cognomeConiuge?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="cognome"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="coniuge.cognome"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.cognomeConiuge)" disabled="@load(vm.readOnly)" onChange="@command('onAggiornaCaseCustom', sezione='CONI')">
+                                <custom-attributes proprieta="cognome"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Cognome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.coniuge.senzaCognome)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.etichette['Matricola'])"/>
+                        <space/>
+                        <textbox value="@bind(vm.soggetto.coniuge.idAnagrafe)"
+                                 readonly="true" hflex="1"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(c:cat3(vm.etichette['Nome'], ' ',(vm.soggetto.statoCivile.isUnioneCivile() ? vm.etichette['Contraente'] : vm.etichette['Coniuge'])))"/>
+                    </cell>
+                    <cell colspan="3">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.coniuge.nome)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChanging="@command('svuotaMatricola', sezione='CONI')"
+                                     onChange="@command('onAggiornaCaseCustom', sezione='CONI')"
+                                     style="@load(vm.minuscole.nomeConiuge?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="nome"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="coniuge.nome"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.nomeConiuge)" disabled="@load(vm.readOnly)" onChange="@command('onAggiornaCaseCustom', sezione='CONI')">
+                                <custom-attributes proprieta="nome"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Nome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.coniuge.senzaNome)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Seleziona'])"
+                                onClick="@command('onRicercaSoggetto', sezione='CONI')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Data'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy"
+                                 readonly="@load(vm.readOnly)"
+                                 value="@bind( vm.soggetto.dataMatrimonio)"
+                                 width="95px"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampo')">
+                            <custom-attributes proprieta="dataMatrimonio"/>
+                        </button>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Comune'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComuni hflex="1"
+                                           disabled="@load(vm.readOnly)"
+                                           value="@load(vm.soggetto.comuneMatrimonio.descrizione)"
+                                           dataRiferimento="@load(vm.soggetto.dataMatrimonio)"
+                                           onSelect="@command('onSelectComune', campoRiferimento='SOGG_MAT')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaComune', campoRiferimento='SOGG_MAT')"
+                            />
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.soggetto.comuneMatrimonio.siglaProvincia)" hflex="1" readonly="true" />
+                    </cell>
+                    <cell/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load((vm.soggetto.statoCivile.isUnioneCivile() ? vm.etichette['Estremi_Atto_Unione_Civile'] : vm.etichette['Estremi_Atto_Matrimonio'])))"/>
+                    </cell>
+                    <cell colspan="6">
+                        <grid hflex="1">
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <grid>
+                                            <rows>
+                                                <templateRowEstremiAttoSoggettoPratica
+                                                        matrimonio="true"/>
+                                            </rows>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load((vm.soggetto.statoCivile.isUnioneCivile() ? vm.etichette['Estremi_Atto_Unione_Civile_Trascritto'] : vm.etichette['Estremi_Atto_Matrimonio_Trascritto'])))"/>
+                    </cell>
+                    <cell colspan="6">
+                        <grid hflex="1">
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <grid>
+                                            <rows>
+                                                <templateRowEstremiAttoSoggettoPratica
+                                                        matrimonioTrascritto="true"/>
+                                            </rows>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

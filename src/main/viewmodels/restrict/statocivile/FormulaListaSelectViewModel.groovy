@@ -1,8 +1,11 @@
 package restrict.statocivile
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Events
@@ -32,17 +35,17 @@ class FormulaListaSelectViewModel extends AbstractSelectViewModel{
     private static final String TESTO_FISSO = "TF"
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("tipoAttoEnum") ETipoAtto tipoAttoEnum,
                @ExecutionArgParam("richiamo") Integer richiamo, @ExecutionArgParam("params") Map params) {
         self = w
 
-        List<Map> eList = [Etichette.Formula, Etichette.Default, Etichette.Ricorrenti, Etichette.Testo_fisso, Etichette.Tutte]
+        List<Map> eList = [Etichette.getEtichetta("Formula"), Etichette.getEtichetta("Default"), Etichette.getEtichetta("Ricorrenti"), Etichette.getEtichetta("Testo_fisso"), Etichette.getEtichetta("Tutte")]
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Formula)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formula"))
 
         totalSizeLabel = ""
 
@@ -74,33 +77,33 @@ class FormulaListaSelectViewModel extends AbstractSelectViewModel{
         List<Map<String, Object>> l = []
         switch (tipoAttoEnum) {
             case ETipoAtto.NAS:
-                l = statoCivileService.listFormuleNascita(richiamo, params)
+                l = gsdService.listFormuleNascita(richiamo, params)
                 break
             case ETipoAtto.MAT:
                 if (params.divorzio){
-                    l = statoCivileService.listFormuleDivorzio(richiamo, params)
+                    l = gsdService.listFormuleDivorzio(richiamo, params)
                 } else {
-                    l = statoCivileService.listFormuleMatrimonio(richiamo, params)
+                    l = gsdService.listFormuleMatrimonio(richiamo, params)
                 }
                 break
             case ETipoAtto.PUB:
-                l = statoCivileService.listFormulePubblicazione(richiamo, params)
+                l = gsdService.listFormulePubblicazione(richiamo, params)
                 break
             case ETipoAtto.PVU:
-                l = statoCivileService.listFormuleProcessoVerbale(richiamo, params)
+                l = gsdService.listFormuleProcessoVerbale(richiamo, params)
                 break
             case ETipoAtto.UCI:
                 if (params.divorzio){
-                    l = statoCivileService.listFormuleScioglimento(richiamo, params)
+                    l = gsdService.listFormuleScioglimento(richiamo, params)
                 } else {
-                    l = statoCivileService.listFormuleUnioneCivile(richiamo, params)
+                    l = gsdService.listFormuleUnioneCivile(richiamo, params)
                 }
                 break
             case ETipoAtto.MOR:
-                l = statoCivileService.listFormuleDecesso(richiamo, params)
+                l = gsdService.listFormuleDecesso(richiamo, params)
                 break
             case ETipoAtto.CIT:
-                l = statoCivileService.listFormuleCittadinanza(richiamo, params)
+                l = gsdService.listFormuleCittadinanza(richiamo, params)
                 break
         }
 
@@ -121,7 +124,7 @@ class FormulaListaSelectViewModel extends AbstractSelectViewModel{
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, dettagli)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

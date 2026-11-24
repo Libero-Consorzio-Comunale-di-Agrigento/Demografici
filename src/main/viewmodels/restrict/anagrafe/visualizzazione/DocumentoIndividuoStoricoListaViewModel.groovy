@@ -21,11 +21,11 @@ class DocumentoIndividuoStoricoListaViewModel extends AbstractDocumentoIndividuo
     init(@ContextParam(ContextType.COMPONENT) Window w) {
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Storico, Etichette.Documenti_Individuo]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Storico"), Etichette.getEtichetta("Documenti_Individuo")]
 
         doInit(w, eList)
 
-        msgTitle = "${getEtichetta(Etichette.Storico)} ${getEtichetta(Etichette.Documenti_Individuo)}"
+        msgTitle = "${getEtichetta(Etichette.getEtichetta("Storico"))} ${getEtichetta(Etichette.getEtichetta("Documenti_Individuo"))}"
 
         formLabel = msgTitle?.toUpperCase()
     }

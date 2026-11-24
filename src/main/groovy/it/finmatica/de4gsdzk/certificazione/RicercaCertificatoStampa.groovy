@@ -29,24 +29,24 @@ class RicercaCertificatoStampa extends BaseRicercaCertificato {
     List<Map> getLabelBuilderParams() {
         List<Map> params = []
         if (dataEmissioneDal || dataEmissioneAl) {
-            params.add([etichetta    : Etichette.Data_emissione,
-                        etichettaFrom: Etichette.Dal,
-                        etichettaTo  : Etichette.Al,
+            params.add([etichetta    : Etichette.getEtichetta("Data_emissione"),
+                        etichettaFrom: Etichette.getEtichetta("Dal"),
+                        etichettaTo  : Etichette.getEtichetta("Al"),
                         isRange      : true,
                         fromDate     : dataEmissioneDal,
                         toDate       : dataEmissioneAl])
         }
         if (terminalista) {
-            params.add([etichetta: Etichette.Terminalista, value: "${terminalista.cognomeNome} (${terminalista.id})"])
+            params.add([etichetta: Etichette.getEtichetta("Terminalista"), value: "${terminalista.cognomeNome} (${terminalista.id})"])
         }
         return params
     }
 
-    static final List<Map> etichetteRicercaCerDesc = [Etichette.Effettua_Ricerca, Etichette.Da, Etichette.A, Etichette.Tutti, Etichette.Dal, Etichette.Al,
-                                                      Etichette.Tipo_pagamento, Etichette.Terminalista, Etichette.Modalita_rilascio,
-                                                      Etichette.Data_emissione,
-                                                      Etichette.Escludi_annullati,
-                                                      Etichette.Stampa_Solo_Carta_Identita, Etichette.Stampa_Solo_Carta_Identita_tooltip,
-                                                      Etichette.Stampa_Solo_Bollo, Etichette.Stampa_Solo_Bollo_tooltip]
+    static final List<Map> etichetteRicercaCerDesc = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A"), Etichette.getEtichetta("Tutti"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"),
+                                                      Etichette.getEtichetta("Tipo_pagamento"), Etichette.getEtichetta("Terminalista"), Etichette.getEtichetta("Modalita_rilascio"),
+                                                      Etichette.getEtichetta("Data_emissione"),
+                                                      Etichette.getEtichetta("Escludi_annullati"),
+                                                      Etichette.getEtichetta("Stampa_Solo_Carta_Identita"), Etichette.getEtichetta("Stampa_Solo_Carta_Identita_tooltip"),
+                                                      Etichette.getEtichetta("Stampa_Solo_Bollo"), Etichette.getEtichetta("Stampa_Solo_Bollo_tooltip")]
 
 }

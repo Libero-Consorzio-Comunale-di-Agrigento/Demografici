@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset amonopoli:202503171250 runOnChange:true stripComments:false
+--changeset amonopoli:202503171250_0 runOnChange:true stripComments:false
 create or replace function f_get_campo_DS
 (a_matricola	IN	number
 ,a_campo	IN	varchar2
@@ -27,6 +27,8 @@ begin
 	  	 'ENTE_EMISSIONE',str.ente_emissione_DS,
 	  	 'COD_PRO_ENTE',str.cod_pro_ente_DS,
 	  	 'COD_COM_ENTE',str.cod_com_ente_DS,
+	  	 'DES_COM_ENTE', f_comune_al(str.cod_pro_ente_DS,str.cod_com_ente_DS,''),
+	  	 'SIGLA_PRO_ENTE', f_provincia_stato_al(str.cod_pro_ente_DS,str.cod_com_ente_DS,'','S','',''),
 	  	 'NATURA_DOCUMENTO',str.natura_DS,
 	  	 'MOTIVO_DOCUMENTO',str.motivo_DS
              )

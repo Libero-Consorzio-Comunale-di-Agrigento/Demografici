@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.*
 import it.finmatica.de4gsdzk.errors.ErroreDatiComunicazioneRuntimeException
 import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneAttoRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.apache.commons.io.FilenameUtils
 import org.springframework.data.domain.Page
@@ -31,14 +30,14 @@ class CivComunicazioneAttoService {
 
     private final GestioneTestiGsdModelloService gestioneTestiGsdModelloService
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     CivComunicazioneAttoService(CivComunicazioneAttoRepository civComunicazioneAttoRepository,
                                 GsdMenuDittaService gsdMenuDittaService, CivAnagrafeService civAnagrafeService,
                                 CivArchivioComunicazioneService civArchivioComunicazioneService,
                                 GestioneTestiGsdModelloService gestioneTestiGsdModelloService,
                                 GestioneTestiModelloRelazioneService gestioneTestiModelloRelazioneService,
-                                StatoCivileService statoCivileService
+                                GsdService gsdService
     ) {
 
 		this.civComunicazioneAttoRepository = civComunicazioneAttoRepository
@@ -47,7 +46,7 @@ class CivComunicazioneAttoService {
         this.civArchivioComunicazioneService = civArchivioComunicazioneService
         this.gestioneTestiGsdModelloService = gestioneTestiGsdModelloService
         this.gestioneTestiModelloRelazioneService = gestioneTestiModelloRelazioneService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
 	}
 
 	CivComunicazioneAtto get (String id){
@@ -109,7 +108,7 @@ class CivComunicazioneAttoService {
         CivAnagrafe anagrafe = civAnagrafeService.getByUkAttoAndTipoAtto(obj.idAtto, obj.tipoAtto)
 
         List<ETipoIndividuiAtto> listaTipoIndividui = getTipiIndividuiAtto(obj, anagrafe)
-        List<CivComunicazioneAtto> lCa = civComunicazioneAttoRepository.findAllByTipoAttoAndNaturaAndTipoIndividui(obj.tipoAtto, obj.natura, listaTipoIndividui)
+        List<CivComunicazioneAtto> lCa = civComunicazioneAttoRepository.findAllByTipoAttoAndNaturaAndTipoIndividuiAndFlagPriorita(obj.tipoAtto, obj.natura, listaTipoIndividui, priorita)
 
         List<CivArchivioComunicazione> lArcComGestite = (civArchivioComunicazioneService.listAllByUkAttoAndTipoAtto(obj.getTipoAtto(), obj.ufficio, obj.anno, obj.atto, obj.parte, obj.serie,
                 [priorita: priorita, stampaEseguita:Boolean.FALSE, fetch: [[campo:'comunicazione', tipo: JoinType.INNER]] ])?:[])
@@ -123,9 +122,7 @@ class CivComunicazioneAttoService {
                 }
             }
             if (!found){
-                if ( (priorita == null) || (ca.comunicazione.priorita && priorita) || ( (!(ca.comunicazione.priorita)) && (!(priorita)) ) ) {
-                    lRet.add(ca)
-                }
+                lRet.add(ca)
             }
         }
         return lRet
@@ -228,12 +225,12 @@ class CivComunicazioneAttoService {
 
     void validaDati(CivComunicazioneAtto obj, GestioneTestiModelloRelazione modelloRelazione, boolean force) {
         if (obj.getComunicazione()?.getId()==0) {
-            throw new ErroreDatiComunicazioneRuntimeException(EtichetteMessaggi.Errore_modifica_comunicazione)
+            throw new ErroreDatiComunicazioneRuntimeException(Etichette.getEtichetta("Errore_modifica_comunicazione"))
         }
         String nomeModelloCaricato = FilenameUtils.removeExtension(modelloRelazione.modello.nome)
         String nomeModelloStandard = FileUtils.getNomeModelloComunicazioneAttoStandard(obj.tipoAtto, obj.comunicazione.id)
         if ( (nomeModelloCaricato != nomeModelloStandard) && (!(force) ) ){
-            throw new FileNonValidoRuntimeException(EtichetteMessaggi.Warn_file_modello_comunicazione, "(Nome file atteso: ${nomeModelloStandard})")
+            throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Warn_file_modello_comunicazione"), "(Nome file atteso: ${nomeModelloStandard})")
         }
         ValidationUtils.validaDatiObbligatori(obj)
     }
@@ -249,7 +246,7 @@ class CivComunicazioneAttoService {
 
         // In modifica non è possibile cambiare il tipo atto o la comunicazione.
         // In ogni caso è bene tenere la chiave allineata nel backend
-        obj.id = statoCivileService.getIdComunicazioneAtto(obj)
+        obj.id = gsdService.getIdComunicazioneAtto(obj)
         // comunicazione atto
         CivComunicazioneAtto c = civComunicazioneAttoRepository.save(obj)
 

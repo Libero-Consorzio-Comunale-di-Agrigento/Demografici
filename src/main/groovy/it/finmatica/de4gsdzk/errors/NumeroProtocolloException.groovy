@@ -1,10 +1,11 @@
 package it.finmatica.de4gsdzk.errors
 
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
+
 
 class NumeroProtocolloException extends De4gsdzkRuntimeException {
 
-    private static final Map etichettaDefault = EtichetteMessaggi.Errore_Numero_Protocollo
+    private static final Map etichettaDefault = Etichette.getEtichetta("Errore_Numero_Protocollo")
     private int numero
 
     /** Lista di entity dove il numero protocollo è stato trovato */

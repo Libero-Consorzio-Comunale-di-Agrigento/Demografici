@@ -84,6 +84,7 @@ class CerCertificatoEmessoRepositoryImpl implements CerCertificatoEmessoCustomRe
         root.fetch('terminalista', JoinType.LEFT)
         root.fetch('modalitaRilascio', JoinType.LEFT)
         root.fetch('tipoPagamento', JoinType.LEFT)
+        root.fetch('tipoRichiedente', JoinType.LEFT)
 
         List<Predicate> predicates = CerCertificatoEmessoRepositoryUtils.getListPredicatesByRicercaCertificatoStampa(cb, root, r)
 

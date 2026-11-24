@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivUfficio
 import it.finmatica.de4gsdzk.statocivile.CivUfficioService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -32,7 +31,7 @@ class UfficioDettaglioViewModel extends DizionarioDettaglioViewModel{
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Ufficio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Ufficio"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -59,7 +58,7 @@ class UfficioDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivUfficio c = civUfficioService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

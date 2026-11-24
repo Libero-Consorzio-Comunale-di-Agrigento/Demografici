@@ -1,10 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.IAttoCertificabileService
-import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggetto1Domain
-import it.finmatica.de4gsdzk.ISoggettoAtto1
-import it.finmatica.de4gsdzk.ISoggettoAtto2
+import it.finmatica.de4gsdzk.*
+import it.finmatica.de4gsdzk.anagrafe.EFascia
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
@@ -21,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivNascitaService implements IAttoCertificabileService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -47,15 +45,15 @@ class CivNascitaService implements IAttoCertificabileService {
 
 	private final CivNascitaRepository civNascitaRepository
 
-    CivNascitaService(CivNascitaRepository civNascitaRepository, StatoCivileService statoCivileService,
-					  CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
-					  CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
-					  ArcComuneBaseService arcComuneBaseService, CivComunicazioneAttoService civComunicazioneAttoService,
-					  ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
-					  CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+    CivNascitaService(CivNascitaRepository civNascitaRepository, GsdService gsdService,
+                      CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
+                      CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
+                      ArcComuneBaseService arcComuneBaseService, CivComunicazioneAttoService civComunicazioneAttoService,
+                      ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
+                      CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civNascitaRepository = civNascitaRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -123,7 +121,7 @@ class CivNascitaService implements IAttoCertificabileService {
 			return Boolean.FALSE
 		}
 		if (ComuneUtils.stessiCodici(atto.codiceComuneResidenza, atto.codiceProvinciaResidenza, atto.codiceComuneResidenzaMadre, atto.codiceProvinciaResidenzaMadre)) {
-			ArcComune c = statoCivileService.getComuneCliente()
+			ArcComune c = gsdService.getComuneCliente()
 			if (!(ComuneUtils.stessiCodici(atto.codiceComuneResidenza, atto.codiceProvinciaResidenza, c))) {
 				return Boolean.TRUE
 			}
@@ -238,7 +236,7 @@ class CivNascitaService implements IAttoCertificabileService {
 			log.info("Sto salvando un pregresso: non occorre il controllo sulla serie")
 		} else {
 			if (obj.isCodRec3() && ( (obj.serie?:"") == "")){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 			}
 		}
 
@@ -247,7 +245,7 @@ class CivNascitaService implements IAttoCertificabileService {
 		//Dipende da parte e serie, ma logicamente viene prima degli altri per la disposizione delle sezioni
 		if ( (obj.tipoFiliazione == null) && composizioneTestoAttiva ) {
 			if ( obj.isPrimaA() || obj.isPrimaB() || obj.isSecondaA() || obj.isCentroNascita() ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Filiazione'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Filiazione'")
 			}
 		}
 
@@ -275,31 +273,31 @@ class CivNascitaService implements IAttoCertificabileService {
 			if (obj.isPadreMandatory() || datiProvenienza.flagInViaggio) {
 				civValidazioneAttoService.checkAnagraficaPadre(obj)
 				if (obj.dataNascitaPadre == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_padre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_padre"))
 				}
 				if ((obj.comuneNascitaPadre.codice == null) || (obj.comuneNascitaPadre.codiceProvincia == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_padre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_padre"))
 				}
 				if ((obj.codiceComuneResidenzaPadre == null) || (obj.codiceProvinciaResidenzaPadre == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_padre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_padre"))
 				}
 				if ((obj.isNazionalitaPadreMadreMandatory() || datiProvenienza.flagInViaggio) && obj.nazionalitaPadre == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_padre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_padre"))
 				}
 			}
 			if (obj.isMadreMandatory() || datiProvenienza.flagInViaggio) {
 				civValidazioneAttoService.checkAnagraficaMadre(obj)
 				if (obj.dataNascitaMadre == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_madre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_madre"))
 				}
 				if ((obj.comuneNascitaMadre.codice == null) || (obj.comuneNascitaMadre.codiceProvincia == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_madre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_madre"))
 				}
 				if ((obj.codiceComuneResidenzaMadre == null) || (obj.codiceProvinciaResidenzaMadre == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_madre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_madre"))
 				}
 				if ((obj.isNazionalitaPadreMadreMandatory() || datiProvenienza.flagInViaggio) && obj.nazionalitaMadre == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_madre)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_madre"))
 				}
 			}
 		}
@@ -309,7 +307,7 @@ class CivNascitaService implements IAttoCertificabileService {
 
 			String sezioneDatiAtto = "'Dati Nascita'"
 			if ((obj.tipoRichiesta == null) || (obj.motivoNascita == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 			}
 			if (obj.tipoRichiesta != obj.motivoNascita?.tipoRichiesta) {
 				throw new AnscRuntimeException("Il motivo richiesta selezionato nella sezione $sezioneDatiAtto non risulta coerente con il tipo di richiesta indicato")
@@ -337,17 +335,17 @@ class CivNascitaService implements IAttoCertificabileService {
 			} else {
 				if ((obj.isAdozioneEstremiAttoNascitaMandatory() || obj.isRiconoscimentoPostNascita())) {
 					if ((margine.codiceComuneAttoNascita1 == null) || (margine.descrizioneComuneAttoNascita1 == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 					}
 
 					if (TestoUtils.isVuoto(margine.idAttoAnscNascita1)) {
 						if ((margine.attoAttoNascita1 == null) || (margine.annoAttoNascita1 == null)) {
-							throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+							throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 						}
 					}
 
 					if (margine.dataAttoNascita == null) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 					}
 				}
 			}
@@ -355,11 +353,11 @@ class CivNascitaService implements IAttoCertificabileService {
 			if (obj.motivoNascita.flagAutorita) {
 				String sezioneAutoritaMittente = "Redazione - Autorità mittente'"
 				if (TestoUtils.isVuoto(datiProvenienza.autorita) || (datiProvenienza.comuneProvenienza.codice == null) || (datiProvenienza.comuneProvenienza.codiceProvincia == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAutoritaMittente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAutoritaMittente)
 				}
 				if (obj.motivoNascita.flagAutoritaEstremi) {
 					if (datiProvenienza.dataNotaRif == null || TestoUtils.isVuoto(datiProvenienza.notaRif)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAutoritaMittente)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAutoritaMittente)
 					}
 				}
 			}
@@ -369,18 +367,18 @@ class CivNascitaService implements IAttoCertificabileService {
 					TestoUtils.isVuoto(datiProvenienza.estremiAttoEnteStraniero) ||
 					TestoUtils.isVuoto(datiProvenienza.autoritaEnteStraniero) ||
 					((datiProvenienza.comuneEnteStraniero.codice == null) || (datiProvenienza.comuneEnteStraniero.codiceProvincia == null))) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoDaTrascrivere)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoDaTrascrivere)
 			}
 
 			String sezioneDatiDellaTrascrizione = "'Redazione - Dati della trascrizione'"
 			if (datiProvenienza.dataRichiestaTrascrizione == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDellaTrascrizione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDellaTrascrizione)
 			}
 			if (obj.isTipoRichiestaTrascrizioneMandatory() && datiProvenienza.tipoRichiestaTrascrizione == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDellaTrascrizione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDellaTrascrizione)
 			}
 			if (obj.isCambioGeneralitaTrascrizioneMandatory() && TestoUtils.isVuoto(obj.nuovoCognome)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDellaTrascrizione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDellaTrascrizione)
 			}
 		}
 
@@ -409,17 +407,17 @@ class CivNascitaService implements IAttoCertificabileService {
 			} else {
 
 				if ((margine.codiceComuneAttoNascita1 == null) || (margine.descrizioneComuneAttoNascita1 == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 				}
 
 				if (TestoUtils.isVuoto(margine.idAttoAnscNascita1)) {
 					if ((margine.attoAttoNascita1 == null) || (margine.annoAttoNascita1 == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 					}
 				}
 
 				if (margine.dataAttoNascita == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 				}
 			}
 
@@ -429,14 +427,14 @@ class CivNascitaService implements IAttoCertificabileService {
 		civValidazioneAttoService.checkNaturaVsCertificazioneAlSalvataggio(obj)
 
 		if (DataUtils.isDataFutura(obj.dataNascita)){
-			throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_data_futura)
+			throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_data_futura"))
 		}
 
 		civValidazioneAttoService.checkOrarioEvento(obj.oraNascita, obj.oraNascitaImprecisata, obj.minutoNascita, obj.minutoNascitaImprecisato, Boolean.FALSE, "( Dati Nascita )")
 
 		if (obj.partoPlurimo){
 			if ( (obj.numeroGemello == null) || (obj.totaleGemelli == null) ){
-				throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_dati_parto_plurimo)
+				throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_dati_parto_plurimo"))
 			}
 		} else {
 			obj.numeroGemello = null
@@ -444,17 +442,17 @@ class CivNascitaService implements IAttoCertificabileService {
 		}
 
 		if (obj.isSecondaA() && arcComuneBaseService.isComuneClienteOggi(obj.codiceComuneNascita, obj.codiceProvinciaNascita)){
-			throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_comune_nascita_vs_parte_serie)
+			throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_comune_nascita_vs_parte_serie"))
 		}
 
 		if (obj.isSecondaA() && (!(arcComuneBaseService.isComuneClienteOggi(obj.codiceComuneResidenza, obj.codiceProvinciaResidenza))) ){
-			throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_comune_residenza_vs_parte_serie)
+			throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_comune_residenza_vs_parte_serie"))
 		}
 
 		if ( (datiProvenienza.tipoDichiarante?:"") == ""){
 			if ( obj.isDicCompFirmNasVisibile() || obj.isDicCompFirmRicVisibile() ) {
 				if (obj.isCodRec3()){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campo_dichiarante)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campo_dichiarante"))
 				} else {
 					if (obj.isCodRec0() && composizioneTestoAttiva ){
 						datiProvenienza.tipoDichiarante = ETipoDichiaranteNascita.AL.name()
@@ -466,7 +464,7 @@ class CivNascitaService implements IAttoCertificabileService {
 		if ( (datiProvenienza.tipoComparente?:"") == ""){
 			if ( obj.isDicCompFirmNasVisibile() || obj.isDicCompFirmRicVisibile() ) {
 				if (obj.isCodRec3()){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campo_comparente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campo_comparente"))
 				} else {
 					if (obj.isCodRec0() && composizioneTestoAttiva ){
 						datiProvenienza.tipoComparente = datiProvenienza.tipoDichiarante
@@ -478,7 +476,7 @@ class CivNascitaService implements IAttoCertificabileService {
 		if ( (datiProvenienza.tipoFirmatario?:"") == ""){
 			if ( obj.isDicCompFirmNasVisibile() || obj.isDicCompFirmRicVisibile() ) {
 				if (obj.isCodRec3()){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campo_firmatario)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campo_firmatario"))
 				} else {
 					if (obj.isCodRec0() && composizioneTestoAttiva ){
 						datiProvenienza.tipoFirmatario = datiProvenienza.tipoDichiarante
@@ -499,7 +497,7 @@ class CivNascitaService implements IAttoCertificabileService {
 												   ETipoDichiaranteNascita.PDIT.name(),
 												   ETipoDichiaranteNascita.MDIT.name()]
 					&& obj.tipoConsenso == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Redazione - 'Dati Dichiarazione'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Redazione - 'Dati Dichiarazione'")
 			}
 		}
 
@@ -507,34 +505,34 @@ class CivNascitaService implements IAttoCertificabileService {
 		String sezioneDatiDichiarazione = "'Redazione - 'Dati Dichiarazione'"
 		if (anscOn && obj.isCodRec3() && obj.isRiconoscimentoPrenatale() ){
 			if ( ((datiProvenienza.autoritaAttoOriginale?:"") == "") || (datiProvenienza.dataAttoOriginale == null) || (obj.mesiDalConcepimento == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 			}
 		}
 		// riconoscimento post-nascita
 		if (anscOn && obj.isCodRec3() && obj.isRiconoscimentoPostNascita() ){
 			//if (datiProvenienza.isDichiaranteRiconoscimentoPadre() && (obj.tipoSceltaCognome == null) ){
 				//FIXME: valutare condizione su fascia età figlio
-				//throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+				//throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 			//}
 		}
 		// Parte 1 Serie B
 		if (anscOn && obj.isCodRec3() && obj.isPrimaB()) {
             if (TestoUtils.isVuoto(obj.motivoRitardo)) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
             }
 			if (datiProvenienza?.isComparenteSanitario() && (obj.tipoFiliazione == ETipoFiliazione.C) && (obj.tipoMancatoConsensoMadre == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 			}
 		}
 		// Centro nascita
 		String sezioneCentroNascita = "'Centro Nascita'"
-		if ( ( TestoUtils.isVuoto(datiProvenienza.autorita) || TestoUtils.isVuoto(datiProvenienza.ufficiale) || (datiProvenienza.tipoAddettoDichiarazione == null) ) && obj.isCentroNascita() ){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneCentroNascita)
+		if ( ( TestoUtils.isVuoto(datiProvenienza.autorita) || TestoUtils.isVuoto(datiProvenienza.ufficiale) || (datiProvenienza.tipoAddettoDichiarazione == null) || (datiProvenienza.dataAttoOriginale == null)) && obj.isCentroNascita() ){
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneCentroNascita)
 		}
 		// Centro nascita - Data richiesta
 		if ( ( (datiProvenienza.dataNotaRif == null) || (TestoUtils.isVuoto(datiProvenienza.notaRif)) ) && obj.isCentroNascita() ){
 			if (obj.isCodRec3() && anscOn){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneCentroNascita)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneCentroNascita)
 			}
 		}
 
@@ -543,20 +541,20 @@ class CivNascitaService implements IAttoCertificabileService {
 		}
 
 		if ( ((obj.codiceComuneNascita == null) || (obj.codiceProvinciaNascita == null)) && obj.isCentroNascita() ){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Dati Nascita'")
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Dati Nascita'")
 		}
 		// Tutte le tipologie principali
         if ( obj.isPrimaA() || obj.isPrimaB() || obj.isSecondaA() || obj.isCentroNascita()){
 			civValidazioneAttoService.checkAnagraficaPadre(obj)
 
 			if ( anscOn && datiProvenienza?.tipoDichiarante?.contains(ETipoDichiaranteNascita.PD.name()) && (obj.nazionalitaPadre == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_padre)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_padre"))
 			}
 
 			civValidazioneAttoService.checkAnagraficaMadre(obj)
 
 			if ( anscOn && datiProvenienza?.tipoDichiarante?.contains(ETipoDichiaranteNascita.MD.name()) && (obj.nazionalitaMadre == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_madre)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_madre"))
 			}
         }
 		// refs #73616
@@ -579,7 +577,7 @@ class CivNascitaService implements IAttoCertificabileService {
 
 		if (anscOn && obj.isCodRec3()) {
 			if (obj.isSedePartoMandatory() && datiProvenienza.luogoNascita == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Redazione - Altri Dati'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Redazione - Altri Dati'")
 			}
 		}
 	}
@@ -591,7 +589,7 @@ class CivNascitaService implements IAttoCertificabileService {
 		log.info("Lancio salvataggio dello storico su CIVNAS per id " + obj.id)
 
 		CivNascita newest = DomainUtils.copyAtto(obj) as CivNascita
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civNascitaRepository.save(newest)
@@ -715,11 +713,12 @@ class CivNascitaService implements IAttoCertificabileService {
 		//se il comune di residenza del nato NON coincide con quello del cliente
 		if (anagrafe != null){
 			// refs #62858
-			Integer fasciaMadre = anagrafe?.anagrafe2?.fascia?.id
-			Integer fasciaPadre = (anagrafe?.anagrafe1?.fascia?.id?:new Integer(0))
-			Integer fasciaConfronto = ((fasciaMadre != null)?fasciaMadre:fasciaPadre)
-			Boolean isComuneUtenteResidenzaNato = (arcComuneBaseService.isComuneClienteOggi(obj.codiceComuneResidenza, obj.codiceProvinciaResidenza, c) || (fasciaConfronto.intValue() == 3))
-			if ( obj.isCodRec3() ||
+            EFascia fasciaMadre = anagrafe?.anagrafe2?.fascia
+            EFascia fasciaPadre = anagrafe?.anagrafe1?.fascia ?: null
+            EFascia fasciaConfronto = ((fasciaMadre != null && fasciaMadre != EFascia.NON_RESIDENTE)?fasciaMadre:fasciaPadre)
+            Boolean isComuneUtenteResidenzaNato = (arcComuneBaseService.isComuneClienteOggi(obj.codiceComuneResidenza, obj.codiceProvinciaResidenza, c) ||
+                    (fasciaConfronto == EFascia.ISCRITTO_AIRE))
+            if ( obj.isCodRec3() ||
 					( obj.isCodRec0() && isComuneUtenteResidenzaNato && ( (obj.natura == ENaturaAtto.O) || (obj.natura == ENaturaAtto.T) ) ) ){
 				DomainUtils.initFromAtto(anagrafe, obj)
 
@@ -762,7 +761,7 @@ class CivNascitaService implements IAttoCertificabileService {
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		if (obj.tipoFiliazione == ETipoFiliazione.L){
@@ -772,6 +771,7 @@ class CivNascitaService implements IAttoCertificabileService {
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVNAS per id " + obj.id)
@@ -833,7 +833,7 @@ class CivNascitaService implements IAttoCertificabileService {
 
 		if (obj.id != null) {
             if (isInviatoAnsc(obj.id)){
-                throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+                throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
             }
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java

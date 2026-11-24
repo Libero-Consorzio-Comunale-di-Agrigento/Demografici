@@ -3,8 +3,8 @@ package it.finmatica.de4gsdzk.archivi
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.pagamento.EServizioPagamento
 import it.finmatica.de4gsdzk.utils.EGruppo
+import it.finmatica.de4gsdzk.utils.ETipoIndice
 import it.finmatica.de4gsdzk.utils.ETipoSN
-import it.finmatica.de4gsdzk.utils.SqlUtils
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -67,10 +67,15 @@ class ArcParametroService {
 		return ((p?.valore?.trim()?.toUpperCase()?:ETipoSN.S.name()) == ETipoSN.S.name())
 	}
 
-	Boolean isModificaAllegatoPrincipaleComunicazioneAttiva() {
+	String isModificaAllegatoPrincipaleComunicazioneAttiva() {
 		ArcParametro p = arcParametroRepository.findById(ArcParametro.CIV_COM_PR)
-		return ((p?.valore?.trim()?.toUpperCase()?:ETipoSN.N.name()) == ETipoSN.S.name())
+		return p?.valore?.trim()?.toUpperCase() ?: ETipoSN.S.name()
 	}
+
+    String isModificaAllegatoPrincipaleComunicazionePraticaAttiva() {
+        ArcParametro p = arcParametroRepository.findById(ArcParametro.ANA_COM_PR)
+        return p?.valore?.trim()?.toUpperCase() ?: ETipoSN.S.name()
+    }
 
 	Boolean isGestioneCognomeAutomaticoAttiva() {
 		ArcParametro p = arcParametroRepository.findById(ArcParametro.ANAS_COGN)
@@ -143,9 +148,19 @@ class ArcParametroService {
 		}
 	}
 
+    byte[] getBlobAllegatoFromId(String id){
+        ArcParametro p = arcParametroRepository.findById(id)
+        return p?.getBlobAllegato()
+    }
+
 	@Deprecated
 	Boolean isAperturaAnnotazioniSuCertificazioneAttiva() {
 		ArcParametro p = arcParametroRepository.findById(ArcParametro.CERT_SANN)
+		return ((p?.valore?.trim()?.toUpperCase() ?: ETipoSN.N.name()) == ETipoSN.S.name())
+	}
+
+	Boolean isWsMinintAttivo() {
+		ArcParametro p = arcParametroRepository.findById(ArcParametro.WSMI)
 		return ((p?.valore?.trim()?.toUpperCase() ?: ETipoSN.N.name()) == ETipoSN.S.name())
 	}
 
@@ -164,8 +179,13 @@ class ArcParametroService {
 		}
 	}
 
-	void checkMinuscoleOn(Map map){
-		ArcParametro p = arcParametroRepository.findById(ArcParametro.ATTI_MINUS)
+	void checkMinuscoleOn(Map map, boolean anagrafe = false){
+		ArcParametro p
+		if (anagrafe){
+			p = arcParametroRepository.findById(ArcParametro.ANA_MINUS)
+		} else {
+			p = arcParametroRepository.findById(ArcParametro.ATTI_MINUS)
+		}
 		Boolean minuscoleOn = ((p?.valore?.trim()?.toUpperCase()?:ETipoSN.N.name()) == ETipoSN.S.name())
 		if (minuscoleOn){
 			for (entry in map) {
@@ -183,12 +203,19 @@ class ArcParametroService {
 	}
 
 	List<ArcParametro> listAllByIdIn (List<String> ids){
-		return arcParametroRepository.findAllByIdIn(ids)
+		return arcParametroRepository.findAllByIdInOrderById(ids)
 	}
 
-	List<ArcParametro> listAllByIdLikeOrId (String parametroLike, String parametroEq){
-		return arcParametroRepository.findAllByIdLikeOrId(SqlUtils.endsLike(parametroLike), parametroEq)
-	}
+    Boolean titoloIndiciVuoto(ETipoIndice tipoIndice) {
+        ArcParametro p
+        if(tipoIndice == ETipoIndice.A) {
+            p = arcParametroRepository.findById(ArcParametro.SIAN_NOTIT)
+        } else { // D
+            p = arcParametroRepository.findById(ArcParametro.SIDE_NOTIT)
+        }
+        return ((p?.valore?.trim()?.toUpperCase() ?: ETipoSN.N.name()) == ETipoSN.S.name())
+    }
+
 
 	Map<String, String> mapValoreByIdLike(String parametroLike) {
 		Map<String, String> ret = [:]

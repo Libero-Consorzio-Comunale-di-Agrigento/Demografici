@@ -3,7 +3,10 @@ package restrict.afc
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.archivi.ArcParametro
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.ETipoImage
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.FileUtils
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.zkutils.CustomAImage
 import org.apache.tika.Tika
@@ -44,17 +47,17 @@ abstract class AbstractLogoListaViewModel extends DizionarioListaViewModel {
         modifyEnabled = false
         addEnabled = false
 
-        eList.addAll(Etichette.Loghi)
+        eList.addAll(Etichette.getEtichetta("Loghi"))
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Salvataggio_Completato, EtichetteMessaggi.Ask_Caricamento_Logo, EtichetteMessaggi.Ask_Cancellazione_Logo])
+        eList.addAll([Etichette.getEtichetta("Salvataggio_Completato"), Etichette.getEtichetta("Ask_Caricamento_Logo"), Etichette.getEtichetta("Ask_Cancellazione_Logo")])
 
-        eList.addAll([Etichette.scarica_immagine_tooltip, Etichette.inserisci_immagine_tooltip, Etichette.Cancella])
+        eList.addAll([Etichette.getEtichetta("scarica_immagine_tooltip"), Etichette.getEtichetta("inserisci_immagine_tooltip"), Etichette.getEtichetta("Cancella")])
 
         eList.addAll(FileUtils.etichetteFileUtils)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Loghi)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Loghi"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -83,22 +86,19 @@ abstract class AbstractLogoListaViewModel extends DizionarioListaViewModel {
 
     private void salvaLogo(ArcParametro logo) {
         arcParametroService.save(logo)
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         onRicarica()
     }
 
     @Command
     void onUploadAllegato(@ContextParam(ContextType.TRIGGER_EVENT) UploadEvent event, @BindingParam("logo") ArcParametro logo) {
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Caricamento_Logo), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Caricamento_Logo")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK == e.getName()) {
                             Media media = event.media
                             byte[] _allegato = media.isBinary() ? media.byteData : media.stringData.getBytes(StandardCharsets.UTF_8.name())
-                            List<String> formatiAmmessi = [ETipoImage.JPG.contentType, ETipoImage.JPEG.contentType,
-                                                           ETipoImage.BMP.contentType, ETipoImage.MSBMP.contentType,
-                                                           ETipoImage.PNG.contentType]
-                            Map m = FileUtils.checkFile(_allegato, media.name, formatiAmmessi)
+                            Map m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXImg)
                             if (m) {
                                 Messagebox.show(media.name + ":\n" + getEtichetta(m), getMsgTitle(), Messagebox.OK, Messagebox.ERROR)
                             } else {
@@ -125,7 +125,7 @@ abstract class AbstractLogoListaViewModel extends DizionarioListaViewModel {
 
     @Command
     void onCancellaLogo(@BindingParam("logo") ArcParametro logo) {
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Logo), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Logo")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK == e.getName()) {

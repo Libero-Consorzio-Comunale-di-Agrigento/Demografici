@@ -16,7 +16,7 @@ class DatoGeneraleViewModel extends AbstractTabNavigatorViewModel {
 
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = []
+        List<Map> eList = [Etichette.getEtichetta("Titoli_Studio"), Etichette.getEtichetta("Cittadinanze"), Etichette.getEtichetta("Professioni"), Etichette.getEtichetta("Attivita"), Etichette.getEtichetta("Posizioni_Professionali"), Etichette.getEtichetta("Alberi")]
 
         doInit(w, eList)
 

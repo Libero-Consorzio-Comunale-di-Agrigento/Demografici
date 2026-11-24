@@ -15,7 +15,7 @@ import restrict.AbstractTabNavigatorViewModel
 class ConfigurazioneViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Parametri, Etichette.Loghi]
+        List<Map> eList = [Etichette.getEtichetta("Parametri"), Etichette.getEtichetta("Loghi"), Etichette.getEtichetta("Log")]
 
         doInit(w, eList)
 

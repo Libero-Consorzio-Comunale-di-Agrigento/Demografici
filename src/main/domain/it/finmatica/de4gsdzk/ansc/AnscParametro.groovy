@@ -30,5 +30,5 @@ class AnscParametro extends GsdParametroBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Valore]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Valore")]
 }

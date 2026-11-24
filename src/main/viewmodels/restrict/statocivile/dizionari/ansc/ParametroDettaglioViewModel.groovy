@@ -3,7 +3,10 @@ package restrict.statocivile.dizionari.ansc
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ansc.AnscParametro
 import it.finmatica.de4gsdzk.ansc.AnscParametroService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.ETipoFile
+import it.finmatica.de4gsdzk.utils.ETipoOperazione
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.FileUtils
 import org.zkoss.bind.annotation.*
 import org.zkoss.util.media.Media
 import org.zkoss.zk.ui.event.UploadEvent
@@ -32,13 +35,13 @@ class ParametroDettaglioViewModel extends DizionarioDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Parametro]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Parametro")]
         eList.addAll(AnscParametro.etichetteDomain)
         eList.addAll(FileUtils.etichetteFileUtils)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Parametro)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Parametro"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -67,8 +70,7 @@ class ParametroDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onUploadAllegato(@ContextParam(ContextType.TRIGGER_EVENT) UploadEvent event){
         Media media = event.media
         byte[] _allegato = media.isBinary()?media.byteData:media.stringData.getBytes(StandardCharsets.UTF_8.name())
-        List<String> formatiAmmessi = [ETipoFile.P12.contentType]
-        Map m = FileUtils.checkFile(_allegato, media.name, formatiAmmessi)
+        Map m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXP12)
         if (m) {
             Messagebox.show(media.name + ":\n" + getEtichetta(m), getMsgTitle(), Messagebox.OK, Messagebox.ERROR)
         } else {
@@ -80,7 +82,7 @@ class ParametroDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             AnscParametro c = anscParametroService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

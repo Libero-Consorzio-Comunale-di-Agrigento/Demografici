@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.certificazione.CerValiditaCertificato
 import it.finmatica.de4gsdzk.certificazione.CerValiditaCertificatoService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -32,12 +31,12 @@ class ValiditaCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Validita]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Validita")]
         eList.addAll(CerValiditaCertificato.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Validita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Validita"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -66,7 +65,7 @@ class ValiditaCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CerValiditaCertificato c = cerValiditaCertificatoService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

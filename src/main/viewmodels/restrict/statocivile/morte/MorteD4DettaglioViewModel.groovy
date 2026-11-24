@@ -26,10 +26,10 @@ class MorteD4DettaglioViewModel extends IstatDettaglioParentViewModel{
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_MODELLO_D4, Etichette.SEZIONE_DATI_DECESSO, Etichette.SEZIONE_DECEDUTO]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_MODELLO_D4"), Etichette.getEtichetta("SEZIONE_DATI_DECESSO"), Etichette.getEtichetta("SEZIONE_DECEDUTO")]
         eList.addAll(IstMd4.etichetteDomain)
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D4, Etichette.SEZIONE_MODELLO_D4)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D4, Etichette.getEtichetta("SEZIONE_MODELLO_D4"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita', tipo: JoinType.LEFT]]])

@@ -21,24 +21,24 @@ enum EFascia {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case ISCRITTO_APR: return Etichette.Iscritto_in_APR
-            case CANCELLATO_APR: return Etichette.Cancellato_da_APR
-            case ISCRITTO_AIRE: return Etichette.Iscritto_in_AIRE
-            case CANCELLATO_AIRE: return Etichette.Cancellato_da_AIRE
-            case ISCRIZIONE_ATTESA_O_ANNULLATA: return Etichette.Iscrizione_non_avvenuta
-            case NON_RESIDENTE: return Etichette.Non_Residente
+            case ISCRITTO_APR: return Etichette.getEtichetta("Iscritto_in_APR")
+            case CANCELLATO_APR: return Etichette.getEtichetta("Cancellato_da_APR")
+            case ISCRITTO_AIRE: return Etichette.getEtichetta("Iscritto_in_AIRE")
+            case CANCELLATO_AIRE: return Etichette.getEtichetta("Cancellato_da_AIRE")
+            case ISCRIZIONE_ATTESA_O_ANNULLATA: return Etichette.getEtichetta("Iscrizione_non_avvenuta")
+            case NON_RESIDENTE: return Etichette.getEtichetta("Non_Residente")
         }
         return null
     }
 
     Map getEtichettaPluralDesc() {
         switch (this) {
-            case ISCRITTO_APR: return Etichette.Iscritto_in_APR_Famiglia
-            case CANCELLATO_APR: return Etichette.Cancellato_da_APR_Famiglia
-            case ISCRITTO_AIRE: return Etichette.Iscritto_in_AIRE_Famiglia
-            case CANCELLATO_AIRE: return Etichette.Cancellato_da_AIRE_Famiglia
-            case ISCRIZIONE_ATTESA_O_ANNULLATA: return Etichette.Iscrizione_non_avvenuta
-            case NON_RESIDENTE: return Etichette.Non_Residente
+            case ISCRITTO_APR: return Etichette.getEtichetta("Iscritto_in_APR_Famiglia")
+            case CANCELLATO_APR: return Etichette.getEtichetta("Cancellato_da_APR_Famiglia")
+            case ISCRITTO_AIRE: return Etichette.getEtichetta("Iscritto_in_AIRE_Famiglia")
+            case CANCELLATO_AIRE: return Etichette.getEtichetta("Cancellato_da_AIRE_Famiglia")
+            case ISCRIZIONE_ATTESA_O_ANNULLATA: return Etichette.getEtichetta("Iscrizione_non_avvenuta")
+            case NON_RESIDENTE: return Etichette.getEtichetta("Non_Residente")
         }
         return null
     }

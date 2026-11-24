@@ -3,6 +3,8 @@
 create or replace view ansciu_v 
 AS
 select ciu.*
+     , ciu.note_ws note_ws_vis
+     , ciu.info_ws info_ws_vis
      , f_ANSC_descrizione_esito_CIU(ciu.esito_ansc) des_esito_ansc
      , f_ANSC_flag_http_error_CIU(ciu.id_operazione,ciu.flag_invio_ws) flag_http_error
 --     , f_ANSC_flag_fake_response_CIU(ciu.id_operazione,ciu.flag_invio_ws) flag_fake_response

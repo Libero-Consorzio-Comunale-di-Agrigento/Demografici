@@ -31,7 +31,7 @@ class MorteANSCListaViewModel extends AnscAttoListaParentViewModel {
 
         backFromListANSCEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_DECEDUTO]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_DECEDUTO")]
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams())
 

@@ -2,7 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneFormulaRepository
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.ETipoIndividuiAtto
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.data.domain.Page
@@ -15,17 +15,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivComunicazioneFormulaService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivComunicazioneAttoService civComunicazioneAttoService
 
 	private final CivComunicazioneFormulaRepository civComunicazioneFormulaRepository
 
     CivComunicazioneFormulaService(CivComunicazioneFormulaRepository civComunicazioneFormulaRepository,
-								   StatoCivileService statoCivileService, CivComunicazioneAttoService civComunicazioneAttoService){
+                                   GsdService gsdService, CivComunicazioneAttoService civComunicazioneAttoService){
 
 		this.civComunicazioneFormulaRepository = civComunicazioneFormulaRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civComunicazioneAttoService = civComunicazioneAttoService
 	}
 
@@ -66,7 +66,7 @@ class CivComunicazioneFormulaService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		return  civComunicazioneFormulaRepository.save(obj)

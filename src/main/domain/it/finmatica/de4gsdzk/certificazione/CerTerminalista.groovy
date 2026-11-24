@@ -58,7 +58,7 @@ class CerTerminalista extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice_Utente, Etichette.Cognome, Etichette.Nome, Etichette.Cognome_Nome,
-                                              Etichette.Qualifica, Etichette.Email, Etichette.Numero_telefono, Etichette.Nominativo_Stampa,
-                                              Etichette.Fondo_Cassa]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice_Utente"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Cognome_Nome"),
+                                              Etichette.getEtichetta("Qualifica"), Etichette.getEtichetta("Email"), Etichette.getEtichetta("Numero_telefono"), Etichette.getEtichetta("Nominativo_Stampa"),
+                                              Etichette.getEtichetta("Fondo_Cassa")]
 }

@@ -2,6 +2,7 @@ package restrict.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAnscComunicazione
 import it.finmatica.de4gsdzk.IAttoAnsc
 import it.finmatica.de4gsdzk.ansc.*
@@ -85,7 +86,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
     private AnscAllegatoService anscAllegatoService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private AnscCasoUsoService anscCasoUsoService
@@ -121,22 +122,22 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
 
         eList.addAll(ETipoFirmaAnsc.values()*.getEtichettaDesc())
 
-        eList.addAll([Etichette.Comunicazioni, Etichette.Allegati, Etichette.Allegato,
-                      Etichette.ripetizione_invio_tooltip, Etichette.info_tooltip, Etichette.Inviato])
+        eList.addAll([Etichette.getEtichetta("Comunicazioni"), Etichette.getEtichetta("Allegati"), Etichette.getEtichetta("Allegato"),
+                      Etichette.getEtichetta("ripetizione_invio_tooltip"), Etichette.getEtichetta("info_tooltip"), Etichette.getEtichetta("Inviato")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_cdu, EtichetteMessaggi.Errore_ANSC_servizio_verifica_presa_visione,
-                      EtichetteMessaggi.Ask_Cancellazione_Fascicolo, EtichetteMessaggi.Ask_tipo_file_ANSC, EtichetteMessaggi.Ask_Sbustamento_File,
-                      EtichetteMessaggi.Warn_Cambio_Caso_Uso_Allegati, EtichetteMessaggi.Warn_Caso_Uso_non_implementato_ANSC])
+        eList.addAll([Etichette.getEtichetta("Compilare_cdu"), Etichette.getEtichetta("Errore_ANSC_servizio_verifica_presa_visione"),
+                      Etichette.getEtichetta("Ask_Cancellazione_Fascicolo"), Etichette.getEtichetta("Ask_tipo_file_ANSC"), Etichette.getEtichetta("Ask_Sbustamento_File"),
+                      Etichette.getEtichetta("Warn_Cambio_Caso_Uso_Allegati"), Etichette.getEtichetta("Warn_Caso_Uso_non_implementato_ANSC")])
         // Aggiungo etichette motivo recupero
         eList.addAll(Arrays.asList(EMotivoRecupero.values())*.etichettaDesc)
         // Aggiungo etichette forzatura id atto ansc
-        eList.addAll([Etichette.Forza_Id_Atto_Ansc])
+        eList.addAll([Etichette.getEtichetta("Forza_Id_Atto_Ansc")])
 
         // Aggiungo etichette invio ANSC
         eList.addAll(etichetteIcomANSCDefault)
         doInit(eList, pkAtto, tipoAttoEnum, attoParams) //carica anche atto e dati provenienza
 
-        msgTitle = getEtichetta(Etichette.ANSC)
+        msgTitle = getEtichetta(Etichette.getEtichetta("ANSC"))
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
@@ -164,7 +165,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
         if (newCasoUso == null) {
 
             Long idUseCase = (atto as IAttoAnsc).idAnscUseCase
-            String message = idUseCase ? String.format(getEtichetta(EtichetteMessaggi.Warn_Caso_Uso_non_implementato_ANSC), String.valueOf(idUseCase)) : String.format(getEtichetta(EtichetteMessaggi.Warn_Caso_Uso_non_implementato_ANSC), '')
+            String message = idUseCase ? String.format(getEtichetta(Etichette.getEtichetta("Warn_Caso_Uso_non_implementato_ANSC")), String.valueOf(idUseCase)) : String.format(getEtichetta(Etichette.getEtichetta("Warn_Caso_Uso_non_implementato_ANSC")), '')
             Messagebox.show(message, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
 
         }
@@ -359,7 +360,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
                 if (event.data?.casoUso instanceof AnscCasoUsoBaseDomain) {
                     AnscCasoUsoBaseDomain newCasoUso = (AnscCasoUsoBaseDomain) event.data.casoUso
                     if (casoUso.id != newCasoUso.id) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Cambio_Caso_Uso_Allegati), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Cambio_Caso_Uso_Allegati")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     caricaCasoUso(newCasoUso)
                     caricaLista()
@@ -413,7 +414,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
     }
 
     void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu,
-                                                     Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione) {
+                                                     Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione) {
         AnscEndPointServizio servizioPrec = servizioCdu?.servizioPrecedente
         ETipoArchivioAnsc taRifComPrec = null
         List<Long> idRifPrecs = null
@@ -436,7 +437,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
     }
 
     void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre,
-                            Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione, Boolean skip){
+                            Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione, Boolean skip){
         AnscEndPointServizio servizio = servizioCdu?.servizio
         AnscEndPointServizio servizioPrec = servizioCdu?.servizioPrecedente
         ETipoArchivioAnsc taRifComPrec = null
@@ -499,8 +500,8 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
             civFascicoloAttoAllegatoService.scaricaAllegato(fal, sbusta, segnalaSbustamento)
         } catch (FileNonValidoRuntimeException fre){
             Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
-            String[] buttonsLabel = [getEtichetta(Etichette.SI), getEtichetta(Etichette.NO), getEtichetta(Etichette.Annulla)] as String[]
-            Messagebox.show(fal.nome + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Sbustamento_File), getEtichetta(Etichette.Allegati), buttons, buttonsLabel , Messagebox.QUESTION, null,
+            String[] buttonsLabel = [getEtichetta(Etichette.getEtichetta("SI")), getEtichetta(Etichette.getEtichetta("NO")), getEtichetta(Etichette.getEtichetta("Annulla"))] as String[]
+            Messagebox.show(fal.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Sbustamento_File")), getEtichetta(Etichette.getEtichetta("Allegati")), buttons, buttonsLabel , Messagebox.QUESTION, null,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (e.getName() == Messagebox.ON_YES){
@@ -588,15 +589,15 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
         Media media = event.media
         byte[] _allegato = media.isBinary()?media.byteData:media.stringData.getBytes(StandardCharsets.UTF_8.name())
         String nomeFile = media.name
-        Map<String, String> m = FileUtils.checkFile(_allegato, nomeFile, FileUtils.defaultAcceptableMimeTypesXComEFas)
+        Map<String, String> m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXComEFas)
         if (m){
             Messagebox.show(nomeFile + ":\n" + getEtichetta(m), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } else {
             CivTipoDocumentoFascicolo tdf = civTipoDocumentoFascicoloService.get(idTipoDocumentoFascicolo)
             if (tdf.tipoAllegatoANSC != null){
-                String retVal = statoCivileService.verificaAllegatoAnsc(null, null, nomeFile)
+                String retVal = gsdService.verificaAllegatoAnsc(null, null, nomeFile)
                 if ( (retVal?:"") != ""){
-                    Messagebox.show(retVal + ".\n" + getEtichetta(EtichetteMessaggi.Ask_tipo_file_ANSC), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                    Messagebox.show(retVal + ".\n" + getEtichetta(Etichette.getEtichetta("Ask_tipo_file_ANSC")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                             new org.zkoss.zk.ui.event.EventListener(){
                                 void onEvent(Event evt){
                                     if (Messagebox.ON_OK == evt.getName()) {
@@ -630,7 +631,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
     @Command void onEliminaAllegatoFascicolo(@BindingParam("idAllegato") Long idAllegato, @BindingParam("idServizio") String idServizio) {
         CivFascicoloAttoAllegato fal = civFascicoloAttoAllegatoService.get(idAllegato)
         if (fal) {
-            Messagebox.show(fal.nome + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Fascicolo), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(fal.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Fascicolo")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_OK.equals(e.getName())) {
@@ -694,7 +695,7 @@ abstract class AnscAttoListaParentViewModel extends RiferimentiAttoListaParentVi
 
     @Command void onEseguiServizioVerificaPresaVisione(@BindingParam("idDomain") Long idDomain){
         if (servizioPooling == null){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_verifica_presa_visione), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_verifica_presa_visione")), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } else {
             onEseguiServizio(servizioPooling, ETipoArchivioAnsc.FIR, idDomain)
         }

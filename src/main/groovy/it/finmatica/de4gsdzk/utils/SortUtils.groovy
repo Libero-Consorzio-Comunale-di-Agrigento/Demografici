@@ -31,6 +31,7 @@ class SortUtils {
     final static List<Sort.Order> cognomeNomeAsc = [new Sort.Order(Sort.Direction.ASC, "cognome"), new Sort.Order(Sort.Direction.ASC, "nome")]
 
     final static List<Sort.Order> sequenzaAsc = [new Sort.Order(Sort.Direction.ASC, "sequenza")]
+    final static List<Sort.Order> sequenzaDesc = [new Sort.Order(Sort.Direction.DESC, "sequenza")]
 
     final static List<Sort.Order> cognomeNomeDataEventoListaDesc = [new Sort.Order(Sort.Direction.DESC, "cognome"),
                                                                     new Sort.Order(Sort.Direction.DESC, "nome"),
@@ -69,6 +70,7 @@ class SortUtils {
     final static List<Sort.Order> formulaDesc = [new Sort.Order(Sort.Direction.DESC, "id")]
 
     final static List<Sort.Order> idAsc = [new Sort.Order(Sort.Direction.ASC, "id")]
+    final static List<Sort.Order> idDesc = [new Sort.Order(Sort.Direction.DESC, "id")]
 
     final static List<Sort.Order> descrizioneComuneAsc = [new Sort.Order(Sort.Direction.ASC, "descrizioneComune")]
 
@@ -78,12 +80,18 @@ class SortUtils {
     final static List<Sort.Order> numeroUnicoDesc = [new Sort.Order(Sort.Direction.DESC, "numeroUnico")]
 
     final static List<Sort.Order> descrizioneAsc = [new Sort.Order(Sort.Direction.ASC, "descrizione")]
+    final static List<Sort.Order> descrizioneDesc = [new Sort.Order(Sort.Direction.DESC, "descrizione")]
+
+    final static List<Sort.Order> descrizioneEstesaAsc = [new Sort.Order(Sort.Direction.ASC, "descrizioneEstesa")]
+    final static List<Sort.Order> descrizioneEstesaDesc = [new Sort.Order(Sort.Direction.DESC, "descrizioneEstesa")]
+
     final static List<Sort.Order> descrizioneUseCaseAsc = [new Sort.Order(Sort.Direction.ASC, "descrizioneUseCase")]
 
     final static List<Sort.Order> dataNascitaAsc = [new Sort.Order(Sort.Direction.ASC, "dataNascita")]
     final static List<Sort.Order> dataNascitaDesc = [new Sort.Order(Sort.Direction.DESC, "dataNascita")]
 
     final static List<Sort.Order> richiamoProgressivoAsc = [new Sort.Order(Sort.Direction.ASC, "richiamo"), new Sort.Order(Sort.Direction.ASC, "progressivo")]
+    final static List<Sort.Order> richiamoProgressivoDesc = [new Sort.Order(Sort.Direction.DESC, "richiamo"), new Sort.Order(Sort.Direction.DESC, "progressivo")]
 
     final static List<Sort.Order> tipoDocumentoFascicoloAsc = [new Sort.Order(Sort.Direction.ASC, "tipoDocumentoFascicolo.descrizione")]
     final static List<Sort.Order> tipoDocumentoFascicoloDesc = [new Sort.Order(Sort.Direction.DESC, "tipoDocumentoFascicolo.descrizione")]
@@ -124,4 +132,56 @@ class SortUtils {
     final static List<Sort.Order> anagrafeSoggettoFamiliareAsc = [new Sort.Order(Sort.Direction.ASC, "fascia"), new Sort.Order(Sort.Direction.ASC, "sequenzaParentela"), new Sort.Order(Sort.Direction.ASC, "dataNascita"), new Sort.Order(Sort.Direction.ASC, "cognome"), new Sort.Order(Sort.Direction.ASC, "nome")]
 
     final static List<Sort.Order> anagrafeSoggettoFamiliareStoricoAsc = [new Sort.Order(Sort.Direction.ASC, "anagrafe.fascia"), new Sort.Order(Sort.Direction.ASC, "sequenzaParentela"), new Sort.Order(Sort.Direction.ASC, "anagrafe.dataNascita"), new Sort.Order(Sort.Direction.ASC, "anagrafe.cognome"), new Sort.Order(Sort.Direction.ASC, "anagrafe.nome")]
+
+    final static List<Sort.Order> dataPraticaDesc = [new Sort.Order(Sort.Direction.DESC, "pratica.data")]
+
+    final static List<Sort.Order> dataPraticaAsc = [new Sort.Order(Sort.Direction.ASC, "pratica.data")]
+
+    final static List<Sort.Order> giorniMonitoraggio = [new Sort.Order(Sort.Direction.DESC, "pratica.giorniMonitoraggio")]
+
+    final static List<Sort.Order> annoNumeroPraticaDesc = [new Sort.Order(Sort.Direction.DESC, "pratica.anno"), new Sort.Order(Sort.Direction.DESC, "pratica.numero")]
+
+    final static List<Sort.Order> annoNumeroPraticaAsc = [new Sort.Order(Sort.Direction.ASC, "pratica.anno"), new Sort.Order(Sort.Direction.ASC, "pratica.numero")]
+
+    final static List<Sort.Order> codiceAsc = [new Sort.Order(Sort.Direction.ASC, "codice")]
+
+    final static List<Sort.Order> codiceDesc = [new Sort.Order(Sort.Direction.DESC, "codice")]
+
+    final static List<Sort.Order> dataDecorrenzaAsc = [new Sort.Order(Sort.Direction.ASC, "dataDecorrenza")]
+
+    final static List<Sort.Order> dataDecorrenzaDesc = [new Sort.Order(Sort.Direction.DESC, "dataDecorrenza")]
+
+    final static List<Sort.Order> ordineLista = [new Sort.Order(Sort.Direction.ASC, "ordLista")]
+
+    final static List<Sort.Order> dataInoltroDesc = [new Sort.Order(Sort.Direction.DESC, "dataInoltro")]
+
+    final static List<Sort.Order> dataInoltroAsc = [new Sort.Order(Sort.Direction.ASC, "dataInoltro")]
+
+    final static List<Sort.Order> dataEsitoDesc = [new Sort.Order(Sort.Direction.DESC, "dataEsito")]
+
+    final static List<Sort.Order> dataEsitoAsc = [new Sort.Order(Sort.Direction.ASC, "dataEsito")]
+
+
+    final static List<Sort.Order> civicoEsternoInternoTutteAsc = [new Sort.Order(Sort.Direction.ASC, "via.id"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "flagEsterno"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "flagInterno"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "sequenza")]
+
+    final static List<Sort.Order> civicoInternoEsternoTutteAsc = [new Sort.Order(Sort.Direction.ASC, "via.id"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "flagInterno"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "flagEsterno"),
+                                                                  new Sort.Order(Sort.Direction.ASC, "sequenza")]
+
+    final static List<Sort.Order> operazioneComuneAsc = [new Sort.Order(Sort.Direction.ASC, "operazioneComune")]
+
+    final static List<Sort.Order> operazioneComuneDesc = [new Sort.Order(Sort.Direction.DESC, "operazioneComune")]
+
+    final static List<Sort.Order> operazioneANPRAsc = [new Sort.Order(Sort.Direction.ASC, "operazioneAnpr")]
+
+    final static List<Sort.Order> operazioneANPRDesc = [new Sort.Order(Sort.Direction.DESC, "operazioneAnpr")]
+
+    final static List<Sort.Order> dataRichiestaDesc = [new Sort.Order(Sort.Direction.DESC, "dataRichiesta")]
+
+    final static List<Sort.Order> dataRichiestaAsc = [new Sort.Order(Sort.Direction.ASC, "dataRichiesta")]
+
 }

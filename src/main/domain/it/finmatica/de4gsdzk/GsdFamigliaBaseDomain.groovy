@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk
 
 import it.finmatica.de4gsdzk.anagrafe.*
+import it.finmatica.de4gsdzk.anagrafe.pratiche.AnaTipoConvivenza
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoNonResidenteFamiglia
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteEsteroFamiglia
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteFamiglia
@@ -21,7 +22,7 @@ abstract class GsdFamigliaBaseDomain extends GsdDocumentoEsternoBaseDomain imple
     Long codice
 
     @Convert(converter = ETipoAnagrafe.EnumTipoAnagrafeToStringConverter.class)
-    @Column(name = "ANAGRAFE", nullable = false)
+    @Column(name = "ANAGRAFE", nullable = false, updatable = false, insertable = false)
     ETipoAnagrafe tipoAnagrafe
 
     @Convert(converter = EFascia.EnumFasciaToIntConverter.class)
@@ -29,13 +30,18 @@ abstract class GsdFamigliaBaseDomain extends GsdDocumentoEsternoBaseDomain imple
     EFascia fascia
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MATRICOLA_CF", nullable = false)
+    @JoinColumn(name = "MATRICOLA_CF", nullable = false, updatable = false, insertable = false)
     AnaAnagrafe capoFamiglia
 
     // Convivenza
 
+    @Convert(converter = BooleanToIntegerConverter.class)
     @Column(name = "TIPO_FAM", nullable = false)
     Boolean convivenza
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TIPO_CONVIVENZA", nullable = true)
+    AnaTipoConvivenza tipoConvivenza
 
     @Column(name = "CONVIVENZA", nullable = false)
     String descrizioneConvivenza
@@ -61,6 +67,9 @@ abstract class GsdFamigliaBaseDomain extends GsdDocumentoEsternoBaseDomain imple
     @Column(name = "D_DATA_INTESTATARIO", nullable = false)
     Date dataIntestatarioConvivenza
 
+    @Column(name = "INTESTATARIO", nullable = false)
+    String intestatario
+
     // Indirizzo
 
     @Embedded
@@ -74,6 +83,18 @@ abstract class GsdFamigliaBaseDomain extends GsdDocumentoEsternoBaseDomain imple
 
     IIndirizzo getIndirizzo() {
         return AnagrafeUtils.getIndirizzo(fascia, indirizzoResidente, indirizzoResidenteEstero, indirizzoNonResidente)
+    }
+
+    void setIndirizzo(IIndirizzo indirizzo) {
+        if (indirizzo instanceof IndirizzoResidenteFamiglia) {
+            this.indirizzoResidente = (IndirizzoResidenteFamiglia) indirizzo
+        } else if (indirizzo instanceof IndirizzoResidenteEsteroFamiglia) {
+            this.indirizzoResidenteEstero = (IndirizzoResidenteEsteroFamiglia) indirizzo
+        } else if (indirizzo instanceof IndirizzoNonResidenteFamiglia) {
+            this.indirizzoNonResidente = (IndirizzoNonResidenteFamiglia) indirizzo
+        } else if (indirizzo != null) {
+            throw new IllegalArgumentException("Tipo di indirizzo non supportato: " + indirizzo.getClass().getName())
+        }
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "famiglia")
@@ -94,10 +115,14 @@ abstract class GsdFamigliaBaseDomain extends GsdDocumentoEsternoBaseDomain imple
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "famiglia")
     List<AnaEventoAnagrafeFamiglia> eventiAnagrafeFamiglia
 
-    static final List<Map> etichetteDomain = [Etichette.Codice_Famiglia,
-                                              Etichette.Indirizzo,
-                                              Etichette.Convivenza, Etichette.Denominazione,
-                                              Etichette.Convivenza_di_fatto, Etichette.CdF, Etichette.Data_Istituzione, Etichette.Data_Intestatario, Etichette.Intestatario,
-                                              Etichette.Capo_Famiglia, Etichette.Intestatario_Convivenza, Etichette.Progressivo_Eliminazione]
+    @Convert(converter=BooleanToStringConverter.class)
+    @Column(name = "FLAG_ESISTE_CC", nullable = true, updatable = false, insertable = false)
+    Boolean flagEsisteCC
+
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice_Famiglia"),
+                                              Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("CdF"), Etichette.getEtichetta("Id_Anpr_Famiglia"),
+                                              Etichette.getEtichetta("Convivenza"), Etichette.getEtichetta("Denominazione"),
+                                              Etichette.getEtichetta("Convivenza_di_fatto"), Etichette.getEtichetta("Data_Istituzione"), Etichette.getEtichetta("Data_Intestatario"), Etichette.getEtichetta("Intestatario"),
+                                              Etichette.getEtichetta("Capo_Famiglia"), Etichette.getEtichetta("Intestatario_Convivenza"), Etichette.getEtichetta("Progressivo_Eliminazione")]
 
 }

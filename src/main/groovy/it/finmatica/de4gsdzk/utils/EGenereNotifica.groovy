@@ -17,9 +17,9 @@ enum EGenereNotifica {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case ANN: return Etichette.Annotazione
-            case TRA: return Etichette.Trascrizione
-            case INF: return Etichette.Informativa
+            case ANN: return Etichette.getEtichetta("Annotazione")
+            case TRA: return Etichette.getEtichetta("Trascrizione")
+            case INF: return Etichette.getEtichetta("Informativa")
         }
         return null
     }

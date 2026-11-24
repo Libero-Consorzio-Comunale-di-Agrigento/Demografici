@@ -22,6 +22,6 @@ class CivUfficiale {
     @Column(name = "QUALIFICA")
     String qualifica
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficiale, Etichette.Codice, Etichette.Cognome_Nome, Etichette.Qualifica]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficiale"), Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Cognome_Nome"), Etichette.getEtichetta("Qualifica")]
 
 }

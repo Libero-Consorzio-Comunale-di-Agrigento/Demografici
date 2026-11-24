@@ -4,7 +4,10 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivComunicazione
 import it.finmatica.de4gsdzk.statocivile.CivComunicazioneService
 import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazione
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.ETipoComunicazione
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -50,7 +53,7 @@ class ComunicazioneSelectViewModel extends AbstractSelectViewModel {
         this.tipoComunicazione = tipoComunicazione
         this.formula = formula
 
-        List<Map> eList = [Etichette.Comunicazioni, Etichette.Seleziona_Comunicazione]
+        List<Map> eList = [Etichette.getEtichetta("Comunicazioni"), Etichette.getEtichetta("Seleziona_Comunicazione")]
 
         eList.addAll(CivComunicazione.etichetteDomain)
 
@@ -62,7 +65,7 @@ class ComunicazioneSelectViewModel extends AbstractSelectViewModel {
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Comunicazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Comunicazioni"))
 
         totalSizeLabel = ""
 
@@ -101,7 +104,7 @@ class ComunicazioneSelectViewModel extends AbstractSelectViewModel {
             Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, dettaglio)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

@@ -27,6 +27,31 @@ SELECT mat.*,
        f_CIV_flag_com_in_sospeso(4,mat.ufficio,mat.anno,mat.parte,mat.serie,mat.atto) flag_com_in_sospeso,
 -- flag_divorzio
        decode(cta.id, '', decode(mat.parte||mat.serie||mat.natura,'2CD','S'), cta.flag_divorzio) flag_divorzio,
+-- ufficio_lista
+       mat.ufficio ufficio_lista,
+-- anno_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mat.id_atto_ansc, '', mat.anno),
+              mat.anno) anno_lista,
+-- parte_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mat.id_atto_ansc, '', 
+                decode(mat.numero_unico, '', mat.parte)),
+              mat.parte) parte_lista,
+-- serie_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mat.id_atto_ansc, '', 
+                decode(mat.numero_unico, '', mat.serie)),
+              mat.serie) serie_lista,
+-- atto_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mat.id_atto_ansc, '', 
+                decode(mat.numero_unico, '', mat.atto, mat.numero_unico)),
+              mat.atto) atto_lista,
+-- id_atto_ansc_lista
+       decode(f_flag_ANSC(), 
+         'S', mat.id_atto_ansc,
+              to_char(null)) id_atto_ansc_lista,
 -- cognome_m_lista
        decode(mat.natura,'N','*** ANNULLATO',mat.cognome_m)	cognome_1_lista,
 -- nome_m_lista

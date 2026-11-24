@@ -1,12 +1,12 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivSoggettoCollegatoRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.ETipoSoggettoCollegato
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,17 +16,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivSoggettoCollegatoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final ArcParametroService arcParametroService
 
 	private final CivSoggettoCollegatoRepository civSoggettoCollegatoRepository
 
 	CivSoggettoCollegatoService(CivSoggettoCollegatoRepository civSoggettoCollegatoRepository,
-								StatoCivileService statoCivileService, ArcParametroService arcParametroService) {
+                                GsdService gsdService, ArcParametroService arcParametroService) {
 
 		this.civSoggettoCollegatoRepository = civSoggettoCollegatoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.arcParametroService = arcParametroService
 	}
 
@@ -60,7 +60,7 @@ class CivSoggettoCollegatoService {
 		}
 
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 
 		if (anscOn && soggettoCollegatoMandatory){
@@ -93,37 +93,37 @@ class CivSoggettoCollegatoService {
 			}
 
 			if (TestoUtils.isVuoto(obj.nome)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if (obj.sesso == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if (obj.dataNascita == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if ((obj.comuneNascita.codice == null) || (obj.comuneNascita.codiceProvincia == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if ((obj.comuneResidenza.codice == null) || (obj.comuneResidenza.codiceProvincia == null)) {
 				if (obj.tipoSoggettoCollegato != ETipoSoggettoCollegato.CG && obj.tipoSoggettoCollegato != ETipoSoggettoCollegato.IT) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 				}
 			}
 
 			if (obj.nazionalita == null && (obj.tipoSoggettoCollegato != ETipoSoggettoCollegato.IT)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if ( (obj.tipoSoggettoCollegato == ETipoSoggettoCollegato.AS) && (obj.gradoParentela == null) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 
 			if ( (obj.tipoSoggettoCollegato == ETipoSoggettoCollegato.OS) && (obj.qualifica == null) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezione)
 			}
 		}
 	}
@@ -132,7 +132,7 @@ class CivSoggettoCollegatoService {
 		validaDati(obj, tipoAttoEnumSource, soggettoCollegatoMandatory)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su CIVSOG per id " + obj.id)
 		return  civSoggettoCollegatoRepository.save(obj)

@@ -46,7 +46,7 @@
                 </grid>
             </groupbox>
 
-            <totalSizeBlock/>
+            <orderByBlock/>
 
             <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
                      emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">

@@ -2,6 +2,7 @@ package restrict.statocivile.cittadinanza
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
@@ -28,7 +29,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivCittadinanzaService civCittadinanzaService
@@ -68,7 +69,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
 
         try {
             dettaglio = new CivCittadinanza(anno: Calendar.getInstance().get(Calendar.YEAR), codiceRecord: new Integer(3))
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             anagrafe = new CivAnagrafe()
 
@@ -106,7 +107,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
         listaAnnotazioniNascita = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if ( isCaricamentoFormuleAnnotazioneAbilitato() ) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
             if (l.size() > 0) {
                 listaAnnotazioniNascita.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -170,7 +171,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -181,7 +182,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
     }
 
     void numera(){
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null){
             numeraAtto = null
         }
@@ -209,7 +210,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
                 try {
                     c = civCittadinanzaService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, mapFormule, mapAnnotazioniDaAtto, gc, margineMandatory, listaSoggettiCollegati, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (statoFrammenti == 1) {
                         statoFrammenti = 2
@@ -254,9 +255,9 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
             //TODO: disabilito temporaenamente automatismo sulla gestione minori da riattivare dopo analisi cdu specifici ANSC
             checkComunicazioniDaAnnotazione()
         } else {
-            int countMinorenni = statoCivileService.countMinorenni(dettaglio.idAtto)
+            int countMinorenni = gsdService.countMinorenni(dettaglio.idAtto)
             if (countMinorenni > 0){
-                Messagebox.show(String.format(getEtichetta(EtichetteMessaggi.Ask_Gestione_Minorenni), dettaglio.getNominativo() ), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(String.format(getEtichetta(Etichette.getEtichetta("Ask_Gestione_Minorenni")), dettaglio.getNominativo() ), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                         new org.zkoss.zk.ui.event.EventListener(){
                             void onEvent(Event e){
                                 if (Messagebox.ON_YES.equals(e.getName())){
@@ -317,7 +318,7 @@ class CittadinanzaDettaglioViewModel extends CittadinanzaDettaglioParentViewMode
                         }
 
                         // per chiarezza ai fini dell'integrazione con ANSC
-                        riempiComune(datiProvenienza.comuneGiuramento, statoCivileService.getComuneCliente())
+                        riempiComune(datiProvenienza.comuneGiuramento, gsdService.getComuneCliente())
 
                         CivDatiProvenienzaAtto dpGiu = civDatiProvenienzaAttoService.getByUkAtto(cGiu.idAtto)
                         datiProvenienza.numeroSentenza = dpGiu?.numeroSentenza

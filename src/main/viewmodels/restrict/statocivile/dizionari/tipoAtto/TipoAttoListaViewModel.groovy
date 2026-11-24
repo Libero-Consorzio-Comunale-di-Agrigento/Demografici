@@ -36,9 +36,9 @@ class TipoAttoListaViewModel extends TipoAttoListaParentViewModel{
 
         listaTipiAtto = [ETipoAtto.NAS, ETipoAtto.MAT, ETipoAtto.UCI, ETipoAtto.MOR, ETipoAtto.CIT]
 
-        List<Map<String, String>> eList = [Etichette.Tipi_di_Atto, Etichette.Funzione_non_abilitata, Etichette.Atto_Divorzio, Etichette.Atto_Scioglimento]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tipi_di_Atto"), Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Atto_Divorzio"), Etichette.getEtichetta("Atto_Scioglimento")]
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_atto])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_atto")])
 
         eList.addAll(CivTipoAtto.etichetteDomain)
 
@@ -50,20 +50,31 @@ class TipoAttoListaViewModel extends TipoAttoListaParentViewModel{
         eList.addAll(listaTipiAtto*.etichettaDesc)
 
         // Aggiungo etichette per radio button flagANSC
-        eList.add(Etichette.Valido_ANSC)
-        eList.addAll([Etichette.SI, Etichette.NO])
+        eList.add(Etichette.getEtichetta("Valido_ANSC"))
+        eList.addAll([Etichette.getEtichetta("SI"), Etichette.getEtichetta("NO")])
 
         // Aggiungo le etichette per la combobox tipi evento
-        eList.add(Etichette.Tipo)
-        eList.addAll([Etichette.Tutti, ETipoEvento.Unione_Civile.etichettaDesc, ETipoEvento.Scioglimento.etichettaDesc, ETipoEvento.Matrimonio.etichettaDesc, ETipoEvento.Divorzio.etichettaDesc])
+        eList.add(Etichette.getEtichetta("Tipo"))
+        eList.addAll([Etichette.getEtichetta("Tutti"), ETipoEvento.Unione_Civile.etichettaDesc, ETipoEvento.Scioglimento.etichettaDesc, ETipoEvento.Matrimonio.etichettaDesc, ETipoEvento.Divorzio.etichettaDesc])
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Sequenza_crescente"), Etichette.getEtichetta("Sequenza_decrescente")])
 
         doInitEtichette(eList)
 
         totalSizeLabel = ""
 
-        msgTitle = getEtichetta(Etichette.Tipi_di_Atto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Tipi_di_Atto"))
 
         formLabel = msgTitle?.toUpperCase()
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Sequenza_crescente")), SortUtils.sequenzaAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Sequenza_decrescente")), SortUtils.sequenzaDesc)])
+
+        selectedOrder = listaOrder[0]
 
         // Default settato a true se integrazione ansc attiva
         flagAnsc = arcParametroService.isIntegrazioneAnscAttiva()
@@ -103,7 +114,7 @@ class TipoAttoListaViewModel extends TipoAttoListaParentViewModel{
     @Command
     void onSelectFlagAnsc() {
         if (tipoAttoEnum == null) {
-            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_tipo_atto))
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")))
             return
         }
         onRicarica()
@@ -122,10 +133,10 @@ class TipoAttoListaViewModel extends TipoAttoListaParentViewModel{
             if (tipoAttoEnum != null) {
                 apriDettaglio(uriDettaglio, [tipoAttoEnum: tipoAttoEnum, divorzio:divorzio])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

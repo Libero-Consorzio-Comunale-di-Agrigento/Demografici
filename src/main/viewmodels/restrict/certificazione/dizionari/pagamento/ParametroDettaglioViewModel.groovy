@@ -7,7 +7,6 @@ import it.finmatica.de4gsdzk.pagamento.IWspaParametroService
 import it.finmatica.de4gsdzk.pagamento.WspaParametroServiceFactory
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -37,12 +36,12 @@ class ParametroDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Parametro]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Parametro")]
         eList.addAll(ArcParametro.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Parametro)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Parametro"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -74,7 +73,7 @@ class ParametroDettaglioViewModel extends DizionarioDettaglioViewModel {
     void onSalvaRecord() {
         if (dettaglio) {
             WspaParametro c = wspaParametroService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

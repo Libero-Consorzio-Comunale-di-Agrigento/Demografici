@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.statocivile.IstMd4BisRepository
+import it.finmatica.de4gsdzk.GsdService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -10,17 +10,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class IstMd4BisService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
     private final CivValidazioneModelloIstatService civValidazioneModelloIstatService
 
 	private final IstMd4BisRepository istMd4BisRepository
 
-    IstMd4BisService(IstMd4BisRepository istMd4BisRepository, StatoCivileService statoCivileService,
+    IstMd4BisService(IstMd4BisRepository istMd4BisRepository, GsdService gsdService,
                      CivValidazioneModelloIstatService civValidazioneModelloIstatService) {
 
         this.istMd4BisRepository = istMd4BisRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
         this.civValidazioneModelloIstatService = civValidazioneModelloIstatService
 	}
 
@@ -42,7 +42,7 @@ class IstMd4BisService {
 		validaDati(obj)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su ISTM4B per id " + obj.id)
 		return  istMd4BisRepository.save(obj)

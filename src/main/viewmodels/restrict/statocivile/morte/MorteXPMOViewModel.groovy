@@ -2,12 +2,12 @@ package restrict.statocivile.morte
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ExportService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametro
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.export.ExportObject
 import it.finmatica.de4gsdzk.statocivile.CivMorte
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarStampaAttributes
 import org.zkoss.bind.annotation.Command
@@ -18,6 +18,7 @@ import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import restrict.statocivile.AbstractStampaAttiListaViewModel
 
@@ -45,7 +46,7 @@ class MorteXPMOViewModel extends AbstractStampaAttiListaViewModel {
     private ArcParametroService arcParametroService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) window) {
 
@@ -56,21 +57,21 @@ class MorteXPMOViewModel extends AbstractStampaAttiListaViewModel {
 
         ricerca = new RicercaAttoStampa(ETipoAtto.MOR)
 
-        List<Map<String, String>> eList = [Etichette.XPMO_Elenco_Morti, Etichette.Cognome_Referente, Etichette.Nome_Referente,
-                                           Etichette.Data, Etichette.Numero_Richiesta, Etichette.Cognome_Nome, Etichette.Ricerca_per,
-                                           Etichette.Numero_Protocollo_Anno, Etichette.Estremi_Atto,
-                                           EtichetteMessaggi.Ask_Estremi_Protocollo_Incompleti, Etichette.Cancella,
-                                           EtichetteMessaggi.Compilare_estremi_atto, EtichetteMessaggi.Compilare_estremi_data_registrazione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("XPMO_Elenco_Morti"), Etichette.getEtichetta("Cognome_Referente"), Etichette.getEtichetta("Nome_Referente"),
+                                           Etichette.getEtichetta("Data"), Etichette.getEtichetta("Numero_Richiesta"), Etichette.getEtichetta("Cognome_Nome"), Etichette.getEtichetta("Ricerca_per"),
+                                           Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("Estremi_Atto"),
+                                           Etichette.getEtichetta("Ask_Estremi_Protocollo_Incompleti"), Etichette.getEtichetta("Cancella"),
+                                           Etichette.getEtichetta("Compilare_estremi_atto"), Etichette.getEtichetta("Compilare_estremi_data_registrazione")]
         eList.addAll(RicercaAttoStampa.etichetteRicercaStampaDesc)
         eList.addAll(CivMorte.etichetteDomain)
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.XPMO_Elenco_Morti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("XPMO_Elenco_Morti"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaUffici = [null] + statoCivileService.listUffici()
+        listaUffici = [null] + gsdService.listUffici()
 
         caricaRichiesta()
     }
@@ -84,9 +85,9 @@ class MorteXPMOViewModel extends AbstractStampaAttiListaViewModel {
 
         List<Map<String, Object>> l = []
         try{
-            l = statoCivileService.listXPMO(ricercaPerAtto, (RicercaAttoStampa)ricerca)
+            l = gsdService.listXPMO(ricercaPerAtto, (RicercaAttoStampa)ricerca)
             if ( (l?:[]).isEmpty() ) {
-                Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
         } catch (CampoMandatoryRuntimeException ex) {
             Messagebox.show((getEtichetta(ex.getEtichetta())?:ex.getMessage()), msgTitle, Messagebox.OK, Messagebox.ERROR)
@@ -124,7 +125,7 @@ class MorteXPMOViewModel extends AbstractStampaAttiListaViewModel {
     void esporta(ETipoFile tipo) {
         if (tipo == ETipoFile.XML) {
             if (!protocollo.anno || !protocollo.numero) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Estremi_Protocollo_Incompleti), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Estremi_Protocollo_Incompleti")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                         new org.zkoss.zk.ui.event.EventListener() {
                             void onEvent(Event e) {
                                 if (Messagebox.ON_YES.equals(e.getName())) {
@@ -157,7 +158,8 @@ class MorteXPMOViewModel extends AbstractStampaAttiListaViewModel {
         //log.debug("ANAGRAFICHE DECESSO: {}", anagrafiche)
 
         ExportObject eo = new ExportObject("decesso", null, null, [protocollo: protocollo, richiesta: richiesta, anagrafiche: anagrafiche], null, null)
-        exportService.export(tipo, eo, "DECEDUTI", [cognomeReferente: richiesta.cognome?:null, nomeReferente: richiesta.nome?:null])
+        InputStream exportStream = exportService.export(tipo, eo, [cognomeReferente: richiesta.cognome?:null, nomeReferente: richiesta.nome?:null])
+        Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename("DECEDUTI", tipo))
 
         updateRichiesta()
     }

@@ -2,8 +2,15 @@ package restrict.statocivile.dizionari.tipoAtto
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdEtichettaService
-import it.finmatica.de4gsdzk.statocivile.*
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazione
+import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazioneService
+import it.finmatica.de4gsdzk.statocivile.CivNotaFormula
+import it.finmatica.de4gsdzk.statocivile.CivTestoFormula
+import it.finmatica.de4gsdzk.utils.ETipoAnnotazione
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.ETipoOperazione
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarDettaglioAttributes
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -35,14 +42,14 @@ class FormulaComposizioneDettaglioViewModel extends AbstractDettaglioViewModel
     private CivFormulaAnnotazioneService civFormulaAnnotazioneService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("id") String id, @ExecutionArgParam("tipoAttoEnum") ETipoAtto tipoAttoEnum){
         self = w
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Funzione_non_abilitata, Etichette.Formula_Composizione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Formula_Composizione")]
         eList.addAll(etichetteDettaglioDefault)
 
         eList.addAll(CivTestoFormula.etichetteDomain)
@@ -61,7 +68,7 @@ class FormulaComposizioneDettaglioViewModel extends AbstractDettaglioViewModel
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Formula_Composizione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formula_Composizione"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -91,9 +98,9 @@ class FormulaComposizioneDettaglioViewModel extends AbstractDettaglioViewModel
 
     private void caricaVariabili() {
         if (dettaglio){
-            setListaStringhe(statoCivileService.listVariabili(CivTestoFormula.class, dettaglio.tipoAtto), getEtichetta(Etichette.Variabili_Cerca))
+            setListaStringhe(gsdService.listVariabili(CivTestoFormula.class, dettaglio.tipoAtto), getEtichetta(Etichette.getEtichetta("Variabili_Cerca")))
         } else {
-            setListaStringhe([], getEtichetta(Etichette.Variabili_Cerca))
+            setListaStringhe([], getEtichetta(Etichette.getEtichetta("Variabili_Cerca")))
         }
     }
 
@@ -101,14 +108,14 @@ class FormulaComposizioneDettaglioViewModel extends AbstractDettaglioViewModel
         if (saveRecordEnabled && dettaglio && userModifyEnabled) {
             salvaFormula()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     void salvaFormula(){
         if (dettaglio){
             CivFormulaAnnotazione cfa = civFormulaAnnotazioneService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(cfa.id)
         }
     }

@@ -24,12 +24,12 @@ class RegistrazioneAnnotazioniViewModel extends AbstractTabNavigatorViewModel {
 
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Comune, Etichette.Altro_comune]
+        List<Map> eList = [Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Altro_comune")]
 
         doInit(w, eList)
 
         ArcComune comune = arcComuneBaseService.getComuneCliente()
-        comuneClienteLabel = getEtichetta(etichette, Etichette.Comune) + " " + comune.descrizioneComune
+        comuneClienteLabel = getEtichetta(etichette, Etichette.getEtichetta("Comune")) + " " + comune.descrizioneComune
 
         resize()
     }

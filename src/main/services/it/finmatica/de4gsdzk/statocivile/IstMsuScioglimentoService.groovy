@@ -1,9 +1,9 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.IstMsuScioglimentoRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class IstMsuScioglimentoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivUnioneCivileService civUnioneCivileService
 
@@ -20,11 +20,11 @@ class IstMsuScioglimentoService {
 
 	private final IstMsuScioglimentoRepository istMsuScioglimentoRepository
 
-    IstMsuScioglimentoService(IstMsuScioglimentoRepository istMsuScioglimentoRepository, StatoCivileService statoCivileService,
-							  CivUnioneCivileService civUnioneCivileService, CivValidazioneModelloIstatService civValidazioneModelloIstatService) {
+    IstMsuScioglimentoService(IstMsuScioglimentoRepository istMsuScioglimentoRepository, GsdService gsdService,
+                              CivUnioneCivileService civUnioneCivileService, CivValidazioneModelloIstatService civValidazioneModelloIstatService) {
 
 		this.istMsuScioglimentoRepository = istMsuScioglimentoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civUnioneCivileService = civUnioneCivileService
 		this.civValidazioneModelloIstatService = civValidazioneModelloIstatService
 	}
@@ -49,13 +49,13 @@ class IstMsuScioglimentoService {
 		CivUnioneCivile uci = civUnioneCivileService.get(pkAtto, [:])
 		if (uci.hasModelloSDSU && (obj.is6su() || obj.is12su()) ){
 			if (obj.tipoAccordo == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
 			}
 		}
 		civValidazioneModelloIstatService.checkDatiProvvedimento(obj)
 		// Dati matrimonio
         if ( (obj.comuneMatUci?.codice == null) || (obj.comuneMatUci?.codiceProvincia == null) || (obj.dataMatUci == null) ) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
         }
 	}
 
@@ -63,7 +63,7 @@ class IstMsuScioglimentoService {
 		validaDati(obj, pkAtto)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		return  istMsuScioglimentoRepository.save(obj)
 	}

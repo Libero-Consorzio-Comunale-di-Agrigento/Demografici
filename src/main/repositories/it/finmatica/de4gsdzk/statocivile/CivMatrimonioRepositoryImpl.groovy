@@ -122,7 +122,10 @@ class CivMatrimonioRepositoryImpl implements CivMatrimonioCustomRepository {
         }
 
         if (params?.atto != null){
-            predicates.add(cb.equal(root.get("atto"), params.atto))
+            predicates.add(cb.or(
+                cb.equal(root.get("atto"), params.atto),
+                cb.equal(root.get("numeroUnico"), params.atto)
+            ))
         }
 
         if (params?.dataMatrimonio){

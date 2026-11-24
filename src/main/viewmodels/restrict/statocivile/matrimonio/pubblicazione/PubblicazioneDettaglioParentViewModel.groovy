@@ -1,6 +1,7 @@
 package restrict.statocivile.matrimonio.pubblicazione
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.archivi.ArcComune
@@ -27,7 +28,7 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
     List<Map> listaDichiarante = []
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivPubblicazioneService civPubblicazioneService
@@ -42,9 +43,9 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
 
         List<Map> eList = []
         eList.addAll(CivPubblicazione.etichetteDomain)
-        eList.addAll([Etichette.Comune, Etichette.otto, Etichette.Comune_Atto, Etichette.Sposo, Etichette.Sposa, Etichette.Dati_Certificato,
-                      Etichette.Dati_Affissione, Etichette.Documenti_presentati, Etichette.Comuni_pubblicazione,
-                      Etichette.durata_giorni_pubblicazione, Etichette.Articolo_Certificato_rilasciato, Etichette.Legge_Certificato_rilasciato])
+        eList.addAll([Etichette.getEtichetta("Comune"), Etichette.getEtichetta("otto"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Sposo"), Etichette.getEtichetta("Sposa"), Etichette.getEtichetta("Dati_Certificato"),
+                      Etichette.getEtichetta("Dati_Affissione"), Etichette.getEtichetta("Documenti_presentati"), Etichette.getEtichetta("Comuni_pubblicazione"),
+                      Etichette.getEtichetta("durata_giorni_pubblicazione"), Etichette.getEtichetta("Articolo_Certificato_rilasciato"), Etichette.getEtichetta("Legge_Certificato_rilasciato")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivMargine.etichetteDomain)
@@ -52,11 +53,11 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
         eList.addAll(CivDocumentoPubblicazione.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Dati_Matrimonio, Etichette.Richiedenti, Etichette.Documenti])
+        eList.addAll([Etichette.getEtichetta("Dati_Matrimonio"), Etichette.getEtichetta("Richiedenti"), Etichette.getEtichetta("Documenti")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_RICHIEDENTI, Etichette.SEZIONE_DATI_PUBBLICAZIONE,
-                      Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_RICHIEDENTI"), Etichette.getEtichetta("SEZIONE_DATI_PUBBLICAZIONE"),
+                      Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriVerbalePubblicazione()
@@ -76,7 +77,7 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
                             getDCFItem(ETipoDichiarantePubblicazione.SI),
                             getDCFItem(ETipoDichiarantePubblicazione.AL)]
 
-        msgTitle = getEtichetta(Etichette.Verbale_Pubblicazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Verbale_Pubblicazione"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.PUB)
 
         resize()
@@ -137,7 +138,7 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormulePubblicazione(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormulePubblicazione(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -241,11 +242,11 @@ abstract class PubblicazioneDettaglioParentViewModel extends AttoSoggettiDettagl
         switch (margine.documentoPresentatoMatrimonio) {
             case EDocumentoMatrimonio.UNO:
             case EDocumentoMatrimonio.DUE:
-                ArcComune c = statoCivileService.getComuneCliente()
+                ArcComune c = gsdService.getComuneCliente()
                 riempiComune(margine.comuneAffissione1, c)
                 margine.dataAffissioneDa1 = dettaglio.dataPubblicazione
                 margine.dataAffissioneA1 = DataUtils.addDays(dettaglio.dataPubblicazione, 8)
-                margine.giorniAffissione = getEtichetta(Etichette.otto)
+                margine.giorniAffissione = getEtichetta(Etichette.getEtichetta("otto"))
         }
         refreshUi()
     }

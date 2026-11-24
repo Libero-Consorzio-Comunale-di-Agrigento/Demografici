@@ -14,9 +14,9 @@ enum ENaturaDocumento {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case O: return Etichette.Originale
-            case D: return Etichette.Duplicato
-            case A: return Etichette.Annullato
+            case O: return Etichette.getEtichetta("Originale")
+            case D: return Etichette.getEtichetta("Duplicato")
+            case A: return Etichette.getEtichetta("Annullato")
         }
         return null
     }

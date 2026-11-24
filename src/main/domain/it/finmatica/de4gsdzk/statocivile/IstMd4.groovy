@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.IstBaseDomain
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.Etichette
 
@@ -39,7 +39,7 @@ class IstMd4 extends IstBaseDomain {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA", nullable = true)
-    AnaNazionalita nazionalita
+    AnaCittadinanza nazionalita
 
     @Column(name = "NAZIONALITA_ITA", nullable = false)
     Integer nazionalitaItaliana1
@@ -77,7 +77,7 @@ class IstMd4 extends IstBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_morte,
-                                              Etichette.Numero_ordine_scheda, Etichette.Separato_legalmente,
-                                              Etichette.Anno_nascita_coniuge, Etichette.Anno_matrimonio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_morte"),
+                                              Etichette.getEtichetta("Numero_ordine_scheda"), Etichette.getEtichetta("Separato_legalmente"),
+                                              Etichette.getEtichetta("Anno_nascita_coniuge"), Etichette.getEtichetta("Anno_matrimonio")]
 }

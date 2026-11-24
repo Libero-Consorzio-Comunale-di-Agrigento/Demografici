@@ -47,7 +47,7 @@ class CittadinanzaSelectViewModel extends AbstractRecuperoSelectViewModel{
         addEnabled = false
         modifyEnabled = false
 
-        List<Map<String, String>> eList = [Etichette.Atti_Cittadinanza, Etichette.Tipo_recupero]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Atti_Cittadinanza"), Etichette.getEtichetta("Tipo_recupero")]
         eList.addAll(CivCittadinanza.etichetteDomain)
         eList.addAll(CivAttoBaseDomain.etichetteDomain)
         eList.addAll(etichetteRecuperoDefault)
@@ -57,7 +57,7 @@ class CittadinanzaSelectViewModel extends AbstractRecuperoSelectViewModel{
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Atti_Cittadinanza)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atti_Cittadinanza"))
 
         this.tipoAttoEnum = ETipoAtto.CIT
 
@@ -101,7 +101,7 @@ class CittadinanzaSelectViewModel extends AbstractRecuperoSelectViewModel{
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [idCittadinanza: dettaglio.id, idAnagrafe1: dettaglio.idAnagrafe1] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

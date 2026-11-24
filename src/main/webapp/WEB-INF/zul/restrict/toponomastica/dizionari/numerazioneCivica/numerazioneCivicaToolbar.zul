@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <toolbarbutton image="/images/icon/action/22x22/add.png"
+                   tooltiptext="@load(vm.etichette['inserisci_tooltip'])"
+                   disabled="@load(not vm.popolaEnabled)"
+                   popup="popolaMenu"/>
+
+    <menupopup id="popolaMenu">
+        <menuitem label="@load(vm.etichette['Popola'])"
+                  disabled="@load(not vm.popolaEnabled)"
+                  onClick="@command('onPopola')"/>
+    </menupopup>
+</zk>

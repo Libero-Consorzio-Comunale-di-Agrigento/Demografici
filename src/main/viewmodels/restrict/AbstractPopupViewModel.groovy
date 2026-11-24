@@ -20,6 +20,6 @@ abstract class AbstractPopupViewModel extends AbstractCommonViewModel {
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
     }
 
-    static final List<Map<String, String>> etichettePopupDefault = [Etichette.Salva, Etichette.Conferma, Etichette.Chiudi]
+    static final List<Map<String, String>> etichettePopupDefault = [Etichette.getEtichetta("Salva"), Etichette.getEtichetta("Conferma"), Etichette.getEtichetta("Chiudi")]
 
 }

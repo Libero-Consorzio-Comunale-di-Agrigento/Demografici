@@ -8,6 +8,7 @@ import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
 import org.zkoss.bind.annotation.ContextType
@@ -34,6 +35,9 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
     List<ETipoAtto> listaTipiAtto
     ETipoAtto tipoAttoEnum
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @WireVariable
     private CivMinutaService civMinutaService
 
@@ -45,9 +49,12 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
 
         searchEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Effettua_Ricerca, Etichette.Minute, Etichette.Tipi_Atto_associati]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Minute"), Etichette.getEtichetta("Tipi_Atto_associati")]
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_atto])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_atto")])
 
         eList.addAll(CivMinuta.etichetteDomain)
 
@@ -57,13 +64,21 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Minute)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Minute"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
         resize()
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")), SortUtils.codiceAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), SortUtils.codiceDesc)])
+
+        selectedOrder = listaOrder[0]
+
     }
 
     void caricaLista() {
@@ -79,7 +94,7 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
         Page<CivMinuta> p = null
 
         if (tipoAttoEnum != null){
-            PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE))
+            PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
             p = civMinutaService.listAllByTipoAttoAndDescrizioneLike(new Integer(tipoAttoEnum.valore), SqlUtils.beginsAndEndsLike(filtro), pr)
 
             // carica sotto lista
@@ -90,7 +105,7 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
                 l.add(new Tuple2(m, listaTipiAtto))
             }
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
 
         return new Paginazione(l, p?.getTotalElements()?:0)
@@ -109,10 +124,10 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
             if (tipoAttoEnum != null) {
                 apriDettaglio(getUriDettaglio(), [tipoAttoEnum: tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -121,10 +136,10 @@ class MinutaListaViewModel extends DizionarioListaViewModel{
             if (dettaglio.first.tipoAtto.intValue() == tipoAttoEnum?.valore) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.first.id, tipoAttoEnum: tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

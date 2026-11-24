@@ -4,8 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.pagamento.error.InvioPagamentoRuntimeException
-import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviatoRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Funzioni
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
@@ -14,14 +13,14 @@ import org.springframework.data.domain.PageRequest
 @Slf4j
 abstract class WspaPagamentoInviatoService {
 
-    protected final StatoCivileService statoCivileService
+    protected final GsdService gsdService
     protected final UtenteCustomService utenteCustomService
     private final WspaPagamentoInviatoRepository wspaPagamentoInviatoRepository
 
-    WspaPagamentoInviatoService(StatoCivileService statoCivileService,
+    WspaPagamentoInviatoService(GsdService gsdService,
                                 UtenteCustomService utenteCustomService,
                                 WspaPagamentoInviatoRepository wspaPagamentoInviatoRepository) {
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.utenteCustomService = utenteCustomService
         this.wspaPagamentoInviatoRepository = wspaPagamentoInviatoRepository
     }
@@ -40,7 +39,7 @@ abstract class WspaPagamentoInviatoService {
 
     void inviaPagamento(WspaPagamentoInviato wspaPagamentoInviato) {
         try {
-            String response = statoCivileService.invioPagamentoWspa(wspaPagamentoInviato.anno, wspaPagamentoInviato.progressivo, utenteCustomService.loggedUserId)
+            String response = gsdService.invioPagamentoWspa(wspaPagamentoInviato.anno, wspaPagamentoInviato.progressivo, utenteCustomService.loggedUserId)
             if (!TestoUtils.isVuoto(response)) {
                 throw new InvioPagamentoRuntimeException(response)
             }

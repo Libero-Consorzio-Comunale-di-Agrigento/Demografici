@@ -19,22 +19,22 @@ enum ETipoEventoAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NAS: return Etichette.Atto_Nascita
-            case MOR: return Etichette.Atto_Morte
-            case MAT: return Etichette.Atto_Matrimonio
-            case UCI: return Etichette.Atto_Unione_Civile
-            case CIT: return Etichette.Atto_Cittadinanza
+            case NAS: return Etichette.getEtichetta("Atto_Nascita")
+            case MOR: return Etichette.getEtichetta("Atto_Morte")
+            case MAT: return Etichette.getEtichetta("Atto_Matrimonio")
+            case UCI: return Etichette.getEtichetta("Atto_Unione_Civile")
+            case CIT: return Etichette.getEtichetta("Atto_Cittadinanza")
         }
         return null
     }
 
     Map getEtichettaPluralDesc(){
         switch(this) {
-            case NAS: return Etichette.Atti_Nascita
-            case MOR: return Etichette.Atti_Morte
-            case MAT: return Etichette.Atti_Matrimonio
-            case UCI: return Etichette.Atti_Unione_Civile
-            case CIT: return Etichette.Atti_Cittadinanza
+            case NAS: return Etichette.getEtichetta("Atti_Nascita")
+            case MOR: return Etichette.getEtichetta("Atti_Morte")
+            case MAT: return Etichette.getEtichetta("Atti_Matrimonio")
+            case UCI: return Etichette.getEtichetta("Atti_Unione_Civile")
+            case CIT: return Etichette.getEtichetta("Atti_Cittadinanza")
         }
         return null
     }

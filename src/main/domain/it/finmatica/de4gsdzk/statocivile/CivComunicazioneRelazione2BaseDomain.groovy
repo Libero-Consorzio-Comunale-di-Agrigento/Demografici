@@ -27,7 +27,7 @@ class CivComunicazioneRelazione2BaseDomain extends CivComunicazioneRelazioneBase
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Numero_copie, Etichette.Tipo_Individui,
-                                              Etichette.Categoria, Etichette.Tipo_Documento_Fascicolo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Numero_copie"), Etichette.getEtichetta("Tipo_Individui"),
+                                              Etichette.getEtichetta("Categoria"), Etichette.getEtichetta("Tipo_Documento_Fascicolo")]
 
 }

@@ -3,16 +3,15 @@ package it.finmatica.de4gsdzk
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
-import it.finmatica.de4gsdzk.GestioneTestiGsdModelloRepository
 import it.finmatica.de4gsdzk.utils.EAmbito
 import it.finmatica.de4gsdzk.utils.EGruppo
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.ValidationUtils
+import it.finmatica.de4gsdzk.utils.ZipUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.zkoss.zul.Filedownload
 
 @Slf4j
 @Transactional
@@ -50,7 +49,7 @@ class GestioneTestiGsdModelloService {
 
     GestioneTestiGsdModello customSave (GestioneTestiGsdModello obj){
         if (!(obj.descrizione?.trim())){
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
         }
         return save(obj)
     }
@@ -73,10 +72,14 @@ class GestioneTestiGsdModelloService {
         }
     }
 
-    void downloadFromServer(String location){
+
+    byte[] generateZipFromServer(String location) {
         File[] files = ambienteService.getFilesFromServer(location)
-        for (File f : files) {
-            Filedownload.save(f, null)
-        }
+
+        List<ZipUtils.VirtualFile> virtualFiles = files
+            .findAll { it.isFile() }
+            .collect { new ZipUtils.VirtualFile(it.getName(), new FileInputStream(it)) }
+
+        return ZipUtils.zipFiles(virtualFiles)
     }
 }

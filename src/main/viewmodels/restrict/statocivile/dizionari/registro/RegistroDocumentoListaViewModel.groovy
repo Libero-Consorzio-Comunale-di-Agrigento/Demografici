@@ -28,6 +28,9 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
     CivRegistroDocumentiBaseDomain dettaglio
     List<CivRegistroDocumentiBaseDomain> lista
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     List<ETipoDocumento> listaTipiDocumento
     ETipoDocumento tipoDocumento
 
@@ -42,7 +45,7 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
 
         searchEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Tipo_Documento, Etichette.Tipo, Etichette.Registri_Documenti, EtichetteMessaggi.Compilare_tipo_registro]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Registri_Documenti"), Etichette.getEtichetta("Compilare_tipo_registro")]
         eList.addAll(CivRegistroDocumentiUscita.etichetteDomain)
 
         // Aggiungo etichette tipo documento
@@ -52,13 +55,24 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
         // Aggiungo archivio documento
         eList.addAll(Arrays.asList(ETipoArchivioDocumento.values())*.etichettaDesc)
 
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
+
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Registri_Documenti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Registri_Documenti"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")), SortUtils.idAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), SortUtils.idDesc)])
+
+        selectedOrder = listaOrder[0]
 
         resize()
     }
@@ -72,7 +86,7 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging){
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.idAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page<CivRegistroDocumentiBaseDomain> p = civRegistroDocumentiService.listAllByDescrizioneLike(tipoDocumento, SqlUtils.beginsAndEndsLike(filtro), pr)
 
@@ -97,10 +111,10 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
             if (tipoDocumento != null) {
                 apriDettaglio(getUriDettaglio(), [tipoDocumento: tipoDocumento])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_registro), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_registro")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -110,10 +124,10 @@ class RegistroDocumentoListaViewModel extends DizionarioListaViewModel{
                  ((dettaglio instanceof CivRegistroDocumentiEntrata) && tipoDocumento.isEntrata()) ){
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id, tipoDocumento: tipoDocumento])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

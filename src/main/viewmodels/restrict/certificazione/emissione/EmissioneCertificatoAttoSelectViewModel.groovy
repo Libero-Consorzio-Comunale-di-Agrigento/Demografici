@@ -6,8 +6,8 @@ import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
 import it.finmatica.de4gsdzk.certificazione.CerTipoRichiedente
 import it.finmatica.de4gsdzk.certificazione.emissione.EmissioneCertificatoStatoCivileService
-import it.finmatica.de4gsdzk.certificazione.generazione.TipoGenerazioneCertificatoService
 import it.finmatica.de4gsdzk.certificazione.generazione.ETipoGenerazioneCertificato
+import it.finmatica.de4gsdzk.certificazione.generazione.TipoGenerazioneCertificatoService
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
@@ -66,7 +66,7 @@ class EmissioneCertificatoAttoSelectViewModel extends AbstractSelectViewModel {
         addEnabled = false
         modifyEnabled = false
 
-        List<Map> eList = [Etichette.Estremi_Atto, Etichette.Id_Atto_Ansc, Etichette.seleziona_salva_tooltip, Etichette.Chiudi]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Id_Atto_Ansc"), Etichette.getEtichetta("seleziona_salva_tooltip"), Etichette.getEtichetta("Chiudi")]
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
@@ -93,7 +93,7 @@ class EmissioneCertificatoAttoSelectViewModel extends AbstractSelectViewModel {
 
         etichetteCustom = FormUtils.getAttoCustomLabels(tipoAttoEnum, etichette)
 
-        msgTitle = getEtichetta(Etichette.Estremi_Atto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("seleziona_salva_tooltip"))
 
         totalSizeLabel = ""
 
@@ -136,18 +136,20 @@ class EmissioneCertificatoAttoSelectViewModel extends AbstractSelectViewModel {
     @Command
     void onClickSeleziona() {
         if (dettaglio) {
-            ETipoGenerazioneCertificato tipoGenerazioneCertificato = tipoGenerazioneCertificatoService.get(forceGenerazioneGte, tipoCertificato, dettaglio)
-            Events.sendEvent(CustomEvents.ON_CER_EMISSIONE_ATTO_SELECT, self, [attoSelezionato: dettaglio, tipoGenerazioneCertificato: tipoGenerazioneCertificato])
+            if (attoInvioEnabled[dettaglio.id]) {
+                ETipoGenerazioneCertificato tipoGenerazioneCertificato = tipoGenerazioneCertificatoService.get(forceGenerazioneGte, tipoCertificato, dettaglio)
+                Events.sendEvent(CustomEvents.ON_CER_EMISSIONE_ATTO_SELECT, self, [attoSelezionato: dettaglio, tipoGenerazioneCertificato: tipoGenerazioneCertificato])
 
-            if (emissioneCertificatoStatoCivileService.shouldOpenAnnotazioni(tipoGenerazioneCertificato, tipoCertificato, dettaglio)) {
-                openAnnotazioni()
-            } else {
-                Events.sendEvent(CustomEvents.ON_CER_EMISSIONE_COMPLETE, self, [:])
-                onChiudi()
+                if (emissioneCertificatoStatoCivileService.shouldOpenAnnotazioni(tipoGenerazioneCertificato, tipoCertificato, dettaglio)) {
+                    openAnnotazioni()
+                } else {
+                    Events.sendEvent(CustomEvents.ON_CER_EMISSIONE_COMPLETE, self, [:])
+                    onChiudi()
+                }
             }
 
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

@@ -23,31 +23,171 @@
                 <estremiIndividuoFormLabel/>
             </hlayout>
             <orderByBlock/>
-            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)"
-                     nonselectableTags="" vflex="1"
-                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])"
-                     onSelect="@command('onSelectDettaglio')">
-                <listhead>
-                    <listheader label="@load(vm.etichette['Dal'])" width="150px"/>
-                    <listheader label="@load(vm.etichette['Al'])" width="150px"/>
-                    <listheader label="@load(vm.etichette['Descrizione'])"/>
-                </listhead>
-                <template name="model" var="item">
-                    <listitem>
-                        <listcell>
-                            <hlayout>
-                                <dateLabel value="@load(item.dataInizio)"/>
-                                <image src="/images/icon/presentation/16x16/alert.png" tooltiptext="@load(empty item.dataInizio ? '' : c:cat3(vm.etichette['Data_Convenzionale_tooltip'], ' ', c:formatDate(item.dataInizio, 'dd/MM/yyyy')))"
-                                       visible="@load(not empty item.dataInizio and item.flagDataConvenzionale)"/>
-                            </hlayout>
-                        </listcell>
-                        <listcell>
-                            <dateLabel value="@load(item.dataEvento)"/>
-                        </listcell>
-                        <listcell label="@load(item.descrizione)"/>
-                    </listitem>
-                </template>
-            </listbox>
+            <borderlayout vflex="1">
+                <center vflex="1">
+                    <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)"
+                             nonselectableTags="" vflex="1"
+                             emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])"
+                             onSelect="@command('onSelectDettaglio')">
+                        <listhead>
+                            <listheader label="@load(vm.etichette['Dal'])" width="150px"/>
+                            <listheader label="@load(vm.etichette['Al'])" width="150px"/>
+                            <listheader label="@load(vm.etichette['Descrizione'])"/>
+                        </listhead>
+                        <template name="model" var="item">
+                            <listitem>
+                                <listcell>
+                                    <hlayout>
+                                        <dateLabel value="@load(item.dataInizio)"/>
+                                        <image src="/images/icon/presentation/16x16/alert.png"
+                                               tooltiptext="@load(empty item.dataInizio ? '' : c:cat3(vm.etichette['Data_Convenzionale_tooltip'], ' ', c:formatDate(item.dataInizio, 'dd/MM/yyyy')))"
+                                               visible="@load(not empty item.dataInizio and item.flagDataConvenzionale)"/>
+                                    </hlayout>
+                                </listcell>
+                                <listcell>
+                                    <dateLabel value="@load(item.dataEvento)"/>
+                                </listcell>
+                                <listcell label="@load(item.descrizione)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </center>
+                <east size="50%" collapsible="true" splittable="true" open="@load(not empty vm.dettaglio)" autoscroll="true">
+                    <vlayout hflex="1">
+                        <groupbox mold="3d" style="background: #EDEFF5" closable="false" vflex="1">
+                            <caption label="@load(vm.etichette['Dettaglio_Evento'])"/>
+                            <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell>
+                                            <groupbox closable="false">
+                                                <caption label="@load(vm.etichette['Dettaglio_Pratica'])"/>
+                                                <grid sclass="form">
+                                                    <columns>
+                                                        <column width="120px"/>
+                                                        <column/>
+                                                        <column width="120px"/>
+                                                        <column/>
+                                                        <column width="120px"/>
+                                                        <column/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Numero'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel
+                                                                        value="@load(vm.dettaglio.pratica)"
+                                                                        bold="true"/>
+                                                            </cell>
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Anno'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel
+                                                                        value="@load(vm.dettaglio.annoPratica)"
+                                                                        bold="true"/>
+                                                            </cell>
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Data_Registrazione'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <dateLabel value="@load(vm.dettaglio.dataRegistrazione)" bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.comuneIscrizioneAire.codice ne null)">
+                                                            <cell align="right" width="141px">
+                                                                <customLabel value="@load(vm.etichette['Comune_Iscrizione_Aire'])"/>
+                                                            </cell>
+                                                            <cell colspan="3">
+                                                                <comuneLabel
+                                                                        value="@load(vm.dettaglio.comuneIscrizioneAire)"
+                                                                        bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </groupbox>
+                                        </cell>
+                                    </row>
+
+                                    <row visible="@load(vm.dettaglio.provinciaContea ne null or vm.dettaglio.presso ne null or vm.dettaglio.codiceConsolato ne null or vm.dettaglio.codiceTerritorio ne null)">
+                                        <cell>
+                                            <groupbox closable="false">
+                                                <caption label="@load(vm.etichette['Dati_AIRE'])"/>
+                                                <grid sclass="form">
+                                                    <columns>
+                                                        <column width="120px"/>
+                                                        <column/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row visible="@load(vm.dettaglio.provinciaContea ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Provincia_Contea'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel value="@load(vm.dettaglio.provinciaContea)" bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.presso ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Presso'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel value="@load(vm.dettaglio.presso)" bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.codiceConsolato ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Ufficio_Consolare'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel value="@load(c:cat3(vm.dettaglio.codiceConsolato, ' - ', vm.dettaglio.tipoConsolato))" bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.codiceConsolato ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Indirizzo'])"/>
+                                                            </cell>
+                                                            <cell colspan="2">
+                                                                <customLabel
+                                                                        value="@load(vm.dettaglio.indirizzoConsolato)"
+                                                                        bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.codiceConsolato ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Sede'])"/>
+                                                            </cell>
+                                                            <cell colspan="2">
+                                                                <customLabel
+                                                                        value="@load(vm.dettaglio.sedeConsolato)"
+                                                                        bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                        <row visible="@load(vm.dettaglio.codiceTerritorio ne null)">
+                                                            <cell align="right">
+                                                                <customLabel value="@load(vm.etichette['Territorio'])"/>
+                                                            </cell>
+                                                            <cell>
+                                                                <customLabel value="@load(c:cat3(vm.dettaglio.codiceTerritorio, ' - ', vm.dettaglio.territorio))" bold="true"/>
+                                                            </cell>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </groupbox>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+
+                        <templateIdDomain/>
+
+                    </vlayout>
+                </east>
+            </borderlayout>
             <groupbox closable="false" hflex="1">
                 <grid sclass="form">
                     <rows>
@@ -64,13 +204,16 @@
                                 <label value="@load(vm.etichette['Codice_Famiglia'])"/>
                             </cell>
                             <cell align="right">
-                                <customLabel value="@load(empty vm.dettaglio.famiglia?'':vm.dettaglio.famiglia.codice)" bold="true"/>
+                                <customLabel value="@load(empty vm.dettaglio.famiglia?'':vm.dettaglio.famiglia.codice)"
+                                             bold="true"/>
                             </cell>
                             <cell align="right">
                                 <label value="@load(vm.etichette['Progressivo_Eliminazione'])"/>
                             </cell>
                             <cell align="right">
-                                <customLabel value="@load(empty vm.dettaglio.famiglia?'':vm.dettaglio.famiglia.progressivoEliminazione)" bold="true"/>
+                                <customLabel
+                                        value="@load(empty vm.dettaglio.famiglia?'':vm.dettaglio.famiglia.progressivoEliminazione)"
+                                        bold="true"/>
                             </cell>
                         </row>
                     </rows>

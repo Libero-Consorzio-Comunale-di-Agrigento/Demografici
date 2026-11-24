@@ -42,20 +42,20 @@ class ArchivioAnnotazioniPerTipoAttoListaViewModel extends ArchivioAnnotazioniLi
         addEnabled = false
         modifyEnabled = false
 
-        List<Map> eList = [Etichette.Estremi_Atto, Etichette.Estremi_Atto_decrescente, Etichette.Estremi_Atto_crescente,
-                           Etichette.Data_Registrazione, Etichette.Gestione_Annotazioni_Archiviate, Etichette.Per_Tipo_Atto]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Estremi_Atto_decrescente"), Etichette.getEtichetta("Estremi_Atto_crescente"),
+                           Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Gestione_Annotazioni_Archiviate"), Etichette.getEtichetta("Per_Tipo_Atto")]
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_atto])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_atto")])
         // Aggiungo etichette ricerca
         eList.addAll(RicercaAnnotazione.etichetteRicercaAnnDesc)
         doInit(w, eList)
 
-        formLabel = getEtichetta(Etichette.Gestione_Annotazioni_Archiviate)?.toUpperCase() + " - " + getEtichetta(Etichette.Per_Tipo_Atto)?.toUpperCase()
+        formLabel = getEtichetta(Etichette.getEtichetta("Gestione_Annotazioni_Archiviate"))?.toUpperCase() + " - " + getEtichetta(Etichette.getEtichetta("Per_Tipo_Atto"))?.toUpperCase()
 
         onSelectTipoComune()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),        SortUtils.getEstremiAttoDesc()))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),          SortUtils.getEstremiAttoAsc()))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),        SortUtils.getEstremiAttoDesc()))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),          SortUtils.getEstremiAttoAsc()))
 
         selectedOrder = listaOrder[0]
 
@@ -82,7 +82,7 @@ class ArchivioAnnotazioniPerTipoAttoListaViewModel extends ArchivioAnnotazioniLi
 
         if (tipoComune != null) {
             if (tipoAttoEnum == null) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             } else {
                 Map params = [activePage: (usePaging ? activePage : null), pageSize: (usePaging ? pageSize : null),
                               ufficio   : ricercaAnnotazione.ufficio, anno: ricercaAnnotazione.anno, parte: ricercaAnnotazione.parte, serie: ricercaAnnotazione.serie,
@@ -112,7 +112,7 @@ class ArchivioAnnotazioniPerTipoAttoListaViewModel extends ArchivioAnnotazioniLi
                 p = civAnnotazioneAttoService.list(params)
             }
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_comune), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_comune")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
 
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
@@ -130,11 +130,11 @@ class ArchivioAnnotazioniPerTipoAttoListaViewModel extends ArchivioAnnotazioniLi
                 CivAttoBaseDomain abd = civAttoService.getAttoFromAnnotazione(aa.getTipoAtto(), aa.ufficio, aa.anno, aa.atto, aa.parte, aa.serie)
                 s = abd.getNominativoEstremiAtto(aa.tipoFormula, aa.tipoAttoAnnotazione)
                 if (aa.isAttoDiAltroComune()){
-                    s = s + " " + getEtichetta(Etichette.Generata_da) + " " + getEtichettaEnum(abd.getTipoAttoEnum()) + " "
+                    s = s + " " + getEtichetta(Etichette.getEtichetta("Generata_da")) + " " + getEtichettaEnum(abd.getTipoAttoEnum()) + " "
                 }
             } catch (EmptyResultDataAccessException e){
                 log.error(e.getMessage())
-                s = ("*** " + getEtichetta(Etichette.Atto_non_in_Archivio) + " ***")
+                s = ("*** " + getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")) + " ***")
             }
         }
         return s

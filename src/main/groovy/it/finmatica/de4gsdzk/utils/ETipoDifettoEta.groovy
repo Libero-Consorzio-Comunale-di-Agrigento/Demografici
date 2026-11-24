@@ -16,10 +16,10 @@ enum ETipoDifettoEta {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case D1: return Etichette.Nessun_difetto
-            case D2: return Etichette.Difetto_sposo
-            case D3: return Etichette.Difetto_sposa
-            case D4: return Etichette.Difetto_entrambi
+            case D1: return Etichette.getEtichetta("Nessun_difetto")
+            case D2: return Etichette.getEtichetta("Difetto_sposo")
+            case D3: return Etichette.getEtichetta("Difetto_sposa")
+            case D4: return Etichette.getEtichetta("Difetto_entrambi")
         }
         return null
     }

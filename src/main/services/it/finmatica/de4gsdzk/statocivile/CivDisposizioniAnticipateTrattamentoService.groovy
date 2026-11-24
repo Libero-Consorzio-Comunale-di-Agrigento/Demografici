@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.NumeroProtocolloException
-import it.finmatica.de4gsdzk.statocivile.CivDisposizioniAnticipateTrattamentoRepository
 import it.finmatica.de4gsdzk.utils.ETipoSN
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,16 +17,16 @@ class CivDisposizioniAnticipateTrattamentoService {
 
     private final CivDisposizioniAnticipateTrattamentoRepository civDisposizioniAnticipateTrattamentoRepository
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     private final CivNumerazioneDocumentiEntrataService civNumerazioneDocumentiEntrataService
 
     CivDisposizioniAnticipateTrattamentoService(CivDisposizioniAnticipateTrattamentoRepository civDisposizioniAnticipateTrattamentoRepository,
                                                 CivNumerazioneDocumentiEntrataService civNumerazioneDocumentiEntrataService,
-                                                StatoCivileService statoCivileService) {
+                                                GsdService gsdService) {
         this.civDisposizioniAnticipateTrattamentoRepository = civDisposizioniAnticipateTrattamentoRepository
         this.civNumerazioneDocumentiEntrataService = civNumerazioneDocumentiEntrataService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     CivDisposizioniAnticipateTrattamento get(Integer id) {
@@ -37,18 +37,18 @@ class CivDisposizioniAnticipateTrattamentoService {
         ValidationUtils.validaDatiObbligatori(obj)
 
         if (obj.tipoAttoDAT == null) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_tipo_atto)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_tipo_atto"))
         }
         if ( (obj.tipoAttoDAT.id.intValue() == 99) && ( (obj.noteTipoAtto?:"") == "")){
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_note)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_note"))
         }
 
         if (obj.consensoInvioDAT == null) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Consenso_Invio_DAT)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Consenso_Invio_DAT"))
         }
 
         if ( (obj.consensoInvioDAT == ETipoSN.N) && (!((obj.reperibilitaDAT?:"").trim())) ){
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Reperibilita_DAT)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Reperibilita_DAT"))
         }
 
         if ( (!((obj.disponente.cognome?:"").trim())) ||
@@ -58,30 +58,30 @@ class CivDisposizioniAnticipateTrattamentoService {
              (!((obj.disponente.codiceFiscale?:"").trim())) ||
              (obj.disponente.comuneNascita.codice == null) ||
              (obj.disponente.comuneNascita.codiceProvincia == null) ) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Disponente_DAT)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Disponente_DAT"))
         }
 
         if ( obj.disponente.cognome || obj.disponente.nome ) {
             if (obj.disponente.consensoTrattamento == null) {
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Consenso_Disponente)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Consenso_Disponente"))
             }
         }
 
         if ( obj.fiduciario1.cognome || obj.fiduciario1.nome ){
             if (obj.fiduciario1.sottoscrittoDAT == null){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Sottoscrizione_DAT_Fiduciario_1)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Sottoscrizione_DAT_Fiduciario_1"))
             }
             if (obj.fiduciario1.consensoTrattamento == null){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Consenso_Fiduciario_1)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Consenso_Fiduciario_1"))
             }
         }
 
         if ( obj.fiduciario2.cognome || obj.fiduciario2.nome ){
             if (obj.fiduciario2.sottoscrittoDAT == null){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Sottoscrizione_DAT_Fiduciario_2)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Sottoscrizione_DAT_Fiduciario_2"))
             }
             if (obj.fiduciario2.consensoTrattamento == null){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_Consenso_Fiduciario_2)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_Consenso_Fiduciario_2"))
             }
         }
 
@@ -98,7 +98,7 @@ class CivDisposizioniAnticipateTrattamentoService {
 
         if (obj.id == null) {
             // solo in caso di inserimento
-            obj.id = statoCivileService.getIntegerIdFromSequence(obj)
+            obj.id = gsdService.getIntegerIdFromSequence(obj)
         }
 
         if (nde){

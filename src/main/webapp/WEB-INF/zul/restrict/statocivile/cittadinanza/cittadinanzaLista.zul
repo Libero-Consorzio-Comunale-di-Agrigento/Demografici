@@ -32,7 +32,7 @@
 				<listheader label="@load(vm.etichette['Sesso'])" 					width="5%"/>
 				<listheader label="@load(vm.etichette['Data'])" 	    			width="7%"/>
 				<listheader label="@load(vm.etichette['Anno'])" 				    width="5%"/>
-				<listheader label="@load(vm.etichette['Numero_Atto'])" 			    width="5%"/>
+				<listheader label="@load(vm.etichette['Numero'])" 			    width="5%"/>
 				<listheader label="@load(vm.etichette['Ufficio'])" 				    width="5%"/>
 				<zk if="${vm.anscOn}">
 					<listheader label="@load(vm.etichette['Id_Atto_Ansc'])" 		width="160px"/>
@@ -59,20 +59,20 @@
 							   sclass="@load(c:getAttoCellSclass(item))"/>
 					</listcell>
 					<listcell>
-						<label value="@load(item.anno)"
+						<label value="@load(item.attoLista.anno)"
 							   sclass="@load(c:getAttoCellSclass(item))"/>
 					</listcell>
 					<listcell>
-						<label value="@load(item.atto lt 0? vm.etichette['Provvisorio']: item.atto)"
+						<label value="@load(item.attoLista.atto lt 0? vm.etichette['Provvisorio']: item.attoLista.atto)"
 							   sclass="@load(c:getAttoCellSclass(item))"/>
 					</listcell>
 					<listcell>
-						<label value="@load(item.ufficio)"
+						<label value="@load(item.attoLista.ufficio)"
 							   sclass="@load(c:getAttoCellSclass(item))"/>
 					</listcell>
 					<zk if="${vm.anscOn}">
 						<listcell>
-							<label value="@load(item.idAttoAnsc)"
+							<label value="@load(item.attoLista.idAttoAnsc)"
 								   sclass="@load(c:getAttoCellSclass(item))"/>
 						</listcell>
 					</zk>

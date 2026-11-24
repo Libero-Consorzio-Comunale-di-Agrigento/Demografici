@@ -63,7 +63,7 @@ class WspaPagamentoInviato extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Anno, Etichette.Progressivo, Etichette.Data, Etichette.Numero, Etichette.Totale_Diritti,
-                                              Etichette.Codice_Fiscale, Etichette.Inviato, Etichette.Chiave, Etichette.Note, Etichette.Data_Invio, Etichette.Stato_pagamento]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Progressivo"), Etichette.getEtichetta("Data"), Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Totale_Diritti"),
+                                             Etichette.getEtichetta("Codice_Fiscale"), Etichette.getEtichetta("Inviato"), Etichette.getEtichetta("Chiave"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Data_Invio"), Etichette.getEtichetta("Stato_pagamento")]
 
 }

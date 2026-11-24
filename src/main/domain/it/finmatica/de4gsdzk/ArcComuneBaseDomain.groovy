@@ -49,6 +49,10 @@ abstract class ArcComuneBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static List<Map> etichetteDomain = [Etichette.Codice_Provincia, Etichette.Codice_Comune, Etichette.Denominazione_Comune, Etichette.Sigla_Provincia, Etichette.Catasto,
-                                        Etichette.Valido_Dal, Etichette.Al, Etichette.Comune, Etichette.Soppresso, Etichette.Il, Etichette.Comune]
+    static List<Map> etichetteDomain = [Etichette.getEtichetta("Codice_Provincia"), Etichette.getEtichetta("Codice_Comune"), Etichette.getEtichetta("Denominazione_Comune"),
+                                        Etichette.getEtichetta("Sigla_Provincia"), Etichette.getEtichetta("Catasto"),
+                                        Etichette.getEtichetta("Valido_Dal"), Etichette.getEtichetta("Al"),
+                                        Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Soppresso"),Etichette.getEtichetta("Escludi_Soppressi"),
+                                        Etichette.getEtichetta("Il"), Etichette.getEtichetta("Comune"),
+                                        Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Denominazione")]
 }

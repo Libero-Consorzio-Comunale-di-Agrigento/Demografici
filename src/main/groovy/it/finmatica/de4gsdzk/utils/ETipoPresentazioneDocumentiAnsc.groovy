@@ -15,9 +15,9 @@ enum ETipoPresentazioneDocumentiAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PR: return Etichette.Prodotti
-            case AC: return Etichette.Acquisiti
-            case VI: return Etichette.Visionati
+            case PR: return Etichette.getEtichetta("Prodotti")
+            case AC: return Etichette.getEtichetta("Acquisiti")
+            case VI: return Etichette.getEtichetta("Visionati")
         }
         return null
     }

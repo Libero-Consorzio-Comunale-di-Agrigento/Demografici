@@ -67,9 +67,9 @@ class CerServizioComunale extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Nome, Etichette.Descrizione, Etichette.Indirizzo, Etichette.Email, Etichette.PEC,
-                                              Etichette.Numero_telefono,
-                                              Etichette.Responsabile, Etichette.Orari1, Etichette.Orari2,
-                                              Etichette.Orari3, Etichette.Orari4, Etichette.Orari5, Etichette.Orari6,
-                                              Etichette.Orari7]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("Email"), Etichette.getEtichetta("PEC"),
+                                              Etichette.getEtichetta("Numero_telefono"),
+                                              Etichette.getEtichetta("Responsabile"), Etichette.getEtichetta("Orari1"), Etichette.getEtichetta("Orari2"),
+                                              Etichette.getEtichetta("Orari3"), Etichette.getEtichetta("Orari4"), Etichette.getEtichetta("Orari5"), Etichette.getEtichetta("Orari6"),
+                                              Etichette.getEtichetta("Orari7")]
 }

@@ -2,7 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.GsdBaseDomain
 import it.finmatica.de4gsdzk.ISoggettoCollegato
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.*
 
@@ -107,7 +107,7 @@ class CivSoggettoCollegato extends GsdBaseDomain implements ISoggettoCollegato{
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA", nullable = true)
-    AnaNazionalita nazionalita
+    AnaCittadinanza nazionalita
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TIPO_SOGGETTO", nullable = false)
@@ -160,8 +160,8 @@ class CivSoggettoCollegato extends GsdBaseDomain implements ISoggettoCollegato{
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome, Etichette.Nome, Etichette.Sesso,
-                                              Etichette.Data_Nascita, Etichette.Ruolo, Etichette.Qualifica]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Sesso"),
+                                              Etichette.getEtichetta("Data_Nascita"), Etichette.getEtichetta("Ruolo"), Etichette.getEtichetta("Qualifica")]
 
 
 }

@@ -2,6 +2,7 @@ package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.anagrafe.AnaDettaglioProvvedimento
 import it.finmatica.de4gsdzk.anagrafe.AnaProvvedimentoAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaProvvedimentoAnagrafeService
 import it.finmatica.de4gsdzk.anagrafe.AnaVariazioneAnagrafe
@@ -30,6 +31,8 @@ class ProvvedimentoListaViewModel extends AbstractListaViewModel implements Trai
     List<OrderBy> listaOrder = []
     OrderBy selectedOrder
 
+    boolean provvedimento = true
+
     @WireVariable
     private AnaProvvedimentoAnagrafeService anaProvvedimentoAnagrafeService
 
@@ -45,26 +48,27 @@ class ProvvedimentoListaViewModel extends AbstractListaViewModel implements Trai
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Provvedimenti]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Provvedimenti")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaVariazioneAnagrafe.etichetteDomain)
+        eList.addAll(AnaDettaglioProvvedimento.etichetteDomain)
 
         // Aggiungo etichette della lista
         eList.addAll(etichetteListaDefault)
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato, Etichette.Ordina_per])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato"), Etichette.getEtichetta("Ordina_per")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Provvedimenti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Provvedimenti"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento), SortUtils.dataAnaEventoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento")), SortUtils.dataAnaEventoAsc))
         selectedOrder = listaOrder[0]
 
         totalSizeLabel = ""

@@ -1,0 +1,2357 @@
+{
+    "apr4": {
+        "dueComponenti": {
+            "G2": {
+                "description": "N.D'ORD.",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_1",
+                "transform": "padLeft2SingleDigit",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Camponumerico1[0]"
+            },
+            "G3": {
+                "description": "N.D'ORD.",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_1",
+                "transform": "padLeft2SingleDigit",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Camponumerico1[1]"
+            },
+            "M5": {
+                "description": "ALTRA CONDIZIONE NON PROFESSIONALE            5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_5",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[34]"
+            },
+            "M6": {
+                "description": "PENSIONATO / RITIRATO DAL LAVORO                     4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_4",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[35]"
+            },
+            "M7": {
+                "description": "DISOCCUPATO / IN CERCA DI PRIMA OCCUPAZIONE             3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_3",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[36]"
+            },
+            "M8": {
+                "description": "STUDENTE                                2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_2",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[37]"
+            },
+            "M9": {
+                "description": "CASALINGA                               1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_1",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[38]"
+            },
+            "N8": {
+                "description": "DOTTORATO     6",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_6",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[46]"
+            },
+            "N9": {
+                "description": "LAUREA      5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_5",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[47]"
+            },
+            "O0": {
+                "description": "LAUREA TRIENNALE     4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_4",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[48]"
+            },
+            "O1": {
+                "description": "DIPLOMA   3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_3",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[49]"
+            },
+            "O3": {
+                "description": "LIC. MEDIA        2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_2",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[50]"
+            },
+            "O4": {
+                "description": "NESSUN TITOLO/LIC. ELEMENTARE  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_1",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[51]"
+            },
+            "O8": {
+                "description": "OPERIAIO E ASSIMILATI                                         4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_4",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[8]"
+            },
+            "O9": {
+                "description": "COADIUVANTE                                                 5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_5",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[9]"
+            },
+            "R0": {
+                "description": "IMPRENDITORE LIBERO PROFESSIONISTA                1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_1",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[5]"
+            },
+            "R1": {
+                "description": "DIRIGENTE/IMPIEGATO                         2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_2",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[6]"
+            },
+            "R2": {
+                "description": "LAVORATORE IN PROPRIO                             3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_3",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[7]"
+            },
+            "A0": {
+                "description": "COGNOME",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[0]"
+            },
+            "A6": {
+                "description": "COGNOME",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_2",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[15]"
+            },
+            "A5": {
+                "description": "NOME",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_3",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[14]"
+            },
+            "A9": {
+                "description": "NOME",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[1]"
+            },
+            "B8": {
+                "description": "CODICE FISCALE E SANITARIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[0]"
+            },
+            "C2": {
+                "description": "CODICE FISCALE O SANITARIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[13]"
+            },
+            "A8": {
+                "description": "REL PARENTELA (COD)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_0,p2_1",
+                "transform": "padLeft2SingleDigit",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[17]"
+            },
+            "B0": {
+                "description": "REL PARENTELA (COD)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_0,p2_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[2]"
+            },
+            "F2": {
+                "description": "LUOGO DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[0]"
+            },
+            "G0": {
+                "description": "LUOGO DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_3",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[8]"
+            },
+            "G4": {
+                "description": "COD. PROVINCIA O STATO ESTERO DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_4",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Camponumerico2[0]"
+            },
+            "G7": {
+                "description": "COD. PROVINCIA O STATO ESTERO DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_4",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Camponumerico2[3]"
+            },
+            "G5": {
+                "description": "COD. COMUNE DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_5",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Camponumerico2[1]"
+            },
+            "G6": {
+                "description": "COD. COMUNE DI NASCITA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_5",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Camponumerico2[2]"
+            },
+            "C1": {
+                "description": "DATA DI NASCITA (a)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_2",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[12]"
+            },
+            "C3": {
+                "description": "DATA DI NASCITA (a)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p2_2",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[1]"
+            },
+            "C4": {
+                "description": "DATA DI MATRIMONIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[2]"
+            },
+            "C8": {
+                "description": "DATA DI RILASCIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_6",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[6]"
+            },
+            "F3": {
+                "description": "N.           P.         S.         UFF.     ANNO (b)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[1]"
+            },
+            "F9": {
+                "description": "N.           P.         S.         UFF.     ANNO (B)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[7]"
+            },
+            "F4": {
+                "description": "DEL COMUNE DI",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[2]"
+            },
+            "F8": {
+                "description": "DEL COMUNE DI",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_2",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[6]"
+            },
+            "F5": {
+                "description": "N.           P.         S.         UFF.",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[3]"
+            },
+            "K8": {
+                "description": "LIC. MEDIA        2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_2",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[19]"
+            },
+            "L2": {
+                "description": "DOTTORATO     6",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_6",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[22]"
+            },
+            "L7": {
+                "description": "CONIUGATO/A      2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_6",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[27]"
+            },
+            "M0": {
+                "description": "CONIUGATO/A      2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_6",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[2]"
+            },
+            "L5": {
+                "description": "DIVORZIATO/A         4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_8",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[25]"
+            },
+            "N1": {
+                "description": "DIVORZIATO/A          4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_8",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[3]"
+            },
+            "L6": {
+                "description": "VEDOVO/A          3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_7",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[26]"
+            },
+            "O2": {
+                "description": "VEDOVO/A          3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_7",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[4]"
+            },
+            "A4": {
+                "description": "COGNOME E NOME DEL CONIUGE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[13]"
+            },
+            "B1": {
+                "description": "COGNOME E NOME DEL CONIUGE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[3]"
+            },
+            "A3": {
+                "description": "LUOGO DI MATRIMONIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_2",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[12]"
+            },
+            "B2": {
+                "description": "LUOGO DI MATRIMONIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[4]"
+            },
+            "C0": {
+                "description": "DATA DI MATRIMONIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[11]"
+            },
+            "A2": {
+                "description": "LUOGO MORTE CONIUGE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[11]"
+            },
+            "B3": {
+                "description": "LUOGO MORTE CONIUGE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[5]"
+            },
+            "B9": {
+                "description": "DATA DI DIVORZIO / MORTE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_2",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[10]"
+            },
+            "C5": {
+                "description": "DATA DI DIVORZIO / MORTE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_2",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[3]"
+            },
+            "F6": {
+                "description": "N.           P.         S.         UFF.     ANNO - LUOGO TRASCR. MATRIMONIO/MORTE/DIVORZIO (c)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_3",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[4]"
+            },
+            "G1": {
+                "description": "N.           P.         S.         UFF.     ANNO - LUOGO TRASCR. MATRIMONIO/MORTE/DIVORZIO (c)",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p5_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[9]"
+            },
+            "C6": {
+                "description": "CODICE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[4]"
+            },
+            "D1": {
+                "description": "CODICE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_4",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[9]"
+            },
+            "C7": {
+                "description": "NUMERO CARTA D'IDENTITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_5",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[5]"
+            },
+            "D0": {
+                "description": "NUMERO CARTA D'IDENTITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_5",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[8]"
+            },
+            "C9": {
+                "description": "DATA DI RILASCIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_6",
+                "transform": "removeSpaces",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto2[7]"
+            },
+            "E2": {
+                "description": "Pratica cancellazione n.",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[19]"
+            },
+            "N2": {
+                "description": "SI  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_7",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[40]"
+            },
+            "N6": {
+                "description": "SI  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_7",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[44]"
+            },
+            "N0": {
+                "description": "NO 2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_8",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[39]"
+            },
+            "N5": {
+                "description": "NO 2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_8",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[43]"
+            },
+            "A1": {
+                "description": "CITTADINANZA STRANIERA O APOLIDE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_3",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[10]"
+            },
+            "B4": {
+                "description": "CITTADINANZA STRANIERA O APOLIDE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[6]"
+            },
+            "K4": {
+                "description": "SI  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[15]"
+            },
+            "N4": {
+                "description": "SI  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_1",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[42]"
+            },
+            "K5": {
+                "description": "NO 2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_2",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[16]"
+            },
+            "N3": {
+                "description": "NO 2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p6_2",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[41]"
+            },
+            "A7": {
+                "description": "MATERNITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_8",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[16]"
+            },
+            "B6": {
+                "description": "MATERNITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_8",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[8]"
+            },
+            "B5": {
+                "description": "PATERNITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_7",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[7]"
+            },
+            "B7": {
+                "description": "PATERNITA'",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_7",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto1[9]"
+            },
+            "J9": {
+                "description": "CASALINGA                               1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[10]"
+            },
+            "L4": {
+                "description": "M  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_3",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[24]"
+            },
+            "K0": {
+                "description": "STUDENTE                                2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_2",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[11]"
+            },
+            "K6": {
+                "description": "DISOCCUPATO / IN CERCA DI PRIMA OCCUPAZIONE             3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[17]"
+            },
+            "K1": {
+                "description": "PENSIONATO / RITIRATO DAL LAVORO                     4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[12]"
+            },
+            "K2": {
+                "description": "ALTRA CONDIZIONE NON PROFESSIONALE            5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p8_5",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[13]"
+            },
+            "K7": {
+                "description": "NESSUN TITOLO/LIC. ELEMENTARE  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[18]"
+            },
+            "L0": {
+                "description": "DIPLOMA   3",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[20]"
+            },
+            "N7": {
+                "description": "LAUREA TRIENNALE     4",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[45]"
+            },
+            "L1": {
+                "description": "LAUREA      5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p9_5",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[21]"
+            },
+            "J5": {
+                "description": "- la cancellazione per irreperibilita",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c6",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[7]"
+            },
+            "I4": {
+                "description": "Le persone indicate nella Sezione III dichiarano di avere la dimora abituale nel Comune indicato nella Sezione I al seguente indirizzo (per la richiesta di iscrizione)",
+                "source": "AnaTestataModelloApr4",
+                "field": "c1_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[24]"
+            },
+            "I5": {
+                "description": "Le persone indicate nella Sezione III dichiarano di avere trasferito la dimora abituale nello Stato indicato nella Sezione II al seguente indirizzo (per la richiesta di cancellazione)",
+                "source": "AnaTestataModelloApr4",
+                "field": "c2_1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[25]"
+            },
+            "I6": {
+                "description": " (Se ricorre il caso) Le persone indicate nella sezione III",
+                "source": "AnaTestataModelloApr4",
+                "field": "c3_1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[26]"
+            },
+            "I7": {
+                "description": "O DI CONVIVENZA",
+                "source": "AnaTestataModelloApr4",
+                "field": "c3_2",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[27]"
+            },
+            "Q4": {
+                "description": "(Se ricorre il caso) Le persone indicate nella sezione III hanno richiesto di entrare nella famiglia anagrafica               o convivenza               intestata a",
+                "source": "AnaTestataModelloApr4",
+                "field": "c3_3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].TextField3[0]"
+            },
+            "K9": {
+                "description": "CELIBE O NUBILE  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_5",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[1]"
+            },
+            "L8": {
+                "description": "CELIBE O NUBILE  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_5",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[28]"
+            },
+            "P9": {
+                "description": "COMUNE DI",
+                "source": "AnaTestataModelloApr4",
+                "field": "desComune",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].TextField1[0]"
+            },
+            "D2": {
+                "description": "Pratica iscrizione n.",
+                "source": "AnaTestataModelloApr4",
+                "field": "numeroDic",
+                "transform": "setFieldAlignment",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[0]"
+            },
+            "Q5": {
+                "description": "PROV",
+                "source": "AnaTestataModelloApr4",
+                "field": "siglaProvincia",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].TextField4[0]"
+            },
+            "P0": {
+                "description": "Data di comunicazione (1)",
+                "source": "AnaTestataModelloApr4",
+                "field": "t4_1",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].DateTimeField1[0]"
+            },
+            "K3": {
+                "description": "F   2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[14]"
+            },
+            "L3": {
+                "description": "F   2",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_4",
+                "transform": "booleanValue",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[23]"
+            },
+            "E0": {
+                "description": "Per le persone indicate nella sezione III con decorrenza dal",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c9",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[17]"
+            },
+            "P4": {
+                "description": "PROVINCIA DI",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1c7",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[3]"
+            },
+            "P5": {
+                "description": "COMUNE DI",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1c5",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[4]"
+            },
+            "P6": {
+                "description": "Cod. Istat",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1c6",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[5]"
+            },
+            "P7": {
+                "description": "Cod. Istat",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1c8",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[6]"
+            },
+            "P8": {
+                "description": "Cod. Istat",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i8",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[7]"
+            },
+            "E1": {
+                "description": "del",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c2",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[18]"
+            },
+            "E3": {
+                "description": "del",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i2",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[1]"
+            },
+            "H8": {
+                "description": "Non comporta conteggio                              2",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c4",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[19]"
+            },
+            "D5": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[12]"
+            },
+            "E8": {
+                "description": "avvenuta il",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c3",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[6]"
+            },
+            "I0": {
+                "description": "Comporta conteggio             1",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c3",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[20]"
+            },
+            "I1": {
+                "description": "- d'ufficio                                         2",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c11",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[21]"
+            },
+            "E9": {
+                "description": "avvenuta il",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c5",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[7]"
+            },
+            "D6": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c8",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[13]"
+            },
+            "E5": {
+                "description": "Richiedo al Comune di",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[3]"
+            },
+            "E6": {
+                "description": "(Prov.)",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[4]"
+            },
+            "J2": {
+                "description": "- la cancellazione dall'APR                                                                        1",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[4]"
+            },
+            "F0": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i4",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[8]"
+            },
+            "H1": {
+                "description": "- la conferma dell'avvenuta cancellazione per irreperibilit\u00c3\u00a0",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i6",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[12]"
+            },
+            "H6": {
+                "description": "- la cancellazione per lo Stato estero di",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2C4",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[17]"
+            },
+            "H7": {
+                "description": "- la cancellazione per altri motivi",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c7",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[18]"
+            },
+            "P1": {
+                "description": "COMUNE DI",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i5",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[0]"
+            },
+            "P3": {
+                "description": "Cod. Istat",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i6",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[2]"
+            },
+            "P2": {
+                "description": "PROVINCIA DI",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i7",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[1]"
+            },
+            "E4": {
+                "description": "Per le persone indicate nella sezione III con decorrenza dal",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i9",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[2]"
+            },
+            "F7": {
+                "description": "N.           P.         S.         UFF.",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p4_3",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].Campoditesto5[5]"
+            },
+            "G8": {
+                "description": "Comporta conteggio             1",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[0]"
+            },
+            "I2": {
+                "description": "- a istanza di persona legittimata          1",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c10",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[22]"
+            },
+            "I3": {
+                "description": "- il ripristino della scheda anagrafica                                                         5",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c8",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[23]"
+            },
+            "H9": {
+                "description": "Non comporta conteggio                              2",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[1]"
+            },
+            "J0": {
+                "description": "- a istanza di persona legittimata          1",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i10",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[2]"
+            },
+            "J1": {
+                "description": "- d'ufficio                                         2",
+                "source": "AnaTestataModelloApr4",
+                "field": "t1i11",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[3]"
+            },
+            "G9": {
+                "description": "- la cancellazione per irreperibilit\u00c3\u00a0 in base agli accertamenti dell'UA        3",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t1c5",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[10]"
+            },
+            "H0": {
+                "description": "- la conferma dell'avvenuta cancellazione per lo Stato estero di",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i5",
+                "originalField": "t1c11",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[11]"
+            },
+            "D3": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[10]"
+            },
+            "I8": {
+                "description": "- la cancellazione dall'AIRE",
+                "source": "AnaTestataModelloApr4",
+                "field": "t2i7",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[28]"
+            },
+            "E7": {
+                "description": "Codice",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i3",
+                "transform": "removeSpacesThenPadLeft3",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[5]"
+            },
+            "I9": {
+                "description": "- la cancellazione dall'AIRE:",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c7",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[29]"
+            },
+            "H2": {
+                "description": "- l'esito positivo degli accertamenti per l'iscrizione da altro Comune       1",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[13]"
+            },
+            "H3": {
+                "description": "- l'esito positivo degli accertamenti per l'iscrizione dall'estero",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[14]"
+            },
+            "D4": {
+                "description": "l'iscrizione per altri motivi (testo)",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i5",
+                "transform": "removeSpaces",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[11]"
+            },
+            "H4": {
+                "description": "in data                                                                                                       3",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i6",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[15]"
+            },
+            "H5": {
+                "description": "- l'iscrizione per altri motivi                                                                                                        4",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i7",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[16]"
+            },
+            "J3": {
+                "description": "- la cancellazione dall'APR di questo Comune                                          1",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c1",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[5]"
+            },
+            "F1": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "t3i8",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[9]"
+            },
+            "J4": {
+                "description": "- si restituisce senza provvedimento in quanto:",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t2c9",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[6]"
+            },
+            "D7": {
+                "description": "Campoditesto3",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c1",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[14]"
+            },
+            "D8": {
+                "description": "Codice dello Stato estero di destinazione",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c2",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[15]"
+            },
+            "J6": {
+                "description": "- la cancellazione per l'estero     (Stato                                                   ) 1",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[8]"
+            },
+            "J7": {
+                "description": "- la cancellazione per irreperibilit\u00c3\u00a0 al censimento                                      2",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c4",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[9]"
+            },
+            "J8": {
+                "description": "M  1",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p3_3",
+                "transform": "booleanValue",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].CheckBox1[0]"
+            },
+            "D9": {
+                "description": "la cancellazione per altri motivi",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "t3c6",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "form1[0].#subform[0].Campoditesto3[16]"
+            },
+            "M1": {
+                "description": "COADIUVANTE",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_5",
+                "transform": "booleanValue",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[30]"
+            },
+            "M2": {
+                "description": "LAVORATORE IN PROPRIO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_3",
+                "transform": "booleanValue",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[31]"
+            },
+            "M3": {
+                "description": "DIRIGENTE/IMPIEGATO",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_2",
+                "transform": "booleanValue",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[32]"
+            },
+            "M4": {
+                "description": "IMPRENDITORE LIBERO PROFESSIONISTA",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_1",
+                "transform": "booleanValue",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[33]"
+            },
+            "L9": {
+                "description": "OPERAIO E ASSIMILATI",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p7_4",
+                "transform": "booleanValue",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[29]"
+            },
+            "Q2": {
+                "description": "CAMPO TESTO FAMIGLIA 2",
+                "source": "AnaTestataModelloApr4",
+                "field": "t_field",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[2]",
+                "fontSize": 3.5
+            },
+            "Q3": {
+                "description": "CAMPO TESTO FAMIGLIA 3",
+                "source": "AnaTestataModelloApr4",
+                "field": "t_field",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[3]",
+                "fontSize": 3.5
+            },
+            "Q6": {
+                "description": "NOME COMUNE",
+                "source": "AnaTestataModelloApr4",
+                "field": "desComune",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField1[1]"
+            },
+            "O5": {
+                "description": "CAMPO O5",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[52]"
+            },
+            "O6": {
+                "description": "CAMPO O6",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[53]"
+            },
+            "O7": {
+                "description": "CAMPO O7",
+                "source": "AnaSoggettoModelloApr4",
+                "field": "p1_1",
+                "transform": "none",
+                "subjectIndex": 1,
+                "pdfField": "form1[0].#subform[0].CheckBox1[54]"
+            },
+            "Q0": {
+                "description": "CAMPO Q0",
+                "source": "AnaTestataModelloApr4",
+                "field": "",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[0]"
+            },
+            "Q1": {
+                "description": "CAMPO Q1",
+                "source": "AnaTestataModelloApr4",
+                "field": "fieldPlaceholder",
+                "originalField": "",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[1]"
+            },
+            "Q7": {
+                "description": "CAMPO Q7",
+                "source": "AnaTestataModelloApr4",
+                "field": "t_field",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[6]"
+            },
+            "Q8": {
+                "description": "CAMPO Q8",
+                "source": "AnaTestataModelloApr4",
+                "field": "t_field",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[7]"
+            },
+            "Q9": {
+                "description": "CAMPO Q9",
+                "source": "AnaTestataModelloApr4",
+                "field": "t_field",
+                "transform": "none",
+                "subjectIndex": "0",
+                "pdfField": "form1[0].#subform[0].TextField2[8]"
+            }
+        },
+        "unComponente": {
+            "A1": {
+                "description": "- l'iscrizione per altri motivi (X provvedimento=4)",
+                "originalEtiquette": "H5",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[15]"
+            },
+            "A2": {
+                "originalEtiquette": "N0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[14]"
+            },
+            "A3": {
+                "originalEtiquette": "D8",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[8]"
+            },
+            "A4": {
+                "originalEtiquette": "P0",
+                "pdfField": "form1[0].#subform[0].DateTimeField3[0]"
+            },
+            "A5": {
+                "originalEtiquette": "B2",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[3]"
+            },
+            "A7": {
+                "originalEtiquette": "Q5",
+                "pdfField": "form1[0].#subform[0].TextField1[1]"
+            },
+            "A8": {
+                "originalEtiquette": "P7",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[7]"
+            },
+            "A9": {
+                "originalEtiquette": "N1",
+                "pdfField": "form1[0].#subform[0].CheckBox1[7]"
+            },
+            "B0": {
+                "description": "- l'esito positivo degli accertamenti per l'iscrizione da altro Comune",
+                "originalEtiquette": "H2",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[12]"
+            },
+            "B1": {
+                "originalEtiquette": "D9",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[13]"
+            },
+            "B2": {
+                "originalEtiquette": "I9",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[24]"
+            },
+            "B3": {
+                "originalEtiquette": "M4",
+                "pdfField": "form1[0].#subform[0].CheckBox1[0]"
+            },
+            "B4": {
+                "originalEtiquette": "G1",
+                "pdfField": "form1[0].#subform[0].Campoditesto5[0]"
+            },
+            "B5": {
+                "originalEtiquette": "K4",
+                "pdfField": "form1[0].#subform[0].CheckBox1[13]"
+            },
+            "B6": {
+                "originalEtiquette": "D7",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[12]"
+            },
+            "COGN": {
+                "originalEtiquette": "A0",
+                "description": "COGNOME (CAMPO CUSTOM UN COMPONENTE)",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[7]"
+            },
+            "B7": {
+                "originalEtiquette": "B1",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[4]"
+            },
+            "B8": {
+                "description": "dall'estero. Stato",
+                "originalEtiquette": "F0",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[6]"
+            },
+            "B9": {
+                "originalEtiquette": "J9",
+                "pdfField": "form1[0].#subform[0].CheckBox1[25]"
+            },
+            "C0": {
+                "originalEtiquette": "C7",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[1]"
+            },
+            "C1": {
+                "originalEtiquette": "E6",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[3]"
+            },
+            "C2": {
+                "originalEtiquette": "P8",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[6]"
+            },
+            "C3": {
+                "originalEtiquette": "O2",
+                "pdfField": "form1[0].#subform[0].CheckBox1[8]"
+            },
+            "numord": {
+                "originalEtiquette": "G2",
+                "description": "NUMERO ORDINALE (CAMPO CUSTOM UN COMPONENTE)",
+                "pdfField": "form1[0].#subform[0].Camponumerico1[0]"
+            },
+            "C5": {
+                "originalEtiquette": "E5"
+            },
+            "C4": {
+                "originalEtiquette": "B0",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[5]"
+            },
+            "C6": {
+                "originalEtiquette": "I1",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[25]"
+            },
+            "C7": {
+                "originalEtiquette": "F5",
+                "pdfField": "form1[0].#subform[0].Campoditesto5[1]"
+            },
+            "C8": {
+                "description": "- si restituisce senza provvedimento in quanto (sez. II cancellazione, checkbox)",
+                "originalEtiquette": "J4",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[6]"
+            },
+            "D0": {
+                "description": "in data",
+                "originalEtiquette": "F1",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[7]"
+            },
+            "D1": {
+                "originalEtiquette": "L2",
+                "pdfField": "form1[0].#subform[0].CheckBox1[16]"
+            },
+            "D2": {
+                "originalEtiquette": "C6",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[2]"
+            },
+            "D3": {
+                "originalEtiquette": "K8",
+                "pdfField": "form1[0].#subform[0].CheckBox1[20]"
+            },
+            "D4": {
+                "originalEtiquette": "E3",
+                "pdfField": "form1[0].#subform[0].DateTimeField1[0]"
+            },
+            "D5": {
+                "originalEtiquette": "P6",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[5]"
+            },
+            "D6": {
+                "originalEtiquette": "I2",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[26]"
+            },
+            "D7": {
+                "originalEtiquette": "K3",
+                "pdfField": "form1[0].#subform[0].CheckBox1[5]"
+            },
+            "D8": {
+                "description": "- l'esito positivo degli accertamenti per l'iscrizione dall'estero",
+                "originalEtiquette": "H3",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[13]"
+            },
+            "Q0": {
+                "description": "- in data (X irreperibilita - provvedimento=3)",
+                "originalEtiquette": "H4",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[14]"
+            },
+            "D9": {
+                "description": "- la cancellazione dall'APR di questo Comune (sez. II cancellazione, checkbox)",
+                "originalEtiquette": "J3",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[5]"
+            },
+            "E0": {
+                "originalEtiquette": "A9",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[6]"
+            },
+            "E1": {
+                "description": "DATA DI DIVORZIO / MORTE",
+                "originalEtiquette": "C5",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[3]"
+            },
+            "E2": {
+                "originalEtiquette": "F4",
+                "pdfField": "form1[0].#subform[0].Campoditesto5[2]"
+            },
+            "E4": {
+                "description": "- l'iscrizione per altri motivi (testo)",
+                "originalEtiquette": "D3",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[8]"
+            },
+            "E5": {
+                "originalEtiquette": "N2",
+                "pdfField": "form1[0].#subform[0].CheckBox1[15]"
+            },
+            "E6": {
+                "originalEtiquette": "P5",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[4]"
+            },
+            "E7": {
+                "originalEtiquette": "P9",
+                "pdfField": "form1[0].#subform[0].TextField1[0]"
+            },
+            "E9": {
+                "originalEtiquette": "H8",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[27]"
+            },
+            "F0": {
+                "originalEtiquette": "J8",
+                "pdfField": "form1[0].#subform[0].CheckBox1[6]"
+            },
+            "F2": {
+                "originalEtiquette": "K9",
+                "pdfField": "form1[0].#subform[0].CheckBox1[10]"
+            },
+            "F3": {
+                "originalEtiquette": "I5",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[20]"
+            },
+            "F4": {
+                "description": "Campo superfluo",
+                "originalEtiquette": "",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[4]"
+            },
+            "F5": {
+                "originalEtiquette": "F3",
+                "pdfField": "form1[0].#subform[0].Campoditesto5[3]"
+            },
+            "F6": {
+                "originalEtiquette": "K1",
+                "pdfField": "form1[0].#subform[0].CheckBox1[22]"
+            },
+            "F7": {
+                "originalEtiquette": "C8",
+                "pdfField": "form1[0].#subform[0].DateTimeField7[0]"
+            },
+            "F8": {
+                "originalEtiquette": "J7",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[8]"
+            },
+            "F9": {
+                "originalEtiquette": "L9",
+                "pdfField": "form1[0].#subform[0].CheckBox1[3]"
+            },
+            "G0": {
+                "originalEtiquette": "D4",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[9]"
+            },
+            "G1": {
+                "originalEtiquette": "G8",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[0]"
+            },
+            "G2": {
+                "originalEtiquette": "P4",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[3]"
+            },
+            "G3": {
+                "originalEtiquette": "H6",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[16]"
+            },
+            "G4": {
+                "originalEtiquette": "G5",
+                "pdfField": "form1[0].#subform[0].Camponumerico2[0]"
+            },
+            "G5": {
+                "originalEtiquette": "D2",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[17]"
+            },
+            "G6": {
+                "originalEtiquette": "N7",
+                "pdfField": "form1[0].#subform[0].CheckBox1[18]"
+            },
+            "G7": {
+                "originalEtiquette": "I0",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[28]"
+            },
+            "G8": {
+                "originalEtiquette": "Q2",
+                "pdfField": "form1[0].#subform[0].TextField2[2]",
+                "fontSize": 3.5
+            },
+            "H0": {
+                "description": "Richiedo al Comune di",
+                "originalEtiquette": "E5",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[2]"
+            },
+            "H1": {
+                "description": "- la cancellazione per irreperibilità (sez. II cancellazione, checkbox)",
+                "originalEtiquette": "J5",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[7]"
+            },
+            "H2": {
+                "originalEtiquette": "K7",
+                "pdfField": "form1[0].#subform[0].CheckBox1[21]"
+            },
+            "H3": {
+                "originalEtiquette": "I6",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[21]"
+            },
+            "H4": {
+                "originalEtiquette": "M1",
+                "pdfField": "form1[0].#subform[0].CheckBox1[4]"
+            },
+            "H5": {
+                "originalEtiquette": "F2",
+                "pdfField": "form1[0].#subform[0].Campoditesto5[4]"
+            },
+            "H6": {
+                "originalEtiquette": "L1",
+                "pdfField": "form1[0].#subform[0].CheckBox1[17]"
+            },
+            "H7": {
+                "originalEtiquette": "A7",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[8]"
+            },
+            "H8": {
+                "originalEtiquette": "C3",
+                "pdfField": "form1[0].#subform[0].DateTimeField4[0]"
+            },
+            "H9": {
+                "originalEtiquette": "B5",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[0]"
+            },
+            "I0": {
+                "description": "Intestata a",
+                "originalEtiquette": "Q4",
+                "pdfField": "form1[0].#subform[0].TextField3[0]"
+            },
+            "I1": {
+                "originalEtiquette": "I1",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].DateTimeField1[1]"
+            },
+            "I2": {
+                "originalEtiquette": "H7",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[17]"
+            },
+            "I3": {
+                "originalEtiquette": "Q3",
+                "pdfField": "form1[0].#subform[0].TextField2[3]",
+                "fontSize": 3.5
+            },
+            "I4": {
+                "originalEtiquette": "J6",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[29]"
+            },
+            "I5": {
+                "originalEtiquette": "P3",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[2]"
+            },
+            "I6": {
+                "originalEtiquette": "G4",
+                "pdfField": "form1[0].#subform[0].Camponumerico2[1]"
+            },
+            "I7": {
+                "originalEtiquette": "E2",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[16]"
+            },
+            "I8": {
+                "description": "(Prov.)",
+                "originalEtiquette": "E6",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[3]"
+            },
+            "I9": {
+                "originalEtiquette": "K5",
+                "pdfField": "form1[0].#subform[0].CheckBox1[12]"
+            },
+            "J0": {
+                "originalEtiquette": "B8",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[6]"
+            },
+            "J1": {
+                "originalEtiquette": "K0",
+                "description": "STUDENTE (era erroneamente K8=LIC.MEDIA)",
+                "pdfField": "form1[0].#subform[0].CheckBox1[24]"
+            },
+            "J2": {
+                "originalEtiquette": "H0",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[10]"
+            },
+            "J3": {
+                "originalEtiquette": "D6",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[11]"
+            },
+            "J4": {
+                "originalEtiquette": "M3",
+                "pdfField": "form1[0].#subform[0].CheckBox1[1]"
+            },
+            "J5": {
+                "originalEtiquette": "C4",
+                "pdfField": "form1[0].#subform[0].DateTimeField5[0]"
+            },
+            "J6": {
+                "originalEtiquette": "J0",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[2]"
+            },
+            "J7": {
+                "originalEtiquette": "B4",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[1]"
+            },
+            "J8": {
+                "description": "- la cancellazione dall'APR (sez. II cancellazione, checkbox)",
+                "originalEtiquette": "J2",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[4]"
+            },
+            "J9": {
+                "originalEtiquette": "E0",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].DateTimeField2[1]"
+            },
+            "K0": {
+                "originalEtiquette": "I3",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[18]"
+            },
+            "K1": {
+                "originalEtiquette": "I7",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[22]"
+            },
+            "K2": {
+                "originalEtiquette": "P2",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[1]"
+            },
+            "K3": {
+                "originalEtiquette": "M0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[9]"
+            },
+            "K4": {
+                "originalEtiquette": "D5",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[10]"
+            },
+            "K5": {
+                "originalEtiquette": "K6",
+                "pdfField": "form1[0].#subform[0].CheckBox1[23]"
+            },
+            "K6": {
+                "originalEtiquette": "E8",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Campoditesto3[4]"
+            },
+            "K7": {
+                "originalEtiquette": "K2",
+                "pdfField": "form1[0].#subform[0].CheckBox1[11]"
+            },
+            "K8": {
+                "originalEtiquette": "G9",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[9]"
+            },
+            "K9": {
+                "originalEtiquette": "M2",
+                "pdfField": "form1[0].#subform[0].CheckBox1[2]"
+            },
+            "L0": {
+                "description": "CODICE",
+                "originalEtiquette": "E7",
+                "pdfField": "form1[0].#subform[0].Campoditesto2[7]"
+            },
+            "L1": {
+                "originalEtiquette": "H9",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[1]"
+            },
+            "L2": {
+                "originalEtiquette": "B3",
+                "pdfField": "form1[0].#subform[0].Campoditesto1[2]"
+            },
+            "L4": {
+                "originalEtiquette": "I4",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[19]"
+            },
+            "L5": {
+                "originalEtiquette": "E4",
+                "pdfField": "form1[0].#subform[0].DateTimeField2[0]"
+            },
+            "L6": {
+                "originalEtiquette": "L0",
+                "pdfField": "form1[0].#subform[0].CheckBox1[19]"
+            },
+            "L7": {
+                "originalEtiquette": "H1",
+                "field": "fieldPlaceholder",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[11]"
+            },
+            "L8": {
+                "originalEtiquette": "P1",
+                "pdfField": "form1[0].#subform[0].Elencoadiscesa1[0]"
+            },
+            "L9": {
+                "originalEtiquette": "I8",
+                "pdfField": "form1[0].#subform[0].Caselladicontrollo1[23]"
+            },
+            "A0": {
+                "originalEtiquette": "A0"
+            },
+            "A6": {
+                "originalEtiquette": "A6"
+            },
+            "E3": {
+                "originalEtiquette": "E3"
+            },
+            "G9": {
+                "originalEtiquette": "G9"
+            },
+            "M0": {
+                "originalEtiquette": "M0"
+            },
+            "M1": {
+                "originalEtiquette": "M1"
+            },
+            "M2": {
+                "originalEtiquette": "M2"
+            },
+            "M3": {
+                "originalEtiquette": "M3"
+            },
+            "M4": {
+                "originalEtiquette": "M4"
+            },
+            "M5": {
+                "originalEtiquette": "M5"
+            },
+            "M6": {
+                "originalEtiquette": "M6"
+            },
+            "M7": {
+                "originalEtiquette": "M7"
+            },
+            "M8": {
+                "originalEtiquette": "M8"
+            },
+            "M9": {
+                "originalEtiquette": "M9"
+            },
+            "N0": {
+                "originalEtiquette": "N0"
+            },
+            "N1": {
+                "originalEtiquette": "N1"
+            },
+            "N2": {
+                "originalEtiquette": "N2"
+            },
+            "N3": {
+                "originalEtiquette": "N3"
+            },
+            "N4": {
+                "originalEtiquette": "N4"
+            },
+            "N5": {
+                "originalEtiquette": "N5"
+            },
+            "N6": {
+                "originalEtiquette": "N6"
+            },
+            "N7": {
+                "originalEtiquette": "N7"
+            },
+            "N8": {
+                "originalEtiquette": "N8"
+            },
+            "N9": {
+                "originalEtiquette": "N9"
+            },
+            "O0": {
+                "originalEtiquette": "O0"
+            },
+            "O1": {
+                "originalEtiquette": "O1"
+            },
+            "O2": {
+                "originalEtiquette": "O2"
+            },
+            "O3": {
+                "originalEtiquette": "O3"
+            },
+            "O4": {
+                "originalEtiquette": "O4"
+            },
+            "O5": {
+                "originalEtiquette": "O5"
+            },
+            "O6": {
+                "originalEtiquette": "O6"
+            },
+            "O7": {
+                "originalEtiquette": "O7"
+            },
+            "O8": {
+                "originalEtiquette": "O8"
+            },
+            "O9": {
+                "originalEtiquette": "O9"
+            },
+            "P0": {
+                "originalEtiquette": "P0"
+            },
+            "P1": {
+                "originalEtiquette": "P1"
+            },
+            "P2": {
+                "originalEtiquette": "P2"
+            },
+            "P3": {
+                "originalEtiquette": "P3"
+            },
+            "P4": {
+                "originalEtiquette": "P4"
+            },
+            "P5": {
+                "originalEtiquette": "P5"
+            },
+            "P6": {
+                "originalEtiquette": "P6"
+            },
+            "P7": {
+                "originalEtiquette": "P7"
+            },
+            "P8": {
+                "originalEtiquette": "P8"
+            },
+            "P9": {
+                "originalEtiquette": "P9"
+            },
+            "Q2": {
+                "originalEtiquette": "Q2"
+            },
+            "Q3": {
+                "originalEtiquette": "Q3"
+            },
+            "Q4": {
+                "originalEtiquette": "Q4"
+            },
+            "Q5": {
+                "originalEtiquette": "Q5"
+            },
+            "Q6": {
+                "originalEtiquette": "Q6"
+            },
+            "Q7": {
+                "originalEtiquette": "Q7"
+            },
+            "Q8": {
+                "originalEtiquette": "Q8"
+            },
+            "Q9": {
+                "originalEtiquette": "Q9"
+            },
+            "R0": {
+                "originalEtiquette": "R0"
+            },
+            "R1": {
+                "originalEtiquette": "R1"
+            },
+            "R2": {
+                "originalEtiquette": "R2"
+            },
+            "R3": {
+                "originalEtiquette": "R3"
+            },
+            "R4": {
+                "originalEtiquette": "R4"
+            },
+            "R5": {
+                "originalEtiquette": "R5"
+            },
+            "R6": {
+                "originalEtiquette": "R6"
+            },
+            "R7": {
+                "originalEtiquette": "R7"
+            },
+            "R8": {
+                "originalEtiquette": "R8"
+            },
+            "R9": {
+                "originalEtiquette": "R9"
+            },
+            "S0": {
+                "originalEtiquette": "S0"
+            },
+            "S1": {
+                "originalEtiquette": "S1"
+            },
+            "S2": {
+                "originalEtiquette": "S2"
+            },
+            "S3": {
+                "originalEtiquette": "S3"
+            },
+            "S4": {
+                "originalEtiquette": "S4"
+            },
+            "S5": {
+                "originalEtiquette": "S5"
+            },
+            "S6": {
+                "originalEtiquette": "S6"
+            },
+            "S7": {
+                "originalEtiquette": "S7"
+            },
+            "S8": {
+                "originalEtiquette": "S8"
+            },
+            "S9": {
+                "originalEtiquette": "S9"
+            },
+            "T0": {
+                "originalEtiquette": "T0"
+            },
+            "T1": {
+                "originalEtiquette": "T1"
+            },
+            "T2": {
+                "originalEtiquette": "T2"
+            },
+            "T3": {
+                "originalEtiquette": "T3"
+            },
+            "T4": {
+                "originalEtiquette": "T4"
+            },
+            "T5": {
+                "originalEtiquette": "T5"
+            },
+            "T6": {
+                "originalEtiquette": "T6"
+            },
+            "T7": {
+                "originalEtiquette": "T7"
+            },
+            "T8": {
+                "originalEtiquette": "T8"
+            },
+            "T9": {
+                "originalEtiquette": "T9"
+            },
+            "U0": {
+                "originalEtiquette": "U0"
+            },
+            "U1": {
+                "originalEtiquette": "U1"
+            },
+            "U2": {
+                "originalEtiquette": "U2"
+            },
+            "U3": {
+                "originalEtiquette": "U3"
+            },
+            "U4": {
+                "originalEtiquette": "U4"
+            },
+            "U5": {
+                "originalEtiquette": "U5"
+            },
+            "U6": {
+                "originalEtiquette": "U6"
+            },
+            "U7": {
+                "originalEtiquette": "U7"
+            },
+            "U8": {
+                "originalEtiquette": "U8"
+            },
+            "U9": {
+                "originalEtiquette": "U9"
+            },
+            "V0": {
+                "originalEtiquette": "V0"
+            },
+            "V1": {
+                "originalEtiquette": "V1"
+            },
+            "V2": {
+                "originalEtiquette": "V2"
+            },
+            "V3": {
+                "originalEtiquette": "V3"
+            },
+            "V4": {
+                "originalEtiquette": "V4"
+            },
+            "V5": {
+                "originalEtiquette": "V5"
+            },
+            "V6": {
+                "originalEtiquette": "V6"
+            },
+            "V7": {
+                "originalEtiquette": "V7"
+            },
+            "V8": {
+                "originalEtiquette": "V8"
+            },
+            "V9": {
+                "originalEtiquette": "V9"
+            },
+            "W0": {
+                "originalEtiquette": "W0"
+            },
+            "W1": {
+                "originalEtiquette": "W1"
+            },
+            "W2": {
+                "originalEtiquette": "W2"
+            },
+            "W3": {
+                "originalEtiquette": "W3"
+            },
+            "W4": {
+                "originalEtiquette": "W4"
+            },
+            "W5": {
+                "originalEtiquette": "W5"
+            },
+            "W6": {
+                "originalEtiquette": "W6"
+            },
+            "W7": {
+                "originalEtiquette": "W7"
+            },
+            "W8": {
+                "originalEtiquette": "W8"
+            },
+            "W9": {
+                "originalEtiquette": "W9"
+            },
+            "X0": {
+                "originalEtiquette": "X0"
+            },
+            "X1": {
+                "originalEtiquette": "X1"
+            },
+            "X2": {
+                "originalEtiquette": "X2"
+            },
+            "X3": {
+                "originalEtiquette": "X3"
+            },
+            "X4": {
+                "originalEtiquette": "X4"
+            },
+            "X5": {
+                "originalEtiquette": "X5"
+            },
+            "X6": {
+                "originalEtiquette": "X6"
+            },
+            "X7": {
+                "originalEtiquette": "X7"
+            },
+            "X8": {
+                "originalEtiquette": "X8"
+            },
+            "X9": {
+                "originalEtiquette": "X9"
+            },
+            "Y0": {
+                "originalEtiquette": "Y0"
+            },
+            "Y1": {
+                "originalEtiquette": "Y1"
+            },
+            "Y2": {
+                "originalEtiquette": "Y2"
+            },
+            "Y3": {
+                "originalEtiquette": "Y3"
+            },
+            "Y4": {
+                "originalEtiquette": "Y4"
+            },
+            "Y5": {
+                "originalEtiquette": "Y5"
+            },
+            "Y6": {
+                "originalEtiquette": "Y6"
+            },
+            "Y7": {
+                "originalEtiquette": "Y7"
+            },
+            "Y8": {
+                "originalEtiquette": "Y8"
+            },
+            "Y9": {
+                "originalEtiquette": "Y9"
+            },
+            "Z0": {
+                "originalEtiquette": "Z0"
+            },
+            "Z1": {
+                "originalEtiquette": "Z1"
+            },
+            "Z2": {
+                "originalEtiquette": "Z2"
+            },
+            "Z3": {
+                "originalEtiquette": "Z3"
+            },
+            "Z4": {
+                "originalEtiquette": "Z4"
+            },
+            "Z5": {
+                "originalEtiquette": "Z5"
+            },
+            "Z6": {
+                "originalEtiquette": "Z6"
+            },
+            "Z7": {
+                "originalEtiquette": "Z7"
+            },
+            "Z8": {
+                "originalEtiquette": "Z8"
+            },
+            "Z9": {
+                "originalEtiquette": "Z9"
+            }
+        }
+    }
+}

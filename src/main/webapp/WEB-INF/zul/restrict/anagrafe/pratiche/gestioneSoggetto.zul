@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateSezioneSoggetto" macroURI="/restrict/anagrafe/pratiche/templateSezioneSoggetto.zul" inline="true"?>
+<?component name="templateSezioneConvivenzaDiFatto" macroURI="/restrict/anagrafe/pratiche/templateSezioneConvivenzaDiFatto.zul" inline="true"?>
+<?component name="templateSezioneDocumenti" macroURI="/restrict/anagrafe/pratiche/templateSezioneDocumenti.zul" inline="true"?>
+<?component name="templateSezioneRecapiti" macroURI="/restrict/anagrafe/pratiche/templateSezioneRecapiti.zul" inline="true"?>
+<?component name="templateSezioneUrneCinerarie" macroURI="/restrict/anagrafe/pratiche/templateSezioneUrneCinerarie.zul" inline="true"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.GestioneSoggettoViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            width="1400px" height="600px"
+            title="@load(vm.msgTitle)"
+            sizable="false" closable="false">
+
+
+        <vlayout vflex="1">
+            <div vflex="1" hflex="1" style="overflow:auto;">
+                <vlayout hflex="1">
+
+                    <zk if="${vm.visualizzaSezioneIndividuo}">
+                        <templateSezioneSoggetto/>
+                    </zk>
+
+                    <templateSezioneConvivenzaDiFatto/>
+
+                    <templateSezioneDocumenti/>
+
+                    <templateSezioneRecapiti/>
+
+                    <templateSezioneUrneCinerarie/>
+                </vlayout>
+            </div>
+
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button label="@load(vm.etichette['Salva'])" onClick="@command('onAggiungi')"
+                            image="/images/icon/action/16x16/save.png" visible="@load(vm.soggetto.matricola ne null)"/>
+                    <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                            image="/images/icon/action/16x16/close.png"/>
+                </h:div>
+            </h:div>
+
+        </vlayout>
+
+    </window>
+
+</zk>

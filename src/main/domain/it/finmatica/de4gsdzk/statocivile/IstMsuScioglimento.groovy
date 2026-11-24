@@ -168,6 +168,6 @@ class IstMsuScioglimento extends IstMscMsuBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_stipula_accordo, Etichette.Data_trascrizione_accordo, Etichette.Tipo_accordo_extragiudiziale]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_stipula_accordo"), Etichette.getEtichetta("Data_trascrizione_accordo"), Etichette.getEtichetta("Tipo_accordo_extragiudiziale")]
 
 }

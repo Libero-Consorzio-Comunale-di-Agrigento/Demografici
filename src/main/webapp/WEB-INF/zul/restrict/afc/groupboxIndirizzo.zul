@@ -4,78 +4,138 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <caption label="${arg.label}"/>
     <grid sclass="form" hflex="1">
+        <columns>
+            <column width="120px"/>
+            <column/>
+            <column width="120px"/>
+            <column/>
+        </columns>
+
         <zk if="${arg.tipoIndirizzo eq 'NONE'}">
-            <columns>
-                <column width="120px"/>
-                <column/>
-            </columns>
+
             <rows>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Via'])"/>
                     </cell>
-                    <cell/>
+                    <cell colspan="3"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Comune'])"/>
+                    </cell>
+                    <cell colspan="3"/>
                 </row>
             </rows>
         </zk>
         <zk if="${arg.tipoIndirizzo eq 'RESIDENTE_SENZA_COMUNE'}">
-            <columns>
-                <column width="150px"/>
-                <column/>
-            </columns>
+
             <rows>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Via'])"/>
                     </cell>
-                    <cell>
+                    <cell colspan="3">
                         <customLabel value="${arg.indirizzo.viaFormatted}"
-                                     bold="true"/>
+                                     bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.viaFormatted}"
+                                     bold="true"
+                                     sclass="${arg.groupbox.getSclassViaFormatted()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
                 </row>
             </rows>
         </zk>
         <zk if="${arg.tipoIndirizzo eq 'RESIDENTE'}">
-            <columns>
-                <column width="150px"/>
-                <column/>
-            </columns>
+
             <rows>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Via'])"/>
                     </cell>
-                    <cell>
+                    <cell colspan="3">
                         <customLabel value="${arg.indirizzo.viaFormatted}"
-                                     bold="true"/>
+                                     bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.viaFormatted}"
+                                     bold="true"
+                                     sclass="${arg.groupbox.getSclassViaFormatted()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
                 </row>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Comune'])"/>
                     </cell>
-                    <cell>
-                        <comuneLabel
-                                value="${arg.indirizzo.comune}"
-                                bold="true"/>
+                    <cell colspan="3">
+                        <comuneLabel value="${arg.indirizzo.comune}"
+                                     bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <comuneLabel value="${arg.indirizzo.comune}"
+                                     bold="true"
+                                     sclass="${arg.groupbox.getSclassComune()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
                 </row>
             </rows>
         </zk>
         <zk if="${arg.tipoIndirizzo eq 'NON_RESIDENTE'}">
-            <columns>
-                <column width="100px"/>
-                <column/>
-            </columns>
+
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Via'])"/>
+                    </cell>
+                    <cell colspan="3">
+                        <customLabel value="${arg.indirizzo.via}"
+                                     bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.via}"
+                                     bold="true"
+                                     sclass="${arg.groupbox.getSclassVia()}"
+                                     if="${arg.showAnp eq true}"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Comune'])"/>
+                    </cell>
+                    <cell colspan="3">
+                        <comuneLabel value="${arg.indirizzo.comune}"
+                                     bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <comuneLabel value="${arg.indirizzo.comune}"
+                                     bold="true"
+                                     sclass="${arg.groupbox.getSclassComune()}"
+                                     if="${arg.showAnp eq true}"/>
+                    </cell>
+                </row>
+            </rows>
+        </zk>
+        <zk if="${arg.tipoIndirizzo eq 'RESIDENTE_ESTERO'}">
+
             <rows>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Via'])"/>
                     </cell>
                     <cell>
-                        <customLabel
-                                value="${arg.indirizzo.via}"
-                                bold="true"/>
+                        <customLabel value="${arg.indirizzo.via}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.via}" bold="true"
+                                     sclass="${arg.groupbox.getSclassVia()}"
+                                     if="${arg.showAnp eq true}"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Presso'])"/>
+                    </cell>
+                    <cell>
+                        <customLabel value="${arg.indirizzo.presso}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.presso}" bold="true"
+                                     sclass="${arg.groupbox.getSclassPresso()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
                 </row>
                 <row>
@@ -83,76 +143,45 @@
                         <label value="@load(vm.etichette['Comune'])"/>
                     </cell>
                     <cell>
-                        <comuneLabel
-                                value="${arg.indirizzo.comune}"
-                                bold="true"/>
+                        <comuneLabel value="${arg.indirizzo.comune}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <comuneLabel value="${arg.indirizzo.comune}" bold="true"
+                                     sclass="${arg.groupbox.getSclassComune()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
-                </row>
-            </rows>
-        </zk>
-        <zk if="${arg.tipoIndirizzo eq 'RESIDENTE_ESTERO'}">
-            <columns>
-                <column width="150px"/>
-                <column/>
-            </columns>
-            <rows>
-                <row>
-                    <cell align="right">
-                        <label value="@load(vm.etichette['Via'])"/>
-                    </cell>
-                    <cell>
-                        <customLabel value="${arg.indirizzo.via}" bold="true"/>
-                    </cell>
-                </row>
-                <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Zipcode'])"/>
                     </cell>
                     <cell>
-                        <customLabel value="${arg.indirizzo.zipcode}" bold="true"/>
+                        <customLabel value="${arg.indirizzo.zipcode}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.zipcode}" bold="true"
+                                     sclass="${arg.groupbox.getSclassZipcode()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
+
                 </row>
                 <row>
                     <cell align="right">
                         <label value="@load(vm.etichette['Provincia_Contea'])"/>
                     </cell>
                     <cell>
-                        <customLabel value="${arg.indirizzo.provinciaContea}" bold="true"/>
+                        <customLabel value="${arg.indirizzo.provinciaContea}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${arg.indirizzo.provinciaContea}" bold="true"
+                                     sclass="${arg.groupbox.getSclassProvinciaContea()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
-                </row>
-                <row>
+
                     <cell align="right">
-                        <label value="@load(vm.etichette['Presso'])"/>
+                        <label value="@load(c:cat3(vm.etichette['Consolato'], ' - ',vm.etichette['Sede']))"/>
                     </cell>
                     <cell>
-                        <customLabel value="${arg.indirizzo.presso}" bold="true"/>
-                    </cell>
-                </row>
-                <row>
-                    <cell align="right">
-                        <label value="@load(vm.etichette['Comune'])"/>
-                    </cell>
-                    <cell>
-                        <comuneLabel value="${arg.indirizzo.comune}"
-                                     bold="true"/>
-                    </cell>
-                </row>
-                <row>
-                    <cell align="right">
-                        <label value="@load(vm.etichette['Consolato'])"/>
-                    </cell>
-                    <cell>
-                        <customLabel value="${arg.indirizzo.codiceConsolato}"
-                                     bold="true"/>
-                    </cell>
-                </row>
-                <row>
-                    <cell align="right">
-                        <label value="@load(vm.etichette['Sede'])"/>
-                    </cell>
-                    <cell>
-                        <customLabel value="${arg.indirizzo.sedeConsolato}"
-                                     bold="true"/>
+                        <customLabel value="${empty arg.indirizzo.codiceConsolato ? '' : arg.indirizzo.codiceConsolato}${empty arg.indirizzo.codiceConsolato ? '' : ' - '}${empty arg.indirizzo.codiceConsolato ? '' : arg.indirizzo.sedeConsolato}" bold="true"
+                                     if="${arg.showAnp ne true or arg.showAnp eq null}"/>
+                        <customLabel value="${empty arg.indirizzo.codiceConsolato ? '' : arg.indirizzo.codiceConsolato}${empty arg.indirizzo.codiceConsolato ? '' : ' - '}${empty arg.indirizzo.codiceConsolato ? '' : arg.indirizzo.sedeConsolato}" bold="true"
+                                     sclass="${arg.groupbox.getSclassConsolato()}"
+                                     if="${arg.showAnp eq true}"/>
                     </cell>
                 </row>
             </rows>

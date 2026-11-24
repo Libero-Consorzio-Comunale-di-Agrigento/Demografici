@@ -137,8 +137,8 @@ class CivMotivoRichiesta extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Tipo, Etichette.Documento_riconoscimento, Etichette.Documentazione_PU,
-                                              Etichette.Descrizione, Etichette.Ricorrente, Etichette.Estremi_riconoscimento, Etichette.Caso_Uso_Ansc]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Documento_riconoscimento"), Etichette.getEtichetta("Documentazione_PU"),
+                                              Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Ricorrente"), Etichette.getEtichetta("Estremi_riconoscimento"), Etichette.getEtichetta("Caso_Uso_Ansc")]
 
 }
 

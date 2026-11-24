@@ -20,8 +20,8 @@ dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
      w_sql := 'create table anstws
 (ID                                                 VARCHAR2(10)
 ,SERVIZIO                                           VARCHAR2(10)
-,DESCRIZIONE                                        VARCHAR2(100)
-,URL                                                VARCHAR2(255)
+,DESCRIZIONE                                        VARCHAR2(100
+,URL                                                VARCHAR2(255
 ,FLAG_ATTRIBUTO_JWS                                 VARCHAR2(1)
 ,FLAG_AUTOMATICO                                    VARCHAR2(1)
 ,FLAG_ALLEGATI                                      VARCHAR2(1)
@@ -52,6 +52,11 @@ dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
 ,FLAG_ESTRATTO_INTEGRALE                            VARCHAR2(1)
 ,FLAG_ATTESTAZIONE                                  VARCHAR2(1)
 ,TAB_COMUNICAZIONE                                  VARCHAR2(20)
+,FLAG_CERTIFICAZIONE                                VARCHAR2(1)
+,FLAG_CONSULTAZIONE_SOG_PAR                         VARCHAR2(1)
+,FLAG_ALERT_ATTO_RETTIFICATO                        VARCHAR2(1)
+,FLAG_ENTE_RICHIEDENTE                              VARCHAR2(1)
+,FLAG_CONSULTAZIONE_SOG_MI                          VARCHAR2(1)
 )';
 
      begin
@@ -818,7 +823,7 @@ dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
   end if;
 end;
 /
-/
+-- 01/08/2024 (VM)
 declare
 w_oracle_ver	varchar2(255) := f_GSD_versione_oracle();
 
@@ -839,6 +844,111 @@ dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
      w_sql := 'alter table anstws
 add
 (TAB_COMUNICAZIONE        VARCHAR2(20)
+)';
+     begin
+       execute immediate w_sql;
+dbms_output.put_line('oggetto '||w_des_ogg||' creato');
+     exception
+       when others then
+dbms_output.put_line('oggetto '||w_des_ogg||' non creato ('||SQLERRM||')');
+     end;
+
+  elsif w_check_db = 1 then
+dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
+  end if;
+end;
+/
+-- 17/10/2024 (VM)
+declare
+w_oracle_ver	varchar2(255) := f_GSD_versione_oracle();
+
+w_tipo_ogg	varchar2(255) := 'COL';
+w_nome_ogg	varchar2(255) := 'ANSTWS';
+w_nome_col      varchar2(255) := 'FLAG_CERTIFICAZIONE';
+
+w_des_ogg       varchar2(255) := w_tipo_ogg||'.'||w_nome_ogg||'.'||w_nome_col;
+w_check_db	number := f_GSD_check_db(w_tipo_ogg,w_nome_ogg,w_nome_col);
+
+w_sql           varchar2(32000);
+w_result        varchar2(32000);
+
+begin
+  if w_check_db = 0 then
+dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
+
+     w_sql := 'alter table anstws
+add
+(FLAG_CERTIFICAZIONE        VARCHAR2(1)
+)';
+     begin
+       execute immediate w_sql;
+dbms_output.put_line('oggetto '||w_des_ogg||' creato');
+     exception
+       when others then
+dbms_output.put_line('oggetto '||w_des_ogg||' non creato ('||SQLERRM||')');
+     end;
+
+  elsif w_check_db = 1 then
+dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
+  end if;
+end;
+/
+-- 28/10/2025 (DF)
+declare
+w_oracle_ver	varchar2(255) := f_GSD_versione_oracle();
+
+w_tipo_ogg	varchar2(255) := 'COL';
+w_nome_ogg	varchar2(255) := 'ANSTWS';
+w_nome_col      varchar2(255) := 'FLAG_CONSULTAZIONE_SOG_PAR';
+
+w_des_ogg       varchar2(255) := w_tipo_ogg||'.'||w_nome_ogg||'.'||w_nome_col;
+w_check_db	number := f_GSD_check_db(w_tipo_ogg,w_nome_ogg,w_nome_col);
+
+w_sql           varchar2(32000);
+w_result        varchar2(32000);
+
+begin
+  if w_check_db = 0 then
+dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
+
+     w_sql := 'alter table anstws
+add
+(FLAG_CONSULTAZIONE_SOG_PAR        VARCHAR2(1)
+)';
+     begin
+       execute immediate w_sql;
+dbms_output.put_line('oggetto '||w_des_ogg||' creato');
+     exception
+       when others then
+dbms_output.put_line('oggetto '||w_des_ogg||' non creato ('||SQLERRM||')');
+     end;
+
+  elsif w_check_db = 1 then
+dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
+  end if;
+end;
+/
+-- 13/01/2026 (AM)
+declare
+w_oracle_ver	varchar2(255) := f_GSD_versione_oracle();
+
+w_tipo_ogg	varchar2(255) := 'COL';
+w_nome_ogg	varchar2(255) := 'ANSTWS';
+w_nome_col      varchar2(255) := 'FLAG_ALERT_ATTO_RETTIFICATO';
+
+w_des_ogg       varchar2(255) := w_tipo_ogg||'.'||w_nome_ogg||'.'||w_nome_col;
+w_check_db	number := f_GSD_check_db(w_tipo_ogg,w_nome_ogg,w_nome_col);
+
+w_sql           varchar2(32000);
+w_result        varchar2(32000);
+
+begin
+  if w_check_db = 0 then
+dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
+
+     w_sql := 'alter table anstws
+add
+(FLAG_ALERT_ATTO_RETTIFICATO        VARCHAR2(1)
 )';
      begin
        execute immediate w_sql;

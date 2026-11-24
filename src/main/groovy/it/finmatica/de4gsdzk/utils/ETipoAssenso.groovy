@@ -14,8 +14,8 @@ enum ETipoAssenso {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case OR: return Etichette.orale
-            case UF: return Etichette.altro_ufficiale
+            case OR: return Etichette.getEtichetta("orale")
+            case UF: return Etichette.getEtichetta("altro_ufficiale")
         }
         return null
     }

@@ -3,10 +3,10 @@ package it.finmatica.de4gsdzk.statocivile
 import it.finmatica.de4gsdzk.AbstractServiceSpec
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdValidazioneTestoService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
-import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.DataUtils
 import it.finmatica.de4gsdzk.utils.ENaturaAtto
 import org.springframework.beans.factory.annotation.Autowired
@@ -156,17 +156,17 @@ class CivAnnotazioneAttoService175QuaterSpec extends AbstractServiceSpec<CivAnno
     List<String> listaComuni = ["FAENZA", "Belluno", "Faenza", "Lodi", "Codigoro", "Valeggio", "San Lazzaro", "San Donato", "Guastalla", "Trapani"]
 
     def setup(){
-        statoCivileService = new StatoCivileService(dataSource,
+        gsdService = new GsdService(dataSource,
                 Mock(UtenteCustomService), Mock(ArcComuneBaseService), Mock(ArcParametroService)
         )
 
         service = new CivAnnotazioneAttoService(Mock(ArcParametroService), civAnnotazioneAttoRepository,
-                statoCivileService, civAnagrafeService, gsdValidazioneTestoService, civArchivioComunicazioneService,
+                gsdService, civAnagrafeService, gsdValidazioneTestoService, civArchivioComunicazioneService,
                 civFormulaAnnotazioneService, civComunicazioneFormulaService, civNascitaRepository,
                 civMatrimonioRepository, civUnioneCivileRepository, arcComuneBaseService, civComunicazioneAllegatoService, civNascitaService
         )
 
-        civFormulaAnnotazioneService = new CivFormulaAnnotazioneService(civFormulaAnnotazioneRepository, statoCivileService,
+        civFormulaAnnotazioneService = new CivFormulaAnnotazioneService(civFormulaAnnotazioneRepository, gsdService,
                 civNotaFormulaService, civTestoFormulaService, arcParametroService, Mock(GsdValidazioneTestoService)
         )
 
@@ -188,7 +188,7 @@ class CivAnnotazioneAttoService175QuaterSpec extends AbstractServiceSpec<CivAnno
 
         Boolean variabiliVuoteSuCivnfa = gestioneVariabiliOld(annotazioneComune[comune].formula)
 
-        testoDb = statoCivileService.decodificaTestoAnnotazione(attoSource.getTipoAtto(), annotazioneComune[comune].formula, attoSource, dpaSource, 1)?.trim()?.replaceAll(" +", " ")
+        testoDb = gsdService.decodificaTestoAnnotazione(attoSource.getTipoAtto(), annotazioneComune[comune].formula, attoSource, dpaSource, 1)?.trim()?.replaceAll(" +", " ")
         testoAtteso = estraiTestoDaMappa(annotazioneComune[comune].variabili as Map<String, String>, annotazioneComune[comune].testo as String).trim().replaceAll(" +", " ")
 
         then:

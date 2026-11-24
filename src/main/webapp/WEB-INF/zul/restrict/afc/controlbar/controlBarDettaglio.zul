@@ -26,7 +26,7 @@
 
 			<zk if="${vm.deleteRecordEnabled}">
 				<toolbarbutton image="/images/icon/action/22x22/delete.png"
-			   		disabled="@load(empty vm.dettaglio.id)"
+			   		disabled="@load(!vm.canDeleteRecord)"
 					tooltiptext="@load(vm.etichette['elimina_tooltip'])"
 					onClick="@command('onEliminaRecord')"/>
 			</zk>

@@ -34,14 +34,14 @@ class DocumentoEntrataAssociatoListaViewModel extends DocumentoParentListaViewMo
         //excelExportEnabled = true
         //csvExportEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Gestione_Documenti_Entrata]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Gestione_Documenti_Entrata")]
         eList.addAll(CivVisualizzazioneDocumentiEntrata.etichetteDomain)
 
         doInit(w, eList, ETipoDocumento.Entrata)
 
         addEnabled = true
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Entrata)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Entrata"))
 
         formLabel = msgTitle?.toUpperCase() + " - " + getDescrizioneStato().toUpperCase()
 
@@ -49,7 +49,7 @@ class DocumentoEntrataAssociatoListaViewModel extends DocumentoParentListaViewMo
     }
 
     String getDescrizioneStato(){
-        return getEtichetta(Etichette.Documenti_Associati)
+        return getEtichetta(Etichette.getEtichetta("Documenti_Associati"))
     }
 
     void caricaListaAnni() {
@@ -63,7 +63,7 @@ class DocumentoEntrataAssociatoListaViewModel extends DocumentoParentListaViewMo
             if (userModifyEnabled) {
                 apriDettaglio(uriDettaglioDocumentoEntrata, [registro: registro])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

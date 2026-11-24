@@ -32,9 +32,9 @@ class CertificazioneIndexViewModel extends AbstractIndexViewModel {
     init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map> eList = [Etichette.Dizionari, Etichette.Certificazione, Etichette.Pagamenti]
+        List<Map> eList = [Etichette.getEtichetta("Dizionari"), Etichette.getEtichetta("Certificazione"), Etichette.getEtichetta("Pagamenti")]
         //Aggiungo etichette menu laterale
-        eList.addAll([Etichette.Gestione_Certificazione, Etichette.Da_inviare, Etichette.Inviati, Etichette.Ricerca_pagamento, Etichette.Dati_Generali, Etichette.Configurazione, Etichette.Pagamenti])
+        eList.addAll([Etichette.getEtichetta("Gestione_Certificazione"), Etichette.getEtichetta("Da_inviare"), Etichette.getEtichetta("Inviati"), Etichette.getEtichetta("Ricerca_pagamento"), Etichette.getEtichetta("Dati_Generali"), Etichette.getEtichetta("Configurazione"), Etichette.getEtichetta("Pagamenti")])
 
         doInit(eList)
 
@@ -58,7 +58,7 @@ class CertificazioneIndexViewModel extends AbstractIndexViewModel {
         List<Sezione> subSezioni = []
 
         for (SezioneBusiness child : sezioneBusiness.subSezioni) {
-            Sezione transformedChild = transform(child);
+            Sezione transformedChild = transform(child)
             subSezioni.add(transformedChild)
         }
 

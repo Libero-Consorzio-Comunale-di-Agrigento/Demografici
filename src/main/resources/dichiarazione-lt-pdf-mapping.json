@@ -1,0 +1,1869 @@
+{
+    "dichiarazione": {
+        "residenza": {
+            "_SEZIONE_GENERALE": {
+                "_comment": "=== CAMPI GENERALI (non per-soggetto: intestazione, dichiarazione, immobile, firme, overlay) ==="
+            },
+            "A3": {
+                "description": "Campo data 12",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "Campo data 12",
+                "semantico": "Data dichiarazione"
+            },
+            "C2": {
+                "description": "Campo data 9",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fDataNasCf",
+                "transform": "none",
+                "pdfField": "Campo data 9",
+                "semantico": "Data nascita componente famiglia gia residente"
+            },
+            "D4": {
+                "description": "Casella di controllo 17",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bTrasferito",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 17",
+                "semantico": "Dichiara trasferimento dimora abituale al nuovo indirizzo",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a bTrasferito (vista: sempre 'X')"
+            },
+            "D5": {
+                "description": "Casella di controllo 18",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bFamiliari",
+                "transform": "none",
+                "pdfField": "Casella di controllo 18",
+                "semantico": "Familiari trasferiti al nuovo indirizzo",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a bFamiliari (vista: subquery count persone)"
+            },
+            "E1": {
+                "description": "Casella di controllo 23",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 23",
+                "subjectIndex": 1,
+                "semantico": "Pos. professionale 5 persona 2 - Coadiuvante"
+            },
+            "E8": {
+                "description": "Casella di controllo 3",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 3",
+                "subjectIndex": 0,
+                "semantico": "Pos. professionale 3 persona 1 - Lavoratore in proprio"
+            },
+            "E9": {
+                "description": "Casella di controllo 30",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 30",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 2 persona 2 - Licenza media",
+                "todo": "VERIFICARE: era fieldPlaceholder AnaDichiarazioneResidenza 'Titolo occupazione locazione', riassegnato a bTs2 persona 2"
+            },
+            "F9": {
+                "description": "Casella di controllo 4",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 4",
+                "subjectIndex": 0,
+                "semantico": "Pos. professionale 4 persona 1 - Operaio e assimilati"
+            },
+            "ZG": {
+                "description": "Casella di controllo 67",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bAggregazione",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 67",
+                "semantico": "Famiglia gia residente al nuovo indirizzo - aggregazione a famiglia esistente"
+            },
+            "I9": {
+                "description": "Casella di controllo 68",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagFamNoPar",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 68",
+                "semantico": "Famiglia gia residente - non sussistono rapporti parentela"
+            },
+            "J0": {
+                "description": "Casella di controllo 69",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagFamSiPar",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 69",
+                "semantico": "Famiglia gia residente - sussiste vincolo parentela"
+            },
+            "J3": {
+                "description": "Casella di controllo 70",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagLegittima",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 70",
+                "semantico": "Titolo occupazione - dichiarazione occupazione legittima"
+            },
+            "J4": {
+                "description": "Casella di controllo 71",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagProprietario",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 71",
+                "semantico": "Titolo occupazione - proprietario"
+            },
+            "J5": {
+                "description": "Casella di controllo 72",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagLocazione",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 72",
+                "semantico": "Titolo occupazione - contratto locazione registrato"
+            },
+            "J6": {
+                "description": "Casella di controllo 73",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagLocazioneErp",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 73",
+                "semantico": "Titolo occupazione - contratto locazione ERP"
+            },
+            "J7": {
+                "description": "Casella di controllo 74",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagComodato",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 74",
+                "semantico": "Titolo occupazione - comodato uso gratuito registrato"
+            },
+            "J8": {
+                "description": "Casella di controllo 75",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagUsufrutto",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 75",
+                "semantico": "Titolo occupazione - usufruttuario"
+            },
+            "J9": {
+                "description": "Casella di controllo 76",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "flagTitolo",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 76",
+                "semantico": "Titolo occupazione - occupazione legittima altro titolo"
+            },
+            "K6": {
+                "description": "Casella di testo 1",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fDic2",
+                "transform": "none",
+                "pdfField": "Casella di testo 1",
+                "semantico": "Stato estero provenienza (dall estero)"
+            },
+            "K8": {
+                "description": "Casella di testo 100",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "ftelefono",
+                "transform": "none",
+                "pdfField": "Casella di testo 100",
+                "semantico": "Telefono recapito comunicazioni"
+            },
+            "K9": {
+                "description": "Casella di testo 101",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fCellulareCom",
+                "transform": "none",
+                "pdfField": "Casella di testo 101",
+                "semantico": "Cellulare recapito comunicazioni"
+            },
+            "L0": {
+                "description": "Casella di testo 102",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fFaxCom",
+                "transform": "none",
+                "pdfField": "Casella di testo 102",
+                "semantico": "Fax recapito comunicazioni"
+            },
+            "L1": {
+                "description": "Casella di testo 103",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fEmailCom",
+                "transform": "none",
+                "pdfField": "Casella di testo 103",
+                "semantico": "Email/PEC recapito comunicazioni"
+            },
+            "P6": {
+                "description": "Casella di testo 19",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fComune",
+                "transform": "none",
+                "pdfField": "Casella di testo 19",
+                "semantico": "Nuovo indirizzo - comune",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fComune (vista: com.descrizione)"
+            },
+            "P7": {
+                "description": "Casella di testo 2",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fDic1",
+                "transform": "none",
+                "pdfField": "Casella di testo 2",
+                "semantico": "Comune provenienza (da altro comune)"
+            },
+            "P8": {
+                "description": "Casella di testo 20",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fProvincia",
+                "transform": "none",
+                "pdfField": "Casella di testo 20",
+                "semantico": "Nuovo indirizzo - provincia",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fProvincia (vista: pro.descrizione)"
+            },
+            "P9": {
+                "description": "Casella di testo 21",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fIndirizzo",
+                "transform": "none",
+                "pdfField": "Casella di testo 21",
+                "semantico": "Nuovo indirizzo - via/piazza",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fIndirizzo (vista: vie.denom_uff)"
+            },
+            "Q0": {
+                "description": "Casella di testo 22",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fNumCiv",
+                "transform": "none",
+                "pdfField": "Casella di testo 22",
+                "semantico": "Nuovo indirizzo - numero civico",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fNumCiv (vista: num_civ||suffisso)"
+            },
+            "Q1": {
+                "description": "Casella di testo 23",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fInterno",
+                "transform": "none",
+                "pdfField": "Casella di testo 23",
+                "semantico": "Nuovo indirizzo - interno",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fInterno (vista: interno||sub_interno)"
+            },
+            "Q2": {
+                "description": "Casella di testo 24",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fPiano",
+                "transform": "none",
+                "pdfField": "Casella di testo 24",
+                "semantico": "Nuovo indirizzo - piano",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fPiano (vista: piano)"
+            },
+            "Q3": {
+                "description": "Casella di testo 25",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fScala",
+                "transform": "none",
+                "pdfField": "Casella di testo 25",
+                "semantico": "Nuovo indirizzo - scala",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fScala (vista: scala)"
+            },
+            "Q8": {
+                "description": "Casella di testo 3",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fDic3",
+                "transform": "none",
+                "pdfField": "Casella di testo 3",
+                "semantico": "Stato estero provenienza AIRE"
+            },
+            "R9": {
+                "description": "Casella di testo 4",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "comuneAire",
+                "transform": "none",
+                "pdfField": "Casella di testo 4",
+                "semantico": "Comune iscrizione AIRE"
+            },
+            "T0": {
+                "description": "Casella di testo 5",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fDic5",
+                "transform": "none",
+                "pdfField": "Casella di testo 5",
+                "semantico": "Motivo iscrizione per altro motivo"
+            },
+            "V9": {
+                "description": "Casella di testo 76",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fCognomeCf",
+                "transform": "none",
+                "pdfField": "Casella di testo 76",
+                "semantico": "Cognome componente famiglia gia residente",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fCognomeCf (vista: ana_cf.cognome)"
+            },
+            "W0": {
+                "description": "Casella di testo 77",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fNomeCf",
+                "transform": "none",
+                "pdfField": "Casella di testo 77",
+                "semantico": "Nome componente famiglia gia residente",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fNomeCf (vista: ana_cf.nome)"
+            },
+            "W1": {
+                "description": "Casella di testo 78",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fLuogoNascitaCf",
+                "transform": "none",
+                "pdfField": "Casella di testo 78",
+                "semantico": "Luogo nascita componente famiglia gia residente",
+                "todo": "VERIFICARE: era fieldPlaceholder, ora mappa a fLuogoNascitaCf (vista: com_nas_cf.descrizione)"
+            },
+            "W2": {
+                "description": "Casella di testo 79",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fEstremiDocCf",
+                "transform": "none",
+                "pdfField": "Casella di testo 79",
+                "semantico": "Estremi documento riconoscimento componente famiglia gia residente"
+            },
+            "W4": {
+                "description": "Casella di testo 80 (text area multilinea)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "noteTitolo",
+                "transform": "none",
+                "pdfField": "Casella di testo 80",
+                "semantico": "Dati verifica ufficio - titolo occupazione altro"
+            },
+            "W5": {
+                "description": "Casella di testo 81",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fAllegato1",
+                "transform": "none",
+                "pdfField": "Casella di testo 81",
+                "semantico": "Documenti allegati - riga 1"
+            },
+            "W6": {
+                "description": "Casella di testo 82",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fAllegato2",
+                "transform": "none",
+                "pdfField": "Casella di testo 82",
+                "semantico": "Documenti allegati - riga 2"
+            },
+            "W7": {
+                "description": "Casella di testo 83",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fAllegato3",
+                "transform": "none",
+                "pdfField": "Casella di testo 83",
+                "semantico": "Documenti allegati - riga 3"
+            },
+            "W8": {
+                "description": "Casella di testo 84",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fAllegato4",
+                "transform": "none",
+                "pdfField": "Casella di testo 84",
+                "semantico": "Documenti allegati - riga 4"
+            },
+            "W9": {
+                "description": "Casella di testo 85",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "sezioneCatasto",
+                "transform": "none",
+                "pdfField": "Casella di testo 85",
+                "semantico": "Estremi catastali - sezione"
+            },
+            "X0": {
+                "description": "Casella di testo 86",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "foglioCatasto",
+                "transform": "none",
+                "pdfField": "Casella di testo 86",
+                "semantico": "Estremi catastali - foglio"
+            },
+            "X1": {
+                "description": "Casella di testo 87",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "numeroCatasto",
+                "transform": "none",
+                "pdfField": "Casella di testo 87",
+                "semantico": "Estremi catastali - particella/mappale"
+            },
+            "X2": {
+                "description": "Casella di testo 88",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "subalternoCatasto",
+                "transform": "none",
+                "pdfField": "Casella di testo 88",
+                "semantico": "Estremi catastali - subalterno"
+            },
+            "X3": {
+                "description": "Casella di testo 89",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "sedeContrattoLocazione",
+                "transform": "none",
+                "pdfField": "Casella di testo 89",
+                "semantico": "Locazione - luogo Agenzia Entrate"
+            },
+            "X7": {
+                "description": "Campo data 10",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "dataContrattoLocazione",
+                "transform": "none",
+                "pdfField": "Campo data 10",
+                "fontSize": 8,
+                "semantico": "Locazione - data contratto"
+            },
+            "X8": {
+                "description": "Campo numerico 1",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "numContrattoLocazione",
+                "transform": "none",
+                "pdfField": "Campo numerico 1",
+                "semantico": "Locazione - numero contratto"
+            },
+            "X5": {
+                "description": "Casella di testo 90",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "sedeContrattoComodato",
+                "transform": "none",
+                "pdfField": "Casella di testo 90",
+                "semantico": "Comodato - luogo Agenzia Entrate"
+            },
+            "X9": {
+                "description": "Campo data 11",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "dataContrattoComodato",
+                "transform": "none",
+                "pdfField": "Campo data 11",
+                "semantico": "Comodato - data contratto"
+            },
+            "X10": {
+                "description": "Campo numerico 2",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "numContrattoComodato",
+                "transform": "none",
+                "pdfField": "Campo numerico 2",
+                "semantico": "Comodato - numero contratto"
+          },
+
+            "X6": {
+                "description": "Casella di testo 91 (text area multilinea)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "noteUsufrutto",
+                "transform": "none",
+                "pdfField": "Casella di testo 91",
+                "semantico": "Dati verifica ufficio - usufruttuario"
+            },
+            "Y1": {
+                "description": "Casella di testo 96",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fComune",
+                "transform": "none",
+                "pdfField": "Casella di testo 96",
+                "semantico": "Recapito comunicazioni - comune"
+            },
+            "Y2": {
+                "description": "Casella di testo 97",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fProvincia",
+                "transform": "none",
+                "pdfField": "Casella di testo 97",
+                "semantico": "Recapito comunicazioni - provincia"
+            },
+            "Y3": {
+                "description": "Casella di testo 98",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fIndirizzo",
+                "transform": "none",
+                "pdfField": "Casella di testo 98",
+                "semantico": "Recapito comunicazioni - via/piazza"
+            },
+            "Y4": {
+                "description": "Casella di testo 99",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fNumCiv",
+                "transform": "none",
+                "pdfField": "Casella di testo 99",
+                "semantico": "Recapito comunicazioni - numero civico"
+            },
+            "Y6": {
+                "description": "a ore",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "a ore",
+                "semantico": "Fascia reperibilita polizia locale - a ore"
+            },
+            "Y7": {
+                "description": "da ore",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "da ore",
+                "semantico": "Fascia reperibilita polizia locale - da ore"
+            },
+            "Y8": {
+                "description": "familiare 1",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS,fNomeS",
+                "separator": " ",
+                "subjectIndex": 1,
+                "transform": "none",
+                "pdfField": "familiare 1",
+                "fontSize": 9,
+                "soloSeMaggiorenne": true,
+                "semantico": "Cognome e nome familiare firmatario 1"
+            },
+            "Y9": {
+                "description": "familiare 2",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS,fNomeS",
+                "separator": " ",
+                "subjectIndex": 2,
+                "transform": "none",
+                "pdfField": "familiare 2",
+                "fontSize": 9,
+                "soloSeMaggiorenne": true,
+                "semantico": "Cognome e nome familiare firmatario 2"
+            },
+            "Z0": {
+                "description": "familiare 3",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS,fNomeS",
+                "separator": " ",
+                "subjectIndex": 3,
+                "transform": "none",
+                "pdfField": "familiare 3",
+                "fontSize": 9,
+                "soloSeMaggiorenne": true,
+                "semantico": "Cognome e nome familiare firmatario 3"
+            },
+            "Z1": {
+                "description": "familiare 4",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS,fNomeS",
+                "separator": " ",
+                "subjectIndex": 4,
+                "transform": "none",
+                "pdfField": "familiare 4",
+                "fontSize": 9,
+                "soloSeMaggiorenne": true,
+                "semantico": "Cognome e nome familiare firmatario 4"
+            },
+            "Z3": {
+                "description": "note",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "note",
+                "semantico": "Note aggiuntive reperibilita polizia locale"
+            },
+            "Z6": {
+                "description": "tipo familiare",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "tipo familiare",
+                "semantico": "Tipo vincolo con componente famiglia gia residente"
+            },
+            "Z7": {
+                "description": "Pratica N. (overlay intestazione)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "desPraticaTpr",
+                "transform": "none",
+                "pdfField": "pratica_numero",
+                "semantico": "Numero pratica (overlay)"
+            },
+            "Z8": {
+                "description": "Data Presentazione (overlay intestazione)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "dataPraticaTpr",
+                "transform": "none",
+                "pdfField": "pratica_data_presentazione",
+                "semantico": "Data presentazione (overlay)"
+            },
+            "Z9": {
+                "description": "Operatore (overlay intestazione)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "nomeTerminalistaTpr",
+                "transform": "none",
+                "pdfField": "pratica_operatore",
+                "semantico": "Operatore (overlay)"
+            },
+            "ZA": {
+                "description": "Casella di controllo 81",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bDic1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 81",
+                "semantico": "Checkbox dichiarazione di residenza con provenienza da altro comune"
+            },
+            "ZB": {
+                "description": "Casella di controllo 82",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bDic2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 82",
+                "semantico": "Checkbox dichiarazione di residenza con provenienza dall estero"
+            },
+            "ZC": {
+                "description": "Casella di controllo 83",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bDic3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 83",
+                "semantico": "Checkbox dichiarazione di residenza cittadini italiani iscritti AIRE"
+            },
+            "ZD": {
+                "description": "Casella di controllo 84",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bDic4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 84",
+                "semantico": "Checkbox dichiarazione di cambiamento di abitazione stesso comune"
+            },
+            "ZE": {
+                "description": "Casella di controllo 85",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "bDic5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 85",
+                "semantico": "Checkbox iscrizione per altro motivo"
+            },
+            "ZF": {
+                "description": "Riferimento pratica (footer ogni pagina)",
+                "source": "AnaDichiarazioneResidenza",
+                "field": "rifPratica",
+                "transform": "none",
+                "pdfField": "",
+                "semantico": "Riferimento pratica stampato in basso a destra di ogni pagina"
+            },
+            "_SEZIONE_TABELLA_1": {
+                "_comment": "=== TABELLA 1 - Persona 1 (subjectIndex=0, pagine 1-2 meta superiore) ==="
+            },
+            "U1": {
+                "description": "Casella di testo 6",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "Casella di testo 6",
+                "semantico": "Cognome persona 1"
+            },
+            "V2": {
+                "description": "Casella di testo 7",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 7",
+                "subjectIndex": 0,
+                "semantico": "Nome persona 1"
+            },
+            "A0": {
+                "description": "Campo data 1",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataNasS",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "Campo data 1",
+                "semantico": "Data di nascita persona 1"
+            },
+            "W3": {
+                "description": "Casella di testo 8",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fLuogoNasS",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "Casella di testo 8",
+                "semantico": "Luogo di nascita persona 1"
+            },
+            "X4": {
+                "description": "Casella di testo 9",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSessoS",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "Casella di testo 9",
+                "semantico": "Sesso persona 1"
+            },
+            "K7": {
+                "description": "Casella di testo 10",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fStatoCivileS",
+                "transform": "none",
+                "subjectIndex": 0,
+                "pdfField": "Casella di testo 10",
+                "semantico": "Stato civile persona 1"
+            },
+            "O6": {
+                "description": "Casella di testo 135",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCittS",
+                "transform": "none",
+                "pdfField": "Casella di testo 135",
+                "subjectIndex": 0,
+                "semantico": "Cittadinanza persona 1"
+            },
+            "O7": {
+                "description": "Casella di testo 136",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCodFiscaleS",
+                "transform": "none",
+                "pdfField": "Casella di testo 136",
+                "subjectIndex": 0,
+                "semantico": "Codice fiscale persona 1"
+            },
+            "C6": {
+                "description": "Casella di controllo 1",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 1",
+                "subjectIndex": 0,
+                "semantico": "Pos. professionale 1 persona 1 - Libero professionista"
+            },
+            "D7": {
+                "description": "Casella di controllo 2",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 2",
+                "subjectIndex": 0,
+                "semantico": "Pos. professionale 2 persona 1 - Impiegato"
+            },
+            "F8": {
+                "description": "Casella di controllo 39",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 39",
+                "subjectIndex": 2,
+                "semantico": "Pos. professionale 5 persona 3 - Coadiuvante",
+                "todo": "VERIFICARE: era bProf3 persona 1 (_DUPLICATO), riassegnato a bProf5 persona 3"
+            },
+            "F0": {
+                "description": "Casella di controllo 31",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs6",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 31",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 6 persona 2 - Dottorato di ricerca",
+                "todo": "VERIFICARE: era bProf4 persona 1 (_DUPLICATO), riassegnato a bTs6 persona 2"
+            },
+            "H0": {
+                "description": "Casella di controllo 5",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 5",
+                "subjectIndex": 0,
+                "semantico": "Pos. professionale 5 persona 1 - Coadiuvante"
+            },
+            "J1": {
+                "description": "Casella di controllo 6",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 6",
+                "subjectIndex": 0,
+                "semantico": "Cond. non professionale 1 persona 1 - Casalinga"
+            },
+            "J2": {
+                "description": "Casella di controllo 7",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 7",
+                "subjectIndex": 0,
+                "semantico": "Cond. non professionale 2 persona 1 - Studente"
+            },
+            "K3": {
+                "description": "Casella di controllo 8",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 8",
+                "subjectIndex": 0,
+                "semantico": "Cond. non professionale 3 persona 1 - Disoccupato/in cerca prima occ."
+            },
+            "K5": {
+                "description": "Casella di controllo 9",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 9",
+                "subjectIndex": 0,
+                "semantico": "Cond. non professionale 4 persona 1 - Pensionato/Ritirato"
+            },
+            "C7": {
+                "description": "Casella di controllo 10",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 10",
+                "subjectIndex": 0,
+                "semantico": "Cond. non professionale 5 persona 1 - Altra condizione"
+            },
+            "C8": {
+                "description": "Casella di controllo 11",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 11",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 1 persona 1 - Nessun titolo/Lic. Elementare"
+            },
+            "C9": {
+                "description": "Casella di controllo 12",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 12",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 2 persona 1 - Lic. Media"
+            },
+            "D0": {
+                "description": "Casella di controllo 13",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 13",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 3 persona 1 - Diploma"
+            },
+            "D1": {
+                "description": "Casella di controllo 14",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 14",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 4 persona 1 - Laurea triennale"
+            },
+            "D2": {
+                "description": "Casella di controllo 15",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 15",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 5 persona 1 - Laurea"
+            },
+            "D3": {
+                "description": "Casella di controllo 16",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs6",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 16",
+                "subjectIndex": 0,
+                "semantico": "Titolo di studio 6 persona 1 - Dottorato"
+            },
+            "L8": {
+                "description": "Casella di testo 11",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fTipoPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 11",
+                "subjectIndex": 0,
+                "semantico": "Tipo patente persona 1"
+            },
+            "B1": {
+                "description": "Campo data 2",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataEmissionePt",
+                "transform": "none",
+                "pdfField": "Campo data 2",
+                "subjectIndex": 0,
+                "semantico": "Data di rilascio patente persona 1"
+            },
+            "M9": {
+                "description": "Casella di testo 12",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 12",
+                "subjectIndex": 0,
+                "semantico": "Numero patente persona 1"
+            },
+            "O0": {
+                "description": "Casella di testo 13",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSiglaProvinciaPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 13",
+                "subjectIndex": 0,
+                "semantico": "Provincia patente persona 1"
+            },
+            "P1": {
+                "description": "Casella di testo 14",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fEnteEmissionePt",
+                "transform": "none",
+                "pdfField": "Casella di testo 14",
+                "subjectIndex": 0,
+                "semantico": "Organo di rilascio patente persona 1"
+            },
+            "P2": {
+                "description": "Casella di testo 15",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcA",
+                "transform": "none",
+                "pdfField": "Casella di testo 15",
+                "subjectIndex": 0,
+                "semantico": "Targa autoveicoli persona 1"
+            },
+            "P3": {
+                "description": "Casella di testo 16",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcR",
+                "transform": "none",
+                "pdfField": "Casella di testo 16",
+                "subjectIndex": 0,
+                "semantico": "Targa rimorchi persona 1"
+            },
+            "P4": {
+                "description": "Casella di testo 17",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcM",
+                "transform": "none",
+                "pdfField": "Casella di testo 17",
+                "subjectIndex": 0,
+                "semantico": "Targa motoveicoli persona 1"
+            },
+            "P5": {
+                "description": "Casella di testo 18",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcC",
+                "transform": "none",
+                "pdfField": "Casella di testo 18",
+                "subjectIndex": 0,
+                "semantico": "Targa ciclomotori persona 1"
+            },
+            "_SEZIONE_TABELLA_2": {
+                "_comment": "=== TABELLA 2 - Persona 2 (subjectIndex=1, pagine 1-2 meta inferiore) ==="
+            },
+            "Q4": {
+                "description": "Casella di testo 26",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 26",
+                "subjectIndex": 1,
+                "semantico": "Cognome persona 2"
+            },
+            "Q5": {
+                "description": "Casella di testo 27",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 27",
+                "subjectIndex": 1,
+                "semantico": "Nome persona 2"
+            },
+            "B6": {
+                "description": "Campo data 3",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataNasS",
+                "transform": "none",
+                "pdfField": "Campo data 3",
+                "subjectIndex": 1,
+                "semantico": "Data di nascita persona 2"
+            },
+            "Q6": {
+                "description": "Casella di testo 28",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fLuogoNasS",
+                "transform": "none",
+                "pdfField": "Casella di testo 28",
+                "subjectIndex": 1,
+                "semantico": "Luogo di nascita persona 2"
+            },
+            "Q7": {
+                "description": "Casella di testo 29",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSessoS",
+                "transform": "none",
+                "pdfField": "Casella di testo 29",
+                "subjectIndex": 1,
+                "semantico": "Sesso persona 2"
+            },
+            "Q9": {
+                "description": "Casella di testo 30",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fStatoCivileS",
+                "transform": "none",
+                "pdfField": "Casella di testo 30",
+                "subjectIndex": 1,
+                "semantico": "Stato civile persona 2"
+            },
+            "R0": {
+                "description": "Casella di testo 31",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCittS",
+                "transform": "none",
+                "pdfField": "Casella di testo 31",
+                "subjectIndex": 1,
+                "semantico": "Cittadinanza persona 2"
+            },
+            "R1": {
+                "description": "Casella di testo 32",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCodFiscaleS",
+                "transform": "none",
+                "pdfField": "Casella di testo 32",
+                "subjectIndex": 1,
+                "semantico": "Codice fiscale persona 2"
+            },
+            "R2": {
+                "description": "Casella di testo 33",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "desRapportoPar",
+                "transform": "none",
+                "pdfField": "Casella di testo 33",
+                "subjectIndex": 1,
+                "fontSize": "8",
+                "semantico": "Rapporto di parentela persona 2"
+            },
+            "D6": {
+                "description": "Casella di controllo 19",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 19",
+                "subjectIndex": 1,
+                "semantico": "Pos. professionale 1 persona 2 - Libero professionista"
+            },
+            "D8": {
+                "description": "Casella di controllo 20",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 20",
+                "subjectIndex": 1,
+                "semantico": "Pos. professionale 2 persona 2 - Impiegato"
+            },
+            "D9": {
+                "description": "Casella di controllo 21",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 21",
+                "subjectIndex": 1,
+                "semantico": "Pos. professionale 3 persona 2 - Lavoratore in proprio"
+            },
+            "E0": {
+                "description": "Casella di controllo 22",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 22",
+                "subjectIndex": 1,
+                "semantico": "Pos. professionale 4 persona 2 - Operaio e assimilati"
+            },
+            "F4": {
+                "description": "Casella di controllo 35",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 35",
+                "subjectIndex": 2,
+                "semantico": "Pos. professionale 1 persona 3 - Libero professionista",
+                "todo": "VERIFICARE: era bProf5 persona 2 (_DUPLICATO), riassegnato a bProf1 persona 3"
+            },
+            "E2": {
+                "description": "Casella di controllo 24",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 24",
+                "subjectIndex": 1,
+                "semantico": "Cond. non professionale 1 persona 2 - Casalinga"
+            },
+            "E3": {
+                "description": "Casella di controllo 25",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 25",
+                "subjectIndex": 1,
+                "semantico": "Cond. non professionale 2 persona 2 - Studente"
+            },
+            "E4": {
+                "description": "Casella di controllo 26",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 26",
+                "subjectIndex": 1,
+                "semantico": "Cond. non professionale 3 persona 2 - Disoccupato/in cerca prima occ."
+            },
+            "E5": {
+                "description": "Casella di controllo 27",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 27",
+                "subjectIndex": 1,
+                "semantico": "Cond. non professionale 4 persona 2 - Pensionato/Ritirato"
+            },
+            "E6": {
+                "description": "Casella di controllo 28",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 28",
+                "subjectIndex": 1,
+                "semantico": "Cond. non professionale 5 persona 2 - Altra condizione"
+            },
+            "E7": {
+                "description": "Casella di controllo 29",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 29",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 1 persona 2 - Nessun titolo/Lic. Elementare"
+            },
+            "F1": {
+                "description": "Casella di controllo 32",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 32",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 3 persona 2 - Diploma"
+            },
+            "F2": {
+                "description": "Casella di controllo 33",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 33",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 4 persona 2 - Laurea triennale"
+            },
+            "F3": {
+                "description": "Casella di controllo 34",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 34",
+                "subjectIndex": 1,
+                "semantico": "Titolo di studio 5 persona 2 - Laurea"
+            },
+            "R3": {
+                "description": "Casella di testo 34",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fTipoPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 34",
+                "subjectIndex": 1,
+                "semantico": "Tipo patente persona 2"
+            },
+            "B7": {
+                "description": "Campo data 4",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataEmissionePt",
+                "transform": "none",
+                "pdfField": "Campo data 4",
+                "subjectIndex": 1,
+                "semantico": "Data di rilascio patente persona 2"
+            },
+            "R4": {
+                "description": "Casella di testo 35",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 35",
+                "subjectIndex": 1,
+                "semantico": "Numero patente persona 2"
+            },
+            "R5": {
+                "description": "Casella di testo 36",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSiglaProvinciaPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 36",
+                "subjectIndex": 1,
+                "semantico": "Provincia patente persona 2"
+            },
+            "R6": {
+                "description": "Casella di testo 37",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fEnteEmissionePt",
+                "transform": "none",
+                "pdfField": "Casella di testo 37",
+                "subjectIndex": 1,
+                "semantico": "Organo di rilascio patente persona 2"
+            },
+            "R7": {
+                "description": "Casella di testo 38",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcA",
+                "transform": "none",
+                "pdfField": "Casella di testo 38",
+                "subjectIndex": 1,
+                "semantico": "Targa autoveicoli persona 2"
+            },
+            "R8": {
+                "description": "Casella di testo 39",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcR",
+                "transform": "none",
+                "pdfField": "Casella di testo 39",
+                "subjectIndex": 1,
+                "semantico": "Targa rimorchi persona 2"
+            },
+            "S0": {
+                "description": "Casella di testo 40",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcM",
+                "transform": "none",
+                "pdfField": "Casella di testo 40",
+                "subjectIndex": 1,
+                "semantico": "Targa motoveicoli persona 2"
+            },
+            "S1": {
+                "description": "Casella di testo 41",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcC",
+                "transform": "none",
+                "pdfField": "Casella di testo 41",
+                "subjectIndex": 1,
+                "semantico": "Targa ciclomotori persona 2"
+            },
+            "_SEZIONE_TABELLA_3": {
+                "_comment": "=== TABELLA 3 - Persona 3 (subjectIndex=2, pagina 3 meta superiore) ==="
+            },
+            "S2": {
+                "description": "Casella di testo 42",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 42",
+                "subjectIndex": 2,
+                "semantico": "Cognome persona 3"
+            },
+            "S3": {
+                "description": "Casella di testo 43",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 43",
+                "subjectIndex": 2,
+                "semantico": "Nome persona 3"
+            },
+            "B8": {
+                "description": "Campo data 5",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataNasS",
+                "transform": "none",
+                "pdfField": "Campo data 5",
+                "subjectIndex": 2,
+                "semantico": "Data di nascita persona 3"
+            },
+            "S4": {
+                "description": "Casella di testo 44",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fLuogoNasS",
+                "transform": "none",
+                "pdfField": "Casella di testo 44",
+                "subjectIndex": 2,
+                "semantico": "Luogo di nascita persona 3"
+            },
+            "S5": {
+                "description": "Casella di testo 45",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSessoS",
+                "transform": "none",
+                "pdfField": "Casella di testo 45",
+                "subjectIndex": 2,
+                "semantico": "Sesso persona 3"
+            },
+            "S6": {
+                "description": "Casella di testo 46",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fStatoCivileS",
+                "transform": "none",
+                "pdfField": "Casella di testo 46",
+                "subjectIndex": 2,
+                "semantico": "Stato civile persona 3"
+            },
+            "S7": {
+                "description": "Casella di testo 47",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCittS",
+                "transform": "none",
+                "pdfField": "Casella di testo 47",
+                "subjectIndex": 2,
+                "semantico": "Cittadinanza persona 3"
+            },
+            "S8": {
+                "description": "Casella di testo 48",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCodFiscaleS",
+                "transform": "none",
+                "pdfField": "Casella di testo 48",
+                "subjectIndex": 2,
+                "semantico": "Codice fiscale persona 3"
+            },
+            "S9": {
+                "description": "Casella di testo 49",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "desRapportoPar",
+                "transform": "none",
+                "pdfField": "Casella di testo 49",
+                "subjectIndex": 2,
+                "fontSize": "8",
+                "semantico": "Rapporto di parentela persona 3"
+            },
+            "T1": {
+                "description": "Casella di testo 50",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "Casella di testo 50",
+                "subjectIndex": 2,
+                "semantico": "Professione persona 3"
+            },
+            "F5": {
+                "description": "Casella di controllo 36",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 36",
+                "subjectIndex": 2,
+                "semantico": "Pos. professionale 2 persona 3 - Dirigente/Impiegato"
+            },
+            "F6": {
+                "description": "Casella di controllo 37",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 37",
+                "subjectIndex": 2,
+                "semantico": "Pos. professionale 3 persona 3 - Lavoratore in proprio"
+            },
+            "F7": {
+                "description": "Casella di controllo 38",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 38",
+                "subjectIndex": 2,
+                "semantico": "Pos. professionale 4 persona 3 - Operaio e assimilati"
+            },
+            "G0": {
+                "description": "Casella di controllo 40",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 40",
+                "subjectIndex": 2,
+                "semantico": "Cond. non professionale 1 persona 3 - Casalinga"
+            },
+            "G1": {
+                "description": "Casella di controllo 41",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 41",
+                "subjectIndex": 2,
+                "semantico": "Cond. non professionale 2 persona 3 - Studente"
+            },
+            "G2": {
+                "description": "Casella di controllo 42",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 42",
+                "subjectIndex": 2,
+                "semantico": "Cond. non professionale 3 persona 3 - Disoccupato/in cerca prima occ."
+            },
+            "G3": {
+                "description": "Casella di controllo 43",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 43",
+                "subjectIndex": 2,
+                "semantico": "Cond. non professionale 4 persona 3 - Pensionato/Ritirato"
+            },
+            "G4": {
+                "description": "Casella di controllo 44",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 44",
+                "subjectIndex": 2,
+                "semantico": "Cond. non professionale 5 persona 3 - Altra condizione"
+            },
+            "G5": {
+                "description": "Casella di controllo 45",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs1",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 45",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 1 persona 3 - Nessun titolo/Lic. Elementare"
+            },
+            "G6": {
+                "description": "Casella di controllo 46",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 46",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 2 persona 3 - Licenza media"
+            },
+            "G7": {
+                "description": "Casella di controllo 47",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 47",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 3 persona 3 - Diploma"
+            },
+            "G8": {
+                "description": "Casella di controllo 48",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 48",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 4 persona 3 - Laurea triennale"
+            },
+            "G9": {
+                "description": "Casella di controllo 49",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 49",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 5 persona 3 - Laurea"
+            },
+            "H1": {
+                "description": "Casella di controllo 50",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs6",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 50",
+                "subjectIndex": 2,
+                "semantico": "Titolo di studio 6 persona 3 - Dottorato"
+            },
+            "T2": {
+                "description": "Casella di testo 51",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fTipoPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 51",
+                "subjectIndex": 2,
+                "semantico": "Tipo patente persona 3"
+            },
+            "B9": {
+                "description": "Campo data 6",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataEmissionePt",
+                "transform": "none",
+                "pdfField": "Campo data 6",
+                "subjectIndex": 2,
+                "semantico": "Data di rilascio patente persona 3"
+            },
+            "T3": {
+                "description": "Casella di testo 52",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 52",
+                "subjectIndex": 2,
+                "semantico": "Numero patente persona 3"
+            },
+            "T4": {
+                "description": "Casella di testo 53",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSiglaProvinciaPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 53",
+                "subjectIndex": 2,
+                "semantico": "Provincia di rilascio patente persona 3"
+            },
+            "T5": {
+                "description": "Casella di testo 54",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fEnteEmissionePt",
+                "transform": "none",
+                "pdfField": "Casella di testo 54",
+                "subjectIndex": 2,
+                "semantico": "Organo di rilascio patente persona 3"
+            },
+            "T6": {
+                "description": "Casella di testo 55",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcA",
+                "transform": "none",
+                "pdfField": "Casella di testo 55",
+                "subjectIndex": 2,
+                "semantico": "Targa autoveicoli persona 3"
+            },
+            "T7": {
+                "description": "Casella di testo 56",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcR",
+                "transform": "none",
+                "pdfField": "Casella di testo 56",
+                "subjectIndex": 2,
+                "semantico": "Targa rimorchi persona 3"
+            },
+            "T8": {
+                "description": "Casella di testo 57",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcM",
+                "transform": "none",
+                "pdfField": "Casella di testo 57",
+                "subjectIndex": 2,
+                "semantico": "Targa motoveicoli persona 3"
+            },
+            "T9": {
+                "description": "Casella di testo 58",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcC",
+                "transform": "none",
+                "pdfField": "Casella di testo 58",
+                "subjectIndex": 2,
+                "semantico": "Targa ciclomotori persona 3"
+            },
+            "_SEZIONE_TABELLA_4": {
+                "_comment": "=== TABELLA 4 - Persona 4 (subjectIndex=3, pagina 3 meta inferiore) ==="
+            },
+            "U0": {
+                "description": "Casella di testo 59",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCognomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 59",
+                "subjectIndex": 3,
+                "semantico": "Cognome persona 4"
+            },
+            "U2": {
+                "description": "Casella di testo 60",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNomeS",
+                "transform": "none",
+                "pdfField": "Casella di testo 60",
+                "subjectIndex": 3,
+                "semantico": "Nome persona 4"
+            },
+            "C0": {
+                "description": "Campo data 7",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataNasS",
+                "transform": "none",
+                "pdfField": "Campo data 7",
+                "subjectIndex": 3,
+                "semantico": "Data di nascita persona 4"
+            },
+            "U5": {
+                "description": "Casella di testo 63",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fLuogoNasS",
+                "transform": "none",
+                "pdfField": "Casella di testo 63",
+                "subjectIndex": 3,
+                "semantico": "Luogo di nascita persona 4"
+            },
+            "U4": {
+                "description": "Casella di testo 62",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSessoS",
+                "transform": "none",
+                "pdfField": "Casella di testo 62",
+                "subjectIndex": 3,
+                "semantico": "Sesso persona 4"
+            },
+            "U3": {
+                "description": "Casella di testo 61",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fStatoCivileS",
+                "transform": "none",
+                "pdfField": "Casella di testo 61",
+                "subjectIndex": 3,
+                "semantico": "Stato civile persona 4"
+            },
+            "U6": {
+                "description": "Casella di testo 64",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCittS",
+                "transform": "none",
+                "pdfField": "Casella di testo 64",
+                "subjectIndex": 3,
+                "semantico": "Cittadinanza persona 4"
+            },
+            "U7": {
+                "description": "Casella di testo 65",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fCodFiscaleS",
+                "transform": "none",
+                "pdfField": "Casella di testo 65",
+                "subjectIndex": 3,
+                "semantico": "Codice fiscale persona 4"
+            },
+            "U8": {
+                "description": "Casella di testo 66",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "desRapportoPar",
+                "transform": "none",
+                "pdfField": "Casella di testo 66",
+                "subjectIndex": 3,
+                "fontSize": "8",
+                "semantico": "Rapporto di parentela persona 4"
+            },
+            "U9": {
+                "description": "Casella di testo 67",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fieldPlaceholder",
+                "transform": "none",
+                "pdfField": "Casella di testo 67",
+                "subjectIndex": 3,
+                "semantico": "Professione persona 4"
+            },
+            "H2": {
+                "_comment": "MAPPATO - Posizione professionale 1",
+                "description": "Casella di controllo 51",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf1",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 51",
+                "semantico": "Pos. professionale 1 persona 4 - Imprenditore/Libero professionista"
+            },
+            "H3": {
+                "_comment": "MAPPATO - Posizione professionale 2",
+                "description": "Casella di controllo 52",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf2",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 52",
+                "semantico": "Pos. professionale 2 persona 4 - Dirigente/Impiegato"
+            },
+            "H4": {
+                "_comment": "MAPPATO - Posizione professionale 3",
+                "description": "Casella di controllo 53",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf3",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 53",
+                "semantico": "Pos. professionale 3 persona 4 - Lavoratore in proprio"
+            },
+            "H5": {
+                "_comment": "MAPPATO - Posizione professionale 4",
+                "description": "Casella di controllo 54",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf4",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 54",
+                "semantico": "Pos. professionale 4 persona 4 - Operaio e assimilati"
+            },
+            "H6": {
+                "_comment": "MAPPATO - Posizione professionale 5",
+                "description": "Casella di controllo 55",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bProf5",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 55",
+                "semantico": "Pos. professionale 5 persona 4 - Coadiuvante"
+            },
+            "H7": {
+                "_comment": "MAPPATO - Non professione 1",
+                "description": "Casella di controllo 56",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof1",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 56",
+                "semantico": "Cond. non professionale 1 persona 4 - Casalinga"
+            },
+            "H8": {
+                "_comment": "MAPPATO - Non professione 2",
+                "description": "Casella di controllo 57",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof2",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 57",
+                "semantico": "Cond. non professionale 2 persona 4 - Studente"
+            },
+            "H9": {
+                "_comment": "MAPPATO - Non professione 3",
+                "description": "Casella di controllo 58",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof3",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 58",
+                "semantico": "Cond. non professionale 3 persona 4 - Disoccupato/in cerca prima occ."
+            },
+            "I0": {
+                "_comment": "MAPPATO - Non professione 4",
+                "description": "Casella di controllo 59",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof4",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 59",
+                "semantico": "Cond. non professionale 4 persona 4 - Pensionato/Ritirato"
+            },
+            "I2": {
+                "_comment": "MAPPATO - Non professione 5",
+                "description": "Casella di controllo 60",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bNprof5",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 60",
+                "semantico": "Cond. non professionale 5 persona 4 - Altra condizione"
+            },
+            "I3": {
+                "description": "Casella di controllo 61",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs1",
+                "transform": "booleanValueYes",
+                "subjectIndex": 3,
+                "pdfField": "Casella di controllo 61",
+                "semantico": "Titolo di studio 1 persona 4 - Nessun titolo/Licenza elementare"
+            },
+            "I4": {
+                "description": "Casella di controllo 62",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs2",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 62",
+                "subjectIndex": 3,
+                "semantico": "Titolo di studio 2 persona 4 - Licenza media"
+            },
+            "I5": {
+                "description": "Casella di controllo 63",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs3",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 63",
+                "subjectIndex": 3,
+                "semantico": "Titolo di studio 3 persona 4 - Diploma"
+            },
+            "I6": {
+                "description": "Casella di controllo 64",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs4",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 64",
+                "subjectIndex": 3,
+                "semantico": "Titolo di studio 4 persona 4 - Laurea triennale"
+            },
+            "I7": {
+                "description": "Casella di controllo 65",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs5",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 65",
+                "subjectIndex": 3,
+                "semantico": "Titolo di studio 5 persona 4 - Laurea"
+            },
+            "I8": {
+                "description": "Casella di controllo 66",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "bTs6",
+                "transform": "booleanValueYes",
+                "pdfField": "Casella di controllo 66",
+                "subjectIndex": 3,
+                "semantico": "Titolo di studio 6 persona 4 - Dottorato"
+            },
+            "V0": {
+                "description": "Casella di testo 68",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fTipoPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 68",
+                "subjectIndex": 3,
+                "semantico": "Tipo patente persona 4"
+            },
+            "C1": {
+                "description": "Campo data 8",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fDataEmissionePt",
+                "transform": "none",
+                "pdfField": "Campo data 8",
+                "subjectIndex": 3,
+                "semantico": "Data di rilascio patente persona 4"
+            },
+            "V1": {
+                "description": "Casella di testo 69",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 69",
+                "subjectIndex": 3,
+                "semantico": "Numero patente persona 4"
+            },
+            "V3": {
+                "description": "Casella di testo 70",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fSiglaProvinciaPt",
+                "transform": "none",
+                "pdfField": "Casella di testo 70",
+                "subjectIndex": 3,
+                "semantico": "Provincia di rilascio patente persona 4"
+            },
+            "V4": {
+                "description": "Casella di testo 71",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fEnteEmissionePt",
+                "transform": "none",
+                "pdfField": "Casella di testo 71",
+                "subjectIndex": 3,
+                "semantico": "Organo di rilascio patente persona 4"
+            },
+            "V5": {
+                "description": "Casella di testo 72",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcA",
+                "transform": "none",
+                "pdfField": "Casella di testo 72",
+                "subjectIndex": 3,
+                "semantico": "Targa autoveicoli persona 4"
+            },
+            "V6": {
+                "description": "Casella di testo 73",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcR",
+                "transform": "none",
+                "pdfField": "Casella di testo 73",
+                "subjectIndex": 3,
+                "semantico": "Targa rimorchi persona 4"
+            },
+            "V7": {
+                "description": "Casella di testo 74",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcM",
+                "transform": "none",
+                "pdfField": "Casella di testo 74",
+                "subjectIndex": 3,
+                "semantico": "Targa motoveicoli persona 4"
+            },
+            "V8": {
+                "description": "Casella di testo 75",
+                "source": "AnaSoggettoDichiarazioneResidenza",
+                "field": "fNumeroCcC",
+                "transform": "none",
+                "pdfField": "Casella di testo 75",
+                "subjectIndex": 3,
+                "semantico": "Targa ciclomotori persona 4"
+            }
+        }
+    }
+}

@@ -10,6 +10,6 @@ class RicercaPagamentoInviato implements IRicerca {
     Date dataInvioAl
     EStatoInvio statoInvio
 
-    static final List<Map> etichetteRicercaCerDesc = [Etichette.Effettua_Ricerca, Etichette.Da, Etichette.A, Etichette.Stato, Etichette.Inviato, Etichette.Da_inviare, Etichette.Tutti]
+    static final List<Map> etichetteRicercaCerDesc = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A"), Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Inviato"), Etichette.getEtichetta("Da_inviare"), Etichette.getEtichetta("Tutti")]
 
 }

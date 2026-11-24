@@ -37,7 +37,14 @@
 						   tooltiptext="@load(vm.etichette['copia_conforme_tooltip'])"
 						   onClick="@command('onGeneraCopiaConforme')"/>
 
-			<toolbarbutton image="/images/de4gsdzk/22x22/ansc_ret.png"
+			<zk if="${vm.caratteriSpecialiEnabled}">
+				<toolbarbutton image="/images/icon/action/22x22/blackboard.png"
+							   disabled="@load(empty vm.dettaglio.id)"
+							   tooltiptext="@load(vm.etichette['caratteri_speciali_tooltip'])"
+							   onClick="@command('onOpenCaratteriSpeciali')"/>
+			</zk>
+
+			<toolbarbutton image="/images/de4gsdzk/22x22/ansc.png"
 						   disabled="@load(vm.tipoOperazione.isInsert() or (not vm.anscEnabled))"
 						   visible="@load(vm.anscEnabled)"
 						   tooltiptext="@load(vm.etichette['ansc_tooltip'])"

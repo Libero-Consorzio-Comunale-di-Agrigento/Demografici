@@ -30,7 +30,7 @@
                 <menupopup children="@load(i.subList)">
                     <template name="children" var="ii">
                         <menuitem label="@load(ii.descrizione)"
-                                  onClick="@command('onInserisciPlus', idDomain=ii.id, tipo=i.tipo)"/>
+                                  onClick="@command('onInserisciPlus', idDomain=ii.id, tipo=i.tipo, idParent=i.id)"/>
                     </template>
                 </menupopup>
             </menu>

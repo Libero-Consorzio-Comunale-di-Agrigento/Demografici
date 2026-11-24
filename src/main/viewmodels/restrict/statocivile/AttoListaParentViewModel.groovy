@@ -1,17 +1,13 @@
 package restrict.statocivile
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.CivAttoBaseDomain
-import it.finmatica.de4gsdzk.CompetenzaService
-import it.finmatica.de4gsdzk.ExportService
-import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.*
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.export.ExportField
 import it.finmatica.de4gsdzk.export.ExportObject
 import it.finmatica.de4gsdzk.export.ExportUtils
 import it.finmatica.de4gsdzk.statocivile.CivTipoAtto
 import it.finmatica.de4gsdzk.statocivile.CivTipoAttoService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.zkoss.bind.annotation.BindingParam
@@ -22,13 +18,14 @@ import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import restrict.AbstractListaViewModel
 import restrict.TraitCancellazioneCampi
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
-abstract class AttoListaParentViewModel extends AbstractListaViewModel implements TraitStampaAttoCampi, TraitCancellazioneCampi {
+abstract class AttoListaParentViewModel extends AbstractListaViewModel implements TraitStampaCampi, TraitCancellazioneCampi {
 
     List<CivAttoBaseDomain> lista
     CivAttoBaseDomain dettaglio
@@ -56,7 +53,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivTipoAttoService civTipoAttoService
@@ -88,22 +85,22 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
         // Aggiungo etichette natura
         eList.addAll(Arrays.asList(ENaturaAtto.values())*.etichettaDesc)
 
-        eList.addAll([Etichette.Estremi_Atto_decrescente, Etichette.Estremi_Atto_crescente, Etichette.Funzione_non_abilitata,
-                      Etichette.Data_Evento_decrescente, Etichette.Data_Evento_crescente, Etichette.Id_Atto_Ansc,
-                      Etichette.Estrazioni, Etichette.Indici_Annuali, Etichette.Indici_Decennali, Etichette.Formule_Chiusura, Etichette.Prospetto_Atti])
+        eList.addAll([Etichette.getEtichetta("Estremi_Atto_decrescente"), Etichette.getEtichetta("Estremi_Atto_crescente"), Etichette.getEtichetta("Funzione_non_abilitata"),
+                      Etichette.getEtichetta("Data_Evento_decrescente"), Etichette.getEtichetta("Data_Evento_crescente"), Etichette.getEtichetta("Id_Atto_Ansc"),
+                      Etichette.getEtichetta("Estrazioni"), Etichette.getEtichetta("Indici_Annuali"), Etichette.getEtichetta("Indici_Decennali"), Etichette.getEtichetta("Formule_Chiusura"), Etichette.getEtichetta("Prospetto_Atti")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
         etichetteCustom = FormUtils.getAttoCustomLabels(getTipoAttoEnum(), etichette)
 
-        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.Estrazioni)],
-                      [codice: "PROSPETTO", descrizione: getEtichetta(Etichette.Prospetto_Atti)],
+        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.getEtichetta("Estrazioni"))],
+                      [codice: "PROSPETTO", descrizione: getEtichetta(Etichette.getEtichetta("Prospetto_Atti"))],
         ]
 
         if ( (getTipoAttoEnum() != ETipoAtto.PUB) && (getTipoAttoEnum() != ETipoAtto.PVU) ){
-            filtriList.add([codice: "CHIUSURA", descrizione: getEtichetta(Etichette.Formule_Chiusura)])
-            filtriList.add([codice: "INDICI_A", descrizione: getEtichetta(Etichette.Indici_Annuali)])
-            //filtriList.add([codice: "INDICI_D", descrizione: getEtichetta(Etichette.Indici_Decennali)])
+            filtriList.add([codice: "CHIUSURA", descrizione: getEtichetta(Etichette.getEtichetta("Formule_Chiusura"))])
+            filtriList.add([codice: "INDICI_A", descrizione: getEtichetta(Etichette.getEtichetta("Indici_Annuali"))])
+            //filtriList.add([codice: "INDICI_D", descrizione: getEtichetta(Etichette.getEtichetta("Indici_Decennali"))])
         }
 
         caricaListaUffici()
@@ -113,7 +110,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
     }
 
     protected void caricaListaUffici(){
-        listaUffici = statoCivileService.listUffici()
+        listaUffici = gsdService.listUffici()
     }
 
     void caricaLista() {
@@ -177,7 +174,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
                         break
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -193,7 +190,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
             if ( (tipo == ETipoFile.XLS) || (tipo == ETipoFile.CSV) ) {
                 onRicarica()
                 if ((lista == null) || (lista.isEmpty())) {
-                    Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     return
                 }
 
@@ -206,46 +203,62 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
 
                 List<ExportField> exportFields = []
                 if ((getTipoAttoEnum() == ETipoAtto.MAT) || (getTipoAttoEnum() == ETipoAtto.UCI)) {
-                    exportFields.add(new ExportField("divorzio", getEtichetta(Etichette.Tipo_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportEnum))
+                    exportFields.add(new ExportField("divorzio", getEtichetta(Etichette.getEtichetta("Tipo_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportEnumAtto))
                 }
 
                 exportFields.add(new ExportField("cognome1Lista", ((String) etichetteCustom.get('Cognome1'))))
                 exportFields.add(new ExportField("nome1Lista", ((String) etichetteCustom.get('Nome1'))))
 
                 if ((getTipoAttoEnum() == ETipoAtto.NAS) || (getTipoAttoEnum() == ETipoAtto.MOR) || (getTipoAttoEnum() == ETipoAtto.CIT) || (getTipoAttoEnum() == ETipoAtto.PVU) || (getTipoAttoEnum() == ETipoAtto.UCI)) {
-                    exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.Sesso)))
+                    exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.getEtichetta("Sesso"))))
                 }
 
                 if ((getTipoAttoEnum() == ETipoAtto.PUB) || (getTipoAttoEnum() == ETipoAtto.MAT) || (getTipoAttoEnum() == ETipoAtto.PVU) || (getTipoAttoEnum() == ETipoAtto.UCI)) {
                     exportFields.add(new ExportField("cognome2Lista", ((String) etichetteCustom.get('Cognome2'))))
                     exportFields.add(new ExportField("nome2Lista", ((String) etichetteCustom.get('Nome2'))))
                     if ((getTipoAttoEnum() == ETipoAtto.PVU) || (getTipoAttoEnum() == ETipoAtto.UCI)) {
-                        exportFields.add(new ExportField("codiceSesso2Lista", getEtichetta(Etichette.Sesso)))
+                        exportFields.add(new ExportField("codiceSesso2Lista", getEtichetta(Etichette.getEtichetta("Sesso"))))
                     }
                 }
 
                 exportFields.add(new ExportField("dataEventoLista", ((String) etichetteCustom.get('DataEvento')), ExportUtils.DATE_FORMAT))
+
                 if (tipo == ETipoFile.CSV) {
-                    exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
-                    exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
+                    exportFields.add(new ExportField("attoLista.anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
                 } else {
-                    exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.INTEGER_FORMAT))
-                    exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.INTEGER_FORMAT))
+                    exportFields.add(new ExportField("attoLista.anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
                 }
+                exportFields.add(new ExportField("attoLista.atto", getEtichetta(Etichette.getEtichetta("Numero_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportNumeroProvvisorio))
                 if (ricercaAtto.hasParte()) {
-                    exportFields.add(new ExportField("parte", getEtichetta(Etichette.Parte), ExportUtils.INTEGER_FORMAT))
+                    if (tipo == ETipoFile.CSV) {
+                        exportFields.add(new ExportField("attoLista.parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+                    } else {
+                        exportFields.add(new ExportField("attoLista.parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
+                    }
                 }
                 if (ricercaAtto.hasSerie()) {
-                    exportFields.add(new ExportField("serie", getEtichetta(Etichette.Serie)))
+                    exportFields.add(new ExportField("attoLista.serie", getEtichetta(Etichette.getEtichetta("Serie")),ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
                 }
-                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), ExportUtils.INTEGER_FORMAT))
-                exportFields.add(new ExportField("natura", getEtichetta(Etichette.Natura_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportEnum))
+
+                if (tipo == ETipoFile.CSV) {
+                    exportFields.add(new ExportField("attoLista.ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+                } else {
+                    exportFields.add(new ExportField("attoLista.ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
+                }
+
+
+                if(tipoAttoEnum.isAttoAnsc()) {
+                    exportFields.add(new ExportField("attoLista.idAttoAnsc", getEtichetta(Etichette.getEtichetta("Id_Atto_Ansc")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+                }
+
+                exportFields.add(new ExportField("natura", getEtichetta(Etichette.getEtichetta("Natura_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportEnumAtto))
 
                 ExportObject eo = new ExportObject("", exportFields, listaExport, null, null, csvCharsetName)
-                exportService.export(tipo, eo, "${msgTitle.replaceAll(" ", "_")}")
+                InputStream exportStream = exportService.export(tipo, eo)
+                Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename(msgTitle, tipo))
             }
         //} else {
-        //    Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+        //    Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         //}
     }
 
@@ -258,7 +271,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
     }
 
     List<Map> getAddMenu(Integer ta, List<ENaturaAtto> ln, Map params ){
-        List<Map<String, Object>> l = statoCivileService.listVociMenuTipiAttoByTipoAtto(ta, params)
+        List<Map<String, Object>> l = gsdService.listVociMenuTipiAttoByTipoAtto(ta, params)
         List<Map> mMenu = []
         for (Map m:l){
             switch (m.TIPO) {
@@ -271,7 +284,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
                     mMenu.add([id: m.ID, descrizione: m.DESCRIZIONE_VOCE, tipo: m.TIPO, subList:subList])
                     break
                 case CivTipoAtto.TIPO_PREGRESSO:
-                    List<Map<String, Object>> s = statoCivileService.listVociMenuTipiAttoByTipoAtto(ta, [flagPregresso: true, tipo: CivTipoAtto.TIPO_BASE])
+                    List<Map<String, Object>> s = gsdService.listVociMenuTipiAttoByTipoAtto(ta, [flagPregresso: true, tipo: CivTipoAtto.TIPO_BASE])
                     List<Map> subList = []
                     for (Map ms:s){
                         subList.add([id:ms.ID, descrizione: ms.DESCRIZIONE_VOCE])
@@ -295,7 +308,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
                     apriDettaglio(getUriDettaglio(ETipoOperazione.UPD), params)
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -312,7 +325,7 @@ abstract class AttoListaParentViewModel extends AbstractListaViewModel implement
                     apriDettaglio(getUriDettaglio(ETipoOperazione.INS), params)
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

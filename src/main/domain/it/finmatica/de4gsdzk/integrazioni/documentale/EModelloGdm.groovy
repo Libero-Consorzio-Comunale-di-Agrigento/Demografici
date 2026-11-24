@@ -24,7 +24,8 @@ enum EModelloGdm {
     CdFIstituzionale("XX"),
     CdFRisoluzione("XR"),
     ContrattoConvivenza("ZI"),
-    RisoluzioneContrattoConvivenza("ZR")
+    RisoluzioneContrattoConvivenza("ZR"),
+    Pratica("Pratica")
 
     final String id
 

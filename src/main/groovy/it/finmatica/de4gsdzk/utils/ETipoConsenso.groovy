@@ -18,11 +18,11 @@ enum ETipoConsenso {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case CM: return Etichette.con_consenso_materno
-            case CP: return Etichette.con_consenso_paterno
-            case SM: return Etichette.senza_consenso_materno
-            case SP: return Etichette.senza_consenso_paterno
-            case IG: return Etichette.figlio_ignoti
+            case CM: return Etichette.getEtichetta("con_consenso_materno")
+            case CP: return Etichette.getEtichetta("con_consenso_paterno")
+            case SM: return Etichette.getEtichetta("senza_consenso_materno")
+            case SP: return Etichette.getEtichetta("senza_consenso_paterno")
+            case IG: return Etichette.getEtichetta("figlio_ignoti")
         }
         return null
     }

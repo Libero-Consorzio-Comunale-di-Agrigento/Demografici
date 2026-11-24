@@ -28,15 +28,18 @@ class AnscCasoUsoService {
 
     private final AnscCasoUsoCittadinanzaRepository anscCasoUsoCittadinanzaRepository
 
+    private final AnscCasoUsoRepository anscCasoUsoRepository
+
     AnscCasoUsoService(AnscCasoUsoNascitaRepository anscCasoUsoNascitaRepository, AnscCasoUsoMorteRepository anscCasoUsoMorteRepository,
                        AnscCasoUsoMatrimonioRepository anscCasoUsoMatrimonioRepository, AnscCasoUsoCittadinanzaRepository anscCasoUsoCittadinanzaRepository,
-                       AnscCasoUsoUnioneCivileRepository anscCasoUsoUnioneCivileRepository
+                       AnscCasoUsoUnioneCivileRepository anscCasoUsoUnioneCivileRepository, AnscCasoUsoRepository anscCasoUsoRepository
     ) {
         this.anscCasoUsoNascitaRepository = anscCasoUsoNascitaRepository
         this.anscCasoUsoMorteRepository = anscCasoUsoMorteRepository
         this.anscCasoUsoMatrimonioRepository = anscCasoUsoMatrimonioRepository
         this.anscCasoUsoUnioneCivileRepository = anscCasoUsoUnioneCivileRepository
         this.anscCasoUsoCittadinanzaRepository = anscCasoUsoCittadinanzaRepository
+        this.anscCasoUsoRepository = anscCasoUsoRepository
     }
 
     AnscCasoUsoBaseDomain getCasoUsoServizio(ETipoAtto tipoAttoEnum, ETipoAttoAnsc tipoAttoAnsc, Map params) {
@@ -292,5 +295,8 @@ class AnscCasoUsoService {
         return [:]
     }
 
+    List<AnscCasoUso> findAllByTipoAtto(Integer tipoAtto) {
+        return anscCasoUsoRepository.findAllByTipoAttoOrderById(tipoAtto)
+    }
 
 }

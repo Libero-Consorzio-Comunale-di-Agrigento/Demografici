@@ -1,9 +1,7 @@
 package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.certificazione.CerIndividuoCertificatoRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CerIndividuoCertificatoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CerIndividuoCertificatoRepository cerIndividuoCertificatoRepository
 
     CerIndividuoCertificatoService(CerIndividuoCertificatoRepository cerIndividuoCertificatoRepository,
-								   StatoCivileService statoCivileService) {
+                                   GsdService gsdService) {
 		this.cerIndividuoCertificatoRepository = cerIndividuoCertificatoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CerIndividuoCertificato create(Integer annoEmissione, Integer progressivoEmissione) {
@@ -54,7 +52,7 @@ class CerIndividuoCertificatoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		return cerIndividuoCertificatoRepository.save(obj)

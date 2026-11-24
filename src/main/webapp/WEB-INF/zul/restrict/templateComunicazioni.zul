@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <borderlayout vflex="1">
+        <center vflex="1">
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <zk if="${vm.showMassiveCheck}">
+                        <listheader width="30px">
+                            <checkbox checked="@bind(vm.massiveCheck)" onCheck="@command('onSelezionaTutte')"/>
+                        </listheader>
+                    </zk>
+                    <zk if="${vm.showDetailsComunicazione}">
+                        <listheader label="@load(vm.etichette['Descrizione'])"/>
+                    </zk>
+                    <zk if="${vm.showDetailsAtto}">
+                        <listheader label="@load(vm.etichette['Estremi_Atto'])"/>
+                    </zk>
+                    <listheader label="@load(vm.etichette['Data_Registrazione'])" width="120px"/>
+                    <listheader label="@load(vm.etichette['Stampa_Eseguita'])" width="60px"/>
+                    <zk if="${vm.showDeleteOption}">
+                        <listheader label="" width="52px"/>
+                    </zk>
+                    <listheader width="34px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <zk if="${vm.showMassiveCheck}">
+                            <listcell>
+                                <checkbox checked="@load(vm.isSelezionata(item))"
+                                          disabled="@load(item.isProtocollato() or item.isInviatoAlbo())"
+                                          onCheck="@command('onSelezionaComunicazione', selected=self.checked, comunicazione=item)"/>
+                            </listcell>
+                        </zk>
+                        <zk if="${vm.showDetailsComunicazione}">
+                            <listcell label="@load(item.descrizione)"/>
+                        </zk>
+                        <zk if="${vm.showDetailsAtto}">
+                            <listcell>
+                                <label value="@load(c:cat4(vm.getEstremiAtto(item), c:cat4(' - ', vm.etichette['Anno'],': ', item.anno), c:cat4(' ', vm.etichette['Numero_Atto'],': ', item.atto), c:cat3((empty item.parte?'':' / '), item.parte, (empty item.serie?'':item.serie))))"
+                                       multiline="true"/>
+                            </listcell>
+                        </zk>
+                        <listcell sclass="testo-al-centro">
+                            <label value="@load(empty item.dataRegistrazione? null:(c:formatDate(item.dataRegistrazione, 'dd/MM/yyyy')))"/>
+                        </listcell>
+                        <listcell sclass="testo-al-centro">
+                            <checkbox checked="@load(item.stampaEseguita)" disabled="true"/>
+                        </listcell>
+                        <zk if="${vm.showDeleteOption}">
+                            <listcell>
+                                <button image="/images/icon/action/18x18/delete.png"
+                                        tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                                        disabled="@load(item.isProtocollato() or item.isInviatoAlbo() or item.stampaEseguita or c:length(vm.listaComunicazioniSelezionate) gt 1)"
+                                        onClick="@command('onEliminaComunicazione', comunicazione=item)"/>
+                            </listcell>
+                        </zk>
+                        <listcell>
+                            <image src="/images/icon/action/18x18/legend.png"
+                                   tooltiptext="@load(vm.etichette['Da_Protocollare'])"
+                                   visible="@load(item.isDaProtocollare())"/>
+                            <image src="/images/icon/action/18x18/legitimate.png"
+                                   tooltiptext="@load(vm.etichette['Protocollato'])"
+                                   visible="@load(item.isProtocollato())"/>
+                            <image src="/images/de4gsdzk/18x18/doc_public.png"
+                                   tooltiptext="@load(vm.etichette['Da_Inviare_Albo'])"
+                                   visible="@load(item.isDaInviareAlbo())"/>
+                            <image src="/images/icon/action/18x18/ok.png"
+                                   tooltiptext="@load(vm.etichette['Inviato_Albo'])"
+                                   visible="@load(item.isInviatoAlbo())"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </center>
+        <east size="50%" collapsible="true" splittable="true" open="@load(not empty vm.dettaglio)">
+            <vlayout vflex="1" hflex="1" sclass="scroll">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell>
+                                <groupbox mold="3d" closable="false">
+                                    <caption label="@load(vm.etichette['Comunicazione'])" width="150px">
+                                        <hlayout sclass="testo-a-dx">
+                                            <zk if="${arg.pratica eq null}">
+                                                <button image="/images/icon/action/18x18/folderimport.png"
+                                                        tooltiptext="@load(vm.etichette['invio_fascicolo_tooltip'])"
+                                                        onClick="@command('onFascicolaComunicazione', arcCom=vm.dettaglio)"/>
+                                            </zk>
+                                            <zk if="${arg.pratica ne null}">
+                                                <button image="/images/icon/action/18x18/folderimport.png"
+                                                        tooltiptext="@load(vm.etichette['invio_fascicolo_tooltip_pratica'])"
+                                                        onClick="@command('onFascicolaComunicazione', arcCom=vm.dettaglio)"/>
+                                            </zk>
+                                        </hlayout>
+                                    </caption>
+                                    <vlayout hflex="1">
+                                        <label value="@load(vm.dettaglio.descrizione)" sclass="grassetto"
+                                               multiline="true"/>
+                                        <zk if="${vm.showDetailsAtto}">
+                                            <label value="@load(c:cat4(vm.getEstremiAtto(vm.dettaglio), c:cat4(' - ', vm.etichette['Anno'],': ', vm.dettaglio.anno), c:cat4(' ', vm.etichette['Numero_Atto'],': ', vm.dettaglio.atto), c:cat3((empty vm.dettaglio.parte?'':' / '), vm.dettaglio.parte, (empty vm.dettaglio.serie?'':vm.dettaglio.serie))))"
+                                                   sclass="grassetto" multiline="true"/>
+                                        </zk>
+                                    </vlayout>
+                                </groupbox>
+                            </cell>
+                        </row>
+
+                        <row visible="@load(vm.dettaglio.isDaProtocollare() or vm.dettaglio.isProtocollato() or vm.dettaglio.isDaInviareAlbo() or vm.dettaglio.isInviatoAlbo())">
+                            <cell>
+                                <groupbox mold="3d" closable="false">
+                                    <caption label="@load(vm.etichette['Oggetto'])" width="150px">
+                                        <hlayout sclass="testo-a-dx">
+                                            <button image="/images/icon/action/18x18/save.png"
+                                                    tooltiptext="@load(vm.etichette['salva_tooltip'])"
+                                                    disabled="@load(empty vm.comunicazioneProtocollo or vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita)"
+                                                    onClick="@command('onSalvaComunicazioneProtocollo', arcCom=vm.dettaglio)"/>
+                                        </hlayout>
+                                    </caption>
+                                    <vlayout>
+                                        <hlayout valign="middle" hflex="1">
+                                            <vlayout hflex="1">
+                                                <hlayout valign="middle" hflex="1">
+                                                    <textbox value="@bind(vm.comunicazioneProtocollo.oggetto)"
+                                                             readonly="@load(empty vm.comunicazioneProtocollo or vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita)"
+                                                             hflex="1"/>
+                                                </hlayout>
+                                                <textbox value="@load(vm.comunicazioneProtocollo.oggettoInfo)"
+                                                         readonly="true"
+                                                         hflex="1"/>
+                                            </vlayout>
+                                            <button image="/images/icon/show/22x22/warning.png"
+                                                    tooltiptext="@load(vm.etichette['info_tooltip'])"
+                                                    visible="@load(not empty vm.comunicazioneProtocollo.noteWSProtocollo)"
+                                                    onClick="@command(c:showMsgBox(vm.msgTitle, 'E', vm.comunicazioneProtocollo.noteWSProtocollo))"/>
+                                        </hlayout>
+                                        <hlayout hflex="1"
+                                                 visible="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo())">
+                                            <label value="@load(vm.etichette['Numero_Protocollo_Anno'])"
+                                                   visible="@load(vm.dettaglio.isProtocollato())"/>
+                                            <label value="@load(vm.etichette['Numero_Registro_Anno'])"
+                                                   visible="@load(vm.dettaglio.isInviatoAlbo())"/>
+                                            <label value=":"/>
+                                            <label value="@load(vm.comunicazioneProtocollo.numeroProtocollo)"/>
+                                            <label value="/"/>
+                                            <label value="@load(vm.comunicazioneProtocollo.annoProtocollo)"/>
+                                            <space/>
+                                            <label value="@load(empty vm.comunicazioneProtocollo.dataProtocollo? null: vm.etichette['Del'])"/>
+                                            <label value="@load(empty vm.comunicazioneProtocollo.dataProtocollo? null:(c:formatDate(vm.comunicazioneProtocollo.dataProtocollo, 'dd/MM/yyyy')))"/>
+                                        </hlayout>
+                                    </vlayout>
+                                </groupbox>
+                            </cell>
+                        </row>
+                        <!-- solo per comunicazioni da protocollare, non per comunicazioni da inviare all'albo -->
+                        <!-- DESTINATARI -->
+                        <row visible="@load(vm.dettaglio.isDaProtocollare() or vm.dettaglio.isProtocollato())">
+                            <cell>
+                                <groupbox mold="3d" closable="false">
+                                    <caption label="@load(vm.etichette['Destinatari'])" width="150px">
+                                        <hlayout sclass="testo-a-dx">
+                                            <button image="/images/icon/action/18x18/add.png"
+                                                    tooltiptext="@load(vm.etichette['inserisci_destinatario_tooltip'])"
+                                                    disabled="@load(not vm.dettaglio.isDaProtocollare())"
+                                                    onClick="@command('onInserisciDestinatario', arcCom=vm.dettaglio)"/>
+                                        </hlayout>
+                                    </caption>
+                                    <hlayout hflex="1" valign="middle">
+                                        <listbox model="@load(vm.listaDestinatari)" hflex="1">
+                                            <listhead>
+                                                <listheader label="@load(vm.etichette['Ente'])"/>
+                                                <listheader label="@load(vm.etichette['PEC'])"/>
+                                                <listheader label="" width="52px"
+                                                            visible="@load(vm.dettaglio.isProtocollato())"/>
+                                                <listheader label="" width="52px"/>
+                                                <listheader label="" width="52px"/>
+                                            </listhead>
+                                            <template name="model" var="item">
+                                                <listitem>
+                                                    <listcell label="@load(item.denominazione)"/>
+                                                    <listcell label="@load(vm.dettaglio.isProtocollato()?'':item.pec)"/>
+                                                    <listcell>
+                                                        <button image="/images/icon/action/18x18/mail.png"
+                                                                tooltiptext="@load(vm.etichette['invia_pec_tooltip'])"
+                                                                visible="@load(vm.dettaglio.isProtocollato())"
+                                                                disabled="@load(not vm.dettaglio.isProtocollato())"
+                                                                onClick="@command('onInviaPecDestinatario', destinatario=item)"/>
+                                                    </listcell>
+                                                    <listcell>
+                                                        <button image="/images/icon/action/18x18/delete.png"
+                                                                tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                                                                disabled="@load(vm.dettaglio.isProtocollato())"
+                                                                onClick="@command('onEliminaDestinatario', destinatario=item)"/>
+                                                    </listcell>
+                                                    <listcell sclass="testo-al-centro">
+                                                        <button image="/images/icon/action/18x18/warning_light.png"
+                                                                tooltiptext="@load(vm.etichette['info_tooltip'])"
+                                                                visible="@load(not empty item.noteWSMail)"
+                                                                onClick="@command(c:showMsgBox(vm.msgTitle, 'E', item.noteWSMail))"/>
+
+                                                        <image src="/images/icon/action/18x18/ok.png"
+                                                               tooltiptext="@load(vm.etichette['Mail_Inviata'])"
+                                                               visible="@load(vm.dettaglio.isProtocollato() and empty item.noteWSMail)"/>
+                                                    </listcell>
+                                                </listitem>
+                                            </template>
+                                        </listbox>
+                                    </hlayout>
+                                </groupbox>
+                            </cell>
+                        </row>
+
+                        <!-- ALLEGATI -->
+                        <row>
+                            <cell>
+                                <groupbox mold="3d" closable="false">
+                                    <caption label="@load(vm.etichette['Allegati'])" width="150px">
+                                        <hlayout sclass="testo-a-dx">
+                                            <button image="/images/icon/action/18x18/add.png" upload="true"
+                                                    tooltiptext="@load(vm.etichette['inserisci_allegato_tooltip'])"
+                                                    disabled="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita)"
+                                                    onUpload="@command('onUploadAllegato', arcCom=vm.dettaglio)"/>
+                                            <zk if="${arg.pratica eq null}">
+                                                <button image="/images/icon/action/18x18/document.png"
+                                                        disabled="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita or vm.getAttoComunicazione(vm.dettaglio).isCodRec3() )"
+                                                        tooltiptext="@load(vm.etichette['allega_copia_conforme_tooltip'])"
+                                                        onClick="@command('onAllegaCopiaConforme', arcCom=vm.dettaglio)"/>
+                                            </zk>
+                                            <zk if="${arg.pratica ne null}">
+                                                <button image="/images/icon/action/18x18/document.png"
+                                                        visible="@load(vm.pratica.archivioAnagrafe.id eq 'RES' and (vm.pratica.tipoPratica.id eq 'I' or vm.pratica.tipoPratica.id eq 'C'))"
+                                                        disabled="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita)"
+                                                        tooltiptext="@load(vm.etichette['allega_modello_apr4_tooltip'])"
+                                                        onClick="@command('onAllegaCopiaConforme', arcCom=vm.dettaglio)"/>
+                                            </zk>
+                                            <!--<button image="/images/icon/action/18x18/arrows.png"
+                                                    tooltiptext="@load(vm.etichette['invia_documentale_tooltip'])"
+                                                    onUpload="@command('onInviaADocumentale')" /> -->
+                                        </hlayout>
+                                    </caption>
+                                    <hlayout hflex="1" valign="middle">
+                                        <listbox model="@load(vm.listaAllegati)" hflex="1">
+                                            <listhead>
+                                                <listheader label="@load(vm.etichette['Allegato'])"/>
+                                                <listheader label="@load(vm.etichette['Principale'])" width="75px"/>
+                                                <listheader label="@load(vm.etichette['Da_Firmare'])"
+                                                            visible="@load( vm.dettaglio.isDaProtocollare() or vm.dettaglio.isDaInviareAlbo() )"
+                                                            width="75px"/>
+                                                <listheader label="@load(vm.etichette['Firmato'])"
+                                                            visible="@load( vm.dettaglio.isDaProtocollare() or vm.dettaglio.isDaInviareAlbo() )"
+                                                            width="75px"/>
+                                                <listheader label="" width="52px"/>
+                                                <listheader label="" width="52px"/>
+                                                <listheader label="" width="52px"/>
+                                            </listhead>
+                                            <template name="model" var="item">
+                                                <listitem>
+                                                    <listcell>
+                                                        <label value="@load(item.nomeAllegato)"
+                                                               tooltiptext="@load(item.nomeAllegato)"/>
+                                                    </listcell>
+                                                    <listcell sclass="testo-al-centro">
+                                                        <checkbox checked="@bind(item.principale)"
+                                                                  onCheck="@command('onCambiaPrincipaleAllegato', allegato=item)"
+                                                                  disabled="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita or (vm.managePrincipale eq 'N') or ( (vm.managePrincipale eq 'A') and (not vm.dettaglio.comunicazione.priorita) ))"/>
+                                                    </listcell>
+                                                    <listcell sclass="testo-al-centro">
+                                                        <checkbox checked="@load(item.daFirmare)" disabled="true"
+                                                                  visible="@load( vm.dettaglio.isDaProtocollare() or vm.dettaglio.isDaInviareAlbo() )"/>
+                                                    </listcell>
+                                                    <listcell sclass="testo-al-centro">
+                                                        <checkbox checked="@load(item.firmato)" disabled="true"
+                                                                  visible="@load(vm.dettaglio.isDaProtocollare() or vm.dettaglio.isDaInviareAlbo() )"/>
+                                                    </listcell>
+                                                    <listcell>
+                                                        <button image="/images/icon/action/18x18/import.png"
+                                                                tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
+                                                                onClick="@command('onDownloadAllegato', allegato=item)"/>
+                                                    </listcell>
+                                                    <listcell>
+                                                        <button image="/images/icon/action/18x18/delete.png"
+                                                                tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                                                                disabled="@load(vm.dettaglio.isProtocollato() or vm.dettaglio.isInviatoAlbo() or vm.dettaglio.stampaEseguita)"
+                                                                onClick="@command('onEliminaAllegato', allegato=item, arcCom=vm.dettaglio)"/>
+                                                    </listcell>
+                                                    <listcell>
+                                                        <button image="/images/icon/action/18x18/warning_light.png"
+                                                                tooltiptext="@load(vm.etichette['info_tooltip'])"
+                                                                visible="@load(not empty item.noteWSFirma)"
+                                                                onClick="@command(c:showMsgBox(vm.msgTitle, 'E',  item.noteWSFirma))"/>
+                                                    </listcell>
+                                                </listitem>
+                                            </template>
+                                        </listbox>
+                                    </hlayout>
+                                </groupbox>
+                            </cell>
+                        </row>
+                        <row>
+                            <cell>
+                                <templateIdDomain/>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </vlayout>
+        </east>
+    </borderlayout>
+
+</zk>

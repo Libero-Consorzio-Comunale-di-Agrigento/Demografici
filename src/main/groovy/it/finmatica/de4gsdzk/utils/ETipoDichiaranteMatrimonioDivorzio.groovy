@@ -29,29 +29,29 @@ enum ETipoDichiaranteMatrimonioDivorzio {
     Map getEtichettaDesc(){
         switch(this) {
             // Matrimoni
-            case SO: return Etichette.Solo_Marito
-            case SA: return Etichette.Solo_Moglie
-            case SOSA: return Etichette.Marito_Moglie
-            case SOIT: return Etichette.Marito_Interprete
-            case SAIT: return Etichette.Moglie_Interprete
-            case SOSAIT: return Etichette.Marito_Moglie_e_Interprete
-            case IT: return Etichette.Interprete
-            case NE: return Etichette.Nessuno
-            case AL: return Etichette.Altro
-            case MC: return Etichette.Ministro_culto
+            case SO: return Etichette.getEtichetta("Solo_Marito")
+            case SA: return Etichette.getEtichetta("Solo_Moglie")
+            case SOSA: return Etichette.getEtichetta("Marito_Moglie")
+            case SOIT: return Etichette.getEtichetta("Marito_Interprete")
+            case SAIT: return Etichette.getEtichetta("Moglie_Interprete")
+            case SOSAIT: return Etichette.getEtichetta("Marito_Moglie_e_Interprete")
+            case IT: return Etichette.getEtichetta("Interprete")
+            case NE: return Etichette.getEtichetta("Nessuno")
+            case AL: return Etichette.getEtichetta("Altro")
+            case MC: return Etichette.getEtichetta("Ministro_culto")
             // Divorzi
-            case SOAA: return Etichette.Marito_e_Avvocato_Moglie
-            case SOAO: return Etichette.Marito_e_Avvocato_Marito
-            case SAAO: return Etichette.Moglie_e_Avvocato_Marito
-            case SAAA: return Etichette.Moglie_e_Avvocato_Moglie
-            case AO: return Etichette.Avvocato_Marito
-            case AA: return Etichette.Avvocato_Moglie
-            case AOAA: return Etichette.Solo_Avvocati
-            case SOSAAO: return Etichette.Sposi_e_Avvocato_Marito
-            case SOSAAA: return Etichette.Sposi_e_Avvocato_Moglie
-            case SOAOAA: return Etichette.Marito_e_Avvocati
-            case SAAAAO: return Etichette.Moglie_e_Avvocati
-            case SOSAAOAA: return Etichette.Sposi_e_Avvocati
+            case SOAA: return Etichette.getEtichetta("Marito_e_Avvocato_Moglie")
+            case SOAO: return Etichette.getEtichetta("Marito_e_Avvocato_Marito")
+            case SAAO: return Etichette.getEtichetta("Moglie_e_Avvocato_Marito")
+            case SAAA: return Etichette.getEtichetta("Moglie_e_Avvocato_Moglie")
+            case AO: return Etichette.getEtichetta("Avvocato_Marito")
+            case AA: return Etichette.getEtichetta("Avvocato_Moglie")
+            case AOAA: return Etichette.getEtichetta("Solo_Avvocati")
+            case SOSAAO: return Etichette.getEtichetta("Sposi_e_Avvocato_Marito")
+            case SOSAAA: return Etichette.getEtichetta("Sposi_e_Avvocato_Moglie")
+            case SOAOAA: return Etichette.getEtichetta("Marito_e_Avvocati")
+            case SAAAAO: return Etichette.getEtichetta("Moglie_e_Avvocati")
+            case SOSAAOAA: return Etichette.getEtichetta("Sposi_e_Avvocati")
         }
         return null
     }

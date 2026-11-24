@@ -41,9 +41,6 @@ begin
            :new.d_data_fine := to_date(:new.data_fine,'j');
         elsif :new.d_data_fine is not null and :new.data_fine is null then 
            :new.data_fine   := to_char(:new.d_data_fine,'j');
-        elsif :new.d_data_fine is null and :new.data_fine is null then 
-           :new.data_fine   := to_char(sysdate,'j');
-           :new.d_data_fine := sysdate;
         end if;
 
         if :new.data_reg is not null and :new.d_data_reg is null then

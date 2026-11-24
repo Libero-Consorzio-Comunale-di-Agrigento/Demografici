@@ -23,17 +23,17 @@ enum ETipoSceltaCognome {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case MP: return Etichette.mantenere_cognome_precedente
-            case AG: return Etichette.aggiungere_al_cognome
-            case PC: return Etichette.anteporre_al_cognome
-            case SC: return Etichette.sostituire_cognome
-            case MC: return Etichette.modifica_cognome
-            case MN: return Etichette.modifica_nome
-            case ME: return Etichette.modifica_nome_cognome
-            case AC: return Etichette.aggiunta_al_cognome
-            case AN: return Etichette.aggiunta_al_nome
-            case PS: return Etichette.padre_sostituzione
-            case PA: return Etichette.padre_aggiunta
+            case MP: return Etichette.getEtichetta("mantenere_cognome_precedente")
+            case AG: return Etichette.getEtichetta("aggiungere_al_cognome")
+            case PC: return Etichette.getEtichetta("anteporre_al_cognome")
+            case SC: return Etichette.getEtichetta("sostituire_cognome")
+            case MC: return Etichette.getEtichetta("modifica_cognome")
+            case MN: return Etichette.getEtichetta("modifica_nome")
+            case ME: return Etichette.getEtichetta("modifica_nome_cognome")
+            case AC: return Etichette.getEtichetta("aggiunta_al_cognome")
+            case AN: return Etichette.getEtichetta("aggiunta_al_nome")
+            case PS: return Etichette.getEtichetta("padre_sostituzione")
+            case PA: return Etichette.getEtichetta("padre_aggiunta")
         }
         return null
     }

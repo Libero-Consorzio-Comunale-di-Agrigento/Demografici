@@ -1,7 +1,7 @@
 package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.anagrafe.AnaEventoStatoCivile
 import it.finmatica.de4gsdzk.anagrafe.AnaEventoStatoCivileService
@@ -43,27 +43,27 @@ class StatoCivileStoricoListaViewModel extends AbstractListaViewModel implements
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Storico, Etichette.Stato_Civile]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Storico"), Etichette.getEtichetta("Stato_Civile")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaEventoStatoCivile.etichetteDomain)
 
         // Aggiungo etichette della lista
         eList.addAll(etichetteListaDefault)
-        eList.addAll(Etichette.Data_Evento)
+        eList.addAll(Etichette.getEtichetta("Data_Evento"))
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato, Etichette.Ordina_per])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato"), Etichette.getEtichetta("Ordina_per")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = "${getEtichetta(Etichette.Storico)} ${getEtichetta(Etichette.Stato_Civile)}"
+        msgTitle = "${getEtichetta(Etichette.getEtichetta("Storico"))} ${getEtichetta(Etichette.getEtichetta("Stato_Civile"))}"
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento), SortUtils.dataAnaEventoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento")), SortUtils.dataAnaEventoAsc))
         selectedOrder = listaOrder[0]
 
         totalSizeLabel = ""
@@ -110,11 +110,11 @@ class StatoCivileStoricoListaViewModel extends AbstractListaViewModel implements
     }
 
     @Command
-    void onOpenConiuge(@BindingParam("soggetto") GsdAnagrafeBaseDomain soggetto) {
+    void onOpenConiuge(@BindingParam("soggetto") AnagrafeBaseDomain soggetto) {
         openIndividuo(soggetto)
     }
 
-    private void openIndividuo(GsdAnagrafeBaseDomain soggetto) {
+    private void openIndividuo(AnagrafeBaseDomain soggetto) {
         Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, [soggetto: soggetto])
         onChiudi()
     }

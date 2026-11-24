@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneAllegato
+import it.finmatica.de4gsdzk.IComunicazioneAllegatoRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 
 @CompileStatic
 @Repository
-interface CivComunicazioneAllegatoRepository extends JpaRepository<CivComunicazioneAllegato, Long> {
+interface CivComunicazioneAllegatoRepository extends JpaRepository<CivComunicazioneAllegato, Long>, IComunicazioneAllegatoRepository {
 
     @Query("""SELECT c 
                 FROM CivComunicazioneAllegato c INNER JOIN FETCH c.archivioComunicazione 
@@ -18,7 +18,7 @@ interface CivComunicazioneAllegatoRepository extends JpaRepository<CivComunicazi
 
     @Query("""SELECT COUNT(c) AS NUM_ALLE_DA_FIRMARE 
                 FROM CivComunicazioneAllegato c 
-                WHERE c.daFirmareDb = it.finmatica.de4gsdzk.utils.ETipoSN.S
+                WHERE c.daFirmare = java.lang.Boolean.TRUE
                   AND c.archivioComunicazione.id IN (:listaIdArcCom) """)
     Integer checkAllegatiDaFirmare(@Param("listaIdArcCom") List<Long> listaIdArcCom)
 
@@ -28,10 +28,11 @@ interface CivComunicazioneAllegatoRepository extends JpaRepository<CivComunicazi
                  AND a.id = :idArcCom """)
     CivComunicazioneAllegato findPrincipale(@Param("idArcCom") Long idArcCom)
 
-    @Query("""SELECT c.id, c.nomeAllegato, c.daFirmareDb, c.firmatoDb, c.noteWSFirma, c.principale, a.id 
-                FROM CivComunicazioneAllegato AS c INNER JOIN c.archivioComunicazione AS a
-               WHERE a.id = :idArcCom """)
-    List<Object[]> findAllMetadatiByArchivioComunicazione(@Param("idArcCom") Long idArcCom)
+    @Query("""SELECT c 
+              FROM CivComunicazioneAllegato c
+              INNER JOIN FETCH c.archivioComunicazione
+              WHERE c.archivioComunicazione.id = :idArcCom """)
+    List<CivComunicazioneAllegato[]> findAllMetadatiByArchivioComunicazione(@Param("idArcCom") Long idArcCom)
 
     @Query("""SELECT COUNT(c) AS NUM_ALLEGATI FROM CivComunicazioneAllegato c 
                WHERE c.archivioComunicazione.id = :idArcCom 

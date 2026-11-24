@@ -37,7 +37,7 @@ class ArcComuneBaseService {
 
 	//Ricerca su ARCCOM (non sullo storico)
 	Boolean existsByCodiceComuneAndCodiceProvincia(Integer codiceComune, Integer codiceProvincia){
-		return (arcComuneRepository.countByCodiceComuneAndCodiceProvincia(codiceComune, codiceProvincia) > 1)
+		return (arcComuneRepository.countByCodiceComuneAndCodiceProvincia(codiceComune, codiceProvincia) >= 1)
 	}
 
 	List<ArcComune> listByComuneFusione(Integer codiceComune, Integer codiceProvincia){
@@ -100,6 +100,10 @@ class ArcComuneBaseService {
 		if (r?.dataRiferimento){
 			d = r.dataRiferimento
 		}
+        Boolean escludiSoppressi = false
+        if (r?.escludiSoppressi){
+            escludiSoppressi = r.escludiSoppressi
+        }
 		if (d != null){
 			// ARCCOM_STORICO
 			if (ids) {
@@ -119,18 +123,39 @@ class ArcComuneBaseService {
 			//ARCCOM
 			if (ids) {
 				if (filtro) {
-					return arcComuneRepository.findAllByIdNotInAndDescrizioneComuneLikeIgnoreCase(ids, filtro, p)
+                    if(escludiSoppressi) {
+                        return arcComuneRepository.findAllByIdNotInAndDescrizioneComuneLikeIgnoreCaseAndSoppressoIsNull(ids, filtro, p)
+                    } else {
+                        return arcComuneRepository.findAllByIdNotInAndDescrizioneComuneLikeIgnoreCase(ids, filtro, p)
+                    }
 				} else {
-					return arcComuneRepository.findAllByIdNotIn(ids, p)
+                    if(escludiSoppressi) {
+                        return arcComuneRepository.findAllByIdNotInAndSoppressoIsNull(ids, p)
+                    } else {
+                        return arcComuneRepository.findAllByIdNotIn(ids, p)
+                    }
 				}
 			} else {
 				if (filtro) {
-					return arcComuneRepository.findAllByDescrizioneComuneLikeIgnoreCase(filtro, p)
+                    if(escludiSoppressi) {
+                        return arcComuneRepository.findAllByDescrizioneComuneLikeIgnoreCaseAndSoppressoIsNull(filtro, p)
+                    } else {
+                        return arcComuneRepository.findAllByDescrizioneComuneLikeIgnoreCase(filtro, p)
+                    }
 				} else {
-					return arcComuneRepository.findAll(p)
+                    if(escludiSoppressi) {
+                        return arcComuneRepository.findAllBySoppressoIsNull(p)
+                    } else {
+                        return arcComuneRepository.findAll(p)
+                    }
+
 				}
 			}
 		}
+	}
+
+	List<ArcComune> getStatiEsteri(){
+		return arcComuneRepository.findAllByCodiceComuneAndCodiceProvinciaGreaterThanOrderByDescrizioneComune(0, 199)
 	}
 
 }

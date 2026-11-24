@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <hlayout hflex="1" sclass="testo-al-centro">
+        <button label="@load(vm.etichette['Salva_Pratica'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load(not vm.readOnly and vm.pratica.id eq null)"
+                onClick="@command('onSalvaPratica')"/>
+        <button label="@load(vm.etichette['Salva'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load(not vm.readOnly and vm.pratica.id ne null and vm.tipoPratica.id ne 'R')"
+                onClick="@command('onSalva')"/>
+        <button label="@load(vm.etichette['Salva_Perfeziona'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load(not vm.readOnly and vm.soggetti.size() gt 0 and vm.pratica.numero gt 0 and vm.tipoPratica.id ne 'R')"
+                onClick="@command('onSalvaPerfeziona')"/>
+        <button label="@load(vm.etichette['Salva_Annulla'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load(not vm.readOnly and vm.soggetti.size() gt 0 and vm.pratica.numero gt 0 and vm.tipoPratica.id ne 'R')"
+                onClick="@command('onSalvaAnnulla')"/>
+        <button label="@load(vm.etichette['Salva_Chiudi_Pratica'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load(not vm.readOnly and vm.soggetti.size() gt 0 and vm.pratica.numero gt 0 and vm.tipoPratica.id eq 'R')"
+                onClick="@command('onSalvaPerfeziona')"/>
+        <button label="@load(vm.etichette['Aggiorna_Evento'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load((vm.pratica.flagPerfezionamentoPreliminare or vm.pratica.flagPerfezionamento))"
+                onClick="@command('onModificaEvento', operazione='A')"/>
+        <button label="@load(vm.etichette['Elimina_Evento'])"
+                style="font-size:12px; font-weight: bold;"
+                height="35px" width="200px" visible="@load((vm.pratica.flagPerfezionamentoPreliminare or vm.pratica.flagPerfezionamento) and not (vm.tipoPratica.id eq 'R' and vm.dichiarazione.tipoRettifica.id ne 'R'))"
+                onClick="@command('onModificaEvento', operazione='E')"/>
+    </hlayout>
+</zk>

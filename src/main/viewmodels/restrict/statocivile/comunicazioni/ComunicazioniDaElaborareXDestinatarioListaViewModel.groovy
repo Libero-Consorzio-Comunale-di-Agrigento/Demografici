@@ -54,8 +54,8 @@ class ComunicazioniDaElaborareXDestinatarioListaViewModel extends ComunicazioniA
         backFromListComunicazioneEnabled = false
         generaTestoComunicazioneEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Estremi_Atto, Etichette.Comune, Etichette.Data_Registrazione_decrescente, Etichette.Data_Registrazione_crescente,
-                                           Etichette.Gestione_Comunicazioni_Da_Elaborare, Etichette.Per_Destinatario]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Registrazione_decrescente"), Etichette.getEtichetta("Data_Registrazione_crescente"),
+                                           Etichette.getEtichetta("Gestione_Comunicazioni_Da_Elaborare"), Etichette.getEtichetta("Per_Destinatario")]
         eList.addAll(etichetteComunicazioniDefault)
 
         eList.addAll(etichetteListaDefault)
@@ -83,12 +83,12 @@ class ComunicazioniDaElaborareXDestinatarioListaViewModel extends ComunicazioniA
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Comunicazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Comunicazioni"))
 
-        formLabel = getEtichetta(Etichette.Gestione_Comunicazioni_Da_Elaborare)?.toUpperCase() + " - " + getEtichetta(Etichette.Per_Destinatario)?.toUpperCase()
+        formLabel = getEtichetta(Etichette.getEtichetta("Gestione_Comunicazioni_Da_Elaborare"))?.toUpperCase() + " - " + getEtichetta(Etichette.getEtichetta("Per_Destinatario"))?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_decrescente),  SortUtils.dataRegistrazioneDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_crescente),    SortUtils.dataRegistrazioneAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_decrescente")),  SortUtils.dataRegistrazioneDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_crescente")),    SortUtils.dataRegistrazioneAsc))
 
         //Default: data registrazione discendente
         selectedOrder = listaOrder[0]
@@ -139,7 +139,7 @@ class ComunicazioniDaElaborareXDestinatarioListaViewModel extends ComunicazioniA
             RicercaDestinatario rd = null
             if ((m.comuneDestinatario != null) && (m.provinciaDestinatario != null)){
                 ArcComune comuneDomain = arcComuneBaseService.getByCodiceComuneAndCodiceProvincia(m.comuneDestinatario, m.provinciaDestinatario)
-                rd = new RicercaDestinatario((i+1), comuneDomain, null, (getEtichetta(Etichette.Comune) + ": " + comuneDomain.descrizioneComune))
+                rd = new RicercaDestinatario((i+1), comuneDomain, null, (getEtichetta(Etichette.getEtichetta("Comune")) + ": " + comuneDomain.descrizioneComune))
             } else {
                 if (m.ente != null){
                     CivEnte ente = civEnteService.get(m.ente)

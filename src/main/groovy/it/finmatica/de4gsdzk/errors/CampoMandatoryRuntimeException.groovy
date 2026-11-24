@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.errors
 
+import it.finmatica.de4gsdzk.utils.Etichette
 
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 
 class CampoMandatoryRuntimeException extends De4gsdzkRuntimeException {
 
-    private static final Map<String, String> etichettaDefault = EtichetteMessaggi.Compilare_campi_obbligatori
+    private static final Map<String, String> etichettaDefault = Etichette.getEtichetta("Compilare_campi_obbligatori")
 
     CampoMandatoryRuntimeException() {
         super(etichettaDefault, (String) etichettaDefault?.defaultValue)

@@ -6,7 +6,7 @@ enum ETipoDocumentoUscita {
 
     Map getEtichettaDesc(){
         String methodName = this.name()
-        return Etichette."$methodName"
+        return Etichette.getEtichetta(methodName)
     }
 
     boolean isAssociato() {

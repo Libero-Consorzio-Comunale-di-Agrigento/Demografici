@@ -1,0 +1,1476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <borderlayout vflex="1">
+        <center vflex="1">
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)"
+                     nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Data_Evento'])" hflex="1"/>
+                    <listheader label="@load(vm.etichette['Descrizione'])" hflex="2"/>
+                    <listheader label="@load(vm.etichette['Data_Registrazione'])" hflex="1"/>
+                    <listheader label="@load(vm.etichette['Terminalista'])" hflex="1"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell>
+                            <dateLabel value="@load(item.dataEvento)"/>
+                        </listcell>
+                        <listcell label="@load(item.descrizione)"/>
+                        <listcell>
+                            <dateLabel value="@load(item.dataRegistrazione)"/>
+                        </listcell>
+                        <listcell label="@load(item.utenteUpd.nominativo)"/>
+                    </listitem>
+                </template>
+            </listbox>
+        </center>
+        <east size="50%" collapsible="true" splittable="true" open="@load(not empty vm.dettaglio)" autoscroll="true">
+            <vlayout hflex="1">
+                <groupbox mold="3d" style="background: #EDEFF5" closable="false">
+                    <caption label="@load(vm.etichette['Dettaglio_Movimento'])"/>
+                    <grid sclass="form">
+                        <columns>
+                            <column width="120px"/>
+                            <column width="48px"/>
+                            <column/>
+                            <column width="48px"/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row visible="@load(not vm.provvedimento and vm.dettaglio.pratica ne null)">
+                                <cell colspan="5">
+                                    <groupbox closable="false">
+                                        <caption label="@load(vm.etichette['Dettaglio_Pratica'])"/>
+                                        <grid sclass="form">
+                                            <rows>
+                                                <row>
+                                                    <cell align="right" width="141px">
+                                                        <customLabel value="@load(vm.etichette['Numero'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <customLabel
+                                                                value="@load(vm.dettaglio.pratica)"
+                                                                bold="true"/>
+                                                    </cell>
+                                                    <cell align="right" width="141px">
+                                                        <customLabel value="@load(vm.etichette['Anno'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <customLabel
+                                                                value="@load(vm.dettaglio.annoPratica)"
+                                                                bold="true"/>
+                                                    </cell>
+                                                    <cell align="right" width="141px">
+                                                        <customLabel value="@load(vm.etichette['Conteggio'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <checkbox
+                                                                checked="@load(not vm.dettaglio.noConteggio)"
+                                                                disabled="true"/>
+                                                    </cell>
+                                                </row>
+                                                <row visible="@load(vm.dettaglio.comuneEvento.codice ne null)">
+                                                    <cell align="right" width="141px">
+                                                        <customLabel value="@load(vm.etichette['Comune_Evento'])"/>
+                                                    </cell>
+                                                    <cell colspan="5">
+                                                        <comuneLabel
+                                                                value="@load(vm.dettaglio.comuneEvento)"
+                                                                bold="true"/>
+                                                    </cell>
+                                                </row>
+                                                <row visible="@load(vm.dettaglio.comuneIscrizioneAire.codice ne null)">
+                                                    <cell align="right" width="141px">
+                                                        <customLabel value="@load(vm.etichette['Comune_Iscrizione_Aire'])"/>
+                                                    </cell>
+                                                    <cell colspan="5">
+                                                        <comuneLabel
+                                                                value="@load(vm.dettaglio.comuneIscrizioneAire)"
+                                                                bold="true"/>
+                                                    </cell>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </groupbox>
+                                </cell>
+                            </row>
+
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cognomePrecedente ne vm.dettaglio.cognome) : (vm.dettaglio.cognomePrecedente ne null or vm.dettaglio.cognome ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Cognome'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognome)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nomePrecedente ne vm.dettaglio.nome) : (vm.dettaglio.nomePrecedente ne null or vm.dettaglio.nome ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nome'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nome)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.sessoPrecedente ne vm.dettaglio.sesso) : (vm.dettaglio.sessoPrecedente ne null or vm.dettaglio.sesso ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Sesso'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.sessoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.sesso)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataNascitaPrecedente ne vm.dettaglio.dataNascita) : (vm.dettaglio.dataNascitaPrecedente ne null or vm.dettaglio.dataNascita ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Nascita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataNascitaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataNascita)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.annoNascitaPrecedente ne vm.dettaglio.annoNascita) : (vm.dettaglio.annoNascitaPrecedente eq true or vm.dettaglio.annoNascita eq true)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Nascita_Solo_Anno'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.annoNascitaPrecedente)" disabled="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.annoNascita)" disabled="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneNascitaPrecedente.codice ne vm.dettaglio.comuneNascita.codice) : (vm.dettaglio.comuneNascitaPrecedente.codice ne null or vm.dettaglio.comuneNascita.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Nascita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneNascitaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneNascita)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAttoNascitaPrecedente.codice ne vm.dettaglio.comuneAttoNascita.codice) : (vm.dettaglio.comuneAttoNascitaPrecedente.codice ne null or vm.dettaglio.comuneAttoNascita.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Atto_Nascita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoNascitaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoNascita)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoNascitaPrecedente ne vm.dettaglio.attoNascita) : (vm.dettaglio.attoNascitaPrecedente.atto ne null or vm.dettaglio.attoNascita.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Nascita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoNascitaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoNascita)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoNascitaTrascrittoPrecedente ne vm.dettaglio.attoNascitaTrascritto) : (vm.dettaglio.attoNascitaTrascrittoPrecedente.atto ne null or vm.dettaglio.attoNascitaTrascritto.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Nascita_Trascritto'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoNascitaTrascrittoPrecedente)"
+                                                      bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoNascitaTrascritto)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.descrizioneStatoCivilePrecedente ne vm.dettaglio.descrizioneStatoCivile) : (vm.dettaglio.descrizioneStatoCivilePrecedente ne null or vm.dettaglio.descrizioneStatoCivile ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Stato_Civile'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.descrizioneStatoCivilePrecedente)"
+                                                 bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.descrizioneStatoCivile)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nazionalitaPrecedente.descrizione ne vm.dettaglio.nazionalita.descrizione) : (vm.dettaglio.nazionalitaPrecedente.descrizione ne null or vm.dettaglio.nazionalita.descrizione ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nazionalita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nazionalitaPrecedente.descrizione)"
+                                                 bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nazionalita.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.codiceFiscalePrecedente ne vm.dettaglio.codiceFiscale) : (vm.dettaglio.codiceFiscalePrecedente ne null or vm.dettaglio.codiceFiscale ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Codice_Fiscale'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.codiceFiscalePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.codiceFiscale)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cfCalcolatoPrecedente ne vm.dettaglio.cfCalcolato) : (vm.dettaglio.cfCalcolatoPrecedente eq true or vm.dettaglio.cfCalcolato eq true)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['CF_Calcolato'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.cfCalcolatoPrecedente)" disabled="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.cfCalcolato)" disabled="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Paternità -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cognomePadrePrecedente ne vm.dettaglio.cognomePadre) : (vm.dettaglio.cognomePadrePrecedente ne null or vm.dettaglio.cognomePadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Cognome_Padre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomePadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomePadre)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nomePadrePrecedente ne vm.dettaglio.nomePadre) : (vm.dettaglio.nomePadrePrecedente ne null or vm.dettaglio.nomePadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nome_Padre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomePadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomePadre)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.matricolaPadrePrecedente ne vm.dettaglio.matricolaPadre) : (vm.dettaglio.matricolaPadrePrecedente ne null or vm.dettaglio.matricolaPadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Matricola_Padre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaPadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaPadre)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Maternità -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cognomeMadrePrecedente ne vm.dettaglio.cognomeMadre) : (vm.dettaglio.cognomeMadrePrecedente ne null or vm.dettaglio.cognomeMadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Cognome_Madre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeMadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeMadre)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nomeMadrePrecedente ne vm.dettaglio.nomeMadre) : (vm.dettaglio.nomeMadrePrecedente ne null or vm.dettaglio.nomeMadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nome_Madre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeMadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeMadre)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.matricolaMadrePrecedente ne vm.dettaglio.matricolaMadre) : (vm.dettaglio.matricolaMadrePrecedente ne null or vm.dettaglio.matricolaMadre ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Matricola_Madre'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaMadrePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaMadre)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Professionali -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.titoloStudioPrecedente.codice ne vm.dettaglio.titoloStudio.codice) : (vm.dettaglio.titoloStudioPrecedente ne null or vm.dettaglio.titoloStudio ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Titolo_Studio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.titoloStudioPrecedente.descrizione)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.titoloStudio.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.professionePrecedente.codice ne vm.dettaglio.professione.codice) : (vm.dettaglio.professionePrecedente ne null or vm.dettaglio.professione ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Professione'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.professionePrecedente.descrizione)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.professione.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attivitaProfessionalePrecedente.codice ne vm.dettaglio.attivitaProfessionale.codice) : (vm.dettaglio.attivitaProfessionalePrecedente ne null or vm.dettaglio.attivitaProfessionale ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Attivita_Professionale'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.attivitaProfessionalePrecedente.descrizione)"
+                                                 bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.attivitaProfessionale.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.posizioneProfessionalePrecedente.codice ne vm.dettaglio.posizioneProfessionale.codice) : (vm.dettaglio.posizioneProfessionalePrecedente ne null or vm.dettaglio.posizioneProfessionale ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Posizione_Professionale'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.posizioneProfessionalePrecedente.descrizione)"
+                                                 bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.posizioneProfessionale.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.pensionatoPrecedente ne vm.dettaglio.pensionato) : (vm.dettaglio.pensionatoPrecedente eq true or vm.dettaglio.pensionato eq true)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Pensionato'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.pensionatoPrecedente)" disabled="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.pensionato)" disabled="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Famiglia -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.codiceFamigliaPrecedente ne vm.dettaglio.codiceFamiglia) : (vm.dettaglio.codiceFamigliaPrecedente ne null or vm.dettaglio.codiceFamiglia ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Codice_Famiglia'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.codiceFamigliaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.codiceFamiglia)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cognomeIntestatarioPrecedente ne vm.dettaglio.cognomeIntestatario) : (vm.dettaglio.cognomeIntestatarioPrecedente ne null or vm.dettaglio.cognomeIntestatario ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Cognome_Intestatario'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeIntestatarioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeIntestatario)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nomeIntestatarioPrecedente ne vm.dettaglio.nomeIntestatario) : (vm.dettaglio.nomeIntestatarioPrecedente ne null or vm.dettaglio.nomeIntestatario ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nome_Intestatario'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeIntestatarioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeIntestatario)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.rapportoParentelaPrecedente.codiceRapportoParentela ne vm.dettaglio.rapportoParentela.codiceRapportoParentela) : (vm.dettaglio.rapportoParentelaPrecedente ne null or vm.dettaglio.rapportoParentela ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Rapporto_Parentela'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.rapportoParentelaPrecedente.descrizione)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.rapportoParentela.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Indirizzo Residente (APR) -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.viaPrecedente ne vm.dettaglio.indirizzo.via) : (vm.dettaglio.viaPrecedente ne null or vm.dettaglio.indirizzo.via ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Via'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.viaPrecedente.denominazione)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.via.denominazione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.numeroCivicoPrecedente ne vm.dettaglio.indirizzo.numeroCivico) : (vm.dettaglio.numeroCivicoPrecedente ne null or vm.dettaglio.indirizzo.numeroCivico ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Civico'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.numeroCivicoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.numeroCivico)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.suffissoPrecedente ne vm.dettaglio.indirizzo.suffisso) : (vm.dettaglio.suffissoPrecedente ne null or vm.dettaglio.indirizzo.suffisso ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Suffisso'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.suffissoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.suffisso)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.internoPrecedente ne vm.dettaglio.indirizzo.interno) : (vm.dettaglio.internoPrecedente ne null or vm.dettaglio.indirizzo.interno ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Interno'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.internoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.interno)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.subInternoPrecedente ne vm.dettaglio.indirizzo.subInterno) : (vm.dettaglio.subInternoPrecedente ne null or vm.dettaglio.indirizzo.subInterno ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Sub_Interno'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.subInternoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.subInterno)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.scalaPrecedente ne vm.dettaglio.indirizzo.scala) : (vm.dettaglio.scalaPrecedente ne null or vm.dettaglio.indirizzo.scala ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Scala'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.scalaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.scala)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.pianoPrecedente ne vm.dettaglio.indirizzo.piano) : (vm.dettaglio.pianoPrecedente ne null or vm.dettaglio.indirizzo.piano ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Piano'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.pianoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.indirizzo.piano)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!--  Indirizzo Residente Estero (AIRE) -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.viaAirePrecedente ne vm.dettaglio.viaAire) : (vm.dettaglio.viaAirePrecedente ne null or vm.dettaglio.viaAire ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Via_AIRE'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.viaAirePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.viaAire)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAirePrecedente.codice ne vm.dettaglio.comuneAire.codice) : (vm.dettaglio.comuneAirePrecedente.codice ne null or vm.dettaglio.comuneAire.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_AIRE'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAirePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAire)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.zipCodePrecedente ne vm.dettaglio.zipCode) : (vm.dettaglio.zipCodePrecedente ne null or vm.dettaglio.zipCode ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Zipcode'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.zipCodePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.zipCode)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.provinciaConteaPrecedente ne vm.dettaglio.provinciaContea) : (vm.dettaglio.provinciaConteaPrecedente ne null or vm.dettaglio.provinciaContea ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Provincia_Contea'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.provinciaConteaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.provinciaContea)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.pressoPrecedente ne vm.dettaglio.presso) : (vm.dettaglio.pressoPrecedente ne null or vm.dettaglio.presso ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Presso'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.pressoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.presso)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.matricolaAirePrecedente ne vm.dettaglio.matricolaAire) : (vm.dettaglio.matricolaAirePrecedente ne null or vm.dettaglio.matricolaAire ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Matricola_AIRE'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaAirePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaAire)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Coniuge -->
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.cognomeConiugePrecedente ne vm.dettaglio.cognomeConiuge) : (vm.dettaglio.cognomeConiugePrecedente ne null or vm.dettaglio.cognomeConiuge ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Cognome_Coniuge'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeConiugePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.cognomeConiuge)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.nomeConiugePrecedente ne vm.dettaglio.nomeConiuge) : (vm.dettaglio.nomeConiugePrecedente ne null or vm.dettaglio.nomeConiuge ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Nome_Coniuge'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeConiugePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.nomeConiuge)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.matricolaConiugePrecedente ne vm.dettaglio.matricolaConiuge) : (vm.dettaglio.matricolaConiugePrecedente ne null or vm.dettaglio.matricolaConiuge ne null))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Matricola_Coniuge'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaConiugePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.matricolaConiuge)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Censimento -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.annoCensimentoPrecedente ne vm.dettaglio.annoCensimento) : (vm.dettaglio.annoCensimentoPrecedente ne null or vm.dettaglio.annoCensimento ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Anno_Censimento'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.annoCensimentoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.annoCensimento)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.sezioneCensimentoPrecedente ne vm.dettaglio.sezioneCensimento) : (vm.dettaglio.sezioneCensimentoPrecedente ne null or vm.dettaglio.sezioneCensimento ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Sez_Censimento'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.sezioneCensimentoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.sezioneCensimento)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.foglioCensimentoPrecedente ne vm.dettaglio.foglioCensimento) : (vm.dettaglio.foglioCensimentoPrecedente ne null or vm.dettaglio.foglioCensimento ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Foglio_Censimento'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.foglioCensimentoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.foglioCensimento)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.edificioCensimentoPrecedente ne vm.dettaglio.edificioCensimento) : (vm.dettaglio.edificioCensimentoPrecedente ne null or vm.dettaglio.edificioCensimento ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Edificio_Censimento'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.edificioCensimentoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.edificioCensimento)" bold="true"/>
+                                </cell>
+                            </row>
+
+
+                            <!-- Data Nazionalità -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataNazionalitaPrecedente ne vm.dettaglio.dataNazionalita) : (vm.dettaglio.dataNazionalitaPrecedente ne null or vm.dettaglio.dataNazionalita ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Nazionalita'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataNazionalitaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataNazionalita)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Matrimonio -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataMatrimonioPrecedente ne vm.dettaglio.dataMatrimonio) : (vm.dettaglio.dataMatrimonioPrecedente ne null or vm.dettaglio.dataMatrimonio ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Matrimonio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataMatrimonioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataMatrimonio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.annoMatrimonioPrecedente ne vm.dettaglio.annoMatrimonio) : (vm.dettaglio.annoMatrimonioPrecedente eq true or vm.dettaglio.annoMatrimonio eq true)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Matrimonio_Solo_Anno'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.annoMatrimonioPrecedente)" disabled="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <checkbox checked="@load(vm.dettaglio.annoMatrimonio)" disabled="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneMatrimonioPrecedente.codice ne vm.dettaglio.comuneMatrimonio.codice) : (vm.dettaglio.comuneMatrimonioPrecedente.codice ne null or vm.dettaglio.comuneMatrimonio.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Matrimonio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneMatrimonioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneMatrimonio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAttoMatrimonioPrecedente.codice ne vm.dettaglio.comuneAttoMatrimonio.codice) : (vm.dettaglio.comuneAttoMatrimonioPrecedente.codice ne null or vm.dettaglio.comuneAttoMatrimonio.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Atto_Matrimonio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoMatrimonioPrecedente)"
+                                                 bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoMatrimonio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoMatrimonioPrecedente ne vm.dettaglio.attoMatrimonio) : (vm.dettaglio.attoMatrimonioPrecedente.atto ne null or vm.dettaglio.attoMatrimonio.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Matrimonio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMatrimonioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMatrimonio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoMatrimonioTrascrittoPrecedente ne vm.dettaglio.attoMatrimonioTrascritto) : (vm.dettaglio.attoMatrimonioTrascrittoPrecedente.atto ne null or vm.dettaglio.attoMatrimonioTrascritto.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Matrimonio_Trascritto'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMatrimonioTrascrittoPrecedente)"
+                                                      bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMatrimonioTrascritto)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Vedovanza -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataVedovanzaPrecedente ne vm.dettaglio.dataVedovanza) : (vm.dettaglio.dataVedovanzaPrecedente ne null or vm.dettaglio.dataVedovanza ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Vedovanza'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataVedovanzaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataVedovanza)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneVedovanzaPrecedente.codice ne vm.dettaglio.comuneVedovanza.codice) : (vm.dettaglio.comuneVedovanzaPrecedente.codice ne null or vm.dettaglio.comuneVedovanza.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Vedovanza'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneVedovanzaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneVedovanza)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAttoVedovanzaPrecedente.codice ne vm.dettaglio.comuneAttoVedovanza.codice) : (vm.dettaglio.comuneAttoVedovanzaPrecedente.codice ne null or vm.dettaglio.comuneAttoVedovanza.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Atto_Vedovanza'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoVedovanzaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoVedovanza)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoVedovanzaPrecedente ne vm.dettaglio.attoVedovanza) : (vm.dettaglio.attoVedovanzaPrecedente.atto ne null or vm.dettaglio.attoVedovanza.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Vedovanza'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoVedovanzaPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoVedovanza)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Divorzio -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataDivorzioPrecedente ne vm.dettaglio.dataDivorzio) : (vm.dettaglio.dataDivorzioPrecedente ne null or vm.dettaglio.dataDivorzio ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Divorzio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataDivorzioGiudicatoPrecedente ne vm.dettaglio.dataDivorzioGiudicato) : (vm.dettaglio.dataDivorzioGiudicatoPrecedente ne null or vm.dettaglio.dataDivorzioGiudicato ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Divorzio_Giudicato'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzioGiudicatoPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzioGiudicato)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataDivorzioAnnotazionePrecedente ne vm.dettaglio.dataDivorzioAnnotazione) : (vm.dettaglio.dataDivorzioAnnotazionePrecedente ne null or vm.dettaglio.dataDivorzioAnnotazione ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Divorzio_Annotazione'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzioAnnotazionePrecedente)"
+                                               bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataDivorzioAnnotazione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneDivorzioPrecedente.codice ne vm.dettaglio.comuneDivorzio.codice) : (vm.dettaglio.comuneDivorzioPrecedente.codice ne null or vm.dettaglio.comuneDivorzio.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Divorzio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneDivorzioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneDivorzio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAttoDivorzioPrecedente.codice ne vm.dettaglio.comuneAttoDivorzio.codice) : (vm.dettaglio.comuneAttoDivorzioPrecedente.codice ne null or vm.dettaglio.comuneAttoDivorzio.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Atto_Divorzio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoDivorzioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoDivorzio)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoDivorzioPrecedente ne vm.dettaglio.attoDivorzio) : (vm.dettaglio.attoDivorzioPrecedente.atto ne null or vm.dettaglio.attoDivorzio.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Divorzio'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoDivorzioPrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoDivorzio)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <!-- Dati Morte -->
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.dataMortePrecedente ne vm.dettaglio.dataMorte) : (vm.dettaglio.dataMortePrecedente ne null or vm.dettaglio.dataMorte ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Data_Morte'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataMortePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <dateLabel value="@load(vm.dettaglio.dataMorte)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneMortePrecedente.codice ne vm.dettaglio.comuneMorte.codice) : (vm.dettaglio.comuneMortePrecedente.codice ne null or vm.dettaglio.comuneMorte.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Morte'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneMortePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneMorte)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.comuneAttoMortePrecedente.codice ne vm.dettaglio.comuneAttoMorte.codice) : (vm.dettaglio.comuneAttoMortePrecedente.codice ne null or vm.dettaglio.comuneAttoMorte.codice ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Comune_Atto_Morte'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoMortePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <comuneLabel value="@load(vm.dettaglio.comuneAttoMorte)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoMortePrecedente ne vm.dettaglio.attoMorte) : (vm.dettaglio.attoMortePrecedente.atto ne null or vm.dettaglio.attoMorte.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Morte'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMortePrecedente)" bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMorte)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row visible="@load(not vm.provvedimento and (vm.dettaglio.flagSoloCampiVariati ? (vm.dettaglio.attoMorteTrascrittoPrecedente ne vm.dettaglio.attoMorteTrascritto) : (vm.dettaglio.attoMorteTrascrittoPrecedente.atto ne null or vm.dettaglio.attoMorteTrascritto.atto ne null)))">
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Atto_Morte_Trascritto'])"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['Da'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMorteTrascrittoPrecedente)"
+                                                      bold="true"/>
+                                </cell>
+                                <cell align="right">
+                                    <customLabel value="@load(vm.etichette['A'])"/>
+                                </cell>
+                                <cell>
+                                    <estremiAttoLabel value="@load(vm.dettaglio.attoMorteTrascritto)" bold="true"/>
+                                </cell>
+                            </row>
+
+                            <zk if="${vm.provvedimento}">
+                                <row>
+                                    <cell colspan="5">
+                                        <groupbox closable="false">
+                                            <caption label="@load(vm.etichette['Dettaglio_Provvedimento'])"/>
+                                            <grid sclass="form">
+                                                <columns>
+                                                    <column width="105px"/>
+                                                    <column/>
+                                                    <column width="60px"/>
+                                                    <column/>
+                                                    <column width="60px"/>
+                                                    <column/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <cell align="right" >
+                                                            <customLabel value="@load(vm.etichette['Tipo'])"/>
+                                                        </cell>
+                                                        <cell>
+                                                            <customLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.tipoProvvedimento)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Numero'])"/>
+                                                        </cell>
+                                                        <cell>
+                                                            <customLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.numeroDecreto)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Data'])"/>
+                                                        </cell>
+                                                        <cell>
+                                                            <dateLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.dataDecreto)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                    </row>
+                                                    <row>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Ente'])"/>
+                                                        </cell>
+                                                        <cell>
+                                                            <customLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.enteProvvedimento)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Comune'])"/>
+                                                        </cell>
+                                                        <cell colspan="3">
+                                                            <comuneLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.comuneEnte)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                    </row>
+                                                    <row visible="@load(vm.dettaglio.dettaglioProvvedimento.autoreProvvedimento ne null)">
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Nome'])"/>
+                                                        </cell>
+                                                        <cell colspan="2">
+                                                            <customLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.autoreProvvedimento)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                        <cell colspan="3"/>
+                                                    </row>
+                                                    <row>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Motivazione'])"/>
+                                                        </cell>
+                                                        <cell colspan="3">
+                                                            <customLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.tipoSentenza)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Privacy'])"/>
+                                                        </cell>
+                                                        <cell>
+                                                            <checkbox
+                                                                    checked="@bind(vm.dettaglio.dettaglioProvvedimento.privacy)"
+                                                                    disabled="true"/>
+                                                        </cell>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </groupbox>
+                                    </cell>
+                                </row>
+                            </zk>
+                            <zk if="${vm.provvedimento}">
+                                <row>
+                                    <cell colspan="5">
+                                        <groupbox closable="false">
+                                            <caption label="@load(vm.etichette['Dettaglio_Trascrizione'])"/>
+                                            <grid sclass="form">
+                                                <rows>
+                                                    <row>
+                                                        <cell align="right">
+                                                            <label value="@load(vm.etichette['Atto_Trascritto'])"/>
+                                                        </cell>
+                                                        <cell colspan="5">
+                                                            <estremiAttoLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.attoTrascritto)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                    </row>
+                                                    <row>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Comune'])"/>
+                                                        </cell>
+                                                        <cell colspan="5">
+                                                            <comuneLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.comuneAttoTrascritto)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                    </row>
+                                                    <row>
+                                                        <cell align="right">
+                                                            <customLabel value="@load(vm.etichette['Data'])"/>
+                                                        </cell>
+                                                        <cell colspan="5">
+                                                            <dateLabel
+                                                                    value="@load(vm.dettaglio.dettaglioProvvedimento.dataAttoTrascritto)"
+                                                                    bold="true"/>
+                                                        </cell>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </groupbox>
+                                    </cell>
+                                </row>
+                            </zk>
+                        </rows>
+                    </grid>
+                </groupbox>
+
+                <templateIdDomain/>
+
+            </vlayout>
+        </east>
+    </borderlayout>
+
+</zk>

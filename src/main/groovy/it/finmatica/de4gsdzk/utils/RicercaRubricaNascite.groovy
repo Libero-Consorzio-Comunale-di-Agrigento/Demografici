@@ -19,6 +19,6 @@ class RicercaRubricaNascite extends RicercaAtto {
 
     RicercaRubricaNascite() {}
 
-    static final List<Map> etichetteRicercaRubricaDesc = [Etichette.Estrazioni, Etichette.Da, Etichette.A]
+    static final List<Map> etichetteRicercaRubricaDesc = [Etichette.getEtichetta("Estrazioni"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A")]
 
 }

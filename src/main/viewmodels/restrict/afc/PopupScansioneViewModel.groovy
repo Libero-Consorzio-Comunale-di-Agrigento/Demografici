@@ -29,7 +29,7 @@ class PopupScansioneViewModel {
         this.urlScansione = urlScansione
         this.nomeFileScansionatoPlaceholder = nomeFileScansionatoPlaceholder
 
-        List<Map<String, String>> eList = [Etichette.Scansione, Etichette.Chiudi]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Scansione"), Etichette.getEtichetta("Chiudi")]
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
     }
 

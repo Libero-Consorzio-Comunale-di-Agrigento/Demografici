@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoSoggettoPratica" macroURI="/restrict/anagrafe/pratiche/templateRowEstremiAttoSoggettoPratica.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Nascita'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column width="155px"/>
+                <column width="305px"/>
+                <column width="135px"/>
+                <column/>
+                <column/>
+                <column width="70px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true"
+                                     value="@load(vm.etichette['Data_Nascita'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind( vm.soggetto.dataNascita)"
+                                 readonly="@load(vm.readOnly)"
+                                 width="95px" onChange="@command('onAggiornaDataRiferimento', campoRiferimento='SOGG_DATA_NAS')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampo')">
+                            <custom-attributes proprieta="dataNascita"/>
+                        </button>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1" spacing="9px">
+                            <label value="@load(vm.etichette['Validi'])"/>
+
+                            <hlayout valign="middle" hflex="1" spacing="10px">
+                                <checkbox
+                                        checked="@bind(vm.soggetto.meseAnnoNascitaValido)"
+                                        disabled="@load(vm.readOnly)"/>
+                                <label value="@load(vm.etichette['Solo_Mese_Anno'])"/>
+                                <checkbox checked="@bind(vm.soggetto.annoNascitaValido)"
+                                          disabled="@load(vm.readOnly)"/>
+                                <label value="@load(vm.etichette['Solo_Anno'])"/>
+                            </hlayout>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Comune_Nascita'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComuni hflex="1"
+                                           disabled="@load(vm.readOnly)"
+                                           value="@load(vm.soggetto.comuneNascita.descrizione)"
+                                           dataRiferimento="@load(vm.soggetto.dataNascita)"
+                                           onSelect="@command('onSelectComune', campoRiferimento='SOGG_NAS')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaComune', campoRiferimento='SOGG_NAS')"
+                            />
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.soggetto.comuneNascita.siglaProvincia)" hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Estremi_Atto_Nascita'])"/>
+                    </cell>
+                    <cell colspan="6">
+                        <grid hflex="1">
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <grid>
+                                            <rows>
+                                                <templateRowEstremiAttoSoggettoPratica
+                                                        nascita="true"/>
+                                            </rows>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Estremi_Atto_Nascita_Trascritto'])"/>
+                    </cell>
+                    <cell colspan="6">
+                        <grid hflex="1">
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <grid>
+                                            <rows>
+                                                <templateRowEstremiAttoSoggettoPratica
+                                                        nascitaTrascritto="true"/>
+                                            </rows>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

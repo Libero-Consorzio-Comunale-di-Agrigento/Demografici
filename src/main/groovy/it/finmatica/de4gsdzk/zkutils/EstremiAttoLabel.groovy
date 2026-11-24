@@ -15,7 +15,7 @@ class EstremiAttoLabel extends CustomLabel {
         super()
         super.setMultiline(false)
 
-        List<Map> eList = [Etichette.Provvisorio, Etichette.Parte, Etichette.Serie, Etichette.Anno, Etichette.Ufficio]
+        List<Map> eList = [Etichette.getEtichetta("Provvisorio"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Ufficio")]
 
         etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
     }
@@ -35,7 +35,7 @@ class EstremiAttoLabel extends CustomLabel {
         }
 
         if (estremiAtto.atto != null) {
-            super.setValue("${estremiAtto.atto > 0 ? estremiAtto.atto : etichette['Provvisorio']}${estremiAtto.parte ? ' - ' + etichette['Parte'] + ' ' + estremiAtto.parte : ''}${estremiAtto.serie ? ' - ' + etichette['Serie'] + ' ' + estremiAtto.serie : ''}${estremiAtto.anno ? ' - ' + etichette['Anno'] + ' ' + estremiAtto.anno : ''}${estremiAtto.ufficio ? ' - ' + etichette['Ufficio'] + ' ' + estremiAtto.ufficio : ''}")
+            super.setValue("${estremiAtto.atto >= 0 ? estremiAtto.atto : etichette['Provvisorio']}${estremiAtto.parte ? ' - ' + etichette['Parte'] + ' ' + estremiAtto.parte : ''}${estremiAtto.serie ? ' - ' + etichette['Serie'] + ' ' + estremiAtto.serie : ''}${estremiAtto.anno ? ' - ' + etichette['Anno'] + ' ' + estremiAtto.anno : ''}${estremiAtto.ufficio ? ' - ' + etichette['Ufficio'] + ' ' + estremiAtto.ufficio : ''}")
             return
         }
 

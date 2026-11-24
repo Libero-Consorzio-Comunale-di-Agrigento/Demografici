@@ -1,3 +1,5 @@
+<?component name="templateListaAllegati" macroURI="/restrict/templateListaAllegati.zul" inline="true"?>
+
 <vlayout vflex="1">
 
     <orderByBlock/>
@@ -52,6 +54,14 @@
                         <rows>
                             <row>
                                 <cell align="right">
+                                    <label value="@load(vm.etichette['Motivo_Rilascio'])"/>
+                                </cell>
+                                <cell>
+                                    <customLabel value="@load(vm.dettaglio.motivoRilascio.descrizione)" bold="true"/>
+                                </cell>
+                            </row>
+                            <row>
+                                <cell align="right">
                                     <label value="@load(vm.etichette['Data_Registrazione'])"/>
                                 </cell>
                                 <cell>
@@ -70,19 +80,25 @@
                     </grid>
                 </groupbox>
                 <groupbox mold="3d" closable="false" style="background: #EDEFF5" vflex="1">
-                    <caption label="@load(vm.etichette['Allegati'])" width="260px" height="27px">
+                    <caption label="@load(vm.etichette['Allegati'])" height="27px">
                         <hlayout sclass="testo-a-dx">
-                            <button image="/images/icon/action/18x18/add.png"
-                                    tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('ADD_ALLEGATO')))"
-                                    upload="true"
-                                    onUpload="@command('onUploadDocumentoAllegato', documento=vm.dettaglio)"
+                            <toolbarbutton image="/images/icon/action/22x22/export.png"
+                                           upload="true"
+                                           tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('ADD_ALLEGATO')))"
+                                           onUpload="@command('onUploadDocumentoAllegato')"
+                                           visible="@load(vm.funzioniDettaglio.isVisible('ADD_ALLEGATO'))"
+                                           disabled="@load(vm.funzioniDettaglio.isDisabled('ADD_ALLEGATO'))"/>
+
+                            <ScanToolbarbutton
+                                    onScanCompleted="@command('onScanDocumentoAllegato')"
                                     visible="@load(vm.funzioniDettaglio.isVisible('ADD_ALLEGATO'))"
                                     disabled="@load(vm.funzioniDettaglio.isDisabled('ADD_ALLEGATO'))"/>
-                            <button image="/images/icon/action/18x18/import.png"
-                                    tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('DOWNLOAD')))"
-                                    onClick="@command('onDownloadDocumento')"
-                                    visible="@load(vm.funzioniDettaglio.isVisible('DOWNLOAD'))"
-                                    disabled="@load(vm.funzioniDettaglio.isDisabled('DOWNLOAD'))"/>
+
+                            <toolbarbutton image="/images/icon/action/22x22/import.png"
+                                           tooltiptext="@load(vm.getEtichettaEnum(vm.funzioniDettaglio.getEnum('DOWNLOAD')))"
+                                           onClick="@command('onDownloadDocumento')"
+                                           visible="@load(vm.funzioniDettaglio.isVisible('DOWNLOAD'))"
+                                           disabled="@load(vm.funzioniDettaglio.isDisabled('DOWNLOAD'))"/>
                         </hlayout>
                     </caption>
                     <hlayout sclass="navigazione" valign="middle">
@@ -91,21 +107,7 @@
                     </hlayout>
                     <listbox model="@load(vm.allegatoLista)" nonselectableTags="" vflex="1"
                              emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
-                        <listhead sizable="true">
-                            <listheader label="@load(vm.etichette['Nome'])"/>
-                            <listheader width="60px"/>
-                        </listhead>
-                        <template name="model" var="item">
-                            <listitem>
-                                <listcell label="@load(item.nome)"/>
-                                <listcell>
-                                    <button image="/images/icon/action/18x18/import.png"
-                                            tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
-                                            onClick="@command('onDownloadDocumentoAllegato', allegato=item)"
-                                            visible="@load(item.canDownload())"/>
-                                </listcell>
-                            </listitem>
-                        </template>
+                        <templateListaAllegati/>
                     </listbox>
                 </groupbox>
             </vlayout>

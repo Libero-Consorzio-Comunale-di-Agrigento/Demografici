@@ -27,6 +27,31 @@ SELECT mor.*,
        f_provincia_stato_al(mor.cod_pro_res_cn,mor.cod_com_res_cn,'','S','',mor.data_mor) sigla_pro_res_cn,
 -- flag_com_in_sospeso
        f_CIV_flag_com_in_sospeso(5,mor.ufficio,mor.anno,mor.parte,mor.serie,mor.atto) flag_com_in_sospeso,
+-- ufficio_lista
+       mor.ufficio ufficio_lista,
+-- anno_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mor.id_atto_ansc, '', mor.anno),
+              mor.anno) anno_lista,
+-- parte_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mor.id_atto_ansc, '', 
+                decode(mor.numero_unico, '', mor.parte)),
+              mor.parte) parte_lista,
+-- serie_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mor.id_atto_ansc, '', 
+                decode(mor.numero_unico, '', mor.serie)),
+              mor.serie) serie_lista,
+-- atto_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(mor.id_atto_ansc, '', 
+                decode(mor.numero_unico, '', mor.atto, mor.numero_unico)),
+              mor.atto) atto_lista,
+-- id_atto_ansc_lista
+       decode(f_flag_ANSC(), 
+         'S', mor.id_atto_ansc,
+              to_char(null)) id_atto_ansc_lista,
 -- cognome_lista
        decode(mor.natura,'N','*** ANNULLATO',mor.cognome) 	cognome_1_lista,
 -- nome_lista

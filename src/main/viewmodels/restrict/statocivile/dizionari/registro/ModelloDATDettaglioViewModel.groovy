@@ -31,7 +31,7 @@ class ModelloDATDettaglioViewModel extends DizionarioDettaglioViewModel implemen
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Modello_DAT]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Modello_DAT")]
         eList.addAll(GestioneTestiGsdModello.etichetteDomain)
         eList.addAll(FileUtils.etichetteFileUtils)
 
@@ -40,7 +40,7 @@ class ModelloDATDettaglioViewModel extends DizionarioDettaglioViewModel implemen
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Modello_DAT)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Modello_DAT"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -67,7 +67,7 @@ class ModelloDATDettaglioViewModel extends DizionarioDettaglioViewModel implemen
     @Command void onSalvaRecord() {
         if (dettaglio) {
             GestioneTestiGsdModello c = gestioneTestiGsdModelloService.customSave(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

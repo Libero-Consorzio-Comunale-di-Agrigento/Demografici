@@ -102,9 +102,9 @@ class AnaEventoStatoCivile {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Evento, Etichette.Comune, Etichette.Descrizione,
-                                              Etichette.Stato_Civile,
-                                              Etichette.Cognome, Etichette.Nome,
-                                              Etichette.Coniuge, Etichette.Contraente,
-                                              Etichette.Atto, Etichette.Comune_Atto, Etichette.Trascrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Evento"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Descrizione"),
+                                              Etichette.getEtichetta("Stato_Civile"),
+                                              Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"),
+                                              Etichette.getEtichetta("Coniuge"), Etichette.getEtichetta("Contraente"),
+                                              Etichette.getEtichetta("Atto"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Trascrizione")]
 }

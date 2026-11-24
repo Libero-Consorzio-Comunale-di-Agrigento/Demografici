@@ -3,9 +3,8 @@ package restrict.statocivile.cittadinanza
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivCittadinanza
 import it.finmatica.de4gsdzk.statocivile.CivCittadinanzaService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -30,19 +29,19 @@ class CittadinanzaMinorenniListaSelectViewModel extends AbstractSelectViewModel{
     private CivCittadinanzaService civCittadinanzaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("atto") CivCittadinanza atto) {
         self = w
 
-        List<Map> eList = [Etichette.Estremi_Atto, Etichette.Crea_atti_con_numerazione_provvisoria, Etichette.Crea_atti_con_numerazione_definitiva]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Crea_atti_con_numerazione_provvisoria"), Etichette.getEtichetta("Crea_atti_con_numerazione_definitiva")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_creazione_atto_cittadinanza_minorenne])
+        eList.addAll([Etichette.getEtichetta("Errore_creazione_atto_cittadinanza_minorenne")])
         eList.addAll(CivCittadinanza.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Atto_Cittadinanza)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Cittadinanza"))
 
         totalSizeLabel = ""
 
@@ -64,7 +63,7 @@ class CittadinanzaMinorenniListaSelectViewModel extends AbstractSelectViewModel{
     Paginazione eseguiQuery(Boolean usePaging){
         log.info ("usePaging: " + usePaging)
 
-        List<Map<String, Object>> l = statoCivileService.listMinorenni(attoPadre.idAtto)
+        List<Map<String, Object>> l = gsdService.listMinorenni(attoPadre.idAtto)
 
         return new Paginazione(l, l.size())
     }
@@ -78,7 +77,7 @@ class CittadinanzaMinorenniListaSelectViewModel extends AbstractSelectViewModel{
         if (dettagli){
             elaboraCittadinanzaMinorenni(dettagli, provvisori)
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -96,7 +95,7 @@ class CittadinanzaMinorenniListaSelectViewModel extends AbstractSelectViewModel{
                     minorenniGestiti.add(matricolaFiglio)
                 } catch (RuntimeException e){
                     // Segnalo e vado avanti
-                    Messagebox.show(String.format(getEtichetta(EtichetteMessaggi.Errore_creazione_atto_cittadinanza_minorenne), mf.COGNOME_NOME ), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                    Messagebox.show(String.format(getEtichetta(Etichette.getEtichetta("Errore_creazione_atto_cittadinanza_minorenne")), mf.COGNOME_NOME ), msgTitle, Messagebox.OK, Messagebox.ERROR)
                 }
             }
         }

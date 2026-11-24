@@ -49,10 +49,10 @@ class BandboxModalitaRilascioEmissioneCertificato extends CustomBandbox {
 
 		paging.setPageSize(Paginazione.pageSize)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 
-		labelMotivoEsenzioneBollo = String.format(getEtichetta(etichette, Etichette.Uso), "${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANSC)}")
+		labelMotivoEsenzioneBollo = String.format(getEtichetta(etichette, Etichette.getEtichetta("Uso")), "${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANSC)}")
 	}
 
 	void setCategoriaTipoCertificato(CerCategoriaTipoCertificato c) {
@@ -71,7 +71,7 @@ class BandboxModalitaRilascioEmissioneCertificato extends CustomBandbox {
 
 		listbox.setModel(new ListModelList<CerModalitaRilascio>(p.getContent()))
 		paging.setTotalSize((int) p.getTotalElements())
-		label.value = (getEtichetta(etichette, Etichette.Numero_record_trovati) ?: "") + paging.totalSize
+		label.value = (getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) ?: "") + paging.totalSize
 	}
 
 	protected Page loadPage(StringBuilder b, PageRequest pr) {

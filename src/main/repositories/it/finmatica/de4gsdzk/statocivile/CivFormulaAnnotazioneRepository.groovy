@@ -18,8 +18,10 @@ interface CivFormulaAnnotazioneRepository extends JpaRepository<CivFormulaAnnota
     @Query("SELECT c FROM CivFormulaAnnotazione c JOIN FETCH c.testo WHERE c.id = :id ")
     CivFormulaAnnotazione findWithTestoById(@Param("id") String id)
 
-    @Query("""SELECT c FROM CivFormulaAnnotazione c
-               WHERE c.tipoAtto = :tipoAtto AND c.tipoAnnotazione IN (:tipiAnnotazione) ORDER BY c.id""")
+    @Query("""SELECT DISTINCT(c) FROM CivFormulaAnnotazione c, CivComunicazioneFormula cf
+               WHERE c.tipoAtto = :tipoAtto
+               AND cf.formula.id = c.id
+               AND c.tipoAnnotazione IN (:tipiAnnotazione) ORDER BY c.id""")
     List<CivFormulaAnnotazione> findAllByTipoAttoAndTipoAnnotazioneIn(@Param("tipoAtto") Integer tipoAtto, @Param("tipiAnnotazione") List<ETipoAnnotazione> tipiAnnotazione)
 
     @Query("""SELECT c FROM CivFormulaAnnotazione c WHERE c.id IN (:ids) ORDER BY c.id""")

@@ -17,4 +17,6 @@ interface CivProcessoVerbaleRepository extends JpaRepository<CivProcessoVerbale,
     @Query("SELECT n.bloccato FROM CivProcessoVerbale n WHERE n.id = :id ")
     Boolean findBloccato(@Param("id") Long id)
 
+    long countByUfficioAndAnnoAndAttoAndParteAndSerieIsNull(Integer ufficio, Integer anno, Integer atto, Integer parte)
+
 }

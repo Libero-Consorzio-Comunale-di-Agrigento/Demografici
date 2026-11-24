@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoAnscService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivCittadinanzaService implements IAttoAnscService{
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivTipoAttoService civTipoAttoService
 
@@ -51,18 +52,18 @@ class CivCittadinanzaService implements IAttoAnscService{
 
 	private final CivCittadinanzaRepository civCittadinanzaRepository
 
-	CivCittadinanzaService(CivCittadinanzaRepository civCittadinanzaRepository, StatoCivileService statoCivileService,
-						   CivMargineService civMargineService, CivAnagrafeService civAnagrafeService,
-						   CivFormulaTestoLiberoService civFormulaTestoLiberoService, AnaAnagrafeService anaAnagrafeService,
-						   CivTipoAttoService civTipoAttoService, ArcComuneBaseService arcComuneBaseService,
-						   CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivComunicazioneAttoService civComunicazioneAttoService,
-						   CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
-						   CivValidazioneAttoService civValidazioneAttoService,
-						   CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
-						   CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+	CivCittadinanzaService(CivCittadinanzaRepository civCittadinanzaRepository, GsdService gsdService,
+                           CivMargineService civMargineService, CivAnagrafeService civAnagrafeService,
+                           CivFormulaTestoLiberoService civFormulaTestoLiberoService, AnaAnagrafeService anaAnagrafeService,
+                           CivTipoAttoService civTipoAttoService, ArcComuneBaseService arcComuneBaseService,
+                           CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivComunicazioneAttoService civComunicazioneAttoService,
+                           CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
+                           CivValidazioneAttoService civValidazioneAttoService,
+                           CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
+                           CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civCittadinanzaRepository = civCittadinanzaRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civMargineService = civMargineService
 		this.civAnagrafeService = civAnagrafeService
 		this.anaAnagrafeService = anaAnagrafeService
@@ -172,11 +173,11 @@ class CivCittadinanzaService implements IAttoAnscService{
 		if (obj.isCodRec3() && anscOn && obj.isAcquisto()){
 			String sezioneDatiAtto = "'Dati Atto'"
 			if ( (obj.tipoRichiesta == null) || (obj.motivoCittadinanza == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 			}
 			if (obj.isTrascrizione()){
 				if (obj.dataRichiesta == null){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 				}
 			}
 			if (obj.tipoRichiesta != obj.motivoCittadinanza?.tipoRichiesta) {
@@ -186,16 +187,16 @@ class CivCittadinanzaService implements IAttoAnscService{
 
 		if (obj.isCodRec3() && anscOn && obj.isEstremiGiuramentoMandatory()) {
 			if (obj.dataGiuramento == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Dati Atto'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Dati Atto'")
 			}
 
 			if (datiProvenienza.comuneGiuramento.codice == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Dati Atto'")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Dati Atto'")
 			}
 
 			if (TestoUtils.isVuoto(datiProvenienza.idAttoAnscGiuramento)) {
 				if ((datiProvenienza.attoGiuramento == null) || (datiProvenienza.annoGiuramento == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, "'Dati Atto'")
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), "'Dati Atto'")
 				}
 			}
 		}
@@ -219,23 +220,23 @@ class CivCittadinanzaService implements IAttoAnscService{
 		// cdu 52153
 		if  (obj.isCodRec3() && anscOn && obj.motivoCittadinanza?.flagAutorita && !(obj.motivoCittadinanza?.flagConsolato) ){
 			if  (datiProvenienza.tipoRichiestaTrascrizione == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori, "- indicare il tipo di richiesta della trascrizione")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"), "- indicare il tipo di richiesta della trascrizione")
 			}
 		}
 
 		if  (obj.isCodRec3() && anscOn && obj.motivoCittadinanza?.flagMinore){
 			if  (obj.tipoTrasmissioneCittadinanza == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori, "- indicare il genitore che ha acquistato la cittadinanza nella sezione 'Redazione' ")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"), "- indicare il genitore che ha acquistato la cittadinanza nella sezione 'Redazione' ")
 			}
 			if (obj.motivoCittadinanza?.flagRiconoscimento && (obj.tipoTrasmissioneCittadinanza == ETipoTrasmissioneCittadinanza.EN) ){
-				throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_salvataggio, "- indicare se il genitore che ha effettuato il riconoscimento è il padre o la madre nella sezione 'Redazione' ")
+				throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_salvataggio"), "- indicare se il genitore che ha effettuato il riconoscimento è il padre o la madre nella sezione 'Redazione' ")
 			}
 		}
 
 		String sezioneDatiRiconoscimento = "'Redazione - Estremi atto/sentenza di riconoscimento'"
 		if (obj.isCodRec3() && anscOn && obj.motivoCittadinanza?.flagEstremiRiconoscimento){
 			if ( obj.tipoRiconoscimento == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiRiconoscimento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiRiconoscimento)
 			}
 		}
 
@@ -244,7 +245,7 @@ class CivCittadinanzaService implements IAttoAnscService{
 			if ( (datiProvenienza.tipoDocumentoDichiarante == null) || ( (datiProvenienza.numeroDocumentoDichiarante?:"") == "") ||
 					(datiProvenienza.dataEmissioneDocumentoDichiarante == null) || (datiProvenienza.dataScadenzaDocumentoDichiarante == null) ||
 					(datiProvenienza.enteDocumentoDichiarante == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDocumentoRiconoscimento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDocumentoRiconoscimento)
 			}
 		}
 
@@ -253,21 +254,21 @@ class CivCittadinanzaService implements IAttoAnscService{
 			if ( (datiProvenienza.tempisticaAssunzionePubblicoImpiego == null) || ( (datiProvenienza.estremiDocumentoPubblicoImpiego?:"") == "") ||
 					(datiProvenienza.comunePubblicoImpiego.codice == null) || (datiProvenienza.comunePubblicoImpiego.codiceProvincia == null) ||
 					(datiProvenienza.dataDocumentoPubblicoImpiego == null) || ( (datiProvenienza.entePubblicoImpiego?:"") == "") ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiPubblicoImpiego)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiPubblicoImpiego)
 			}
 		}
 
 		String sezioneDatiDecreto = "'Redazione - Dati Decreto/Attestazione'"
 		if (obj.isCodRec3() && anscOn && obj.isGiuramento()){
 			if ( ( (datiProvenienza.numeroSentenza?:"") == "") || (datiProvenienza.dataSentenza == null) || (datiProvenienza.dataNotificaSentenza == null)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDecreto)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDecreto)
 			}
 		}
 
 		String sezioneAltriDati = "'Redazione - Altri dati'"
 		if (obj.isCodRec3() && anscOn) {
 			if (obj.isDataProvvedimentoSindacoMandatory() && obj.dataAccertamento == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 			}
 		}
 	}
@@ -279,7 +280,7 @@ class CivCittadinanzaService implements IAttoAnscService{
 		log.info("Lancio salvataggio dello storico su CIVCIT per id " + obj.id)
 
 		CivCittadinanza newest = DomainUtils.copyAtto(obj) as CivCittadinanza
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civCittadinanzaRepository.save(newest)
@@ -457,12 +458,13 @@ class CivCittadinanzaService implements IAttoAnscService{
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVCIT per id " + obj.id)
@@ -506,7 +508,7 @@ class CivCittadinanzaService implements IAttoAnscService{
 			DomainUtils.initEstremiAttoNascita1FromAnagrafe(margine, anaAnagrafe)
 		}
 
-		cf.atto = statoCivileService.getNumeroAtto(cf, (provvisori?ETipoSiNo.NO:ETipoSiNo.SI))
+		cf.atto = gsdService.getNumeroAtto(cf, (provvisori?ETipoSiNo.NO:ETipoSiNo.SI))
 
 		//Inizializzo civAnagrafe, margine e datiProvenienza nel metodo di save
 
@@ -541,7 +543,7 @@ class CivCittadinanzaService implements IAttoAnscService{
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java

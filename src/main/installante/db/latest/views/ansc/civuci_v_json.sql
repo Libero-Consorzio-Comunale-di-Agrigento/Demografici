@@ -35,6 +35,7 @@ select uci.id
      , f_ANSC_ruolo_operatore(dpa.qualifica_utente) ruoloOperatore
      , f_ANSC_nome_operatore(uci.terminalista) operatoreNome
      , f_ANSC_cognome_operatore(uci.terminalista) operatoreCognome
+     , 'true' redattoNellaCasaComunale
      , f_ANSC_tipo_dichiarante(dpa.tipo_dichiarante,dpa.tipo_comparente) tipoDichiarante
      , f_ANSC_ausilio_interprete(dpa.tipo_comparente) ausilioInterprete
      , f_ANSC_motivo_recupero(uci.motivo_recupero_ansc) motivoRecupero            -- (anst96)

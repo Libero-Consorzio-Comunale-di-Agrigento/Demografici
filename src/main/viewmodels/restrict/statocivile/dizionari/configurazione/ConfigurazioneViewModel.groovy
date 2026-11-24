@@ -22,7 +22,7 @@ class ConfigurazioneViewModel extends AbstractTabNavigatorViewModel {
     private ArcParametroService arcParametroService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Parametri, Etichette.Etichette, Etichette.Parametri_Protocollo, Etichette.Loghi]
+        List<Map> eList = [Etichette.getEtichetta("Parametri"), Etichette.getEtichetta("Etichette"), Etichette.getEtichetta("Parametri_Protocollo"), Etichette.getEtichetta("Loghi"), Etichette.getEtichetta("Log")]
 
         doInit(w, eList)
 

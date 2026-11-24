@@ -5,7 +5,9 @@ import it.finmatica.de4gsdzk.certificazione.CerCategoriaTipoCertificato
 import it.finmatica.de4gsdzk.certificazione.CerCategoriaTipoCertificatoService
 import it.finmatica.de4gsdzk.certificazione.CerTariffaDiritto
 import it.finmatica.de4gsdzk.certificazione.CerTariffaDirittoService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.*
@@ -78,7 +80,7 @@ class TariffaDirittoCategoriaListaViewModel extends DizionarioListaViewModel {
             onRicarica()
         })
 
-        msgTitle = getEtichetta(Etichette.Categorie_Tipo_Certificato)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Categorie_Tipo_Certificato"))
 
         listaCategoriaTipoCertificato = cerCategoriaTipoCertificatoService.listAll()
 
@@ -138,7 +140,7 @@ class TariffaDirittoCategoriaListaViewModel extends DizionarioListaViewModel {
         if (addPlusEnabled && userModifyEnabled) {
             aggiungiRecord(categoriaTipoCertificato)
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -164,7 +166,7 @@ class TariffaDirittoCategoriaListaViewModel extends DizionarioListaViewModel {
 
     String getMessaggioCancellazione() {
         if (dettaglio) {
-            return "${dettaglio.descrizione}:\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record)
+            return "${dettaglio.descrizione}:\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record"))
         }
         return ""
     }

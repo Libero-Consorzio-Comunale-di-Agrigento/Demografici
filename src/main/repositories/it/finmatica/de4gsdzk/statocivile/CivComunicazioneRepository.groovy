@@ -32,10 +32,20 @@ interface CivComunicazioneRepository extends JpaRepository<CivComunicazione, Int
 
     @Query("""SELECT DISTINCT(c) FROM CivArchivioComunicazione arc, CivComunicazione c
                WHERE arc.tipoAttoComunicazione = :tipoAttoComunicazione
+                 AND c.tipoComunicazione = :tipoComunicazione
                  AND arc.comunicazione.id = c.id
-                 AND arc.stampaEseguita = :stampaEseguita)
+                 AND arc.stampaEseguita = :stampaEseguita
                ORDER BY c.descrizione """)
-    List<CivComunicazione> findAllByTipoAttoComunicazioneAndStampaEseguita(@Param("tipoAttoComunicazione") Integer tipoAttoComunicazione, @Param("stampaEseguita") Boolean stampaEseguita)
+    List<CivComunicazione> findAllByTipoAttoComunicazioneAndStampaEseguitaAndTipoComunicazione(@Param("tipoAttoComunicazione") Integer tipoAttoComunicazione, @Param("stampaEseguita") Boolean stampaEseguita, @Param("tipoComunicazione") ETipoComunicazione tipoComunicazione)
+
+    @Query("""SELECT DISTINCT(c) FROM CivArchivioComunicazione arc, CivComunicazioneFormula cf, CivComunicazione c
+               WHERE cf.comunicazione.id = c.id
+               AND arc.tipoAttoComunicazione = :tipoAttoComunicazione
+               AND arc.comunicazione.id = c.id
+               AND arc.stampaEseguita = :stampaEseguita
+               AND cf.formula = :formula
+               ORDER BY c.descrizione """)
+    List<CivComunicazione> findAllByTipoAttoComunicazioneAndStampaEseguitaAndFormula(@Param("tipoAttoComunicazione") Integer tipoAttoComunicazione, @Param("stampaEseguita") Boolean stampaEseguita,@Param("formula") CivFormulaAnnotazione formula)
 
     @Query("""SELECT c FROM CivComunicazione c 
                 WHERE c.tipoComunicazione = :tipoComunicazione

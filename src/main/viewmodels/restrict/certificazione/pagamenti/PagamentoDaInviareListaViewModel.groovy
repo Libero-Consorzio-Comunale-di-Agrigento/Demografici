@@ -3,11 +3,7 @@ package restrict.certificazione.pagamenti
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
-import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmesso
-import it.finmatica.de4gsdzk.certificazione.CerModalitaRilascio
-import it.finmatica.de4gsdzk.certificazione.CerTerminalista
-import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
-import it.finmatica.de4gsdzk.certificazione.RicercaCertificato
+import it.finmatica.de4gsdzk.certificazione.*
 import it.finmatica.de4gsdzk.pagamento.*
 import it.finmatica.de4gsdzk.pagamento.depag.DepagPagamentoDaInviare
 import it.finmatica.de4gsdzk.pagamento.error.InvioPagamentoRuntimeException
@@ -82,7 +78,7 @@ class PagamentoDaInviareListaViewModel extends AbstractListaViewModel implements
         ricercaCertificato = new RicercaCertificato()
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Pagamenti_da_inviare]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Pagamenti_da_inviare")]
         eList.addAll(CerCertificatoEmesso.etichetteDomain)
         eList.addAll(CerTipoCertificato.etichetteDomain)
         eList.addAll(DepagPagamentoDaInviare.etichetteDomain)
@@ -96,27 +92,27 @@ class PagamentoDaInviareListaViewModel extends AbstractListaViewModel implements
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
         // Aggiungo etichette order
-        eList.addAll([Etichette.Data_emissione_decrescente, Etichette.Data_emissione_crescente])
+        eList.addAll([Etichette.getEtichetta("Data_emissione_decrescente"), Etichette.getEtichetta("Data_emissione_crescente")])
 
         eList.addAll()
 
         // Aggiungo etichette per messaggi restituiti da funzioni invio
-        eList.addAll([EtichetteMessaggi.Info_Invio_pagamento_successo, EtichetteMessaggi.Errore_Invio_pagamento,
-                      EtichetteMessaggi.Errore_Invio_pagamento_servizi_non_coerenti, EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Info_Invio_pagamento_successo"), Etichette.getEtichetta("Errore_Invio_pagamento"),
+                      Etichette.getEtichetta("Errore_Invio_pagamento_servizi_non_coerenti"), Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette per bottone aggiuntivo
-        eList.addAll(Etichette.invia_pagamento_tooltip)
+        eList.addAll(Etichette.getEtichetta("invia_pagamento_tooltip"))
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Pagamenti_da_inviare)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Pagamenti_da_inviare"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
-        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.Data_emissione_decrescente), SortUtils.dataEmissioneDesc),
-                           new OrderBy(getEtichetta(Etichette.Data_emissione_crescente), SortUtils.dataEmissioneAsc)])
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_decrescente")), SortUtils.dataEmissioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_crescente")), SortUtils.dataEmissioneAsc)])
 
         //Default: data emissione discendente
         selectedOrder = listaOrder[0]
@@ -246,7 +242,7 @@ class PagamentoDaInviareListaViewModel extends AbstractListaViewModel implements
     @Command
     void onInviaPagamento() {
         if (listaSelezionati.size() == 0) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Nessun_elemento_selezionato), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
         try {

@@ -5,7 +5,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 
-    <toolbarbutton image="/images/icon/action/22x22/archive.png"
+    <toolbarbutton image="/images/de4gsdzk/22x22/doc_public.png"
                    tooltiptext="@load(vm.etichette['Documenti_tooltip'])"
                    disabled="@load(not vm.documentiButtonEnabled)"
                    onClick="@command('onOpenDocumenti')"/>

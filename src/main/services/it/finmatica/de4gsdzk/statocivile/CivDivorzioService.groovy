@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoAnscService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivDivorzioService implements IAttoAnscService{
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -47,16 +48,16 @@ class CivDivorzioService implements IAttoAnscService{
 
 	private final CivMatrimonioRepository civMatrimonioRepository
 
-    CivDivorzioService(CivMatrimonioRepository civMatrimonioRepository, StatoCivileService statoCivileService,
+    CivDivorzioService(CivMatrimonioRepository civMatrimonioRepository, GsdService gsdService,
                        CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
                        CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
                        CivComunicazioneAttoService civComunicazioneAttoService, CivSposiAttoService civSposiAttoService,
-					   CivAnnotazioneAttoService civAnnotazioneAttoService, ArcComuneBaseService arcComuneBaseService,
-					   CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService, ArcParametroService arcParametroService,
-					   CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+                       CivAnnotazioneAttoService civAnnotazioneAttoService, ArcComuneBaseService arcComuneBaseService,
+                       CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService, ArcParametroService arcParametroService,
+                       CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civMatrimonioRepository = civMatrimonioRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -180,15 +181,15 @@ class CivDivorzioService implements IAttoAnscService{
 		civValidazioneAttoService.checkDichiaranteComparenteFirmatario(datiProvenienza, checkDich, checkComp, checkFirm)
 
 		if (obj.isCodRec3() && anscOn && obj.isRiconciliazione() && obj.dataMatrimonio == null) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, 'Dati Atto')
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), 'Dati Atto')
 		}
 
 		if (datiProvenienza.tipoDivorzio == null){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_tipo_divorzio)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_tipo_divorzio"))
 		}
 
 		if ( (datiProvenienza.tipoDivorzio == ETipoDivorzio.X) && obj.isTribunale() ) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Errore_tipo_divorzio)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Errore_tipo_divorzio"))
 		}
 
 		// Da controllare solo all'atto del consolidamento
@@ -242,7 +243,7 @@ class CivDivorzioService implements IAttoAnscService{
 		log.info("Lancio salvataggio dello storico su CIVMAT per id " + obj.id)
 
 		CivMatrimonio newest = DomainUtils.copyAtto(obj) as CivMatrimonio
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civMatrimonioRepository.save(newest)
@@ -473,12 +474,13 @@ class CivDivorzioService implements IAttoAnscService{
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVMAT per id " + obj.id)
@@ -519,7 +521,7 @@ class CivDivorzioService implements IAttoAnscService{
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java
@@ -532,11 +534,11 @@ class CivDivorzioService implements IAttoAnscService{
 	}
 
 	private Boolean isAvvocato1Presente(CivDatiProvenienzaAtto obj) {
-		statoCivileService.flagComparente(obj.tipoComparente, 'AO')
+		gsdService.flagComparente(obj.tipoComparente, 'AO')
 	}
 
 	private Boolean isAvvocato2Presente(CivDatiProvenienzaAtto obj) {
-		statoCivileService.flagComparente(obj.tipoComparente, 'AA', 'AVV2')
+		gsdService.flagComparente(obj.tipoComparente, 'AA', 'AVV2')
 	}
 
 }

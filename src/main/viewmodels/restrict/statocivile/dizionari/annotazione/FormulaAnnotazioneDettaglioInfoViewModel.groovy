@@ -37,7 +37,7 @@ class FormulaAnnotazioneDettaglioInfoViewModel extends AbstractDettaglioViewMode
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("id") String id){
         self = w
 
-        List<Map<String, String>> eList = [Etichette.Formula_Annotazione, Etichette.Annotazioni]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Formula_Annotazione"), Etichette.getEtichetta("Annotazioni")]
         eList.addAll(etichetteDettaglioDefault)
 
         eList.addAll(CivTestoFormula.etichetteDomain)
@@ -54,7 +54,7 @@ class FormulaAnnotazioneDettaglioInfoViewModel extends AbstractDettaglioViewMode
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Formula_Annotazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formula_Annotazione"))
 
         formLabel = msgTitle?.toUpperCase()
 

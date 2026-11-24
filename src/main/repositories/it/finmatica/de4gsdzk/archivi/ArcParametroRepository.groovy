@@ -27,10 +27,8 @@ interface ArcParametroRepository extends JpaRepository<ArcParametro, String> {
                         AND a.flagVisibile = java.lang.Boolean.TRUE """)
     Page<ArcParametro> findAllByGruppoIn(@Param("gruppi") List<EGruppo> gruppi, Pageable pageable)
 
-    List<ArcParametro> findAllByIdIn(List<String> ids)
+    List<ArcParametro> findAllByIdInOrderById(List<String> ids)
 
     List<ArcParametro> findAllByIdLike(@Param("parametro") String parametro)
-
-    List<ArcParametro> findAllByIdLikeOrId(@Param("parametroLike") String parametroLike, @Param("parametroEq") String parametroEq)
 
 }

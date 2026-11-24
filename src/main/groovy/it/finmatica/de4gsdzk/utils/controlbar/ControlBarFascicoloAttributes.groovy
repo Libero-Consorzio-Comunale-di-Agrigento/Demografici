@@ -46,7 +46,7 @@ class ControlBarFascicoloAttributes extends ControlBarListaAttributes {
 	}
 
 
-	static final List<Map> etichetteCbFascDesc = [Etichette.back_tooltip, Etichette.carica_documento_tooltip,
-												  Etichette.inserisci_tooltip, Etichette.elimina_tooltip, Etichette.Ordina_per]
+	static final List<Map> etichetteCbFascDesc = [Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("carica_documento_tooltip"),
+												  Etichette.getEtichetta("inserisci_tooltip"), Etichette.getEtichetta("elimina_tooltip"), Etichette.getEtichetta("Ordina_per")]
 
 }

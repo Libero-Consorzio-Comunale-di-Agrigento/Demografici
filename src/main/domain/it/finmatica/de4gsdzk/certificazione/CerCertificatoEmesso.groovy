@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdBaseDomain
 import it.finmatica.de4gsdzk.IRiferimentoCertificatoDomain
 import it.finmatica.de4gsdzk.certificazione.embed.Beneficiario
+import it.finmatica.de4gsdzk.certificazione.embed.EnteRichiedente
 import it.finmatica.de4gsdzk.certificazione.embed.Richiedente
 import it.finmatica.de4gsdzk.integrazioni.documentale.IDocumentoEsterno
 import it.finmatica.de4gsdzk.integrazioni.documentale.IFileDocumentoEsterno
@@ -51,9 +52,9 @@ class CerCertificatoEmesso extends GsdBaseDomain implements IRiferimentoCertific
     @Column(name = "QUALIFICA_TERMINALISTA", nullable = true)
     String qualificaTerminalista
 
-    @Convert(converter = BooleanToStringConverter.class)
+    //@Convert(converter = BooleanToStringConverter.class)
     @Column(name = "FLAG_TERMINALISTA_IN_STAMPA", nullable = true)
-    Boolean flagInStampaTerminalista
+    String flagInStampaTerminalista
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="MODALITA_RILASCIO", nullable = true)
@@ -131,6 +132,9 @@ class CerCertificatoEmesso extends GsdBaseDomain implements IRiferimentoCertific
     @Embedded
     Beneficiario beneficiario
 
+    @Embedded
+    EnteRichiedente enteRichiedente
+
     @Column(name = "ID_DOCUMENTO_GDM", nullable = true)
     Long idDocumentoEsterno
 
@@ -165,6 +169,9 @@ class CerCertificatoEmesso extends GsdBaseDomain implements IRiferimentoCertific
     @OneToOne(mappedBy = "certificatoEmesso", fetch = FetchType.LAZY)
     WspaPagamentoInviatoDettaglio pagamentoInviatoDettaglio
 
+    @Column(name = "RICHIEDENTE_LISTA", nullable = true, updatable = false, insertable = false)
+    String richiedenteLista
+
     ////////////////////////////////////////////////////////////////////////
     ///////////////////////////////   ZK     ///////////////////////////////
     ////////////////////////////////////////////////////////////////////////
@@ -182,17 +189,18 @@ class CerCertificatoEmesso extends GsdBaseDomain implements IRiferimentoCertific
     ////////////////////////////////////////////////////////////////////////
 
     // TODO: sposta etichette emissione su EmissioneCertificatoViewModel
-    static final List<Map> etichetteDomain = [Etichette.Progressivo_emissione, Etichette.Anno_emissione, Etichette.Cognome, Etichette.Nome, Etichette.Cognome_Nome, Etichette.Richiedente, Etichette.Nazionalita,
-                                              Etichette.Codice_Fiscale, Etichette.Sesso, Etichette.Data_Nascita, Etichette.Note, Etichette.Data, Etichette.Numero_copie,
-                                              Etichette.Matricola, Etichette.Comune_Nascita, Etichette.Documento_riconoscimento, Etichette.Data_Rilascio, Etichette.Numero, Etichette.Annullato,
-                                              Etichette.Data_emissione, Etichette.Beneficiario,
-                                              Etichette.Tipo_Certificato, Etichette.Modalita_rilascio,
-                                              Etichette.Diritti_segreteria, Etichette.Diritti_segreteria_abbr,
-                                              Etichette.Diritti_stato_civile, Etichette.Diritti_stato_civile_abbr,
-                                              Etichette.Diritti_carta_identita, Etichette.Diritti_carta_identita_abbr,
-                                              Etichette.Rimborso_stampati, Etichette.Rimborso_stampati_abbr,
-                                              Etichette.Bollo, Etichette.Totale,
-                                              Etichette.Terminalista, Etichette.Tipo_pagamento, Etichette.Generazione_certificato_ADS, Etichette.Generazione_certificato_forzata_ANPR]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Progressivo_emissione"), Etichette.getEtichetta("Anno_emissione"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Cognome_Nome"), Etichette.getEtichetta("Richiedente"), Etichette.getEtichetta("Nazionalita"),
+                                              Etichette.getEtichetta("Codice_Fiscale"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Data_Nascita"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Data"), Etichette.getEtichetta("Numero_copie"),
+                                              Etichette.getEtichetta("Matricola"), Etichette.getEtichetta("Comune_Nascita"), Etichette.getEtichetta("Documento_riconoscimento"), Etichette.getEtichetta("Data_Rilascio"), Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Annullato"),
+                                              Etichette.getEtichetta("Data_emissione"), Etichette.getEtichetta("Beneficiario"),
+                                              Etichette.getEtichetta("Tipo_Certificato"), Etichette.getEtichetta("Modalita_rilascio"),
+                                              Etichette.getEtichetta("Da"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Consolato"),
+                                              Etichette.getEtichetta("Diritti_segreteria"), Etichette.getEtichetta("Diritti_segreteria_abbr"),
+                                              Etichette.getEtichetta("Diritti_stato_civile"), Etichette.getEtichetta("Diritti_stato_civile_abbr"),
+                                              Etichette.getEtichetta("Diritti_carta_identita"), Etichette.getEtichetta("Diritti_carta_identita_abbr"),
+                                              Etichette.getEtichetta("Rimborso_stampati"), Etichette.getEtichetta("Rimborso_stampati_abbr"),
+                                              Etichette.getEtichetta("Bollo"), Etichette.getEtichetta("Totale"),
+                                              Etichette.getEtichetta("Terminalista"), Etichette.getEtichetta("Tipo_pagamento"), Etichette.getEtichetta("Generazione_certificato_ADS"), Etichette.getEtichetta("Generazione_certificato_forzata_ANPR")]
 
     @PrePersist
     void beforeInsert() {

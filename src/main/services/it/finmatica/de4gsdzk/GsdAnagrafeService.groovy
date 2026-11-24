@@ -39,12 +39,12 @@ class GsdAnagrafeService {
 				r?.sesso,
 				r?.dataNascita,
 				r?.dataNascita,
+                null,
 				r?.archivio,
 				pageable)
 	}
 
 	Page<GsdAnagrafe> listAllByRicercaIndividuo(RicercaIndividuo r, Pageable pageable) {
-		r.validaDati()
 
 		gsdAnagrafeRepository.findAll(
 				SqlUtils.endsLike(r?.cognome)?.toUpperCase(),
@@ -53,6 +53,7 @@ class GsdAnagrafeService {
 				r?.sesso,
 				r?.dataNascitaDal,
 				r?.dataNascitaAl,
+                r?.matricola,
 				null,
 				pageable)
 	}

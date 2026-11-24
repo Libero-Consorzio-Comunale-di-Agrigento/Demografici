@@ -33,7 +33,7 @@ class CittadinanzaANSCListaViewModel extends AnscAttoListaParentViewModel {
 
         backFromListANSCEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_RICHIEDENTE]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_RICHIEDENTE")]
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams())
 

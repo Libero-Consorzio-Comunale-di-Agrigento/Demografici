@@ -75,6 +75,45 @@ select 'GSDANASU', 'GSD - Anagrafe - Super User', 'DE4GSD', 'DE4GSD', 'U',
  where not exists (select 1 from ad4_ruoli
                     where ruolo = 'GSDANASU')
 /
+Insert into AD4_RUOLI
+   (RUOLO, DESCRIZIONE, PROGETTO, MODULO, STATO,
+    GRUPPO_LAVORO, GRUPPO_SO, INCARICO, RESPONSABILITA)
+select 'GSDANAVI', 'GSD - Anagrafe - Visualizzazione', 'DE4GSD', 'DE4GSD', 'U',
+       'S', 'S', 'N', 'N'
+  from dual
+ where not exists (select 1 from ad4_ruoli
+                    where ruolo = 'GSDANAVI')
+/
+-- ruoli integrati SO4 - modulo ELE - Elettorale
+Insert into AD4_RUOLI
+(RUOLO, DESCRIZIONE, PROGETTO, MODULO, STATO,
+ GRUPPO_LAVORO, GRUPPO_SO, INCARICO, RESPONSABILITA)
+select 'GSDELESU', 'GSD - Elettorale - Super User', 'DE4GSD', 'DE4GSD', 'U',
+       'S', 'S', 'N', 'N'
+from dual
+where not exists (select 1 from ad4_ruoli
+                  where ruolo = 'GSDELESU')
+/
+-- ruoli integrati SO4 - modulo LEV - Leva Militare
+Insert into AD4_RUOLI
+(RUOLO, DESCRIZIONE, PROGETTO, MODULO, STATO,
+ GRUPPO_LAVORO, GRUPPO_SO, INCARICO, RESPONSABILITA)
+select 'GSDLEVSU', 'GSD - Leva Militare - Super User', 'DE4GSD', 'DE4GSD', 'U',
+       'S', 'S', 'N', 'N'
+from dual
+where not exists (select 1 from ad4_ruoli
+                  where ruolo = 'GSDLEVSU')
+/
+-- ruoli integrati SO4 - modulo TOP - Toponomastica
+Insert into AD4_RUOLI
+(RUOLO, DESCRIZIONE, PROGETTO, MODULO, STATO,
+ GRUPPO_LAVORO, GRUPPO_SO, INCARICO, RESPONSABILITA)
+select 'GSDTOPSU', 'GSD - Toponomastica - Super User', 'DE4GSD', 'DE4GSD', 'U',
+       'S', 'S', 'N', 'N'
+from dual
+where not exists (select 1 from ad4_ruoli
+                  where ruolo = 'GSDTOPSU')
+/
 -- ruoli integrati SO4 - modulo STATS - Indicatori Statistici
 Insert into AD4_RUOLI
    (RUOLO, DESCRIZIONE, PROGETTO, MODULO, STATO, 

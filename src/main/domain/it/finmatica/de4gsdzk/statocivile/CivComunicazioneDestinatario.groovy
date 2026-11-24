@@ -2,6 +2,8 @@ package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.ad4.autenticazione.Ad4Utente
 import it.finmatica.ad4.hibernate.UtenteUpd
+import it.finmatica.de4gsdzk.GsdBaseDomain
+import it.finmatica.de4gsdzk.IComunicazioneDestinatario
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.config.Holders
@@ -11,7 +13,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "CIVCOM_DEST")
-class CivComunicazioneDestinatario {
+class CivComunicazioneDestinatario extends GsdBaseDomain implements IComunicazioneDestinatario {
 
     @Id
     @Column(name = "ID")
@@ -64,6 +66,6 @@ class CivComunicazioneDestinatario {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ente, Etichette.PEC]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ente"), Etichette.getEtichetta("PEC")]
 
 }

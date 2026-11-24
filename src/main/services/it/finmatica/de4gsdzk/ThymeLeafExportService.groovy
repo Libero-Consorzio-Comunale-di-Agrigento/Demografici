@@ -1,6 +1,5 @@
 package it.finmatica.de4gsdzk
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring4.SpringTemplateEngine
@@ -9,9 +8,13 @@ import org.thymeleaf.templateresolver.ITemplateResolver
 @Service
 class ThymeLeafExportService {
 
-    @Autowired ITemplateResolver xmlTemplateResolver
+    private final ITemplateResolver xmlTemplateResolver
+    private final Context xmlContext
 
-    @Autowired Context xmlContext
+    ThymeLeafExportService(ITemplateResolver xmlTemplateResolver, Context xmlContext) {
+        this.xmlTemplateResolver = xmlTemplateResolver
+        this.xmlContext = xmlContext
+    }
 
     /**
      * Genera un XML con ThymeLeaf usando il template specificato

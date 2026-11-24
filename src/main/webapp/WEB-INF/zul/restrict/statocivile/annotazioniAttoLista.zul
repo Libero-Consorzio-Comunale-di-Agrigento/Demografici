@@ -83,7 +83,7 @@
 						</template>
 					</listbox>
 				</center>
-				<east size="50%" collapsible="true" open="@load(not empty vm.dettaglio)">
+				<east size="50%" collapsible="true" splittable="true" open="@load(not empty vm.dettaglio)">
 					<vlayout vflex="1" hflex="1" spacing="0px">
 						<groupbox mold="3d" closable="false" style="background: #EDEFF5">
 							<caption label="@load(vm.etichette['Annotazione'])" width="260px">

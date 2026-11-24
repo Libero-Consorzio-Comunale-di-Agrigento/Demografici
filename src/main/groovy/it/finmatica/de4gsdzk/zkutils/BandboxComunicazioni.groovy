@@ -43,8 +43,8 @@ class BandboxComunicazioni extends CustomBandbox {
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -60,7 +60,7 @@ class BandboxComunicazioni extends CustomBandbox {
 		Page<CivComunicazione> p = Holders.getApplicationContext().getBean(CivComunicazioneService.class).list(params)
 		listbox.setModel(new ListModelList<CivComunicazione>(p.getContent()))
 		paging.setTotalSize((int)p.getTotalElements())
-		label.value = getEtichetta(etichette, Etichette.Numero_record_trovati) + paging.totalSize
+		label.value = getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) + paging.totalSize
 	}
 
 }

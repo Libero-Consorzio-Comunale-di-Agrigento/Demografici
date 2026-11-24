@@ -10,15 +10,17 @@ import org.zkoss.zk.ui.Executions
 import org.zkoss.zk.ui.select.Selectors
 import org.zkoss.zul.Groupbox
 import org.zkoss.zul.Row
-import org.zkoss.zul.Rows
 
 class GroupboxIndirizzo extends Groupbox {
 
-    private Rows _tempRows = new Rows()
+    private List<Row> _extraRows = []
+    private boolean _rendered = false
 
     private String label
     private IIndirizzo indirizzo
     private String tipoIndirizzo
+    private Boolean showAnp
+    private IIndirizzo indirizzoComparison
 
     GroupboxIndirizzo() {
         super()
@@ -26,45 +28,55 @@ class GroupboxIndirizzo extends Groupbox {
     }
 
     void onCreate() {
-        Executions.createComponents("/restrict/afc/groupboxIndirizzo.zul", this, [label: label, indirizzo: indirizzo, tipoIndirizzo: tipoIndirizzo])
+        render()
+    }
+
+    // Ricostruisce il contenuto interno: richiamato sia alla creazione sia ad ogni
+    // successiva modifica di value/showAnp/indirizzoComparison (es. dopo un refreshUi()
+    // del ViewModel), perche' onCreate() da solo viene invocato una sola volta da ZK.
+    private void render() {
+        new ArrayList(getChildren()).each { it.detach() }
+
+        Executions.createComponents("/restrict/afc/groupboxIndirizzo.zul", this, [label: label, indirizzo: indirizzo, tipoIndirizzo: tipoIndirizzo, showAnp: showAnp, indirizzoComparison: indirizzoComparison, groupbox: this])
 
         Component rows = Selectors.iterable(this, "rows").iterator().hasNext() ?
                 Selectors.iterable(this, "rows").iterator().next() : null
         if (rows != null) {
-            // Create a copy of the children to avoid concurrent modifications.
-            def childrenCopy = new ArrayList(_tempRows.getChildren())
-            childrenCopy.each { child ->
-                rows.appendChild(child as Component)
+            new ArrayList(_extraRows).each { row ->
+                rows.appendChild(row)
             }
-            _tempRows.getChildren().clear()
         }
 
         Selectors.wireVariables(this, this, null)
         Selectors.wireComponents(this, this, false)
         Selectors.wireEventListeners(this, this)
+
+        _rendered = true
     }
 
     @Override
     boolean insertBefore(Component newChild, Component refChild) {
         if (newChild instanceof Row) {
-            return _tempRows.insertBefore(newChild, refChild)
+            _extraRows.add(newChild as Row)
+            return true
         } else {
-            super.insertBefore(newChild, refChild)
+            return super.insertBefore(newChild, refChild)
         }
     }
 
     @Override
     boolean appendChild(Component child) {
         if (child instanceof Row) {
-            _tempRows.appendChild(child)
+            _extraRows.add(child as Row)
             return true
         } else {
-            super.appendChild(child)
+            return super.appendChild(child)
         }
     }
 
     void setLabel(String label) {
         this.label = label
+        if (_rendered) render()
     }
 
     String getLabel() {
@@ -72,18 +84,31 @@ class GroupboxIndirizzo extends Groupbox {
     }
 
     void setValue(IIndirizzo value) {
-        if (value == null) {
-            indirizzo = null
-            tipoIndirizzo = getTipoIndirizzoFromValue(indirizzo)
-            return
-        }
-
         indirizzo = value as IIndirizzo
         tipoIndirizzo = getTipoIndirizzoFromValue(indirizzo)
+        if (_rendered) render()
     }
 
     IIndirizzo getValue() {
         return indirizzo
+    }
+
+    void setShowAnp(Boolean showAnp) {
+        this.showAnp = showAnp
+        if (_rendered) render()
+    }
+
+    Boolean getShowAnp() {
+        return showAnp
+    }
+
+    void setIndirizzoComparison(IIndirizzo indirizzoComparison) {
+        this.indirizzoComparison = indirizzoComparison
+        if (_rendered) render()
+    }
+
+    IIndirizzo getIndirizzoComparison() {
+        return indirizzoComparison
     }
 
     static String getTipoIndirizzoFromValue(IIndirizzo indirizzo) {
@@ -95,6 +120,81 @@ class GroupboxIndirizzo extends Groupbox {
             return ETipoVisualizzazioneIndirizzo.RESIDENTE_ESTERO
         } else {
             return ETipoVisualizzazioneIndirizzo.NONE
+        }
+    }
+
+
+    String getSclassViaFormatted() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        try {
+            def value1 = indirizzo?.hasProperty('viaFormatted') ? indirizzo.viaFormatted : (indirizzo?.hasProperty('via') ? indirizzo.via : null)
+            def value2 = indirizzoComparison?.hasProperty('viaFormatted') ? indirizzoComparison.viaFormatted : (indirizzoComparison?.hasProperty('via') ? indirizzoComparison.via : null)
+            return value1 != value2 ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+    String getSclassVia() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        try {
+            def value1 = indirizzo?.hasProperty('via') ? indirizzo.via : (indirizzo?.hasProperty('viaFormatted') ? indirizzo.viaFormatted : null)
+            def value2 = indirizzoComparison?.hasProperty('via') ? indirizzoComparison.via : (indirizzoComparison?.hasProperty('viaFormatted') ? indirizzoComparison.viaFormatted : null)
+            return value1 != value2 ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+    String getSclassComune() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        try {
+            def codice1 = indirizzo?.hasProperty('comune') ? indirizzo.comune?.codice : null
+            def codice2 = indirizzoComparison?.hasProperty('comune') ? indirizzoComparison.comune?.codice : null
+            return codice1 != codice2 ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+    String getSclassZipcode() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        if (!(indirizzo instanceof IIndirizzoResidenteEstero) || !(indirizzoComparison instanceof IIndirizzoResidenteEstero)) return 'redText'
+        try {
+            return indirizzo.zipcode != indirizzoComparison.zipcode ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+    String getSclassProvinciaContea() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        if (!(indirizzo instanceof IIndirizzoResidenteEstero) || !(indirizzoComparison instanceof IIndirizzoResidenteEstero)) return 'redText'
+        try {
+            return indirizzo.provinciaContea != indirizzoComparison.provinciaContea ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+    String getSclassPresso() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        if (!(indirizzo instanceof IIndirizzoResidenteEstero) || !(indirizzoComparison instanceof IIndirizzoResidenteEstero)) return 'redText'
+        try {
+            return indirizzo.presso != indirizzoComparison.presso ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
+        }
+    }
+
+
+    String getSclassConsolato() {
+        if (showAnp != true || indirizzoComparison == null) return ''
+        if (!(indirizzo instanceof IIndirizzoResidenteEstero) || !(indirizzoComparison instanceof IIndirizzoResidenteEstero)) return 'redText'
+        try {
+            return "${indirizzo.codiceConsolato} - ${indirizzo.sedeConsolato}" != "${indirizzoComparison.codiceConsolato} -  ${indirizzoComparison.sedeConsolato}" ? 'redText' : ''
+        } catch (Exception e) {
+            return ''
         }
     }
 

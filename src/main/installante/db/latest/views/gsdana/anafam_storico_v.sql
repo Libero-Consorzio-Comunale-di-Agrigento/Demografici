@@ -1,7 +1,77 @@
 --liquibase formatted sql
---changeset amonopoli:202502261540 runAlways:true stripComments:false
+--changeset amonopoli:202502261540_2 runAlways:true runOnChange:true stripComments:false
 create or replace view anafam_storico_v
 AS
+select fam.FASCIA
+     , fam.COD_FAM                
+     , fam.TIPO_FAM               
+     , fam.COD_VIA                
+     , fam.NUM_CIV                
+     , fam.SUFFISSO               
+     , fam.INTERNO                
+     , to_char(null) VIA_AIRE               
+     , to_number(null) COD_PRO_AIRE           
+     , to_number(null) COD_COM_AIRE           
+     , fam.CONVIVENZA             
+     , fam.INTESTATARIO           
+     , to_char(null) VIA_RES                
+     , to_number(null) COD_PRO_RES            
+     , to_number(null) COD_COM_RES            
+     , fam.SCALA                  
+     , fam.PIANO                  
+     , to_char(null) ZIPCODE                
+     , fam.PROGR_ELIMINAZIONE     
+     , to_char(null) PROVINCIA_CONTEA       
+     , to_char(null) PRESSO                 
+     , fam.ID_DOCUMENTO_GDM       
+     , fam.SUB_INTERNO            
+     , fam.CIVICO_ESTERNO         
+     , fam.CIVICO_INTERNO
+     , fam.TIPO_CONVIVENZA        
+     , fam.DATA_ISTITUZIONE       
+     , fam.MATRICOLA_INTESTATARIO
+     , fam.DATA_INTESTATARIO      
+     , fam.D_DATA_ISTITUZIONE
+     , fam.D_DATA_INTESTATARIO      
+     , fam.COGNOME_INTESTATARIO
+     , fam.NOME_INTESTATARIO
+     , fam.COD_FAM_UNIQUE
+     , fam.FLAG_METRICO   
+     , fam.PROGR_SNC      
+     , fam.FLAG_LETTERA   
+     , fam.FLAG_ESPONENTE
+     , fam.FLAG_NUI       
+     , fam.NUI            
+     , fam.COLORE         
+     , fam.CORTE          
+     , fam.INTERNO2       
+     , fam.SUB_INTERNO2   
+     , fam.SECONDARIO     
+     , fam.SCALA_ESTERNA  
+--
+     , decode(fam.fascia, 1, 'RES', 2, 'RES', 3, 'AIR', 4, 'AIR', 6, 'NRE') anagrafe
+     , to_number(null) matricola_CF
+     , to_char(null) flag_esiste_CC
+--
+     , to_char(null) des_com_aire
+     , to_char(null) sigla_pro_aire
+     , to_char(null) des_com_res
+     , to_char(null) sigla_pro_res
+--
+     , to_char(null) des_stato_interno
+     , to_char(null) des_intestatario_interno
+--
+     , to_char(null) cod_consolato_aire
+     , to_char(null) sede_consolato_aire
+--
+     , to_char(null) id_famiglia_anpr
+     , nvl(fam.d_data_istituzione,trunc(sysdate)) d_data_inizio_res
+     , trunc(sysdate) d_data_fine_res
+     , nvl(fam.d_data_intestatario,trunc(sysdate)) d_data_inizio_fam
+     , trunc(sysdate) d_data_fine_fam
+  from anafam fam
+ where tipo_fam = 1
+UNION
 select fam.FASCIA
      , fam.COD_FAM                
      , fam.TIPO_FAM               
@@ -33,9 +103,21 @@ select fam.FASCIA
      , to_number(null) DATA_INTESTATARIO      
      , to_date(null) D_DATA_ISTITUZIONE
      , to_date(null) D_DATA_INTESTATARIO      
-     , to_char(null) COGNOME_INTESTATARIO
-     , to_char(null) NOME_INTESTATARIO
-     , to_char(null) COD_FAM_UNIQUE
+     , f_cognome(eve_10.cognome_nome) COGNOME_INTESTATARIO
+     , f_nome(eve_10.cognome_nome) NOME_INTESTATARIO
+     , fam.cod_fam_unique COD_FAM_UNIQUE
+     , to_char(null) --eve.FLAG_METRICO   
+     , to_char(null) --eve.PROGR_SNC      
+     , to_char(null) --eve.FLAG_LETTERA   
+     , to_char(null) --eve.FLAG_ESPONENTE
+     , to_char(null) --eve.FLAG_NUI       
+     , to_char(null) --eve.NUI            
+     , to_char(null) --eve.COLORE         
+     , to_char(null) --eve.CORTE          
+     , to_number(null) --eve.INTERNO2       
+     , to_char(null) --eve.SUB_INTERNO2   
+     , to_char(null) --eve.SECONDARIO     
+     , to_char(null) --eve.SCALA_ESTERNA  
 --
      , decode(fam.fascia, 1, 'RES', 2, 'RES', 3, 'AIR', 4, 'AIR', 6, 'NRE') anagrafe
      , eve_10.matricola matricola_CF
@@ -93,64 +175,6 @@ select fam.FASCIA
      , anafam fam
  where fam.cod_fam_unique = eve_10.cod_fam_unique
    and eve_10.matricola   = eve_11.matricola
-UNION
-select fam.FASCIA
-     , fam.COD_FAM                
-     , fam.TIPO_FAM               
-     , fam.COD_VIA                
-     , fam.NUM_CIV                
-     , fam.SUFFISSO               
-     , fam.INTERNO                
-     , to_char(null) VIA_AIRE               
-     , to_number(null) COD_PRO_AIRE           
-     , to_number(null) COD_COM_AIRE           
-     , fam.CONVIVENZA             
-     , fam.INTESTATARIO           
-     , to_char(null) VIA_RES                
-     , to_number(null) COD_PRO_RES            
-     , to_number(null) COD_COM_RES            
-     , fam.SCALA                  
-     , fam.PIANO                  
-     , to_char(null) ZIPCODE                
-     , fam.PROGR_ELIMINAZIONE     
-     , to_char(null) PROVINCIA_CONTEA       
-     , to_char(null) PRESSO                 
-     , fam.ID_DOCUMENTO_GDM       
-     , fam.SUB_INTERNO            
-     , fam.CIVICO_ESTERNO         
-     , fam.CIVICO_INTERNO
-     , fam.TIPO_CONVIVENZA        
-     , fam.DATA_ISTITUZIONE       
-     , fam.MATRICOLA_INTESTATARIO
-     , fam.DATA_INTESTATARIO      
-     , fam.D_DATA_ISTITUZIONE
-     , fam.D_DATA_INTESTATARIO      
-     , fam.COGNOME_INTESTATARIO
-     , fam.NOME_INTESTATARIO
-     , fam.COD_FAM_UNIQUE
---
-     , decode(fam.fascia, 1, 'RES', 2, 'RES', 3, 'AIR', 4, 'AIR', 6, 'NRE') anagrafe
-     , to_number(null) matricola_CF
-     , to_char(null) flag_esiste_CC
---
-     , to_char(null) des_com_aire
-     , to_char(null) sigla_pro_aire
-     , to_char(null) des_com_res
-     , to_char(null) sigla_pro_res
---
-     , to_char(null) des_stato_interno
-     , to_char(null) des_intestatario_interno
---
-     , to_char(null) cod_consolato_aire
-     , to_char(null) sede_consolato_aire
---
-     , to_char(null) id_famiglia_anpr
-     , nvl(fam.d_data_istituzione,trunc(sysdate)) data_inizo_res
-     , trunc(sysdate) data_fine_res
-     , nvl(fam.d_data_intestatario,trunc(sysdate)) data_inizio_fam
-     , trunc(sysdate) data_fine_fam
-  from anafam fam
- where tipo_fam = 1
 /
-comment on table anafam_v is 'Anagrafe - Storico Famiglie / Indirizzi (view)'
+comment on table anafam_storico_v is 'Anagrafe - Storico Famiglie / Indirizzi (view)'
 /

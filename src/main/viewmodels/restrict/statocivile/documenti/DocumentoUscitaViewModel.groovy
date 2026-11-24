@@ -13,7 +13,7 @@ import restrict.AbstractTabNavigatorViewModel
 class DocumentoUscitaViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Documenti_Associati, Etichette.Documenti_Non_Associati]
+        List<Map> eList = [Etichette.getEtichetta("Documenti_Associati"), Etichette.getEtichetta("Documenti_Non_Associati")]
 
         doInit(w, eList)
 

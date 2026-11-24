@@ -1,7 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivMinuta
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -20,16 +19,14 @@ interface CivMinutaRepository extends JpaRepository<CivMinuta, Long> {
     CivMinuta findWithTestoById(@Param("id") Long id)
 
     @Query(value = """SELECT c FROM CivMinuta c LEFT OUTER JOIN FETCH c.categoriaDomain
-                       WHERE c.tipoAtto = :tipoAtto 
-                       ORDER BY c.codice """,
+                       WHERE c.tipoAtto = :tipoAtto""",
             countQuery = """SELECT count(c) FROM CivMinuta c LEFT OUTER JOIN c.categoriaDomain  
                              WHERE c.tipoAtto = :tipoAtto """)
     Page<CivMinuta> findAllByTipoAtto(@Param("tipoAtto") Integer tipoAtto, Pageable pageable)
 
     @Query(value = """SELECT c FROM CivMinuta c LEFT OUTER JOIN FETCH c.categoriaDomain
                        WHERE c.tipoAtto = :tipoAtto 
-                         AND ( UPPER(c.codiceDescrizione) LIKE UPPER(:filtro) OR UPPER(c.descrizioneEstesa) LIKE UPPER(:filtro) ) 
-                       ORDER BY c.codice """,
+                         AND ( UPPER(c.codiceDescrizione) LIKE UPPER(:filtro) OR UPPER(c.descrizioneEstesa) LIKE UPPER(:filtro) )""",
             countQuery = """SELECT count(c) FROM CivMinuta c LEFT OUTER JOIN c.categoriaDomain  
                              WHERE c.tipoAtto = :tipoAtto 
                                AND ( UPPER(c.codiceDescrizione) LIKE UPPER(:filtro) OR UPPER(c.descrizioneEstesa) LIKE UPPER(:filtro) ) """)

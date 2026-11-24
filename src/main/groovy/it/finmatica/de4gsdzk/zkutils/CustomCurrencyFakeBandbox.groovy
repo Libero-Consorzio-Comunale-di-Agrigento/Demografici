@@ -136,7 +136,7 @@ abstract class CustomCurrencyFakeBandbox extends DecimalFakeBandbox {
         loadData(value)
     }
 
-    static final List<Map> etichetteBB = [Etichette.ricerca_tooltip, Etichette.filtro_ricerca_placeholder, Etichette.Numero_record_trovati,
-                                          Etichette.Validazione, Etichette.Dato_non_valido]
+    static final List<Map> etichetteBB = [Etichette.getEtichetta("ricerca_tooltip"), Etichette.getEtichetta("filtro_ricerca_placeholder"), Etichette.getEtichetta("Numero_record_trovati"),
+                                          Etichette.getEtichetta("Validazione"), Etichette.getEtichetta("Dato_non_valido")]
 
 }

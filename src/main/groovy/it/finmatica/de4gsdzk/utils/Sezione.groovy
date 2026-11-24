@@ -46,6 +46,10 @@ class Sezione {
     public static final String DIZIONARIO_PAGAMENTO_DOCUMENTI       = "DIZIONARIO_PAGAMENTO_DOCUMENTI"
     public static final String DIZIONARIO_PAGAMENTO_UTENTI          = "DIZIONARIO_PAGAMENTO_UTENTI"
     public static final String DIZIONARIO_CONFIGURAZIONE    = "DIZIONARIO_CONFIGURAZIONE"
+    public static final String DIZIONARIO_ANPR    = "DIZIONARIO_ANPR"
+    public static final String DIZIONARIO_WS_MININT = "DIZIONARIO_WS_MININT"
+    public static final String DIZIONARIO_DOCUMENTI    = "DIZIONARIO_DOCUMENTI"
+    public static final String DIZIONARIO_PROVVEDIMENTI    = "DIZIONARIO_PROVVEDIMENTI"
 
     public static final String DIZIONARI_ANSC               = "DIZIONARI_ANSC"
     public static final String DIZIONARIO_SERVIZIO          = "DIZIONARIO_SERVIZIO"
@@ -56,6 +60,14 @@ class Sezione {
     public static final String VISUALIZZAZIONE = "VISUALIZZAZIONE"
     public static final String VISUALIZZAZIONE_INDIVIDUO = "VISUALIZZAZIONE_INDIVIDUO"
     public static final String VISUALIZZAZIONE_FAMIGLIA = "VISUALIZZAZIONE_FAMIGLIA"
+
+    public static final String PRATICHE = "PRATICHE"
+    public static final String GESTIONE_PRATICHE = "GESTIONE_PRATICHE"
+
+    public static final String ARCHIVIO = "ARCHIVIO"
+    public static final String ARCHIVIO_ELETTORI = "ARCHIVIO_ELETTORE"
+
+    public static final String DIZIONARIO_NUMERAZIONE_CIVICA    = "DIZIONARIO_NUMERAZIONE_CIVICA"
 
     private final String label
     private final String value

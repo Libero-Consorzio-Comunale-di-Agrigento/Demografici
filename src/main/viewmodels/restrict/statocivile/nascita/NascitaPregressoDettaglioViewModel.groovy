@@ -2,6 +2,7 @@ package restrict.statocivile.nascita
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
@@ -21,7 +22,7 @@ import javax.persistence.criteria.JoinType
 class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel{
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivNascitaService civNascitaService
@@ -49,7 +50,7 @@ class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel
 
         try {
             dettaglio = new CivNascita(partoPlurimo: Boolean.FALSE, natoMorto: EStatoNascita.Nato_vivo, codiceRecord: new Integer(0))
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             //Nel caso di inserimento di un pregresso non devo creare il collegamento con CivAnagrafe
 
@@ -68,7 +69,7 @@ class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel
             dettaglio.natura = tipoAttoDomain?.natura
 
             if (dettaglio.isPrimaA() || dettaglio.isPrimaB()) {
-                ArcComune comune = statoCivileService.checkComuneNascitaAuto()
+                ArcComune comune = gsdService.checkComuneNascitaAuto()
                 if (comune) {
                     dettaglio.codiceComuneNascita = comune.codiceComune
                     dettaglio.codiceProvinciaNascita = comune.codiceProvincia
@@ -78,7 +79,7 @@ class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel
             }
 
             if (dettaglio.isSecondaA()) {
-                ArcComune comune = statoCivileService.checkComuneResidenzaAuto()
+                ArcComune comune = gsdService.checkComuneResidenzaAuto()
                 if (comune) {
                     dettaglio.codiceComuneResidenza = comune.codiceComune
                     dettaglio.codiceProvinciaResidenza = comune.codiceProvincia
@@ -147,7 +148,7 @@ class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -168,7 +169,7 @@ class NascitaPregressoDettaglioViewModel extends NascitaDettaglioParentViewModel
                 try {
                     c = civNascitaService.save(tipoOperazione, dettaglio, null, datiProvenienza, margine, mapFormule, composizioneTestoAttiva, gc, margineMandatory, listaSoggettiCollegati, false, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && composizioneTestoAttiva) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (composizioneTestoAttiva && (statoFrammenti == 1)) {
                         statoFrammenti = 2

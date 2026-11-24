@@ -10,7 +10,7 @@
                  emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
             <custom-attributes tab="${arg.tab}"/>
             <listhead sizable="true">
-                <listheader label="@load(vm.etichette['Sequenza'])" width="40px"/>
+                <listheader label="@load(vm.etichette['Sequenza'])" width="70px"/>
                 <listheader label="@load(vm.etichette['Servizio'])" width="190px"/>
                 <listheader label=""/>
             </listhead>

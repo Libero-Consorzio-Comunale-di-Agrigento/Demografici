@@ -23,24 +23,24 @@ enum ETipoDichiaranteNascita {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case IN: return Etichette.Interessato
-            case PD: return Etichette.Padre
-            case MD: return Etichette.Madre
-            case EN: return Etichette.Entrambi
-            case AL: return Etichette.Altro
-            case AM: return Etichette.Autorita_mittente
-            case PDMD: return Etichette.Padre_e_Madre
-            case NE: return Etichette.Nessuno
-            case IT: return Etichette.Interprete
-            case PP: return Etichette.Procuratore_Padre
-            case PM: return Etichette.Procuratore_Madre
-            case PPMD: return Etichette.Procuratore_Padre_con_Madre
-            case PMPD: return Etichette.Procuratore_Madre_con_Padre
-            case INIT: return Etichette.Interessato_e_Interprete
-            case PDIT: return Etichette.Padre_e_Interprete
-            case MDIT: return Etichette.Madre_e_Interprete
-            case PDMDIT: return Etichette.Padre_Madre_e_Interprete
-            case OS: return Etichette.Personale_Sanitario
+            case IN: return Etichette.getEtichetta("Interessato")
+            case PD: return Etichette.getEtichetta("Padre")
+            case MD: return Etichette.getEtichetta("Madre")
+            case EN: return Etichette.getEtichetta("Entrambi")
+            case AL: return Etichette.getEtichetta("Altro")
+            case AM: return Etichette.getEtichetta("Autorita_mittente")
+            case PDMD: return Etichette.getEtichetta("Padre_e_Madre")
+            case NE: return Etichette.getEtichetta("Nessuno")
+            case IT: return Etichette.getEtichetta("Interprete")
+            case PP: return Etichette.getEtichetta("Procuratore_Padre")
+            case PM: return Etichette.getEtichetta("Procuratore_Madre")
+            case PPMD: return Etichette.getEtichetta("Procuratore_Padre_con_Madre")
+            case PMPD: return Etichette.getEtichetta("Procuratore_Madre_con_Padre")
+            case INIT: return Etichette.getEtichetta("Interessato_e_Interprete")
+            case PDIT: return Etichette.getEtichetta("Padre_e_Interprete")
+            case MDIT: return Etichette.getEtichetta("Madre_e_Interprete")
+            case PDMDIT: return Etichette.getEtichetta("Padre_Madre_e_Interprete")
+            case OS: return Etichette.getEtichetta("Personale_Sanitario")
         }
         return null
     }

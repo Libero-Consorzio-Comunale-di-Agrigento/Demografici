@@ -2,13 +2,12 @@ package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GestioneTestiGsdModelloService
+import it.finmatica.de4gsdzk.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.FileNameNonAttesoRuntimeException
 import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.certificazione.CerTipoCertificatoRepository
 import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazione
-import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.utils.*
 import org.apache.commons.io.FilenameUtils
 import org.springframework.data.domain.Page
@@ -60,7 +59,7 @@ class CerTipoCertificatoService {
 
 	private void validaDati(ETipoOperazione tipoOperazione, CerTipoCertificato obj, GestioneTestiModelloRelazione modelloRelazione, boolean force = false) {
 		if(obj.categoriaTipoCertificato == null){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_tipo_certificato_categoria)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_tipo_certificato_categoria"))
 		}
 
 		if (TestoUtils.isVuoto(obj?.id) ||
@@ -76,23 +75,26 @@ class CerTipoCertificatoService {
 			if (obj.filtro == null) {
 				throw new CampoMandatoryRuntimeException()
 			}
+            if(obj.tipoAttoEnum == ETipoAtto.CIT && obj.tipoCertificatoEsterno == null) {
+                throw new CampoMandatoryRuntimeException()
+            }
 		}
 
 		if (tipoOperazione.isInsert()){
 			long n = cerTipoCertificatoRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Record_duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_duplicato"))
 			}
 		}
 
 		if (modelloRelazione.modello.fileTemplate != null) {
 			if (modelloRelazione.modello.fileTemplate?.size() == 0) {
-				throw new FileNonValidoRuntimeException(EtichetteMessaggi.Errore_file_vuoto)
+				throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Errore_file_vuoto"))
 			}
 
 			String nomeModelloCaricato = FilenameUtils.removeExtension(modelloRelazione.modello.nome)
 			if (TestoUtils.isVuoto(nomeModelloCaricato)) {
-				throw new FileNonValidoRuntimeException(EtichetteMessaggi.Errore_file_nome_vuoto)
+				throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Errore_file_nome_vuoto"))
 			}
 
 			String nomeModelloStandard = FileUtils.getNomeModelloTipoCertificatoStandard(obj.id)

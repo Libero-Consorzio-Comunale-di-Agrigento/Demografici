@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.GestioneDocumentoViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            width="1200px"
+            title="@load(vm.msgTitle)"
+            sizable="false" closable="false">
+
+        <grid sclass="form">
+            <columns>
+                <column/>
+                <column width="280px"/>
+                <column/>
+                <column width="300px"/>
+                <column />
+                <column width="200px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true"
+                                     value="@load(vm.etichette['Tipo_Documento'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.tipoDocumentoList)" readonly="true" hflex="1"
+                                  onSelect="@command('onSelectTipoDocumento')"
+                                  selectedItem="@bind(vm.documento.tipoDocumento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each? '--' : each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" visible="@load(vm.tipologia ne 'CDF')"
+                                     value="@load(vm.etichette['Natura_Documento'])"/>
+                        <customLabel mandatory="true" value="@load(vm.etichette['Numero'])"
+                                     visible="@load(vm.tipologia eq 'CDF')"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.naturaDocumentoList)" readonly="true" hflex="1"
+                                  visible="@load(vm.tipologia ne 'CDF')"
+                                  selectedItem="@bind(vm.documento.natura) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each? '--' : vm.getEtichettaEnum(each))"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <hlayout visible="@load(vm.tipologia eq 'CDF')">
+                            <textbox value="@bind(vm.documento.numero)" hflex="1"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="numero"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Numero'])"
+                                     visible="@load(vm.tipologia ne 'CDF')"/>
+                    </cell>
+                    <cell>
+                        <hlayout visible="@load(vm.tipologia ne 'CDF')">
+                            <textbox value="@bind(vm.documento.numero)" hflex="1"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="numero"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="@load(not vm.documento.tipoDocumento.isCartaCircolazione())" value="@load(vm.etichette['Data_emissione'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind( vm.documento.dataEmissione)"
+                                     onChange="@command('onChangeDataEmissione')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataEmissione"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="@load(vm.tipologia ne 'CDF' and not vm.documento.tipoDocumento.isCartaCircolazione())" value="@load(vm.etichette['Data_Scadenza'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind(vm.documento.dataScadenza)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataScadenza"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Scadenza_Illimitata'])"
+                                     visible="@load(vm.tipologia ne 'CDF' and vm.documento.tipoDocumento.isDocumentoSoggiorno())"/>
+                    </cell>
+                    <cell>
+                        <checkbox checked="@bind(vm.documento.scadenzaIllimitata)"
+                                  visible="@load(vm.tipologia ne 'CDF' and vm.documento.tipoDocumento.isDocumentoSoggiorno())"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Ente'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.entiList)" readonly="true" hflex="1"
+                                  selectedItem="@bind(vm.documento.ente) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each? '--' : each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Comune_Ente'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComuni hflex="1"
+                                           value="@load(vm.documento.comuneEnte.descrizione)"
+                                           dataRiferimento="@load(vm.documento.dataEmissione)"
+                                           onSelect="@command('onSelectComune', campoRiferimento='DOC_ENTE')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaComune', campoRiferimento='DOC_ENTE')"
+                            />
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.documento.comuneEnte.siglaProvincia)" hflex="1"
+                                 readonly="true"/>
+                    </cell>
+                </row>
+                <row visible="@load(vm.tipologia ne 'CDF')">
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Espatrio'])"/>
+                    </cell>
+                    <cell>
+                        <radiogroup model="@load(vm.listaSN)" selectedItem="@bind(vm.documento.espatrio)">
+                            <template name="model">
+                                <radio label="@load(empty each? vm.etichette['Non_Valida_Scelta'] : (each eq 'S'?vm.etichette['Valida']:vm.etichette['Non_Valida_Inibizione']))"
+                                       value="@load(each)" style="padding-left:15px" disabled="@bind(not vm.documento.tipoDocumento.isCartaIdentita())"/>
+                            </template>
+                        </radiogroup>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="@bind(vm.documento.tipoDocumento.hasCategoria())" value="@load(vm.etichette['Categoria'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaCategorie)" readonly="true" hflex="1" disabled="@bind( not vm.documento.tipoDocumento.hasCategoria())"
+                                  selectedItem="@bind(vm.documento.categoria) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Note'])"/>
+                    </cell>
+                    <cell>
+                        <textbox rows="5" value="@bind(vm.documento.note)" hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel visible="@load(vm.tipologia ne 'CDF')" value="@load(vm.etichette['Motivo_Rilascio'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaMotiviRilascio)" readonly="true" hflex="1" visible="@load(vm.tipologia ne 'CDF')"
+                                  selectedItem="@bind(vm.documento.motivoRilascio) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+            </rows>
+        </grid>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="@load(vm.etichette['Aggiungi'])" onClick="@command('onSalva')"
+                        image="/images/icon/action/16x16/add.png" visible="@load(not vm.modifica)"/>
+                <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                        image="/images/icon/action/16x16/save.png" visible="@load(vm.modifica)"/>
+                <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                        image="/images/icon/action/16x16/close.png"/>
+            </h:div>
+        </h:div>
+
+    </window>
+</zk>

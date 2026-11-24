@@ -63,7 +63,7 @@ class TipoAttoDettaglioViewModel extends AbstractDettaglioViewModel{
         // Per label da esibire nello zul
         this.tipoAttoEnum = tipoAttoEnum
 
-        List<Map<String, String>> eList = [Etichette.Tipo_Divorzio, Etichette.Tipo_Verbale, Etichette.Atto_Divorzio, Etichette.Atto_Scioglimento]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tipo_Divorzio"), Etichette.getEtichetta("Tipo_Verbale"), Etichette.getEtichetta("Atto_Divorzio"), Etichette.getEtichetta("Atto_Scioglimento")]
         eList.addAll(etichetteDettaglioDefault)
 
         eList.addAll(CivTipoAtto.etichetteDomain)
@@ -75,7 +75,9 @@ class TipoAttoDettaglioViewModel extends AbstractDettaglioViewModel{
             // Aggiungo etichette tipo di divorzio
             listaTipiDivorzio = Arrays.asList(ETipoDivorzio.values())
             eList.addAll(listaTipiDivorzio*.etichettaDesc)
-            eList.add(Etichette.Cessazione_Annullamento)
+            eList.add(Etichette.getEtichetta("Cessazione_Annullamento"))
+            eList.add(Etichette.getEtichetta("Annullamento"))
+
             if (tipoAttoEnum == ETipoAtto.MAT){
                 listaTipiDivorzioAltro = [null] + [ETipoDivorzioAltro.M, ETipoDivorzioAltro.C, ETipoDivorzioAltro.D]
             } else {
@@ -97,7 +99,7 @@ class TipoAttoDettaglioViewModel extends AbstractDettaglioViewModel{
         eList.add(tipoAttoEnum.getEtichettaDesc())
 
         // Aggiunto etichette messaggi
-        eList.addAll(EtichetteMessaggi.Warn_Categoria_obsoleta_ANSC)
+        eList.addAll(Etichette.getEtichetta("Warn_Categoria_obsoleta_ANSC"))
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
@@ -105,9 +107,9 @@ class TipoAttoDettaglioViewModel extends AbstractDettaglioViewModel{
         etichetteCustom = FormUtils.getAttoCustomLabels(tipoAttoEnum, etichette)
 
         if (tipoAttoEnum in [ETipoAtto.PUB, ETipoAtto.PVU]){
-            msgTitle = getEtichetta(Etichette.Tipo_Verbale)
+            msgTitle = getEtichetta(Etichette.getEtichetta("Tipo_Verbale"))
         } else {
-            msgTitle = getEtichetta(Etichette.Tipo_Atto)
+            msgTitle = getEtichetta(Etichette.getEtichetta("Tipo_Atto"))
         }
 
         formLabel = msgTitle?.toUpperCase()  + " - " + getEtichettaEnum(this.tipoAttoEnum)?.toUpperCase()
@@ -213,11 +215,11 @@ class TipoAttoDettaglioViewModel extends AbstractDettaglioViewModel{
         if (dettaglio) {
             Boolean anscOn = arcParametroService.isIntegrazioneAnscAttiva()
             if (anscOn && !(dettaglio.categoriaDomain?.flagAnsc ?: false)) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Categoria_obsoleta_ANSC), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Categoria_obsoleta_ANSC")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
 
             CivTipoAtto c = civTipoAttoService.save(dettaglio, tipoAttoEnum)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

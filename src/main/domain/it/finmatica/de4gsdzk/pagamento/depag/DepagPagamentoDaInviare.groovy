@@ -16,5 +16,5 @@ class DepagPagamentoDaInviare extends WspaPagamentoDaInviare {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Servizio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Servizio")]
 }

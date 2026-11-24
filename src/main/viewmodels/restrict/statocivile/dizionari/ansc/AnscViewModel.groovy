@@ -15,9 +15,9 @@ import restrict.AbstractTabNavigatorViewModel
 class AnscViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Parametri, Etichette.Servizi_Ansc,
-                           Etichette.Archivi_di_Riferimento,
-                           Etichette.Motivi_richiesta]
+        List<Map> eList = [Etichette.getEtichetta("Parametri"), Etichette.getEtichetta("Servizi"),
+                           Etichette.getEtichetta("Casi_Uso_Servizi"), Etichette.getEtichetta("Casi_Uso_Allegati"),
+                           Etichette.getEtichetta("Motivi_richiesta"), Etichette.getEtichetta("Utenti")]
 
         doInit(w, eList)
 

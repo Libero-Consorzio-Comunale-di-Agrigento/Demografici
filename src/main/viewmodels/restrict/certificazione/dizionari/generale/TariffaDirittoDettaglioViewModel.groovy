@@ -6,7 +6,6 @@ import it.finmatica.de4gsdzk.certificazione.CerTariffaDirittoService
 import it.finmatica.de4gsdzk.certificazione.EDiritto
 import it.finmatica.de4gsdzk.utils.CustomEvents
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.event.Events
@@ -33,13 +32,13 @@ class TariffaDirittoDettaglioViewModel extends DizionarioDettaglioViewModel impl
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Tariffe_Diritti]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tariffe_Diritti")]
         eList.addAll(CerTariffaDiritto.etichetteDomain)
         eList.addAll(EDiritto.values()*.getEtichettaDesc())
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Tariffe_Diritti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Tariffe_Diritti"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -47,7 +46,7 @@ class TariffaDirittoDettaglioViewModel extends DizionarioDettaglioViewModel impl
 
         self.addEventListener(CustomEvents.ON_SAVE_DETAIL, { event ->
             if (event.data?.tarrifaDirittoId != null) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
 
                 Long tarrifaDirittoId = event.data?.tarrifaDirittoId as Long
                 caricaDettaglio(tarrifaDirittoId)

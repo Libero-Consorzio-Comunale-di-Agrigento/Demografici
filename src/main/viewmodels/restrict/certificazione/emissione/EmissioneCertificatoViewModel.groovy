@@ -1,14 +1,11 @@
 package restrict.certificazione.emissione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.ArcComuneBaseDomain
-import it.finmatica.de4gsdzk.CivAttoBaseDomain
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
-import it.finmatica.de4gsdzk.ICertificabile
+import it.finmatica.de4gsdzk.*
 import it.finmatica.de4gsdzk.anagrafe.*
+import it.finmatica.de4gsdzk.ansc.AnscConsolato
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.certificazione.*
-import it.finmatica.de4gsdzk.certificazione.embed.Richiedente
 import it.finmatica.de4gsdzk.certificazione.emissione.*
 import it.finmatica.de4gsdzk.certificazione.error.UtenteNonTerminalistaRuntimeException
 import it.finmatica.de4gsdzk.certificazione.generazione.*
@@ -36,8 +33,6 @@ import restrict.TraitCancellazioneCampi
 import restrict.TraitComune
 import restrict.statocivile.DizionarioDettaglioViewModel
 
-import javax.persistence.criteria.JoinType
-
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
 class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel implements TraitCancellazioneCampi, TraitComune {
@@ -45,7 +40,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
     final List<ETipoSiNo> listaSiNo = [ETipoSiNo.SI, ETipoSiNo.NO]
     final List<ENaturaDocumento> listaNaturaDocumentoAnagrafico = [ENaturaDocumento.O, ENaturaDocumento.D]
     final ETipoDocumentoAnagrafeFiltro tipoDocumentoAnagrafeFiltro = ETipoDocumentoAnagrafeFiltro.RICONOSCIMENTO
-    List<AnaNazionalita> listaNazionalita = []
+    List<AnaCittadinanza> listaNazionalita = []
     List<CerTipoPagamento> listaTipoPagamento = []
     List<CerTipoRichiedente> listaTipoRichiedente = []
 
@@ -71,7 +66,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
     private CerFondoCassaTerminalistaService cerFondoCassaTerminalistaService
 
     @WireVariable
-    private AnaNazionalitaService anaNazionalitaService
+    private AnaCittadinanzaService anaCittadinanzaService
 
     @WireVariable
     private AnaMessaggioService anaMessaggioService
@@ -94,15 +89,19 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
     @WireVariable
     private TipoGenerazioneCertificatoService tipoGenerazioneCertificatoService
 
+    @WireVariable
+    private GsdService gsdService
+
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map<String, String>> eList = [Etichette.Emissione_Certificato, Etichette.Motivo,
-                                           Etichette.SEZIONE_BENEFICIARIO, Etichette.SEZIONE_RICHIEDENTE, Etichette.SEZIONE_DATI_CERTIFICATO,
-                                           Etichette.Tipo_Emissione, Etichette.Tipo_Certificato, Etichette.Al, Etichette.Modalita_rilascio, Etichette.Firma_Emissione]
-        eList.addAll([Etichette.Altri_Dati])
-        eList.addAll(GsdAnagrafeBaseDomain.etichetteDomain)
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Emissione_Certificato"), Etichette.getEtichetta("Motivo"),
+                                           Etichette.getEtichetta("SEZIONE_BENEFICIARIO"), Etichette.getEtichetta("SEZIONE_RICHIEDENTE"), Etichette.getEtichetta("SEZIONE_ENTE_RICHIEDENTE"), Etichette.getEtichetta("SEZIONE_DATI_CERTIFICATO"),
+                                           Etichette.getEtichetta("Tipo_Emissione"), Etichette.getEtichetta("Tipo_Certificato"), Etichette.getEtichetta("Al"), Etichette.getEtichetta("Modalita_rilascio"), Etichette.getEtichetta("Firma_Emissione"),
+                                           Etichette.getEtichetta("Cancella")]
+        eList.addAll([Etichette.getEtichetta("Altri_Dati")])
+        eList.addAll(AnagrafeBaseDomain.etichetteDomain)
         eList.addAll(CerCertificatoEmesso.etichetteDomain)
         eList.addAll(CerCategoriaTipoCertificato.etichetteDomain)
         eList.addAll(CerTerminalista.etichetteDomain)
@@ -111,14 +110,14 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
         eList.addAll(ESesso.values()*.getEtichettaDesc())
         eList.addAll(ETipoSiNo.values()*.getEtichettaDesc())
         eList.addAll(EDiritto.values()*.getEtichettaDesc())
-        eList.addAll(Etichette.Messaggi)
-        eList.addAll([EtichetteMessaggi.Errore_salvataggio_file_documentale, EtichetteMessaggi.Errore_salvataggio_file_documentale_individuo, EtichetteMessaggi.Errore_modello_testo_non_trovato, EtichetteMessaggi.Ask_Conferma_Salvataggio_Documento,
-                      EtichetteMessaggi.Ask_ANPR_generazione_cer_forzata, EtichetteMessaggi.Errore_ANPR_generazione_cer, EtichetteMessaggi.Errore_ANSC_generazione_cer, EtichetteMessaggi.Errore_GTE_generazione_cer,
-                      EtichetteMessaggi.Errore_Utente_non_terminalista, EtichetteMessaggi.Compilare_campi_obbligatori_sezione, EtichetteMessaggi.Errore_Ana_filtro_non_trovato,
-                      EtichetteMessaggi.Ask_Archiviazione_Documento_Individuo, EtichetteMessaggi.Info_Archiviazione_Documento_Individuo])
+        eList.addAll(Etichette.getEtichetta("Messaggi"))
+        eList.addAll([Etichette.getEtichetta("Errore_salvataggio_file_documentale"), Etichette.getEtichetta("Errore_salvataggio_file_documentale_individuo"), Etichette.getEtichetta("Errore_modello_testo_non_trovato"), Etichette.getEtichetta("Ask_Conferma_Salvataggio_Documento"),
+                      Etichette.getEtichetta("Ask_ANPR_generazione_cer_forzata"), Etichette.getEtichetta("Errore_ANPR_generazione_cer"), Etichette.getEtichetta("Errore_ANSC_generazione_cer"), Etichette.getEtichetta("Errore_GTE_generazione_cer"),
+                      Etichette.getEtichetta("Errore_Utente_non_terminalista"), Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), Etichette.getEtichetta("Errore_Ana_filtro_non_trovato"),
+                      Etichette.getEtichetta("Ask_Archiviazione_Documento_Individuo"), Etichette.getEtichetta("Info_Archiviazione_Documento_Individuo")])
 
         // Aggiungo etichette per documento anagrafico
-        eList.addAll([Etichette.Documento_Individuo, Etichette.Numera])
+        eList.addAll([Etichette.getEtichetta("Documento_Individuo"), Etichette.getEtichetta("Numera"), Etichette.getEtichetta("Dati_Documento_Riconoscimento")])
         eList.addAll(AnaTipoDocumento.etichetteDomain)
         eList.addAll(AnaDocumento.etichetteDomain)
         eList.addAll(ENaturaDocumento.values()*.getEtichettaDesc())
@@ -128,7 +127,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Emissione_Certificato)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Emissione_Certificato"))
         formLabel = msgTitle?.toUpperCase()
 
         resize()
@@ -148,7 +147,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
     @Command
     void onInserisci() {
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifiche_In_Sospeso), getEtichetta(Etichette.Chiusura), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), getEtichetta(Etichette.getEtichetta("Chiusura")), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_YES.equals(e.getName())) {
@@ -162,11 +161,20 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
     @Command
     void onCheckTipoRichiedente() {
-        if (tipoRichiedente.isAltroRichiedente()) {
-            richiedenteState.richiedente = new Richiedente()
-        } else {
+        // Cambiando tipo richiedente azzero entrambe le sezioni: quella che diventa
+        // visibile parte vuota e quella che si nasconde non trattiene i dati inseriti.
+        richiedenteState.reset()
+        enteRichiedenteState.reset()
+
+        if (!tipoRichiedente.isAltroRichiedente()) {
             richiedenteState.richiedente = null
         }
+
+        caricaListaCategorie()
+        if (categoriaTipoCertificatoSelezionata != null && !listaCategoriaTipoCertificato.contains(categoriaTipoCertificatoSelezionata)) {
+            setCategoriaTipoCertificatoSelezionata(null)
+        }
+
         updateRichiedenteFieldsMandatory()
         refreshUi()
     }
@@ -194,7 +202,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
     void caricaListaNazionalita(){
         listaNazionalita = [null]
-        List<AnaNazionalita> l = anaNazionalitaService.listAll()
+        List<AnaCittadinanza> l = anaCittadinanzaService.listAll()
         if (l.size()>0){
             listaNazionalita.addAll(l)
         }
@@ -209,10 +217,13 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             return
         }
 
-        listaCategoriaTipoCertificato = cerCategoriaTipoCertificatoService.listAllByAnagrafeFiltroList(beneficiarioState.anagrafeFiltroList)
+        List<CerCategoriaTipoCertificato> l = cerCategoriaTipoCertificatoService.listAllByAnagrafeFiltroList(beneficiarioState.anagrafeFiltroList, tipoRichiedente?.isIstanzaDiUfficio() ?: false)
+        // Entry null in testa come per le altre combo: senza, la combobox non sa
+        // renderizzare "nessuna selezione" e mantiene il testo della selezione precedente
+        listaCategoriaTipoCertificato = [null] + l
 
-        if (listaCategoriaTipoCertificato.size() == 1) {
-            categoriaTipoCertificatoSelezionata = listaCategoriaTipoCertificato.get(0)
+        if (l.size() == 1) {
+            categoriaTipoCertificatoSelezionata = l.get(0)
         }
     }
 
@@ -236,6 +247,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
         diritti = new DirittiViewState()
         tipoRichiedente = emissioneCertificatoService.getDefaultTipoRichiedenteOption()
         richiedenteState = new RichiedenteViewState()
+        enteRichiedenteState = new EnteRichiedenteViewState()
         beneficiarioState = new BeneficiarioViewState()
         beneficiarioState.addListener(new IBeneficiarioCertificatoListener() {
             @Override
@@ -250,7 +262,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
                     if (beneficiarioState.hasRequiredDataForAnagrafeFiltroSearch()) {
                         List<CerAnagrafeFiltro> l = cerAnagrafeFiltroService.listAllByAnagrafe(beneficiarioState.anagrafe)
                         if (l.isEmpty()) {
-                            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Errore_Ana_filtro_non_trovato))
+                            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Errore_Ana_filtro_non_trovato")))
                         }
                         beneficiarioState.loadAnagrafeFiltroList(l)
                         caricaListaCategorie()
@@ -277,7 +289,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             }
         } catch (UtenteNonTerminalistaRuntimeException ex) {
             log.error(ex.message, ex)
-            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(ex.etichetta) ?: getEtichetta(EtichetteMessaggi.Errore_Utente_non_terminalista))
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(ex.etichetta) ?: getEtichetta(Etichette.getEtichetta("Errore_Utente_non_terminalista")))
             onChiudi()
         }
     }
@@ -437,7 +449,59 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             case ETipoComuneAtto.CN_BEN:
                 riempiComune(beneficiarioState.comuneNascita, c)
                 break
+            case ETipoComuneAtto.CE_RIC:
+                riempiComune(enteRichiedenteState.enteRichiedente.comune, c)
+                caricaEnteRichiedenteComuneEstero()
+                break
         }
+    }
+
+    private caricaEnteRichiedenteComuneEstero() {
+        def comune = enteRichiedenteState.enteRichiedente.comune
+        if (comune?.codice != null && comune?.codiceProvincia != null
+                && gsdService.checkComuneEstero(comune.codiceProvincia, comune.codice)) {
+            enteRichiedenteState.comuneEstero = Boolean.TRUE
+        } else {
+            enteRichiedenteState.comuneEstero = Boolean.FALSE
+            enteRichiedenteState.enteRichiedente.consolato = null
+        }
+    }
+
+    @Command
+    void onSelectEnteRichiedente(@ContextParam(ContextType.TRIGGER_EVENT) Event event) {
+        String denominazione = null
+        if (event?.target?.selectedItem instanceof String) {
+            denominazione = event.target.selectedItem
+        }
+        enteRichiedenteState.enteRichiedente.denominazione = denominazione
+        BindUtils.postNotifyChange(null, null, enteRichiedenteState.enteRichiedente, "denominazione")
+    }
+
+    @Command
+    void onSelectConsolato(@ContextParam(ContextType.TRIGGER_EVENT) Event event, @BindingParam("campoRiferimento") String campoRiferimento) {
+        AnscConsolato c = null
+        if (event?.target?.selectedItem instanceof AnscConsolato) {
+            c = event.target.selectedItem
+        }
+        ETipoConsolato tipoConsolato = ETipoConsolato.valueOf(campoRiferimento)
+        switch (tipoConsolato) {
+            case ETipoConsolato.ENTE_RICHIEDENTE:
+                enteRichiedenteState.enteRichiedente.consolato = c
+                BindUtils.postNotifyChange(null, null, enteRichiedenteState.enteRichiedente, "consolato")
+                break
+        }
+    }
+
+    @Command
+    void onCancellaCampoEnteRichiedente(@ContextParam(ContextType.TRIGGER_EVENT) Event e) {
+        String p = e?.target?.getAttribute("proprieta")
+        cancellaCampo(enteRichiedenteState.enteRichiedente, p)
+    }
+
+    @Command
+    void onCancellaEnteRichiedente() {
+        enteRichiedenteState.reset()
+        BindUtils.postNotifyChange(null, null, this, "enteRichiedenteState")
     }
 
     @Command void onCaricaSoggetti(@BindingParam("tipoSoggetto") String tipoSoggetto){
@@ -451,7 +515,8 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
                           dataNascita  : richiedenteState.richiedente.dataNascita,
                           codiceFiscale: richiedenteState.richiedente.codiceFiscale,
                           soloResidenti: Boolean.FALSE,
-                          sessoEnabled : Boolean.TRUE]
+                          sessoEnabled : Boolean.TRUE,
+                          flagInserimento  : Boolean.TRUE]
                 break
             case ETipoSoggetto.BENEFICIARIO_CERTIFICATO:
                 params = [cognome       : beneficiarioState.cognome,
@@ -461,14 +526,15 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
                           codiceFiscale : beneficiarioState.codiceFiscale,
                           soloResidenti : Boolean.FALSE,
                           anagrafeEstesa: Boolean.TRUE,
-                          sessoEnabled  : Boolean.TRUE]
+                          sessoEnabled  : Boolean.TRUE,
+                          flagInserimento  : Boolean.TRUE]
                 break
         }
         if (params){
             Window w = (Window) Executions.createComponents(FormUtils.getUriAnagrafeSelect(ricercaSoggettoInANPROn), self, params)
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                if (event.data instanceof GsdAnagrafeBaseDomain){
-                    GsdAnagrafeBaseDomain ana = (GsdAnagrafeBaseDomain)event.data
+                if (event.data instanceof AnagrafeBaseDomain){
+                    AnagrafeBaseDomain ana = (AnagrafeBaseDomain)event.data
                     switch (ts) {
                         case ETipoSoggetto.RICHIEDENTE_CERTIFICATO:
                             richiedenteState.anagrafe = ana
@@ -505,19 +571,19 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
     @Command void onElaboraCertificato() {
         if (tipoCertificato == null) {
-            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Tipo_Certificato))
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Tipo_Certificato")))
             return
         }
 
         if (dataStoricoMandatory) {
             if (dataStorico == null) {
-                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Tipo_Certificato))
+                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Tipo_Certificato")))
                 return
             }
         }
 
         if (modalitaRilascio == null) {
-            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Modalita_rilascio))
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Modalita_rilascio")))
             return
         }
 
@@ -525,14 +591,23 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             if (TestoUtils.isVuoto(richiedenteState.richiedente.codiceFiscale) ||
                     TestoUtils.isVuoto(richiedenteState.richiedente.cognome) ||
                     TestoUtils.isVuoto(richiedenteState.richiedente.nome)) {
-                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Richiedente))
+                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Richiedente")))
                 return
             }
             if (richiedenteState.documentoMandatory &&
                     (richiedenteState.richiedente.tipoDocumento == null ||
                             TestoUtils.isVuoto(richiedenteState.richiedente.numeroDocumento) ||
                             richiedenteState.richiedente.dataRilascioDocumento == null)) {
-                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Richiedente))
+                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Richiedente")))
+                return
+            }
+            int campiDocumentoValorizzati = [
+                    richiedenteState.richiedente.tipoDocumento != null,
+                    !TestoUtils.isVuoto(richiedenteState.richiedente.numeroDocumento),
+                    richiedenteState.richiedente.dataRilascioDocumento != null
+            ].count { it }
+            if (campiDocumentoValorizzati != 0 && campiDocumentoValorizzati != 3) {
+                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Richiedente")) + " - " + getEtichetta(Etichette.getEtichetta("Dati_Documento_Riconoscimento")))
                 return
             }
             if (richiedenteState.datiAnagraficiMandatory) {
@@ -540,7 +615,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
                         richiedenteState.richiedente.sesso == null ||
                         richiedenteState.richiedente.comuneNascita.codice == null ||
                         richiedenteState.richiedente.comuneNascita.codiceProvincia == null) {
-                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_sezione) + " " + getEtichetta(Etichette.Richiedente))
+                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione")) + " " + getEtichetta(Etichette.getEtichetta("Richiedente")))
                     return
                 }
             }
@@ -578,8 +653,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
 
             listeners << [(CustomEvents.ON_CER_EMISSIONE_ATTO_SELECT): { event ->
                 CivAttoBaseDomain attoSelected = event.data?.attoSelezionato as CivAttoBaseDomain
-                Map params = [fetch: [[campo: 'tipoAttoDomain.categoriaDomain', tipo: JoinType.LEFT]]]
-                atto = emissioneCertificatoStatoCivileService.getAtto(attoSelected.tipoAttoEnum, attoSelected.id, params)
+                atto = emissioneCertificatoStatoCivileService.getAtto(attoSelected.tipoAttoEnum, attoSelected.id)
                 messaggi = emissioneCertificatoStatoCivileService.listMessaggiStatoCivileByAtto(atto)
 
                 if (!messaggi.isEmpty()) {
@@ -611,7 +685,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             }
 
             if (documentoAnagraficoSource == EDocumentoAnagraficoSource.EXISTING) {
-                String msg = String.format(getEtichetta(EtichetteMessaggi.Ask_Archiviazione_Documento_Individuo), documentoAnagrafico.tipoDocumento.id, documentoAnagrafico.numero)
+                String msg = String.format(getEtichetta(Etichette.getEtichetta("Ask_Archiviazione_Documento_Individuo")), documentoAnagrafico.tipoDocumento.id, documentoAnagrafico.numero)
                 Messagebox.show(msg, msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, { Event e ->
 
                     if (Messagebox.ON_YES == e.getName()) {
@@ -694,7 +768,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             } catch (DocumentaleRuntimeException dre) {
                 log.error(dre.message, dre)
 
-                String msg = "${getEtichetta(EtichetteMessaggi.Errore_salvataggio_file_documentale)}"
+                String msg = "${getEtichetta(Etichette.getEtichetta("Errore_salvataggio_file_documentale"))}"
                 MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.W, msg)
             }
 
@@ -702,12 +776,12 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             if (documentoAnagrafico != null && saveDocumentoAnagrafico) {
                 try {
                     emissioneCertificatoService.saveDocumentoAnagraficoAllegato(documentoAnagrafico, saved, certificatoGenerato)
-                    String msg = String.format(getEtichetta(EtichetteMessaggi.Info_Archiviazione_Documento_Individuo), documentoAnagrafico.tipoDocumento.id, documentoAnagrafico.numero)
+                    String msg = String.format(getEtichetta(Etichette.getEtichetta("Info_Archiviazione_Documento_Individuo")), documentoAnagrafico.tipoDocumento.id, documentoAnagrafico.numero)
                     MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, msg)
                 } catch (DocumentaleRuntimeException dre) {
                     log.error(dre.message, dre)
 
-                    String msg = "${getEtichetta(EtichetteMessaggi.Errore_salvataggio_file_documentale_individuo)}"
+                    String msg = "${getEtichetta(Etichette.getEtichetta("Errore_salvataggio_file_documentale_individuo"))}"
                     MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.W, msg)
                 }
             }
@@ -736,7 +810,7 @@ class EmissioneCertificatoViewModel extends DizionarioDettaglioViewModel impleme
             GenerazioneCertificatoRuntimeExceptionBase gcrex = (GenerazioneCertificatoRuntimeExceptionBase) ex
             String msg = "${getEtichetta(gcrex.etichetta)}\n\n$gcrex.generationError\n\nCertificato annullato ai fini del conteggio dei diritti (se previsti)."
             if (gcrex instanceof AnprGenerazioneCertificatoRuntimeException || gcrex instanceof AnscGenerazioneCertificatoRuntimeException) {
-                msg = "$msg\nAttenzione: annullamento valido solo per il certificato locale."
+                msg = "$msg\nAttenzione: annullamento valido solo per archivio locale."
             }
             return msg
         }

@@ -16,10 +16,10 @@ enum EImpedimentoGenericoUnioneCivile {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NE: return Etichette.Nessuno
-            case C1: return Etichette.Contraente_1
-            case C2: return Etichette.Contraente_2
-            case EN: return Etichette.Entrambi
+            case NE: return Etichette.getEtichetta("Nessuno")
+            case C1: return Etichette.getEtichetta("Contraente_1")
+            case C2: return Etichette.getEtichetta("Contraente_2")
+            case EN: return Etichette.getEtichetta("Entrambi")
         }
         return null
     }

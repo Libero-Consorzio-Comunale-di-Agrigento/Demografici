@@ -2,10 +2,13 @@ package it.finmatica.de4gsdzk.anagrafe
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdFirmaService
+import it.finmatica.de4gsdzk.allegati.IAllegatoService
 import it.finmatica.de4gsdzk.anagrafe.errors.NomeAllegatoEsistenteRuntimeException
+import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
 import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.utils.DataUtils
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.MetadatiGdmUtils
 import it.finmatica.smartdoc.api.struct.Campo
 import org.springframework.data.domain.Page
@@ -16,23 +19,26 @@ import org.springframework.transaction.annotation.Transactional
 @Slf4j
 @Transactional
 @Service
-class AnaFamigliaAllegatoService {
+class AnaFamigliaAllegatoService implements  IAllegatoService {
     private final AnaFamigliaAllegatoRepository anaFamigliaAllegatoRepository
     private final AnaFamigliaRepository anaFamigliaRepository
     private final GsdFirmaService gsdFirmaService
     private final IntegrazioneDocumentaleService integrazioneDocumentaleService
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
+    private final UtenteCustomService utenteCustomService
 
     AnaFamigliaAllegatoService(AnaFamigliaAllegatoRepository anaFamigliaAllegatoRepository,
                                AnaFamigliaRepository anaFamigliaRepository,
                                GsdFirmaService gsdFirmaService,
                                IntegrazioneDocumentaleService integrazioneDocumentaleService,
-                               StatoCivileService statoCivileService) {
+                               GsdService gsdService,
+                               UtenteCustomService utenteCustomService) {
         this.anaFamigliaAllegatoRepository = anaFamigliaAllegatoRepository
         this.anaFamigliaRepository = anaFamigliaRepository
         this.gsdFirmaService = gsdFirmaService
         this.integrazioneDocumentaleService = integrazioneDocumentaleService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
+        this.utenteCustomService = utenteCustomService
     }
 
     AnaFamigliaAllegato create(AnaFamiglia famiglia, String nome) {
@@ -43,11 +49,13 @@ class AnaFamigliaAllegatoService {
         AnaFamigliaAllegato obj = new AnaFamigliaAllegato()
         obj.famiglia = famiglia
         obj.nome = nome
+        obj.dataRegistrazione = DataUtils.getDataCorrente()
+        obj.terminalista = utenteCustomService.getLoggedUser()
 
         if (famiglia.allegati == null) {
             famiglia.allegati = []
         }
-        famiglia.allegati << obj
+        famiglia.allegati.add(obj)
 
         return obj
     }
@@ -59,14 +67,27 @@ class AnaFamigliaAllegatoService {
     AnaFamigliaAllegato save(AnaFamigliaAllegato obj) {
         if (obj.id == null) {
             // solo in caso di inserimento
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
 
         return anaFamigliaAllegatoRepository.save(obj)
     }
 
     void delete(AnaFamigliaAllegato obj) {
+        if ( (obj.idFileEsterno != null) && (obj.famiglia.idDocumentoEsterno != null) ){
+            integrazioneDocumentaleService.removeFile(obj.famiglia, obj)
+        }
+        // Cancello da ANAFAM_ALLE
+        log.info("Tento cancellazione su ANAFAM_ALLE per id " + obj.id)
         anaFamigliaAllegatoRepository.delete(obj)
+
+    }
+
+    void deleteDocumento(AnaFamigliaAllegato obj) {
+        //Al momento non esiste una cancellazione fisica del documento perciò elimino solo il collegamento al documentale
+        //integrazioneDocumentaleService.eliminaDocumento(obj.anagrafe, true)
+        obj.famiglia.idDocumentoEsterno = null
+        anaFamigliaRepository.save(obj.famiglia)
     }
 
     void saveAllegatoDocumentale(AnaFamigliaAllegato obj, byte[] bytes) {
@@ -96,6 +117,16 @@ class AnaFamigliaAllegatoService {
 
     void downloadAllegato(AnaFamigliaAllegato obj) {
         gsdFirmaService.scaricaAllegato(obj.famiglia, obj)
+    }
+
+    void downloadAllegati(AnaFamiglia obj) {
+        String name = "allegatiFamiglia_${obj.id}"
+        List<AnaFamigliaAllegato> allegati = obj.allegati.findAll { it.canDownload() }
+        gsdFirmaService.scaricaAllegati(name, obj, allegati)
+    }
+
+    void updateNote(Long id, String note){
+        anaFamigliaAllegatoRepository.updateNote(id, note)
     }
 
 }

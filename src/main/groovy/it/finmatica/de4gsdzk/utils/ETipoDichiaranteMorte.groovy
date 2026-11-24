@@ -8,9 +8,9 @@ enum ETipoDichiaranteMorte {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case C1: return Etichette.Dichiarante
-            case C1IT: return Etichette.Dichiarante_e_Interprete
-            case NE: return Etichette.Nessuno
+            case C1: return Etichette.getEtichetta("Dichiarante")
+            case C1IT: return Etichette.getEtichetta("Dichiarante_e_Interprete")
+            case NE: return Etichette.getEtichetta("Nessuno")
         }
         return null
     }

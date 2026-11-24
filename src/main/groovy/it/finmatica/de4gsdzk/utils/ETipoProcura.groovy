@@ -14,8 +14,8 @@ enum ETipoProcura {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case MD: return Etichette.Madre
-            case PD: return Etichette.Padre
+            case MD: return Etichette.getEtichetta("Madre")
+            case PD: return Etichette.getEtichetta("Padre")
         }
         return null
     }

@@ -24,7 +24,7 @@ class CivNumerazioneDocumentiUscitaServiceSpec extends AbstractServiceSpec<CivNu
         //service
         service = new CivNumerazioneDocumentiUscitaService(
                 repo,
-                statoCivileService)
+                gsdService)
 
 
     }

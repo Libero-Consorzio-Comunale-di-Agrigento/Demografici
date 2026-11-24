@@ -22,13 +22,14 @@ class LogsService {
     private final LogGestioneTestiRepository logGestioneTestiRepository
     private final LogWspaRepository logWspaRepository
     private final LogGsdRepository logGsdRepository
-    private final StatoCivileService statoCivileService
+    private final LogWsMinisteroInternoRepository logWsMinisteroInternoRepository
+    private final GsdService gsdService
 
     LogsService(LogDocAreaRepository logDocAreaRepository, LogFirmaRemotaRepository logFirmaRemotaRepository,
                 LogIstatRepository logIstatRepository, LogANPRRepository logANPRRepository,
                 LogAnscRepository logAnscRepository, LogGestioneTestiRepository logGestioneTestiRepository,
-                LogWspaRepository logWspaRepository, LogGsdRepository logGsdRepository,
-                StatoCivileService statoCivileService) {
+                LogWspaRepository logWspaRepository, LogGsdRepository logGsdRepository, LogWsMinisteroInternoRepository logWsMinisteroInternoRepository,
+                GsdService gsdService) {
         this.logDocAreaRepository = logDocAreaRepository
         this.logFirmaRemotaRepository = logFirmaRemotaRepository
         this.logIstatRepository = logIstatRepository
@@ -37,7 +38,8 @@ class LogsService {
         this.logGestioneTestiRepository = logGestioneTestiRepository
         this.logWspaRepository = logWspaRepository
         this.logGsdRepository = logGsdRepository
-        this.statoCivileService = statoCivileService
+        this.logWsMinisteroInternoRepository = logWsMinisteroInternoRepository
+        this.gsdService = gsdService
     }
 
     Page<LogProjection> listAllByTipoLog(ETipoLog tipoLog, PageRequest pageRequest) {
@@ -58,6 +60,8 @@ class LogsService {
                 return logWspaRepository.findAllNoClob(pageRequest)
             case ETipoLog.Gsd:
                 return logGsdRepository.findAllNoClob(pageRequest)
+            case ETipoLog.Ws_min_int:
+                return logWsMinisteroInternoRepository.findAllNoClob(pageRequest)
         }
     }
 
@@ -85,6 +89,8 @@ class LogsService {
                 return logWspaRepository.findAllNoClobFilter(filter, pageRequest)
             case ETipoLog.Gsd:
                 return logGsdRepository.findAllNoClobFilter(filter, pageRequest)
+            case ETipoLog.Ws_min_int:
+                return logWsMinisteroInternoRepository.findAllNoClobFilter(filter, pageRequest)
         }
     }
 
@@ -106,6 +112,8 @@ class LogsService {
                 return logWspaRepository.findOne(id) // forza eager
             case ETipoLog.Gsd:
                 return logGsdRepository.findOne(id) // forza eager
+            case ETipoLog.Ws_min_int:
+                return logWsMinisteroInternoRepository.findOne(id) // forza eager
         }
     }
 
@@ -114,12 +122,12 @@ class LogsService {
         switch(tipoLog) {
             case ETipoLog.ANSC:
                 if (obj.id == null){
-                    obj.id = statoCivileService.getIdFromSequence(obj)
+                    obj.id = gsdService.getIdFromSequence(obj)
                 }
                 return logAnscRepository.save((LogAnsc)obj)
             case ETipoLog.Gsd:
                 if (obj.id == null){
-                    obj.id = statoCivileService.getIdFromSequence(obj)
+                    obj.id = gsdService.getIdFromSequence(obj)
                 }
                 return logGsdRepository.save((LogGsd)obj)
         }

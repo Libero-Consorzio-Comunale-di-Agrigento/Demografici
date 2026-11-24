@@ -27,10 +27,13 @@ abstract class LogBaseDomain {
     @Column(name = "CAMPO_CLOB")
     String clob
 
+    @Column(name = "INFO_VIS", nullable = true, updatable = false, insertable = false)
+    String infoVis
+
     ////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data, Etichette.Operazione, Etichette.Note]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data"), Etichette.getEtichetta("Operazione"), Etichette.getEtichetta("Note")]
 }
 

@@ -31,7 +31,7 @@ select 2,
 insert into cerdtr
        (ID, DESCRIZIONE, SEQUENZA, CODICE_ANPR, FLAG_VISIBILE, FLAG_RICHIEDENTE, FLAG_AUTORITA)
 select 3,
-       'Istanza d''Ufficio',
+       'Istanza d''Ufficio (disponibile solo per Stato Civile)',
        '30',
        '1',
        'S',
@@ -75,7 +75,7 @@ update cerdtr
  where id = 2
 /
 update cerdtr
-   set descrizione        = 'Istanza d''Ufficio',
+   set descrizione        = 'Istanza d''Ufficio (disponibile solo per Stato Civile)',
        sequenza           = '30',
        codice_anpr        = '1',
        flag_visibile      = 'S',

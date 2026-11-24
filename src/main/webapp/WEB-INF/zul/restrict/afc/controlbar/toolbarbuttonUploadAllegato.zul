@@ -5,8 +5,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 
-	<toolbarbutton image="/images/icon/action/22x22/add.png"
-				   tooltiptext="@load(vm.etichette['inserisci_allegato_tooltip'])"
-				   upload="true"
-				   onUpload="@command('onUploadAllegato')"/>
+
+    <toolbarbutton image="/images/icon/action/22x22/export.png"
+            upload="true"
+            tooltiptext="@load(vm.etichette['inserisci_allegato_tooltip'])"
+            onUpload="@command('onUploadAllegato')" />
+
+    <ScanToolbarbutton onScanCompleted="@command('onScanAllegato')"/>
+
+    <toolbarbutton image="/images/icon/action/22x22/import.png"
+                   tooltiptext="@load(vm.etichette['scarica_allegati_tooltip'])"
+                   onClick="@command('onDownloadAllegati')"
+                   visible="@load(not empty vm.lista)"/>
 </zk>

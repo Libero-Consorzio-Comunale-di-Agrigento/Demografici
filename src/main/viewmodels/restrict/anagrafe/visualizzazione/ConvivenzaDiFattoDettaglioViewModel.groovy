@@ -1,7 +1,7 @@
 package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaConvivenzaDiFatto
 import it.finmatica.de4gsdzk.anagrafe.AnaConvivenzaDiFattoService
@@ -27,7 +27,6 @@ import restrict.statocivile.DizionarioDettaglioViewModel
 class ConvivenzaDiFattoDettaglioViewModel extends DizionarioDettaglioViewModel implements TraitControlBarCapable, TraitIndividuoCorrente {
 
     AnaConvivenzaDiFatto dettaglio
-    AnaAnagrafe convivente
 
     boolean documentiButtonEnabled = true
 
@@ -46,30 +45,29 @@ class ConvivenzaDiFattoDettaglioViewModel extends DizionarioDettaglioViewModel i
         controlBarAttributes.modifyEnabled = false
         controlBarAttributes.addEnabled = false
 
-        List<Map<String, String>> eList = [Etichette.Convivenza_di_fatto]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Convivenza_di_fatto")]
         // Aggiungo etichette controlbar
-        eList.addAll([Etichette.Documenti_tooltip])
+        eList.addAll([Etichette.getEtichetta("Documenti_tooltip")])
         // Aggiungo etichette per sezioni
-        eList.addAll([Etichette.Convivenza_di_fatto])
+        eList.addAll([Etichette.getEtichetta("Convivenza_di_fatto")])
         // Aggiungo etichette entità
         eList.addAll(AnaConvivenzaDiFatto.etichetteDomain)
         eList.addAll(EStatoConvivenza.values()*.etichettaDesc)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Convivenza_di_fatto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Convivenza_di_fatto"))
         formLabel = msgTitle?.toUpperCase()
 
         resize()
 
-        caricaDettaglio(null)
+        caricaDettaglio(individuoCorrente.convivenzaDiFatto.id)
 
         documentiButtonEnabled = anaDocumentoService.existsConvivenzaDiFattoByAnagrafe(individuoCorrente)
     }
 
     void caricaDettaglio(def id) {
-        dettaglio = anaConvivenzaDiFattoService.get(individuoCorrente.convivenzaDiFatto.id)
-        convivente = individuoCorrente.convivente
+        dettaglio = anaConvivenzaDiFattoService.get(id)
 
         refreshUi()
     }
@@ -86,10 +84,10 @@ class ConvivenzaDiFattoDettaglioViewModel extends DizionarioDettaglioViewModel i
 
     @Command
     void onOpenConvivente() {
-        openIndividuo(convivente)
+        openIndividuo(dettaglio.convivente)
     }
 
-    private void openIndividuo(GsdAnagrafeBaseDomain soggetto) {
+    private void openIndividuo(AnagrafeBaseDomain soggetto) {
         Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, [soggetto: soggetto])
         onChiudi()
     }

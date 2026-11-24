@@ -8,7 +8,6 @@ import it.finmatica.de4gsdzk.statocivile.CivMotivoRichiestaService
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -38,12 +37,12 @@ class MotivoRichiestaDettaglioViewModel extends DizionarioDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Motivo_richiesta]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Motivo_richiesta")]
         eList.addAll(CivMotivoRichiesta.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Motivo_richiesta)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Motivo_richiesta"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -76,7 +75,7 @@ class MotivoRichiestaDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivMotivoRichiesta c = civMotivoRichiestaService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

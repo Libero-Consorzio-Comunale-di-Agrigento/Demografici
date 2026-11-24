@@ -1,29 +1,32 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.IArchivioComunicazione
+import it.finmatica.de4gsdzk.IComunicazioneProtocollo
+import it.finmatica.de4gsdzk.IComunicazioneProtocolloService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneProtocolloRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Slf4j
 @Transactional
 @Service
-class CivComunicazioneProtocolloService {
+class CivComunicazioneProtocolloService implements IComunicazioneProtocolloService {
 
 	private final CivArchivioComunicazioneService civArchivioComunicazioneService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivComunicazioneProtocolloRepository civComunicazioneProtocolloRepository
 
-    CivComunicazioneProtocolloService(CivComunicazioneProtocolloRepository civComunicazioneProtocolloRepository, StatoCivileService statoCivileService,
-									  CivArchivioComunicazioneService civArchivioComunicazioneService) {
+    CivComunicazioneProtocolloService(CivComunicazioneProtocolloRepository civComunicazioneProtocolloRepository, GsdService gsdService,
+                                      CivArchivioComunicazioneService civArchivioComunicazioneService) {
 
 		this.civComunicazioneProtocolloRepository = civComunicazioneProtocolloRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civArchivioComunicazioneService = civArchivioComunicazioneService
 	}
 
@@ -33,7 +36,7 @@ class CivComunicazioneProtocolloService {
 
 	private void validaDati(CivComunicazioneProtocollo obj, CivArchivioComunicazione arcCom) {
 		if ((obj.tipoAtto == null) || (obj.comunicazione?.id == null)) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_comunicazione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_comunicazione"))
 		}
 
 		Boolean emptyMandatoryFields = Boolean.TRUE
@@ -55,7 +58,7 @@ class CivComunicazioneProtocolloService {
 		}
 
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_comunicazione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_comunicazione"))
 		}
 
 		civArchivioComunicazioneService.bloccaSeProtocollata(arcCom)
@@ -63,13 +66,15 @@ class CivComunicazioneProtocolloService {
 		civArchivioComunicazioneService.bloccaSeInviataAlbo(arcCom)
 	}
 
-	CivComunicazioneProtocollo save (CivComunicazioneProtocollo obj, CivArchivioComunicazione arcCom){
+	CivComunicazioneProtocollo save (IComunicazioneProtocollo _obj, IArchivioComunicazione _arcCom){
+        CivComunicazioneProtocollo obj = _obj as CivComunicazioneProtocollo
+        CivArchivioComunicazione arcCom = _arcCom as CivArchivioComunicazione
 
 		validaDati(obj, arcCom)
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdComunicazioneProtocollo(obj)
+			obj.id = gsdService.getIntegerIdFromSequence(obj, "CIVCOM")
 		}
 		log.info("Lancio salvataggio su CIVCOM_PROT per id " + obj.id)
 		return  civComunicazioneProtocolloRepository.save(obj)

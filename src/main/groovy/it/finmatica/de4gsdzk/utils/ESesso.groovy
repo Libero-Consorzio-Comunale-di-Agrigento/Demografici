@@ -14,8 +14,8 @@ enum ESesso {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case M: return Etichette.Maschio
-            case F: return Etichette.Femmina
+            case M: return Etichette.getEtichetta("Maschio")
+            case F: return Etichette.getEtichetta("Femmina")
         }
         return null
     }

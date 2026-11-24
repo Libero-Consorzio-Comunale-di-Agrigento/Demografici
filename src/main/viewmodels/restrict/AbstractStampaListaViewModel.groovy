@@ -27,7 +27,7 @@ abstract class AbstractStampaListaViewModel extends AbstractListaViewModel {
     abstract void esporta(ETipoFile tipo)
 
     void doInit(List<Map<String, String>> eList=[]) {
-        eList.addAll([Etichette.Elabora, Etichette.Chiudi])
+        eList.addAll([Etichette.getEtichetta("Elabora"), Etichette.getEtichetta("Chiudi")])
 
         eList.addAll(etichetteListaDefault)
 
@@ -80,11 +80,11 @@ abstract class AbstractStampaListaViewModel extends AbstractListaViewModel {
             b.append(separator)
             b.append(label)
             if (annoDa){
-                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.Dal), annoDa.toString(), separator)
+                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.getEtichetta("Dal")), annoDa.toString(), separator)
                 b.append(s)
             }
             if (annoA){
-                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.Al), annoA.toString(), separator)
+                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.getEtichetta("Al")), annoA.toString(), separator)
                 b.append(s)
 
             }
@@ -98,11 +98,11 @@ abstract class AbstractStampaListaViewModel extends AbstractListaViewModel {
             b.append(separator)
             b.append(label)
             if (dataDa){
-                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.Dal), DataUtils.fromDateToString(dataDa, formatoData), separator)
+                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.getEtichetta("Dal")), DataUtils.fromDateToString(dataDa, formatoData), separator)
                 b.append(s)
             }
             if (dataA){
-                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.Al), DataUtils.fromDateToString(dataA, formatoData), separator)
+                String s = getConcatenazioneLabelValoreString(getEtichetta(Etichette.getEtichetta("Al")), DataUtils.fromDateToString(dataA, formatoData), separator)
                 b.append(s)
             }
         }

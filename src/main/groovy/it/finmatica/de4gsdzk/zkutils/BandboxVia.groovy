@@ -6,7 +6,6 @@ import it.finmatica.de4gsdzk.archivi.ArcVia
 import it.finmatica.de4gsdzk.archivi.ArcViaService
 import it.finmatica.de4gsdzk.config.Holders
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.SortUtils
 import org.springframework.data.domain.Page
@@ -42,12 +41,12 @@ class BandboxVia extends CustomBandbox {
 
         List<Map> eList = ArcComuneBaseDomain.etichetteDomain
         eList.addAll(etichetteBB)
-        eList.addAll([EtichetteMessaggi.Errore_Via])
+        eList.addAll([Etichette.getEtichetta("Errore_Via")])
 
         etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-        errorTitle = getEtichetta(etichette, Etichette.Validazione)
-        errorMsg = getEtichetta(etichette, EtichetteMessaggi.Errore_Via)
+        errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+        errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Errore_Via"))
     }
 
     protected void loadData(String filtro, Boolean searchEqual = Boolean.FALSE) {

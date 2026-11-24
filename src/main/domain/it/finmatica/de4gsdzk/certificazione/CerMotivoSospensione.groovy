@@ -34,6 +34,6 @@ class CerMotivoSospensione extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Avviso,
-                                              Etichette.Anpr_Certificabilita, Etichette.Anpr_Tutela]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Avviso"),
+                                              Etichette.getEtichetta("Anpr_Certificabilita"), Etichette.getEtichetta("Anpr_Tutela")]
 }

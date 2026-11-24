@@ -54,8 +54,8 @@ class CivFirmatarioAtto extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome, Etichette.Nome, Etichette.Data_Nascita,
-                                              Etichette.Email, Etichette.Ruolo, Etichette.Firmatario, Etichette.Tipo_firma]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Data_Nascita"),
+                                              Etichette.getEtichetta("Email"), Etichette.getEtichetta("Ruolo"), Etichette.getEtichetta("Firmatario"), Etichette.getEtichetta("Tipo_firma")]
 
 }
 

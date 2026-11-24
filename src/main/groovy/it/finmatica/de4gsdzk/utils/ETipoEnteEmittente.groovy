@@ -16,8 +16,8 @@ enum ETipoEnteEmittente {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case MI: return Etichette.Ministero_Interni
-            case CO: return Etichette.Comune
+            case MI: return Etichette.getEtichetta("Ministero_Interni")
+            case CO: return Etichette.getEtichetta("Comune")
         }
         return null
     }

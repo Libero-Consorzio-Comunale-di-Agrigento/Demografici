@@ -58,18 +58,18 @@ class CertificatoEmessoListaViewModel extends AbstractListaViewModel implements 
         ricercaCertificato = new RicercaCertificato()
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Certificazione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Certificazione")]
         // Aggiungo etichette lista filtri
-        eList.addAll([Etichette.Estrazioni])
+        eList.addAll([Etichette.getEtichetta("Estrazioni"), Etichette.getEtichetta("Stampa_Diritti")])
         // Aggiungo etichette ordinamento
-        eList.addAll([Etichette.Data_emissione_decrescente, Etichette.Data_emissione_crescente])
+        eList.addAll([Etichette.getEtichetta("Data_emissione_decrescente"), Etichette.getEtichetta("Data_emissione_crescente")])
 
         eList.addAll(CerCertificatoEmesso.etichetteDomain)
         eList.addAll(CerTipoCertificato.etichetteDomain)
         eList.addAll(WspaPagamentoInviato.etichetteDomain)
 
         // Aggiungo etichette tooltip stato pagamento
-        eList.addAll([Etichette.Inviato, Etichette.info_tooltip])
+        eList.addAll([Etichette.getEtichetta("Inviato"), Etichette.getEtichetta("info_tooltip")])
 
         // Aggiungo etichette ricerca
         eList.addAll(RicercaCertificato.etichetteRicercaCerDesc)
@@ -81,16 +81,17 @@ class CertificatoEmessoListaViewModel extends AbstractListaViewModel implements 
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.Estrazioni)]]
+        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.getEtichetta("Estrazioni"))],
+                      [codice: "DIRITTI", descrizione: getEtichetta(Etichette.getEtichetta("Stampa_Diritti"))]]
 
-        msgTitle = getEtichetta(Etichette.Certificazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Certificazione"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
-        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.Data_emissione_decrescente), SortUtils.dataEmissioneDesc),
-                           new OrderBy(getEtichetta(Etichette.Data_emissione_crescente), SortUtils.dataEmissioneAsc)])
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_decrescente")), SortUtils.dataEmissioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_crescente")), SortUtils.dataEmissioneAsc)])
 
         //Default: data emissione discendente
         selectedOrder = listaOrder[0]
@@ -135,7 +136,10 @@ class CertificatoEmessoListaViewModel extends AbstractListaViewModel implements 
         if (filtriExtraEnabled) {
             switch (codice) {
                 case "ESTRAZIONE":
-                    apriDettaglio("stampaCertificatiLista.zul", [:])
+                    apriDettaglio("stampe/stampaCertificatiLista.zul", [:])
+                    break
+                case "DIRITTI":
+                    apriDettaglio("stampe/stampaDiritti.zul", [:])
                     break
             }
         }

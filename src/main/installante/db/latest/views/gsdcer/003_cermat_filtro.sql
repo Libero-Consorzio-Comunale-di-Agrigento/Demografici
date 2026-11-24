@@ -2,9 +2,14 @@
 --changeset amonopoli:202310061035_3 runOnChange:true stripComments:false
 create or replace view cermat_filtro
 AS 
+select mat.*, 'ANS' filtro 
+  from civmat mat
+ where cod_rec = 5
+   and atto > 0 
+UNION
 select mat.*, 'TUT' filtro 
   from civmat mat
- where cod_rec in (0,3) 
+ where cod_rec in (0,3,5) 
    and atto > 0 
    and natura in ('O','T','D') 
    and nvl(flag_certificabile,'S') = 'S'

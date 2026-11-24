@@ -16,7 +16,7 @@ class NextStepPagamentoInviatoServiceSpec extends WspaPagamentoInviatoServiceSpe
     NextStepPagamentoInviatoService nextStepPagamentoInviatoService
 
     void setup() {
-        nextStepPagamentoInviatoService = new NextStepPagamentoInviatoService(statoCivileService, utenteCustomService, wspaPagamentoInviatoRepository)
+        nextStepPagamentoInviatoService = new NextStepPagamentoInviatoService(gsdService, utenteCustomService, wspaPagamentoInviatoRepository)
     }
 
     @Override

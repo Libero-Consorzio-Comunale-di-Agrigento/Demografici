@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.IEntitaAnsc
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcParametro
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
@@ -73,7 +74,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
     private CivFormulaTestoLiberoService civFormulaTestoLiberoService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private ArcParametroService arcParametroService
@@ -81,7 +82,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
     protected void doInit(Window w) {
         self = w
 
-        List<Map> eList = [Etichette.Provvisorio, Etichette.Chiudi_atto, Etichette.Testo, Etichette.Numero_comunale]
+        List<Map> eList = [Etichette.getEtichetta("Provvisorio"), Etichette.getEtichetta("Chiudi_atto"), Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Numero_comunale")]
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarDettaglioAttributes.etichetteCbDettaglioDesc)
         eList.addAll(ControlBarTestoAttributes.etichetteCbTestoDesc)
@@ -93,14 +94,14 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
         eList.addAll(Arrays.asList(ETipoAtto.values())*.etichettaDesc)
 
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Warn_Dati_Occhiello, EtichetteMessaggi.Errore_modello_testo_non_trovato,
-                      EtichetteMessaggi.Errore_apertura_record, EtichetteMessaggi.Errore_generazione_testo,
-                      EtichetteMessaggi.Errore_report_vuoto, EtichetteMessaggi.Errore_report_troppo_lungo,
-                      EtichetteMessaggi.Errore_stampa_provvisorio, EtichetteMessaggi.Ask_Modifiche_In_Sospeso])
+        eList.addAll([Etichette.getEtichetta("Warn_Dati_Occhiello"), Etichette.getEtichetta("Errore_modello_testo_non_trovato"),
+                      Etichette.getEtichetta("Errore_apertura_record"), Etichette.getEtichetta("Errore_generazione_testo"),
+                      Etichette.getEtichetta("Errore_report_vuoto"), Etichette.getEtichetta("Errore_report_troppo_lungo"),
+                      Etichette.getEtichetta("Errore_stampa_provvisorio"), Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(etichette, Etichette.Testo)
+        msgTitle = getEtichetta(etichette, Etichette.getEtichetta("Testo"))
     }
 
     void caricaAtto(ETipoAtto tipoAttoEnum, Long pkAtto) {
@@ -113,7 +114,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
         atto = civAttoService.getAtto(tipoAttoEnum, pkAtto, params)
 
         if (atto == null){
-            String errorMsg = getEtichetta(etichette, EtichetteMessaggi.Errore_apertura_record)
+            String errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Errore_apertura_record"))
             Messagebox.show(errorMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             onChiudi()
             return
@@ -229,7 +230,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
         Map params = [parte: atto.parte, serie: atto.serie, natura: atto.natura, flagDefault:Boolean.TRUE,
                       categoria: atto.tipoAttoDomain?.categoriaDomain?.codice]
         List<Map<String, Object>> formule = []
-        ArcComune c = statoCivileService.getComuneCliente()
+        ArcComune c = gsdService.getComuneCliente()
         switch (atto.getTipoAttoEnum()) {
             case ETipoAtto.NAS:
                 if (FormulaUtils.addFormulaNascita(chiave, ETipoOperazione.UPD, atto, datiProvenienza, c)){
@@ -243,7 +244,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
                             params.put("searchEqual", Boolean.TRUE)
                             break
                     }
-                    formule = statoCivileService.listFormuleNascita(FormulaUtils.getRichiamoMargine(), params)
+                    formule = gsdService.listFormuleNascita(FormulaUtils.getRichiamoMargine(), params)
                 }
                 break
             case ETipoAtto.MAT:
@@ -270,7 +271,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
                             params.put("searchEqual", Boolean.TRUE)
                             break
                     }
-                    formule = statoCivileService.listFormuleMatrimonio(FormulaUtils.getRichiamoMargine(), params)
+                    formule = gsdService.listFormuleMatrimonio(FormulaUtils.getRichiamoMargine(), params)
                 }
                 break
             case ETipoAtto.MOR:
@@ -285,7 +286,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
                             params.put("searchEqual", Boolean.TRUE)
                             break
                     }
-                    formule = statoCivileService.listFormuleDecesso(FormulaUtils.getRichiamoMargine(), params)
+                    formule = gsdService.listFormuleDecesso(FormulaUtils.getRichiamoMargine(), params)
                 }
                 break
             case ETipoAtto.UCI:
@@ -310,7 +311,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
                             params.put("searchEqual", Boolean.TRUE)
                             break
                     }
-                    formule = statoCivileService.listFormuleUnioneCivile(FormulaUtils.getRichiamoMargine(), params)
+                    formule = gsdService.listFormuleUnioneCivile(FormulaUtils.getRichiamoMargine(), params)
                 }
                 break
         }
@@ -321,7 +322,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
             } else {
                 f = new CivFormulaTestoLibero()
             }
-            statoCivileService.aggiornaFormulaFrammento(formule, atto, f)
+            gsdService.aggiornaFormulaFrammento(formule, atto, f)
             DomainUtils.initFromAtto(f, atto)
             mapFormule[chiave] = civFormulaTestoLiberoService.save(f, atto.getTipoAttoEnum())
         }
@@ -384,7 +385,7 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
 
     @Command void onBackFromRecord() {
         if (testoEditable || margineEditable){
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Ask_Modifiche_In_Sospeso), getEtichetta(etichette, Etichette.Chiusura), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), getEtichetta(etichette, Etichette.getEtichetta("Chiusura")), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_YES.equals(e.getName())){
@@ -402,6 +403,10 @@ abstract class PreviewAttoParentViewModel extends AbstractResizedViewModel{
 
     void refreshUi(){
         BindUtils.postNotifyChange(null, null, this, "*")
+    }
+
+    boolean getCanSaveRecord() {
+        return true
     }
 
 }

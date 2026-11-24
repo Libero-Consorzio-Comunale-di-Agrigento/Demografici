@@ -28,7 +28,7 @@ class AnaFamigliaRepositorySpec extends IntegrationSpec {
 
         famiglia.indirizzo != null
         famiglia.indirizzo instanceof IndirizzoResidenteFamiglia
-        Hibernate.isInitialized((famiglia.indirizzo as IndirizzoResidenteFamiglia).via)
+        Hibernate.isInitialized((famiglia.indirizzo as IndirizzoResidenteFamiglia).indirizzo.via)
     }
 
 }

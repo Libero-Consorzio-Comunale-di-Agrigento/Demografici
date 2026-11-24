@@ -100,10 +100,10 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
         modifyAnnotazioneEnabled = false
         goToComunicazioniEnabled = true
 
-        List<Map> eList = [Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.Del, Etichette.Annotazione, Etichette.Modello_Personalizzato,
-                           Etichette.Annotazioni, Etichette.SEZIONE_ANNOTAZIONI_ATTO, Etichette.Annulla]
+        List<Map> eList = [Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("Del"), Etichette.getEtichetta("Annotazione"), Etichette.getEtichetta("Modello_Personalizzato"),
+                           Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"), Etichette.getEtichetta("Annulla")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Formato_etichette, EtichetteMessaggi.Ask_Cancellazione_Annotazione, EtichetteMessaggi.Errore_modello_etichetta_non_trovato])
+        eList.addAll([Etichette.getEtichetta("Ask_Formato_etichette"), Etichette.getEtichetta("Ask_Cancellazione_Annotazione"), Etichette.getEtichetta("Errore_modello_etichetta_non_trovato")])
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarAnnotazioniAttributes.etichetteCbAnnListDesc)
 
@@ -131,12 +131,12 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
         // Aggiungo etichette tipo si no
         eList.addAll(ETipoSiNo.values()*.getEtichettaDesc())
         // Aggiungo etichette forzatura id atto ansc
-        eList.addAll(Etichette.Forza_Id_Atto_Ansc)
+        eList.addAll(Etichette.getEtichetta("Forza_Id_Atto_Ansc"), Etichette.getEtichetta("Reminder_Rettifica_Atto"))
 
         doInit(eList, pkAtto, tipoAttoEnum) //carica anche atto e dati provenienza
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
-        formLabel = getEtichetta(Etichette.SEZIONE_ANNOTAZIONI_ATTO)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
+        formLabel = getEtichetta(Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"))
 
         resize()
 
@@ -218,9 +218,9 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
         if (getDettaglio()?.id) {
 
             Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.RETRY, Messagebox.Button.CANCEL]
-            String[] buttonLabels = [TestoUtils.formatoA4, TestoUtils.formatoA3, getEtichetta(Etichette.Modello_Personalizzato), getEtichetta(Etichette.Annulla)]
+            String[] buttonLabels = [TestoUtils.formatoA4, TestoUtils.formatoA3, getEtichetta(Etichette.getEtichetta("Modello_Personalizzato")), getEtichetta(Etichette.getEtichetta("Annulla"))]
 
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Formato_etichette), msgTitle, buttons, buttonLabels , Messagebox.QUESTION, null,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Formato_etichette")), msgTitle, buttons, buttonLabels , Messagebox.QUESTION, null,
                 new EventListener() {
                     void onEvent(Event e){
                         switch (e.getName()) {
@@ -261,7 +261,7 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
 
     @Command void onEliminaAnnotazione(@BindingParam("annotazione") CivAnnotazioneAtto annotazione) {
         if ( (annotazione?.id != null) && showDeleteOption){
-            Messagebox.show(annotazione.formulaDfa.descrizioneEstesa + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Annotazione), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(annotazione.formulaDfa.descrizioneEstesa + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Annotazione")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_OK.equals(e.getName())){
@@ -294,7 +294,7 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
         if (wPreviewModelloIstatOpen || (!(getDettaglio().flagIstat)) ){
             return
         }
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifiche_In_Sospeso), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
             new EventListener(){
                 void onEvent(Event e){
                     if (Messagebox.ON_YES.equals(e.getName())){
@@ -410,6 +410,9 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
                     listaStepInvioAnsc.add(new AnscInfoStepInvio(AnscInfoStepInvio.TIPO_BASE, (se.flagObbligatorio ? ++sequenza : 1), servizioCdu, listaOggettiInvio))
                     AnscInfoArchivioRifIdRifs m = new AnscInfoArchivioRifIdRifs(taComAnnotazione, [idAnnotazione])
                     mappaServiziArchiviIdRif[se.id] = m
+                    if(se.flagAlertAttoRettificato && anscOn && atto.isAttoAnsc() && atto.idAttoAnsc != null) {
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Reminder_Rettifica_Atto")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                    }
                 }
             }
         }
@@ -441,7 +444,7 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
     }
 
     void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre,
-                            Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione, Boolean skip){
+                            Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione, Boolean skip){
         onSalvaAnnotazione()
         AnscEndPointServizio servizio = servizioCdu?.servizio
         AnscEndPointServizio servizioPrec = servizioCdu?.servizioPrecedente
@@ -467,7 +470,7 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
     }
 
     void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu,
-                                                     Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione) {
+                                                     Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione) {
         AnscEndPointServizio servizioPrec = servizioCdu?.servizioPrecedente
         ETipoArchivioAnsc taRifComPrec = null
         List<Long> idRifPrecs = null
@@ -536,5 +539,9 @@ class AnnotazioniAttoListaViewModel extends RiferimentiAttoListaParentViewModel 
             })
             w.doModal()
         }
+    }
+
+    boolean getCanSaveRecord() {
+        return true
     }
 }

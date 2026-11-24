@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.elettorale.dizionari.wsMinisteriali.ElezioneWsDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarDettaglio/>
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <div vflex="1" style="overflow-y: auto;">
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="180px">
+                            <label value="@load(vm.etichette['Tipo_Elezione'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.dettaglio.tipoElezione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Data_Elezione'])"/>
+                        </cell>
+                        <cell>
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.dettaglio.dataElezione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Descrizione_Elezione'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.descrizioneElezione)" hflex="1" maxlength="255"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Anno_Elezioni'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.dettaglio.annoElezioniAds)" disabled="@bind(vm.dettaglio.annoElezioniAds ne null)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Progr_Elezioni'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.dettaglio.progrElezioniAds)" disabled="@bind(vm.dettaglio.progrElezioniAds ne null)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Elezione_Ads'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.elezioniList)" width="300px" readonly="true" disabled="@bind(vm.dettaglio.elezioneAds ne null)"
+                                      selectedItem="@bind(vm.dettaglio.elezioneAds)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem label="@load(c:cat3(each.id, ' - ', each.descrizione))"
+                                               value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Numero_Quesito'])"/>
+                        </cell>
+                        <cell>
+                            <intbox value="@bind(vm.dettaglio.numeroQuesito)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Descrizione_Quesito'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.descrizioneQuesito)" hflex="1" maxlength="255"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+            </div>
+
+        </vlayout>
+
+    </window>
+
+</zk>

@@ -94,7 +94,7 @@ class PubblicazionePregressoDettaglioViewModel extends PubblicazioneDettaglioPar
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -115,7 +115,7 @@ class PubblicazionePregressoDettaglioViewModel extends PubblicazioneDettaglioPar
                 try {
                     c = civPubblicazioneService.save(tipoOperazione, dettaglio, null, datiProvenienza, margine, sposi, documentoPubblicazione, mapFormule, gc, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && composizioneTestoAttiva) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (composizioneTestoAttiva && (statoFrammenti == 1)) {
                         statoFrammenti = 2

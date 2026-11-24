@@ -28,7 +28,7 @@ begin
 -- V1.3.8     06/11/2023   SN       .R005_S: consultazione soggetto notifica
 -- V1.3.9     07/11/2023   AM       .R013: rettifica validazione (test servizio)
 --                                  .R003: comunicazioni (test servizio)
--- V1.4.0     22/11/2023   AM       .R009_A: validazione annotazione 
+-- V1.4.0     22/11/2023   AM       .R009_A: validazione annotazione
 -- V1.4.1     28/11/2023   AM       .R013: aggiornamento dati _ansc su civann
 -- V1.4.2     01/12/2023   SN       .R008_R: salvataggio descrizione notifica
 -- V1.4.3     06/12/2023   AM       .ctr_risposta: gestione warnings e info
@@ -45,8 +45,9 @@ begin
 -- V1.5.3     07/07/2025   AM       .R005: recupero idSoggettoAnsc anche nel caso di multi-intestatari
 -- V1.5.4     28/07/2025   AM       .R008_E: recupero dettagli notifiche ANSC (consultazione per evento)
 -- V1.5.5     01/10/2025   AM       .R008_A: recupero dettagli notifiche ANPR (consultazione per evento)
+-- V1.5.6     24/10/2025   AM       .R005_C: consultazione soggetti per certificazione
 --
-  w_versione := 'V1.5.5 del 01/10/2025';
+  w_versione := 'V1.5.6 del 24/10/2025';
 
   return w_versione;
 end;
@@ -836,6 +837,13 @@ w_id_soggetto_ansc_r005		varchar2(255);
 w_cognome_r005			varchar2(255);
 w_nome_r005			varchar2(255);
 w_codice_fiscale_r005		varchar2(255);
+w_sesso_r005			varchar2(255);
+w_data_nascita_r005		varchar2(255);
+w_id_comune_nascita_r005	varchar2(255);
+w_id_stato_nascita_r005		varchar2(255);
+w_id_comune_reg_r005      	varchar2(255);
+w_nome_comune_reg_r005      	varchar2(255);
+w_data_formazione_r005      	varchar2(255);
 
 w_id_atto_ads		varchar2(255);
 
@@ -853,6 +861,7 @@ w_id_tipo_contenuto_ansc	varchar2(255);
 w_des_tipo_contenuto_ansc	varchar2(255);
 w_id_usecase_ansc		varchar2(255);
 w_numero_atto			varchar2(255);
+w_anno_atto			varchar2(255);
 
 --R008_R / R008_E
 w_id_notifica			number;
@@ -1014,10 +1023,16 @@ select extractValue(value(rowdata),w_root||'/stato') stato
      , extractValue(value(rowdata),w_root||'/id') id_r005
      , extractValue(value(rowdata),w_root||'/idAnsc') idAnsc_r005
      , extractValue(value(rowdata),w_root||'/numeroatto') numeroAtto_r005
+     , extractValue(value(rowdata),w_root||'/annoAtto') annoAtto_r005
      , extractValue(value(rowdata),w_root||'/idTipoEvento') idTipoEvento_r005
      , extractValue(value(rowdata),w_root||'/idtipocontenuto') idTipoContenuto_r005
-     , extract(value(rowdata),w_root||'/intestatari').getClobVal() intestatari
      , extractValue(value(rowdata),w_root||'/idUsecase') idUsecase_r005
+     , extractValue(value(rowdata),w_root||'/idComuneRegistrazione') idComuneRegistrazione
+     , extractValue(value(rowdata),w_root||'/nomeComuneRegistrazione') nomeComuneRegistrazione
+     , extractValue(value(rowdata),w_root||'/idProvinciaRegistrazione') idProvinciaRegistrazine
+     , extractValue(value(rowdata),w_root||'/siglaProvinciaRegistrazione') siglaProvinciaRegistrazione
+     , extractValue(value(rowdata),w_root||'/dataformazione') dataFormazione
+     , extract(value(rowdata),w_root||'/intestatari').getClobVal() intestatari
   from table(XMLSequence(w_modelEventoDTO_xml)) rowdata
 ;
 
@@ -1026,6 +1041,10 @@ select extractValue(value(rowdata),w_root||'/id') id
      , extractValue(value(rowdata),w_root||'/cognome') cognome
      , extractValue(value(rowdata),w_root||'/nome') nome
      , extractValue(value(rowdata),w_root||'/codiceFiscale') codiceFiscale
+     , extractValue(value(rowdata),w_root||'/sesso') sesso
+     , extractValue(value(rowdata),w_root||'/dataNascita') dataNascita
+     , extractValue(value(rowdata),w_root||'/idComuneNascita') idComuneNascita
+     , extractValue(value(rowdata),w_root||'/idStatoNascita') idStatoNascita
   from table(XMLSequence(w_intestatari_xml)) rowdata
 ;
 
@@ -1260,14 +1279,14 @@ begin
                    ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'errore in ins ANSERR', SQLERRM, w_id_atto_log);
             end;
 --            ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'listaWarning', w_codice_errore||' - '||w_tipo_errore||' - '||w_testo_errore, w_id_atto_log);
-  
+
             w_testo_errore := f_UTIL_errore_decode(w_codice_errore,w_testo_errore);
             w_lista_warning   := w_lista_warning||chr(10)||
                                  w_sequenza||'. '||w_testo_errore;
         end loop;
         ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'listaWarning', w_lista_warning, w_id_atto_log);
      end if; --if w_warning_clob is not null then
-  
+
      begin
        delete anserr
         where id_operazione        = a_id_operazione
@@ -1304,7 +1323,7 @@ begin
                 ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'errore in ins ANSERR', SQLERRM, w_id_atto_log);
             end;
 --            ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'listaInfo', w_codice_errore||' - '||w_tipo_errore||' - '||w_testo_errore, w_id_atto_log);
- 
+
             w_testo_errore := f_UTIL_errore_decode(w_codice_errore,w_testo_errore);
             w_lista_info   := w_lista_info||chr(10)||
                               w_sequenza||'. '||w_testo_errore;
@@ -1313,7 +1332,8 @@ begin
      end if; --if w_info_clob is not null then
 
      w_info_ws := '';
-     if nvl(w_esito_ANSC,'X') = '0' 
+     if (nvl(w_esito_ANSC,'X') = '0' and a_servizio != 'R005_C')
+        or (nvl(w_esito_ANSC,'X') = '0' and a_servizio = 'R005_C' and w_modelEventoDTO_clob is not null)
         or (a_servizio in ('R013', 'R010_C','R017') and w_esito_ansc is null and w_id_operazione_ansc is not null and w_errori_clob is null)
      then
         if a_servizio like 'R001_U%' or a_servizio like 'R006%' then
@@ -1351,7 +1371,7 @@ begin
            for rec_dto in sel_modelEventoDTO ('modelEventoDTO') loop
                w_intestatari_clob    := rec_dto.intestatari;
 
-               if a_servizio like 'R005_G%' then
+               if a_servizio like 'R005_G%' or a_servizio like 'R005_C%' then
                   w_stato_ANSC              := rec_dto.stato;
                   w_id_atto_ANSC            := rec_dto.idAnsc_R005;
                   w_id_evento_ANSC          := rec_dto.id_R005;
@@ -1359,6 +1379,10 @@ begin
                   w_id_tipo_contenuto_ANSC  := rec_dto.idTipoContenuto_R005;
                   w_id_usecase_ANSC         := rec_dto.idUsecase_R005;
                   w_numero_atto             := rec_dto.numeroAtto_R005;
+                  w_anno_atto               := rec_dto.annoAtto_R005;
+                  w_id_comune_reg_r005      := rec_dto.idComuneRegistrazione;
+                  w_nome_comune_reg_r005    := rec_dto.nomeComuneRegistrazione;
+                  w_data_formazione_r005    := rec_dto.dataFormazione;
 
                   w_note_log := 'w_stato_ANSC: '||rec_dto.stato||' - '||
                                    'w_id_atto_ANSC: '||rec_dto.idAnsc_R005||' - '||
@@ -1367,11 +1391,11 @@ begin
                                    'w_id_tipo_contenuto_ANSC: '||rec_dto.idTipoContenuto_R005||' - '||
                                    'w_id_usecase_ANSC: '||rec_dto.idUsecase_R005||' - '||
                                    'w_numero_atto: '||rec_dto.numeroAtto_R005;
-                                  
+
                   ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'rec_dto', w_note_log, w_id_atto_log);
- 
+
                  if w_id_atto_ANSC like '%'||w_codice_cliente then
---     , idTipoEvento    (anst01) 1 - NASCITA / 2 - MORTE / 3 - MATRIMONIO / 4 - UNIONE CIVILE / 5 - CITTADINANZA 
+--     , idTipoEvento    (anst01) 1 - NASCITA / 2 - MORTE / 3 - MATRIMONIO / 4 - UNIONE CIVILE / 5 - CITTADINANZA
                     if w_id_tipo_evento_ansc = '1' then
                        w_des_tipo_evento_ansc := '1 - NASCITA';
                     elsif w_id_tipo_evento_ansc = '2' then
@@ -1394,7 +1418,7 @@ begin
                        w_des_tipo_contenuto_ansc := '4 - ANNOTAZIONE AUTO';
                     end if;
 
-                     if w_id_tipo_contenuto_ANSC in ('1','3') then 
+                     if w_id_tipo_contenuto_ANSC in ('1','3') then
                         if w_id_tipo_evento_ANSC = '1' and a_archivio_rif = 'NAS' then
                            begin
                              update civnas
@@ -1505,11 +1529,11 @@ begin
                            w_note_ws    := 'Aggiornamento non consentito: Tipo Evento non coerente ('||w_des_tipo_evento_ansc||')';
                            w_info_ws    := '';
                            w_ctr_return := f_UTIL_ansciu_upd_R005_G(a_servizio,a_id_operazione,w_id_operazione_ansc,w_esito_ansc,w_note_ws,w_info_ws);
-                       
+
                            goto fine;
                         end if;
 
-                     elsif w_id_tipo_contenuto_ANSC in ('2') and a_archivio_rif = 'ANN' then 
+                     elsif w_id_tipo_contenuto_ANSC in ('2') and a_archivio_rif = 'ANN' then
                         begin
                           update civann
                              set id_atto_ansc    = w_id_atto_ansc,
@@ -1535,16 +1559,16 @@ begin
                         w_note_ws    := 'Aggiornamento non consentito: Tipo Contenuto non coerente ('||w_des_tipo_contenuto_ansc||')';
                         w_info_ws    := '';
                         w_ctr_return := f_UTIL_ansciu_upd_R005_G(a_servizio,a_id_operazione,w_id_operazione_ansc,w_esito_ansc,w_note_ws,w_info_ws);
-                     
+
                         goto fine;
                      end if;
 
-                  elsif w_id_atto_ANSC not like '%'||w_codice_cliente then
+                  elsif w_id_atto_ANSC not like '%'||w_codice_cliente and a_servizio != 'R005_C' then
                      w_esito_ANSC := 1;
                      w_note_ws    := 'Aggiornamento non consentito: ID Atto Ansc di altro comune';
                      w_info_ws    := '';
                      w_ctr_return := f_UTIL_ansciu_upd_R005_G(a_servizio,a_id_operazione,w_id_operazione_ansc,w_esito_ansc,w_note_ws,w_info_ws);
-                 
+
                      goto fine;
                   end if;
 
@@ -1572,18 +1596,28 @@ begin
                   w_intestatari_xml := xmltype(w_intestatari_clob);
                   w_intestatari_xml := w_intestatari_xml.extract('/root/intestatari','');
 
-                  w_sequenza              := 0;
-                  w_id_soggetto_ansc_r005 := '';
-                  w_cognome_r005          := '';
-                  w_nome_r005             := '';
-                  w_codice_fiscale_r005   := '';
-                  for rec_int in sel_intestatari ('intestatari') loop
-                      w_sequenza            := w_sequenza + 1;
+                  w_sequenza               := 0;
+                  w_id_soggetto_ansc_r005  := '';
+                  w_cognome_r005           := '';
+                  w_nome_r005              := '';
+                  w_codice_fiscale_r005    := '';
+                  w_sesso_r005             := '';
+                  w_data_nascita_r005      := '';
+                  w_id_comune_nascita_r005 := '';
+                  w_id_stato_nascita_r005  := '';
 
-                      w_id_soggetto_ansc_r005 := rec_int.id;
-                      w_cognome_r005          := rec_int.cognome;
-                      w_nome_r005             := rec_int.nome;
-                      w_codice_fiscale_r005   := rec_int.codiceFiscale;
+                  for rec_int in sel_intestatari ('intestatari') loop
+                      w_sequenza                := w_sequenza + 1;
+
+                      w_id_soggetto_ansc_r005   := rec_int.id;
+                      w_cognome_r005            := rec_int.cognome;
+                      w_nome_r005               := rec_int.nome;
+                      w_codice_fiscale_r005     := rec_int.codiceFiscale;
+                      w_sesso_r005              := rec_int.sesso;
+                      w_data_nascita_r005       := rec_int.dataNascita;
+                      w_id_comune_nascita_r005  := rec_int.idComuneNascita;
+                      w_id_stato_nascita_r005   := rec_int.idStatoNascita;
+
                       if a_servizio like 'R005_1%' or a_servizio like 'R005_2%' or a_servizio like 'R005_S%' then
                          if w_id_soggetto_ansc_r005 is not null then
                             w_info_ws := ltrim(w_info_ws||chr(10)||'idSoggettoAnsc: '||w_id_soggetto_ansc_r005||' (cognome: '||w_cognome_r005||' - nome: '||w_nome_r005||')',chr(10));
@@ -1591,7 +1625,42 @@ begin
                       end if; -- if a_servizio like 'R005_1%' or a_servizio like 'R005_2%' or a_servizio like 'R005_S%' then
 
                      if w_id_soggetto_ansc_r005 is not null then
-                        if a_archivio_rif = 'NOT' then
+                        if a_servizio like 'R005_C%' and w_stato_ANSC = 'FIRMATO DA USC' then
+                           begin
+                             delete ansana
+                              where id_operazione = a_id_operazione
+                                and int_id        = w_id_soggetto_ansc_r005
+                             ;
+                             insert into ansana
+                                    (id_operazione,
+                                     id, idAnsc, annoAtto, numeroAtto, idVersion,
+                                     idTipoEvento, idTipoContenuto, stato, idUseCase, descrizioneCasoUso,
+                                     dataFormazione, idComuneRegistrazione, nomeComuneRegistrazione, idProvinciaRegistrazione, siglaProvinciaRegistrazione,
+                                     INT_id, INT_cognome, INT_nome, INT_sesso, INT_dataNascita, INT_codiceFiscale,
+                                     INT_idComuneNascita, INT_nomeComuneNascita,
+                                     INT_idProvinciaNascita, INT_siglaProvinciaNascita,
+                                     INT_idStatoNascita, INT_nomeStatoNascita,
+                                     INT_idComuneResidenza, INT_nomeComuneResidenza,
+                                     INT_idProvinciaResidenza, INT_siglaProvinciaResidenza,
+                                     INT_idStatoResidenza, INT_nomeStatoResidenza)
+                             values (a_id_operazione,
+                                     w_id_evento_ANSC, w_id_atto_ANSC, w_anno_atto, w_numero_atto, '',
+                                     w_id_tipo_evento_ANSC, w_id_tipo_contenuto_ANSC, w_stato_ANSC, w_id_usecase_ANSC, '',
+                                     w_data_formazione_r005, w_id_comune_reg_r005, w_nome_comune_reg_r005, '', '',
+                                     w_id_soggetto_ansc_r005, w_cognome_r005, w_nome_r005, w_sesso_r005, w_data_nascita_r005, w_codice_fiscale_r005,
+                                     w_id_comune_nascita_r005, '',
+                                     '', '',
+                                     w_id_stato_nascita_r005, '',
+                                     '', '',
+                                     '', '',
+                                     '', '')
+                             ;
+                           exception
+                             when others then
+                                  null;
+                           end;
+
+                        elsif a_archivio_rif = 'NOT' then
                            begin
                              update ansnot
                                 set cognome_soggetto_ansc = w_cognome_r005,
@@ -1762,10 +1831,10 @@ begin
                 delete ansnot
                 ;
               exception
-                when others then 
+                when others then
                      ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'del_ansnot - errore', sqlerrm, w_id_atto_log);
               end;
-   
+
               for rec_not in sel_notifiche ('notifiche') loop
                   w_id_notifica               := rec_not.id;
                   w_id_soggetto_ansc_notifica := rec_not.idSoggettoRif;
@@ -1782,14 +1851,14 @@ begin
                   begin
                     insert into ansnot
                           (id, id_soggetto_ansc, id_ansc, stato, genere, valido_dal, valido_al, id_comune_competente, id_comune_formazione, descrizione, canale_comunicazione_ansc)
-                    select w_id_notifica, w_id_soggetto_ansc_notifica, w_id_ansc, w_stato_notifica, w_genere_notifica, 
+                    select w_id_notifica, w_id_soggetto_ansc_notifica, w_id_ansc, w_stato_notifica, w_genere_notifica,
                            w_dal_notifica, w_al_notifica, w_id_Comune_competente, w_id_comune_formazione, w_descrizione_notifica, w_canale_notifica
                       from dual
                      where not exists (select 1 from ansnot b
                                         where b.id = w_id_notifica)
                     ;
                   exception
-                    when others then 
+                    when others then
                          ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'ins_ansnot - errore', sqlerrm, w_id_atto_log);
                   end;
               end loop; --sel_notifiche
@@ -1826,6 +1895,10 @@ begin
                                 ,chr(10));
               end loop;
 
+              if w_info_ws is null then
+                 w_info_ws := 'Nessun dettaglio di notifica presente'||chr(10)||chr(10);
+              end if;
+
            elsif a_servizio like 'R008_A' then
 
               for rec_not in sel_notifiche_A ('notifiche') loop
@@ -1845,6 +1918,11 @@ begin
                                                         ' - tipo: '||w_id_tipo_notifica_anpr||' - '||w_des_tipo_notifica_anpr
                                 ,chr(10));
               end loop;
+
+              if w_info_ws is null then
+                 w_info_ws := 'Nessun dettaglio di notifica presente'||chr(10)||chr(10);
+              end if;
+
            end if;
 
         elsif a_servizio like 'R009_V%' then
@@ -2241,7 +2319,7 @@ begin
               w_info_ws := w_lista_warning;
            end if;
         end if;
-        
+
         if w_lista_info is not null then
            if w_info_ws is not null then
               w_info_ws := w_info_ws||chr(10)||chr(10)||w_lista_info;
@@ -2365,9 +2443,9 @@ begin
                if rec.severity in ('F','H') then
                   w_lista_ads := 'Messaggi ADS:';
                   if a_servizio like 'R009%' then
-                     w_lista_ads := w_lista_ads||chr(10)|| 
-                                    '1. Verificare che sia stato assegnato l''id Atto ANSC'||chr(10)|| 
-                                    '2. Nel caso sia gia'' stato assegnato: procedere con la ripetizione dell''invio tramite apposita funzione'||chr(10)|| 
+                     w_lista_ads := w_lista_ads||chr(10)||
+                                    '1. Verificare che sia stato assegnato l''id Atto ANSC'||chr(10)||
+                                    '2. Nel caso sia gia'' stato assegnato: procedere con la ripetizione dell''invio tramite apposita funzione'||chr(10)||
                                     '3. Nel caso NON sia stato assegnato: procedere con la consultazione da web-app e contattare ADS';
 
                   elsif a_servizio like 'R006%' or a_servizio like 'R007%' then
@@ -2386,6 +2464,10 @@ begin
            end loop;
            ANSC_pkg.ins_log(w_servizio_log, w_operazione_log, 'listaErrori (2)', w_lista_errori, w_id_atto_log);
            w_note_ws := w_lista_errori;
+
+        elsif a_servizio = 'R005_C' and w_modelEventoDTO_clob is null then
+           w_note_ws := 'La ricerca effettuata non produce alcun risultato';
+
         end if; --if w_errori_clob is not null then
 
         if w_lista_warning is not null then
@@ -2395,7 +2477,7 @@ begin
               w_note_ws := w_lista_warning;
            end if;
         end if;
-        
+
         if w_lista_info is not null then
            if w_note_ws is not null then
               w_note_ws := w_note_ws||chr(10)||chr(10)||w_lista_info;
@@ -2469,7 +2551,7 @@ w_return		number := 0;
 
 cursor sel_servizio_ins is
 -- CONFERMATO
--- x a_archivio_rif = 'ANN' (annotazioni), il servizio potrebbe essere 'R009_A' oppure 'R013' in base al tipo di annotazione 
+-- x a_archivio_rif = 'ANN' (annotazioni), il servizio potrebbe essere 'R009_A' oppure 'R013' in base al tipo di annotazione
 -- (teniamo traccia, ma non gestiamo perchè non vincola gestioni trasversali)
 -- x a_archivio_rif != 'ANN' (atti), valorizzo perchè sempre 'R009_V'
 select 1 w_ord, decode(a_archivio_rif, 'ANN', to_char(null), 'R009_V') servizio_ins
@@ -2512,7 +2594,7 @@ begin
   begin
     select v.id_atto
       into w_id_atto
-      from (select id_atto from civnas where id = a_id_rif and a_archivio_rif = 'NAS' 
+      from (select id_atto from civnas where id = a_id_rif and a_archivio_rif = 'NAS'
             UNION select id_atto from civmor where id = a_id_rif and a_archivio_rif = 'MOR'
             UNION select id_atto from civmat where id = a_id_rif and a_archivio_rif = 'MAT'
             UNION select id_atto from civuci where id = a_id_rif and a_archivio_rif = 'UCI'
@@ -2548,9 +2630,9 @@ begin
                      (id_operazione, servizio, archivio_rif, id_rif, note, terminalista, d_data_reg,
                       flag_invio_ws, d_data_invio_ws, note_ws, id_operazione_ansc, esito_ansc, info_ws, id_atto, flag_annullato)
               select w_new_id_operazione,
-                     w_servizio_ins, 
-                     a_archivio_rif, -- archivio 
-                     a_id_rif, -- primary key dell'atto 
+                     w_servizio_ins,
+                     a_archivio_rif, -- archivio
+                     a_id_rif, -- primary key dell'atto
                      '',
                      w_terminalista,
                      SYSDATE,
@@ -2583,7 +2665,7 @@ begin
 
 << fine >>
 null;
- 
+
   return w_return;
 
 end f_UTIL_ansciu_ins_x_stato;

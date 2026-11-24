@@ -1,0 +1,185 @@
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <grid>
+        <columns>
+            <column width="128px"/>
+            <column/>
+            <column/>
+            <column/>
+        </columns>
+        <rows>
+            <row>
+                <cell >
+                    <customLabel value="@load(vm.etichette['Provvedimento_Divorzio'])"/>
+                </cell>
+                <cell colspan="3">
+                    <radiogroup model="@load(vm.listaSiNo)" onCheck="@command('onSelectProvvedimento')"
+                                selectedItem="@bind(vm.provvedimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                        <template name="model">
+                            <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)"
+                                   disabled="@load(vm.readOnly)" style="padding-left:10px"/>
+                        </template>
+                    </radiogroup>
+                </cell>
+
+            </row>
+
+            <row visible="@bind(vm.provvedimento eq 'SI')">
+                <cell colspan="4">
+                    <groupbox>
+                        <caption label="@load(vm.etichette['Dettaglio_Provvedimento'])"/>
+                        <grid>
+                            <columns>
+                                <column width="116px"/>
+                                <column/>
+                                <column width="116px"/>
+                                <column/>
+                                <column width="70px"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <customLabel mandatory="true" value="@load(vm.etichette['Tipo'])"/>
+                                    </cell>
+                                    <cell>
+                                        <hlayout valign="middle" hflex="1">
+                                            <combobox model="@load(vm.listaTipi)" readonly="true" hflex="1"
+                                                      disabled="@load(vm.readOnly)"
+                                                      selectedItem="@bind(vm.provvedimentoDivorzio.tipo)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="tipo"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                    <cell>
+                                        <customLabel mandatory="true" value="@load(vm.etichette['Motivazione'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <hlayout valign="middle" hflex="1">
+                                            <combobox model="@load(vm.listaMotivi)" readonly="true" hflex="1"
+                                                      disabled="@load(vm.readOnly)"
+                                                      selectedItem="@bind(vm.provvedimentoDivorzio.motivo)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="motivo"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell>
+                                        <customLabel mandatory="true"  value="@load(vm.etichette['Numero'])"/>
+                                    </cell>
+                                    <cell>
+                                        <hlayout valign="middle" hflex="1">
+                                            <textbox value="@bind(vm.provvedimentoDivorzio.numeroDecreto)"
+                                                     readonly="@load(vm.readOnly)"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="numeroDecreto"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                    <cell>
+                                        <customLabel mandatory="true"  value="@load(vm.etichette['Data'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <hlayout valign="middle" hflex="1">
+                                            <datebox value="@bind(vm.provvedimentoDivorzio.dataDecreto)"
+                                                     readonly="@load(vm.readOnly)"
+                                                     format="dd/MM/yyyy"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="dataDecreto"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell>
+                                        <customLabel mandatory="true" value="@load(vm.etichette['Ente'])"/>
+                                    </cell>
+                                    <cell>
+                                        <hlayout valign="middle" hflex="1">
+                                            <combobox model="@load(vm.listaEnti)" readonly="true" hflex="1"
+                                                      disabled="@load(vm.readOnly)"
+                                                      selectedItem="@bind(vm.provvedimentoDivorzio.ente)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                <template name="model">
+                                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="ente"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                    <cell>
+                                        <customLabel mandatory="true" value="@load(vm.etichette['Comune'])"/>
+                                    </cell>
+                                    <cell>
+                                        <hlayout valign="middle" hflex="1">
+                                            <bandboxComuni hflex="1"
+                                                           disabled="@load(vm.readOnly)"
+                                                           value="@load(vm.provvedimentoDivorzio.comuneEnte.descrizione)"
+                                                           onSelect="@command('onSelectComune', campoRiferimento='PROVVEDIMENTO')"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaComune', campoRiferimento='PROVVEDIMENTO')"
+                                            />
+                                        </hlayout>
+                                    </cell>
+                                    <cell>
+                                        <textbox value="@load(vm.provvedimentoDivorzio.comuneEnte.siglaProvincia)" readonly="true" hflex="1"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell>
+                                        <customLabel value="@load(vm.etichette['Autore'])"/>
+                                    </cell>
+                                    <cell>
+                                        <hlayout valign="middle" hflex="1">
+                                            <textbox value="@bind(vm.provvedimentoDivorzio.autoreProvvedimento)"
+                                                     readonly="@load(vm.readOnly)"
+                                                     hflex="1"/>
+                                            <button image="/images/icon/action/16x16/cancel.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                                    onClick="@command('onCancellaCampoProvvedimento')">
+                                                <custom-attributes proprieta="autoreProvvedimento"/>
+                                            </button>
+                                        </hlayout>
+                                    </cell>
+                                    <cell colspan="3"/>
+                                </row>
+                            </rows>
+                        </grid>
+                    </groupbox>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+
+</zk>

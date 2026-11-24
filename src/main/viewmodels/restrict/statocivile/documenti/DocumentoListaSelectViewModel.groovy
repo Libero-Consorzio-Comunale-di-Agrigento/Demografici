@@ -1,7 +1,7 @@
 package restrict.statocivile.documenti
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.statocivile.embed.SoggettoDAT
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.utils.CustomEvents
@@ -27,7 +27,7 @@ class DocumentoListaSelectViewModel extends AbstractRecuperoSelectViewModel {
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("matricola") Integer matricola){
         self = w
@@ -37,12 +37,12 @@ class DocumentoListaSelectViewModel extends AbstractRecuperoSelectViewModel {
         modifyEnabled = false
 
         if (matricola != null){
-            this.lista = statoCivileService.listDocumentoDAT(matricola)
+            this.lista = gsdService.listDocumentoDAT(matricola)
         } else {
             this.lista = []
         }
 
-        List<Map> eList = [Etichette.Documenti]
+        List<Map> eList = [Etichette.getEtichetta("Documenti")]
         eList.addAll(SoggettoDAT.etichetteDomain)
 
         // Aggiungo etichette della Controlbar
@@ -50,10 +50,10 @@ class DocumentoListaSelectViewModel extends AbstractRecuperoSelectViewModel {
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Documenti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Documenti"))
 
         if (lista.size() == 0){
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             onChiudi()
         }
 
@@ -74,7 +74,7 @@ class DocumentoListaSelectViewModel extends AbstractRecuperoSelectViewModel {
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [documento: dettaglio] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

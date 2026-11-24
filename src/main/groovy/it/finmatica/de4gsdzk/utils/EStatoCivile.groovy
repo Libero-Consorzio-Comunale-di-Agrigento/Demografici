@@ -26,6 +26,22 @@ enum EStatoCivile {
         return this in [UC, VU, GU]
     }
 
+    boolean isMatrimonio() {
+        return this in [CN, VE, GC, DV]
+    }
+
+    boolean hasConiugeContraente() {
+        return this in [CN, UC, VE, VU, DV, GC, GU]
+    }
+
+    boolean isVedovo(){
+        return this in [VE,VU]
+    }
+
+    boolean isDivorzioScioglimento(){
+        return this in [DV, GC, GU]
+    }
+
     @Converter
     static class EnumStatoCivileToStringConverter implements AttributeConverter<EStatoCivile, String> {
         @Override

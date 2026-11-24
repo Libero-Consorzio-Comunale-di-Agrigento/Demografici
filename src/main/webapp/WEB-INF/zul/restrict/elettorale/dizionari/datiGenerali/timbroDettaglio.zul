@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.elettorale.dizionari.datiGenerali.TimbroDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarDettaglio/>
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right" width="180px">
+                            <customLabel mandatory="true" value="@load(vm.etichette['Tipo_Lista'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.tipiLista)"
+                                      selectedItem="@bind(vm.dettaglio.tipoLista) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                      readonly="true">
+                                <template name="model">
+                                    <comboitem label="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <customLabel mandatory="true" value="@load(vm.etichette['Tipo_Timbro'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.listaTipiTimbro)" readonly="true"
+                                      selectedItem="@bind(vm.dettaglio.tipo) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem
+                                            label="@load(c:cat3(each.id, ' - ', vm.getEtichettaEnum(each)))"
+                                            value="@load(each.id)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <customLabel mandatory="true" value="@load(vm.etichette['Progressivo'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.listaProgressivi)" readonly="true"
+                                      selectedItem="@bind(vm.dettaglio.progressivo) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem
+                                            label="@load(c:cat3(each.id, ' - ', vm.getEtichettaEnum(each)))"
+                                            value="@load(each.id)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <customLabel mandatory="true" value="@load(vm.etichette['Descrizione'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@bind(vm.dettaglio.descrizione)" hflex="1" maxlength="100"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <customLabel mandatory="true" value="@load(vm.etichette['Testo'])"/>
+                        </cell>
+                        <cell>
+                            <hlayout>
+                                <textbox id="testoConVariabili" value="@bind(vm.dettaglio.testo)" hflex="1" multiline="true" rows="18" maxlength="4000" droppable="true"/>
+                                <templateListaStringhe/>
+                            </hlayout>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Liste'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagDefault)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Code'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagDefaultCode)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Estratti'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagDefaultEstratto)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Intestazione'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagIntestazione)"/>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Firme'])"/>
+                        </cell>
+                        <cell>
+                            <checkbox checked="@bind(vm.dettaglio.flagFirme)"/>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+        </vlayout>
+
+    </window>
+
+</zk>

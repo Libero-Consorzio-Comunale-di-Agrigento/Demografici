@@ -24,6 +24,6 @@ class CivComunicazioneAtto extends CivComunicazioneRelazione2BaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Atto, Etichette.Natura_Atto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Natura_Atto")]
 
 }

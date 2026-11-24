@@ -16,7 +16,7 @@ class ArchivioComunicazioniViewModel extends AbstractTabNavigatorViewModel {
 
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Per_Comunicazione, Etichette.Per_Destinatario]
+        List<Map> eList = [Etichette.getEtichetta("Per_Atto"), Etichette.getEtichetta("Per_Annotazione"), Etichette.getEtichetta("Per_Destinatario")]
 
         doInit(w, eList)
 

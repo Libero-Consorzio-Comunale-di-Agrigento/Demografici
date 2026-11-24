@@ -3,7 +3,6 @@ package it.finmatica.de4gsdzk.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.AnscRuntimeException
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivFirmatarioAttoRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -92,7 +91,7 @@ class CivFirmatarioAttoService {
 	void bloccaSeAttoFirmatoUSC(ETipoAtto tipoAttoEnumSource, Long pkAtto){
 		Boolean firmato = civAttoService.isFirmatoUscAnsc(tipoAttoEnumSource, pkAtto)
 		if (firmato){
-			throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_invio_atto_firmato)
+			throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_invio_atto_firmato"))
 		}
 	}
 

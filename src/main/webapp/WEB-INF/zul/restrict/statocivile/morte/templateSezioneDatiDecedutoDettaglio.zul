@@ -165,7 +165,7 @@
 					</cell>
 					<cell>
 						<combobox model="@load(vm.listaStatoCivile)" readonly="false" hflex="1"
-								  selectedItem="@bind(vm.dettaglio.statoCivile) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')"
+								  selectedItem="@bind(vm.dettaglio.statoCivile) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
 								  onSelect="@command('onSelectStatoCivile')">
 							<template name="model">
 								<comboitem label="@load(empty each?'- -':each.descrizione)" value="@load(each.codice)"/>

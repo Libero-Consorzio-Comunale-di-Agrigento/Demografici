@@ -1,7 +1,7 @@
 package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
@@ -12,11 +12,11 @@ import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResid
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteFamiglia
 import it.finmatica.de4gsdzk.utils.CustomEvents
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
 import org.zkoss.bind.annotation.ContextType
+import org.zkoss.bind.annotation.ExecutionArgParam
 import org.zkoss.bind.annotation.Init
 import org.zkoss.zk.ui.Executions
 import org.zkoss.zk.ui.event.Events
@@ -27,7 +27,6 @@ import org.zkoss.zul.Window
 import restrict.AbstractListaViewModel
 import restrict.TraitControlBarCapable
 
-import javax.persistence.criteria.JoinType
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
@@ -39,6 +38,8 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
     AnaAnagrafe dettaglio
     boolean showAnp = false
 
+    Date dataRiferimento
+
     @WireVariable
     private AnaAnagrafeService anaAnagrafeService
 
@@ -49,8 +50,9 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
     private GsdEtichettaService gsdEtichettaService
 
     @Init
-    init(@ContextParam(ContextType.COMPONENT) Window w) {
+    init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("dataRiferimento") Date data) {
         self = w
+        dataRiferimento = data
 
         controlBarAttributes.pagingEnabled = false
         controlBarAttributes.searchEnabled = false
@@ -58,7 +60,7 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Famiglia]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Famiglia")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaAnagrafe.etichetteDomain)
@@ -71,32 +73,30 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
         eList.addAll(etichetteListaDefault)
 
         // Aggiungo etichette della Controlbar
-        eList.addAll([Etichette.allegati_tooltip, Etichette.Storico_tooltip, Etichette.Storico_famiglia_tooltip])
+        eList.addAll([Etichette.getEtichetta("allegati_tooltip"), Etichette.getEtichetta("Storico_tooltip"), Etichette.getEtichetta("Storico_famiglia_tooltip")])
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Famiglia)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Famiglia"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
         resize()
-
-        caricaFamiglia()
-
-        caricaLista()
+        if(individuoCorrente.famiglia != null) {
+            caricaFamiglia()
+            caricaLista()
+        }
     }
 
     private void caricaFamiglia() {
-        this.famiglia = anaFamigliaService.get(individuoCorrente.famiglia.id,
-                [fetch: [[campo: 'indirizzoResidente.via', tipo: JoinType.LEFT],
-                         [campo: 'intestatarioConvivenza', tipo: JoinType.LEFT]]])
+        this.famiglia = anaFamigliaService.findById(individuoCorrente.famiglia.id)
     }
 
     void caricaLista() {
@@ -138,7 +138,7 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
         openIndividuo(dettaglio)
     }
 
-    private void openIndividuo(GsdAnagrafeBaseDomain soggetto) {
+    private void openIndividuo(AnagrafeBaseDomain soggetto) {
         Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, [soggetto: soggetto])
         onChiudi()
     }
@@ -167,7 +167,7 @@ class FamigliaListaViewModel extends AbstractListaViewModel implements TraitCont
                 self.setVisible(true)
             })
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                openIndividuo(event.data.soggetto as GsdAnagrafeBaseDomain)
+                openIndividuo(event.data.soggetto as AnagrafeBaseDomain)
             })
             w.doEmbedded()
         } catch (Exception ex) {

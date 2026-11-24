@@ -1,7 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile.embed
 
+import it.finmatica.de4gsdzk.GsdBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.anagrafe.IConiuge
 import it.finmatica.de4gsdzk.utils.ESesso
 
@@ -19,6 +20,17 @@ class AnaConiuge implements IConiuge {
 
     @Column(name = "NOME_CN", nullable = true)
     String nome
+
+    @Convert(converter = GsdBaseDomain.BooleanToStringConverter.class)
+    @Column(name = "SENZA_COGNOME_CN", nullable = true)
+    Boolean senzaCognome
+
+    @Convert(converter = GsdBaseDomain.BooleanToStringConverter.class)
+    @Column(name = "SENZA_NOME_CN", nullable = true)
+    Boolean senzaNome
+
+    @Column(name = "COGNOME_NOME_CN", nullable = true)
+    String cognomeNome
 
     @Override
     Integer getIdAnagrafe() {
@@ -56,8 +68,7 @@ class AnaConiuge implements IConiuge {
     }
 
     @Override
-    AnaNazionalita getNazionalita() {
+    AnaCittadinanza getNazionalita() {
         return anagrafe?.nazionalita
     }
-
 }

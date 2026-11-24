@@ -10,7 +10,7 @@ return varchar2
 IS
 
 cursor sel_CF is
-select matricola
+select matricola 
   from anaana
  where cod_fam      = a_cod_fam
    and fascia       = a_fascia
@@ -21,7 +21,7 @@ select matricola
 w_matricola_CF	number;
 
 begin
-  if a_fascia is not null and a_cod_fam is not null then
+  if nvl(a_fascia,0) in (1,3) and a_cod_fam is not null then
      OPEN sel_CF;
      FETCH sel_CF INTO w_matricola_CF;
      CLOSE sel_CF;

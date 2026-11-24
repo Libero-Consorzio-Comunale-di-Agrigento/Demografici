@@ -35,7 +35,7 @@ class CivAnnotazioneAttoService {
 
 	private final CivComunicazioneAllegatoService civComunicazioneAllegatoService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivAnagrafeService civAnagrafeService
 
@@ -46,17 +46,17 @@ class CivAnnotazioneAttoService {
 	private final CivNascitaService civNascitaService
 
 	CivAnnotazioneAttoService(ArcParametroService arcParametroService,
-							  CivAnnotazioneAttoRepository civAnnotazioneAttoRepository, StatoCivileService statoCivileService,
-							  CivAnagrafeService civAnagrafeService, GsdValidazioneTestoService gsdValidazioneTestoService,
-							  CivArchivioComunicazioneService civArchivioComunicazioneService, CivFormulaAnnotazioneService civFormulaAnnotazioneService,
-							  CivComunicazioneFormulaService civComunicazioneFormulaService, CivNascitaRepository civNascitaRepository,
-							  CivMatrimonioRepository civMatrimonioRepository, CivUnioneCivileRepository civUnioneCivileRepository,
-							  ArcComuneBaseService arcComuneBaseService, CivComunicazioneAllegatoService civComunicazioneAllegatoService,
-							  CivNascitaService civNascitaService) {
+                              CivAnnotazioneAttoRepository civAnnotazioneAttoRepository, GsdService gsdService,
+                              CivAnagrafeService civAnagrafeService, GsdValidazioneTestoService gsdValidazioneTestoService,
+                              CivArchivioComunicazioneService civArchivioComunicazioneService, CivFormulaAnnotazioneService civFormulaAnnotazioneService,
+                              CivComunicazioneFormulaService civComunicazioneFormulaService, CivNascitaRepository civNascitaRepository,
+                              CivMatrimonioRepository civMatrimonioRepository, CivUnioneCivileRepository civUnioneCivileRepository,
+                              ArcComuneBaseService arcComuneBaseService, CivComunicazioneAllegatoService civComunicazioneAllegatoService,
+                              CivNascitaService civNascitaService) {
 
 		this.arcParametroService = arcParametroService
 		this.civAnnotazioneAttoRepository = civAnnotazioneAttoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civAnagrafeService = civAnagrafeService
 		this.gsdValidazioneTestoService = gsdValidazioneTestoService
 		this.civArchivioComunicazioneService = civArchivioComunicazioneService
@@ -133,11 +133,11 @@ class CivAnnotazioneAttoService {
 
 	private void validaDati(ETipoOperazione tipoOperazione, CivAnnotazioneAtto obj, CivAttoBaseDomain atto) {
         if (atto.isProvvisorio()){
-			throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_inserimento_annotazione_su_provvisorio)
+			throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_inserimento_annotazione_su_provvisorio"))
         }
 
 		if ( ( (obj.formula?:"") == "") || (obj.formulaDfa == null)  || (obj.tipoAtto == null) ) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_formula_e_tipo_atto_annotazione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_formula_e_tipo_atto_annotazione"))
 		}
 		Boolean emptyMandatoryFields = Boolean.TRUE
 		switch (atto.getTipoAttoEnum()) {
@@ -156,18 +156,18 @@ class CivAnnotazioneAttoService {
 				break
 		}
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori, "- indicare ufficio, anno, atto e tipo di atto cui l'annotazione è associata")
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"), "- indicare ufficio, anno, atto e tipo di atto cui l'annotazione è associata")
 		}
 
 		// L'inserimento da popup non si porta dietro i dati di provenienza per cui non posso bloccare il salvataggio in insert
 		if (obj.flagIstat && (obj.genere == null) && tipoOperazione.isUpdate()){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_genere_annotazione)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_genere_annotazione"))
 		}
 		// I dati sono obbligatori sia per ANSC che per le annotazioni da provvedimento da inviare all'ISTAT
 		if (obj.isProvenienzaEnte() && tipoOperazione.isUpdate()){
 			String sezioneProvenienza = "'Provenienza'"
 			if ( TestoUtils.isVuoto(obj.estremiDocumentoProvenienza) || (obj.comuneProvenienza.codice == null) || (obj.comuneProvenienza.codiceProvincia == null) || (obj.dataProvenienza == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneProvenienza)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneProvenienza)
 			}
 		}
 	}
@@ -242,16 +242,16 @@ class CivAnnotazioneAttoService {
 			//Errore bloccante se dati atto nascita parziali (per le annotazioni)
 			switch (obj.getTipoAttoEnum()) {
 				case ETipoAtto.MAT:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_sposo)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposo"))
 					break
 				case ETipoAtto.UCI:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_contraente_1)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_1"))
 					break
 				case ETipoAtto.MOR:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_deceduto_a)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_deceduto_a"))
 					break
 				case ETipoAtto.CIT:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_intestatario)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_intestatario"))
 					break
 				default:
 					throw new De4gsdzkRuntimeException("Estremi atto nascita soggetto 1 incompleti")
@@ -329,10 +329,10 @@ class CivAnnotazioneAttoService {
 			//Errore bloccante se dati atto nascita parziali (per le annotazioni)
 			switch (obj.getTipoAttoEnum()) {
 				case ETipoAtto.MAT:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_sposa)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposa"))
 					break
 				case ETipoAtto.UCI:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_contraente_2)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_2"))
 					break
 				default:
 					throw new De4gsdzkRuntimeException("Estremi atto nascita soggetto 2 incompleti")
@@ -424,13 +424,13 @@ class CivAnnotazioneAttoService {
 			//Errore bloccante se dati atto di matrimonio parziali (per le annotazioni)
 			switch (obj.getTipoAttoEnum()) {
 				case ETipoAtto.MAT:
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_matrimonio)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_matrimonio"))
 					break
 				case ETipoAtto.UCI:
 					if (((IAttoMatUci) obj).divorzio) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_unione_civile)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_unione_civile"))
 					} else {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto_matrimonio)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto_matrimonio"))
 					}
 					break
 				default:
@@ -481,10 +481,10 @@ class CivAnnotazioneAttoService {
 				} else {
 					switch (obj.getTipoAttoEnum()) {
 						case ETipoAtto.MAT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_sposo_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_sposo_non_presente_in_archivio"))
 							break
 						case ETipoAtto.UCI:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_contraente_1_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_contraente_1_non_presente_in_archivio"))
 							break
 						case ETipoAtto.MOR:
 							switch (tipoSalvataggioAnnotazioneComuneCliente) {
@@ -500,7 +500,7 @@ class CivAnnotazioneAttoService {
 							}
 							break
 						case ETipoAtto.CIT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_intestatario_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_intestatario_non_presente_in_archivio"))
 							break
 						default:
 							throw new De4gsdzkRuntimeException("Atto di nascita non presente in archivio")
@@ -539,10 +539,10 @@ class CivAnnotazioneAttoService {
 				} else {
 					switch (obj.getTipoAttoEnum()) {
 						case ETipoAtto.MAT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_sposo_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_sposo_non_presente_in_archivio"))
 							break
 						case ETipoAtto.UCI:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_contraente_1_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_contraente_1_non_presente_in_archivio"))
 							break
 						case ETipoAtto.MOR:
 							switch (tipoSalvataggioAnnotazioneComuneCliente) {
@@ -558,7 +558,7 @@ class CivAnnotazioneAttoService {
 							}
 							break
 						case ETipoAtto.CIT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_intestatario_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_intestatario_non_presente_in_archivio"))
 							break
 						default:
 							throw new De4gsdzkRuntimeException("Atto di nascita non presente in archivio")
@@ -579,7 +579,7 @@ class CivAnnotazioneAttoService {
 		if (soggetto.dataNascita1 == nascita.dataNascita1) {
 			return
 		}
-		throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_soggetto_non_compatibile, "Atto di nascita: ${nascita.getEstremiAttoLista()}")
+		throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_soggetto_non_compatibile"), "Atto di nascita: ${nascita.getEstremiAttoLista()}")
 	}
 
 	void saveAnnotazioneSuAttoNascita1ComuneCliente(IEstremiAttoNascitaSoggetto1Domain estremiAttoDomain, CivAnnotazioneAtto ann, CivAttoBaseDomain obj) {
@@ -666,10 +666,10 @@ class CivAnnotazioneAttoService {
 				} else {
 					switch (obj.getTipoAttoEnum()) {
 						case ETipoAtto.MAT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_sposa_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_sposa_non_presente_in_archivio"))
 							break
 						case ETipoAtto.UCI:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_contraente_2_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_contraente_2_non_presente_in_archivio"))
 							break
 						default:
 							throw new De4gsdzkRuntimeException("Atto di nascita non presente in archivio")
@@ -708,10 +708,10 @@ class CivAnnotazioneAttoService {
 				} else {
 					switch (obj.getTipoAttoEnum()) {
 						case ETipoAtto.MAT:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_sposa_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_sposa_non_presente_in_archivio"))
 							break
 						case ETipoAtto.UCI:
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_contraente_2_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_contraente_2_non_presente_in_archivio"))
 							break
 						default:
 							throw new De4gsdzkRuntimeException("Atto di nascita non presente in archivio")
@@ -731,7 +731,7 @@ class CivAnnotazioneAttoService {
 		if (soggetto.dataNascita2 == nascita.dataNascita1) {
 			return
 		}
-		throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_nascita_soggetto_non_compatibile, "Atto di nascita: ${nascita.getEstremiAttoLista()}")
+		throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_nascita_soggetto_non_compatibile"), "Atto di nascita: ${nascita.getEstremiAttoLista()}")
 	}
 
 	void saveAnnotazioneSuAttoNascita2ComuneCliente(IEstremiAttoNascitaSoggetto2Domain estremiAttoDomain, CivAnnotazioneAtto ann, CivAttoBaseDomain obj) {
@@ -825,11 +825,11 @@ class CivAnnotazioneAttoService {
 					saveAnnotazioneSuAttoMatUciComuneCliente(estremiAttoDomain, ann, obj)
 				} else {
 					if (obj.tipoAttoEnum == ETipoAtto.MAT) {
-						throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_matrimonio_non_presente_in_archivio)
+						throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_matrimonio_non_presente_in_archivio"))
 					} else if (obj.tipoAttoEnum == ETipoAtto.UCI && (((IAttoMatUci) obj).divorzio)) {
-						throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_unione_civile_non_presente_in_archivio)
+						throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_unione_civile_non_presente_in_archivio"))
 					} else if (obj.tipoAttoEnum == ETipoAtto.UCI && !(((IAttoMatUci) obj).divorzio)) {
-						throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_matrimonio_non_presente_in_archivio)
+						throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_matrimonio_non_presente_in_archivio"))
 					} else {
 						throw new De4gsdzkRuntimeException("Atto di matrimonio/unione civile non presente in archivio")
 					}
@@ -870,7 +870,7 @@ class CivAnnotazioneAttoService {
 						if (esisteMat) {
 							saveAnnotazioneSuAttoMatUciComuneCliente(estremiAttoDomain, ann, obj)
 						} else {
-							throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_matrimonio_non_presente_in_archivio)
+							throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_matrimonio_non_presente_in_archivio"))
 						}
 						break
 					case ETipoAtto.UCI:
@@ -883,7 +883,7 @@ class CivAnnotazioneAttoService {
 							if (esisteUci) {
 								saveAnnotazioneSuAttoMatUciComuneCliente(estremiAttoDomain, ann, obj)
 							} else {
-								throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_unione_civile_non_presente_in_archivio)
+								throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_unione_civile_non_presente_in_archivio"))
 							}
 						} else {
 							// Caso UCN
@@ -895,7 +895,7 @@ class CivAnnotazioneAttoService {
 							if (esisteUcn) {
 								saveAnnotazioneSuAttoMatUciComuneCliente(estremiAttoDomain, ann, obj)
 							} else {
-								throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_atto_matrimonio_non_presente_in_archivio)
+								throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_atto_matrimonio_non_presente_in_archivio"))
 							}
 						}
 						break
@@ -990,7 +990,7 @@ class CivAnnotazioneAttoService {
 
 		boolean val = validaDatiAttoNascitaSoggetto1(atto, estremiAttoDomain, idFormulaDfa)
 		if (val) {
-			String testo = statoCivileService.decodificaTestoAnnotazione(ETipoAtto.NAS.valore, idFormulaDfa, atto, datiProvenienza, 1)
+			String testo = gsdService.decodificaTestoAnnotazione(ETipoAtto.NAS.valore, idFormulaDfa, atto, datiProvenienza, 1)
 			return testo
 		}
 		return ""
@@ -1001,7 +1001,7 @@ class CivAnnotazioneAttoService {
 
 		boolean val = validaDatiAttoNascitaSoggetto2(atto, estremiAttoDomain, idFormulaDfa)
 		if (val){
-			String testo = statoCivileService.decodificaTestoAnnotazione(ETipoAtto.NAS.valore, idFormulaDfa, atto, datiProvenienza, 2)
+			String testo = gsdService.decodificaTestoAnnotazione(ETipoAtto.NAS.valore, idFormulaDfa, atto, datiProvenienza, 2)
 			return testo
 		}
 		return ""
@@ -1016,7 +1016,7 @@ class CivAnnotazioneAttoService {
 			if (atto.divorzio && (atto instanceof CivUnioneCivile)){
 				tipoAttoTarget = ETipoAtto.UCI.valore
 			}
-			String testo = statoCivileService.decodificaTestoAnnotazione(tipoAttoTarget, idFormulaDfa, atto, datiProvenienza, 1)
+			String testo = gsdService.decodificaTestoAnnotazione(tipoAttoTarget, idFormulaDfa, atto, datiProvenienza, 1)
 			return testo
 		}
 		return ""
@@ -1028,19 +1028,19 @@ class CivAnnotazioneAttoService {
 		List<CivArchivioComunicazione> listaComunicazioniAtto = []
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
 			String identificativoAttoRif
 			// devo ricalcolare perché se numero e consolido nella stessa transazione, il valore del campo id_atto dell'atto di riferimento cambia
 			if (attoRif){
-				identificativoAttoRif = statoCivileService.getIdentificativoAtto(attoRif.tipoAtto, attoRif.ufficio, attoRif.anno, attoRif.parte, attoRif.serie, attoRif.atto)
+				identificativoAttoRif = gsdService.getIdentificativoAtto(attoRif.tipoAtto, attoRif.ufficio, attoRif.anno, attoRif.parte, attoRif.serie, attoRif.atto)
 			} else {
-				identificativoAttoRif = statoCivileService.getIdentificativoAtto(atto.tipoAtto, atto.ufficio, atto.anno, atto.parte, atto.serie, atto.atto)
+				identificativoAttoRif = gsdService.getIdentificativoAtto(atto.tipoAtto, atto.ufficio, atto.anno, atto.parte, atto.serie, atto.atto)
 			}
 			obj.idAttoRif = identificativoAttoRif
 
 			// Poiché sono in inserimento, idAtto potrebbe non essere stato generato dal trigger
 			// sicché mi tocca recuperarlo tramite chiamata ad apposita function di db
-			String identificativoAtto = (atto.idAtto?:statoCivileService.getIdentificativoAtto(atto.tipoAtto, atto.ufficio, atto.anno, atto.parte, atto.serie, atto.atto))
+			String identificativoAtto = (atto.idAtto?:gsdService.getIdentificativoAtto(atto.tipoAtto, atto.ufficio, atto.anno, atto.parte, atto.serie, atto.atto))
 			CivAnagrafe anagrafe = civAnagrafeService.getByUkAttoAndTipoAtto(identificativoAtto, atto.tipoAtto)
 			List<CivComunicazioneFormula> listaComunicazioniDefault = civComunicazioneFormulaService.listAllDefaultComunicazioni(obj.formulaDfa.id, atto, anagrafe)
 			for (CivComunicazioneFormula c:listaComunicazioniDefault){
@@ -1093,7 +1093,7 @@ class CivAnnotazioneAttoService {
 		if (obj.id != null) {
 
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 
 			List<CivArchivioComunicazione> lCom = civArchivioComunicazioneService.listAllComunicazioniDaAnnotazioneByAnnotazione(obj)

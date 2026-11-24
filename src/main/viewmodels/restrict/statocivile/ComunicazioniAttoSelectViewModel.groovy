@@ -3,7 +3,10 @@ package restrict.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.statocivile.*
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.DomainUtils
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import org.springframework.dao.DataIntegrityViolationException
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Events
@@ -34,16 +37,16 @@ class ComunicazioniAttoSelectViewModel extends AbstractSelectViewModel{
     @Init init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("atto") CivAttoBaseDomain atto, @ExecutionArgParam("priorita") Boolean priorita) {
         self = w
 
-        List<Map> eList = [Etichette.Comunicazioni, Etichette.Numero_copie, Etichette.Seleziona_Comunicazione, Etichette.Salva]
+        List<Map> eList = [Etichette.getEtichetta("Comunicazioni"), Etichette.getEtichetta("Numero_copie"), Etichette.getEtichetta("Seleziona_Comunicazione"), Etichette.getEtichetta("Salva")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_selezione_comunicazione])
+        eList.addAll([Etichette.getEtichetta("Errore_selezione_comunicazione")])
         // Aggiungo etichette delle Comunicazioni
         eList.addAll(CivComunicazione.etichetteDomain)
         eList.addAll(CivComunicazioneAtto.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Comunicazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Comunicazioni"))
 
         totalSizeLabel = ""
 
@@ -53,7 +56,7 @@ class ComunicazioniAttoSelectViewModel extends AbstractSelectViewModel{
         caricaLista()
 
         if (lista.size() == 0){
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             onChiudi()
         }
     }
@@ -90,10 +93,10 @@ class ComunicazioniAttoSelectViewModel extends AbstractSelectViewModel{
                 Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [idComunicazioneAtto: ac.id] )
                 onChiudi()
             } catch (DataIntegrityViolationException ex){
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_selezione_comunicazione), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_selezione_comunicazione")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

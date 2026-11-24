@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.GsdEtichetta
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarDettaglioAttributes
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -31,7 +30,7 @@ class EtichettaDettaglioViewModel extends AbstractDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.Etichette]
+        List<Map> eList = [Etichette.getEtichetta("Etichette")]
         eList.addAll(etichetteDettaglioDefault)
 
         eList.addAll(GsdEtichetta.etichetteDomain)
@@ -41,7 +40,7 @@ class EtichettaDettaglioViewModel extends AbstractDettaglioViewModel{
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Etichette)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Etichette"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -68,7 +67,7 @@ class EtichettaDettaglioViewModel extends AbstractDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             GsdEtichetta c = gsdEtichettaService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

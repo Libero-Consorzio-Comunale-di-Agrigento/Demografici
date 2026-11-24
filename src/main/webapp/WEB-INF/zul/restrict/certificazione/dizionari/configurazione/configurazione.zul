@@ -15,17 +15,17 @@
 			<tabs>
 				<tab label="@load(vm.etichette['Parametri'])" 			/>
 				<tab label="@load(vm.etichette['Loghi'])"/>
-				<tab label="Log"/>
+				<tab label="@load(vm.etichette['Log'])"/>
 			</tabs>
 			<tabpanels>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/certificazione/dizionari/configurazione/parametroLista.zul" />
+					<include hflex="1" vflex="1" src="/restrict/parametroLista.zul" sezione="CER"/>
 				</tabpanel>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/certificazione/dizionari/configurazione/logoLista.zul"/>
+					<include hflex="1" vflex="1" src="/restrict/logoLista.zul" sezione="CER"/>
 				</tabpanel>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/certificazione/dizionari/configurazione/logsLista.zul"/>
+                    <include hflex="1" vflex="1" src="/restrict/logsLista.zul" sezione="CER"/>
 				</tabpanel>
 			</tabpanels>
 		</tabbox>

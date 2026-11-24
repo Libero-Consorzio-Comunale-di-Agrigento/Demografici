@@ -13,8 +13,8 @@ enum ETipoRichiestaTrascrizione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case CS: return Etichette.Comunicazione_scritta
-            case CV: return Etichette.Verbale
+            case CS: return Etichette.getEtichetta("Comunicazione_scritta")
+            case CV: return Etichette.getEtichetta("Verbale")
         }
         return null
     }

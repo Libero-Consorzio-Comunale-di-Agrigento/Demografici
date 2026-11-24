@@ -29,9 +29,10 @@ class AnagrafeIndexViewModel extends AbstractIndexViewModel {
     init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map> eList = [Etichette.Dizionari, Etichette.Visualizzazione]
+        List<Map> eList = [Etichette.getEtichetta("Dizionari"), Etichette.getEtichetta("Visualizzazione"), Etichette.getEtichetta("Pratiche")]
         //Aggiungo etichette menu laterale
-        eList.addAll([Etichette.Visualizzazione_Individuo, Etichette.Visualizzazione_Famiglia, Etichette.Dati_Generali, Etichette.Configurazione])
+        eList.addAll([Etichette.getEtichetta("Visualizzazione_Individuo"), Etichette.getEtichetta("Visualizzazione_Famiglia"), Etichette.getEtichetta("Dati_Generali"), Etichette.getEtichetta("Configurazione"), Etichette.getEtichetta("Gestione_Pratiche"),
+                      Etichette.getEtichetta("ANPR"), Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Comunicazioni"), Etichette.getEtichetta("Provvedimenti")])
 
         doInit(eList)
 
@@ -61,7 +62,7 @@ class AnagrafeIndexViewModel extends AbstractIndexViewModel {
         List<Sezione> subSezioni = []
 
         for (SezioneBusiness child : sezioneBusiness.subSezioni) {
-            Sezione transformedChild = transform(child);
+            Sezione transformedChild = transform(child)
             subSezioni.add(transformedChild)
         }
 
@@ -78,6 +79,16 @@ class AnagrafeIndexViewModel extends AbstractIndexViewModel {
                 return "/restrict/anagrafe/dizionari/generale/datoGenerale.zul"
             case Sezione.DIZIONARIO_CONFIGURAZIONE:
                 return "/restrict/anagrafe/dizionari/configurazione/configurazione.zul"
+            case Sezione.DIZIONARIO_ANPR:
+                return "/restrict/anagrafe/dizionari/anpr/anpr.zul"
+            case Sezione.GESTIONE_PRATICHE:
+                return "/restrict/anagrafe/pratiche/praticaLista.zul"
+            case Sezione.DIZIONARIO_DOCUMENTI:
+                return "/restrict/anagrafe/dizionari/documenti/documenti.zul"
+            case Sezione.DIZIONARIO_COMUNICAZIONI:
+                return "/restrict/anagrafe/dizionari/comunicazioni/comunicazioni.zul"
+            case Sezione.DIZIONARIO_PROVVEDIMENTI:
+                return "/restrict/anagrafe/dizionari/provvedimenti/provvedimenti.zul"
         }
 
         return null

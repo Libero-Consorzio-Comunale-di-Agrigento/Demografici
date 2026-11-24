@@ -41,6 +41,7 @@ UNION ALL
 select ana.matricola, ana.cognome, ana.nome, ana.d_data_nas, ana.sesso, 'NRE'
   from anaana ana
  where ana.fascia + 0 in (5,6)
+    or  (ana.fascia + 0 in (2,4) and ana.stato != 50)
 UNION ALL
 -- AN  RES Residenti ana_fascia + 0 = 1
 select ana.matricola, ana.cognome, ana.nome, ana.d_data_nas, ana.sesso, 'RES'
@@ -183,6 +184,12 @@ comment on table cerana_filtro_dcc is 'Certificazione - Codici Controllo per Mat
 create or replace view cerana_filtro_civ
        (matricola, tipo_archivio, cognome, nome, d_data_nas, sesso, filtro)
 AS
+select ana.matricola, 1, cit_f.cognome, cit_f.nome, cit_f.d_data_nas, cit_f.sesso, cit_f.filtro
+  from cercit_filtro cit_f, anaana ana
+ where cit_f.cognome_nome = ana.cognome_nome (+)
+   and cit_f.sesso        = ana.sesso (+)
+   and cit_f.data_nas     = ana.data_nas (+)
+UNION
 select ana.matricola, 2, nas_f.cognome, nas_f.nome, nas_f.d_data_nas, nas_f.sesso, nas_f.filtro
   from cernas_filtro nas_f, anaana ana
  where nas_f.cognome_nome = ana.cognome_nome (+)

@@ -4,7 +4,7 @@ import it.finmatica.de4gsdzk.certificazione.AnprRichiestaCertificatoResult
 import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmesso
 import it.finmatica.de4gsdzk.certificazione.generazione.CertificatoGenerato
 import it.finmatica.de4gsdzk.certificazione.generazione.ETipoGenerazioneCertificato
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.ETipoFile
 import spock.lang.Specification
 import spock.lang.Subject
@@ -14,10 +14,10 @@ class AnprGenerazioneCertificatoServiceSpec extends Specification {
     private static byte[] certificatoContent = "certificato-content".bytes
     private static String certificatoError = "certificato-error"
 
-    StatoCivileService statoCivileService = Mock()
+    GsdService gsdService = Mock()
 
     @Subject
-    AnprGenerazioneCertificatoService service = new AnprGenerazioneCertificatoService(statoCivileService)
+    AnprGenerazioneCertificatoService service = new AnprGenerazioneCertificatoService(gsdService)
 
     def "Check su possibilità di generare il certificato"() {
         given: "Parametri per la generazione del certificato"
@@ -39,7 +39,7 @@ class AnprGenerazioneCertificatoServiceSpec extends Specification {
 
         when: "La chiamata ANPR ritorna il certificato"
         AnprRichiestaCertificatoResult anprResult = new AnprRichiestaCertificatoResult(certificatoContent, null)
-        statoCivileService.anprRichiestaCertificato(_, _) >> anprResult
+        gsdService.anprRichiestaCertificato(_, _) >> anprResult
 
         and: "La generazione del certificato viene invocata"
         service.generateCertificato(anprParams)
@@ -62,7 +62,7 @@ class AnprGenerazioneCertificatoServiceSpec extends Specification {
 
         when: "La chiamata ANPR ritorna un errore"
         AnprRichiestaCertificatoResult anprResult = new AnprRichiestaCertificatoResult(certificatoContent, certificatoError)
-        statoCivileService.anprRichiestaCertificato(_, _) >> anprResult
+        gsdService.anprRichiestaCertificato(_, _) >> anprResult
 
         and: "La generazione del certificato viene invocata"
         service.generateCertificato(anprParams)
@@ -82,7 +82,7 @@ class AnprGenerazioneCertificatoServiceSpec extends Specification {
         }
 
         when: "La chiamata ANPR ritorna un errore"
-        statoCivileService.anprRichiestaCertificato(_, _) >> { throw new Exception("Invalid input") }
+        gsdService.anprRichiestaCertificato(_, _) >> { throw new Exception("Invalid input") }
 
         and: "La generazione del certificato viene invocata"
         service.generateCertificato(anprParams)

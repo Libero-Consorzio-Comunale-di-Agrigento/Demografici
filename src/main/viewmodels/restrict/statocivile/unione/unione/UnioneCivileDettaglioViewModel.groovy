@@ -2,6 +2,7 @@ package restrict.statocivile.unione.unione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
@@ -26,7 +27,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivUnioneCivileService civUnioneCivileService
@@ -78,7 +79,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
 
         try {
             dettaglio = new CivUnioneCivile(anno: Calendar.getInstance().get(Calendar.YEAR), codiceRecord: new Integer(3), certificabile: ETipoSiNo.NO)
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
             // Solo per atti in inserimento e integrazione ANSC attiva
             if (anscOn){
                 // ulteriori inizializzazioni in funzione di parte/serie/cat dopo il recupero del tipo atto
@@ -146,7 +147,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
         listaAnnotazioniNascita = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if ( isCaricamentoFormuleAnnotazioneAbilitato() ) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
             if (l.size() > 0) {
                 listaAnnotazioniNascita.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -157,7 +158,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
         listaAnnotazioniMatrimonio = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if ( dettaglio.isUnioneCivileConiugi() && isCaricamentoFormuleAnnotazioneAbilitato() ) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.MAT.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.MAT.valore])
             if (l.size() > 0) {
                 listaAnnotazioniMatrimonio.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -240,7 +241,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -251,7 +252,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
     }
 
     void numera(){
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null){
             numeraAtto = null
         }
@@ -278,7 +279,7 @@ class UnioneCivileDettaglioViewModel extends UnioneCivileDettaglioParentViewMode
                 try {
                     c = civUnioneCivileService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, sposi, testimoni, documentoPubblicazione, mapFormule, mapAnnotazioniDaAtto, gc, margineMandatory, listaSoggettiCollegati, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (statoFrammenti == 1) {
                         statoFrammenti = 2

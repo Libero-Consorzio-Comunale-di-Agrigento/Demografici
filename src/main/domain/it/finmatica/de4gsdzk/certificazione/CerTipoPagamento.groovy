@@ -9,6 +9,14 @@ import javax.persistence.*
 @Table(name = "CERDTP")
 class CerTipoPagamento extends GsdBaseDomain {
 
+    static final Integer ID_CONTANTI = 1
+    static final Integer ID_POS = 2
+    static final Integer ID_PAGOPA = 3
+    static final Integer ID_MASTERCARD = 4
+    static final Integer ID_TIPO_PAGAMENTO_5 = 5
+    static final Integer ID_DIFFERITO = 8
+    static final Integer ID_ALTRO = 9
+
     @Id
     @Column(name = "COD_TP")
     Integer id
@@ -32,5 +40,5 @@ class CerTipoPagamento extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione")]
 }

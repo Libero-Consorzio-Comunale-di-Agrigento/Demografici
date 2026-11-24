@@ -14,8 +14,8 @@ enum ETipoMancatoConsensoMadre {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NO: return Etichette.non_vuole_essere_nominata
-            case DE: return Etichette.non_puo_essere_nominata
+            case NO: return Etichette.getEtichetta("non_vuole_essere_nominata")
+            case DE: return Etichette.getEtichetta("non_puo_essere_nominata")
         }
         return null
     }

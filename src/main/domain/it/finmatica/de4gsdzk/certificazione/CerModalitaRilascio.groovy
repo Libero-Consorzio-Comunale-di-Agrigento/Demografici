@@ -66,7 +66,7 @@ class CerModalitaRilascio extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Descrizione_stampa, Etichette.Categoria_Tipo_Certificato,
-                                              Etichette.Esenzione_diritti, Etichette.Pagamento_bollo, Etichette.Fascia_tariffaria_Bollo, Etichette.Uso,
-                                              Etichette.Specifica_Esenzione_Libera, Etichette.Dismesso, Etichette.Uso_interno]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Descrizione_stampa"), Etichette.getEtichetta("Categoria_Tipo_Certificato"),
+                                              Etichette.getEtichetta("Esenzione_diritti"), Etichette.getEtichetta("Pagamento_bollo"), Etichette.getEtichetta("Fascia_tariffaria_Bollo"), Etichette.getEtichetta("Uso"),
+                                              Etichette.getEtichetta("Specifica_Esenzione_Libera"), Etichette.getEtichetta("Dismesso"), Etichette.getEtichetta("Uso_interno")]
 }

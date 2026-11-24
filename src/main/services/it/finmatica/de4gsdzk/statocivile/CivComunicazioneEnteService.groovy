@@ -1,9 +1,9 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneEnteRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,11 +18,11 @@ class CivComunicazioneEnteService {
 
     private CivComunicazioneEnteRepository civComunicazioneEnteRepository
 
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
-    CivComunicazioneEnteService(CivComunicazioneEnteRepository civComunicazioneEnteRepository, StatoCivileService statoCivileService) {
+    CivComunicazioneEnteService(CivComunicazioneEnteRepository civComunicazioneEnteRepository, GsdService gsdService) {
         this.civComunicazioneEnteRepository = civComunicazioneEnteRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     CivComunicazioneEnte get(Long id) {
@@ -54,7 +54,7 @@ class CivComunicazioneEnteService {
         // Controlla l'unicità
         CivComunicazioneEnte esistente = civComunicazioneEnteRepository.findByTipoAttoAndComunicazioneAndEnte(obj.tipoAtto, obj.comunicazione, obj.ente)
         if (esistente && esistente.id!=obj.id) {
-            throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Relazione_Duplicata)
+            throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Relazione_Duplicata"))
         }
     }
 
@@ -62,7 +62,7 @@ class CivComunicazioneEnteService {
         validaDati(obj)
 
         if (obj.id==null) {
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
 
         log.info("Lancio salvataggio su CIVDDC per id " + obj.id)

@@ -8,7 +8,7 @@
             <column/>
             <column width="180px"/>
             <column/>
-            <column width="180px"/>
+            <column width="100px"/>
             <column/>
             <column width="220px"/>
         </columns>
@@ -28,7 +28,21 @@
                         </button>
                     </hlayout>
                 </cell>
-                <cell colspan="2"/>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Matricola'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaIndividuo.matricola)"
+                                onOK="@command('onRicerca')"
+                                hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="matricola"/>
+                        </button>
+                    </hlayout>
+                </cell>
                 <cell/>
             </row>
             <row>
@@ -83,7 +97,7 @@
                     </combobox>
                 </cell>
                 <cell>
-                    <zk if="${vm.ricercaIndividuo.ricercaRettificatiEnabled}">
+                    <zk if="${vm.ricercaIndividuo.ricercaRettificatiEnabled or vm.ricercaIndividuo.ricercaAnsc}">
                         <buttonRicercaAnagrafe/>
                     </zk>
                 </cell>
@@ -92,13 +106,12 @@
                 <cell align="right">
                     <label value="@load(vm.etichette['Data_Nascita'])"/>
                 </cell>
-                <cell colspan="3">
+                <cell colspan="2">
                     <hlayout valign="middle">
                         <label value="@load(vm.etichette['Da'])"/>
                         <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaIndividuo.dataNascitaDal)"
                                  mold="rounded"
                                  width="110px" onOK="@command('onRicerca')"/>
-                        <space/>
                         <label value="@load(vm.etichette['A'])"/>
                         <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaIndividuo.dataNascitaAl)"
                                  mold="rounded"
@@ -110,39 +123,30 @@
                         </button>
                     </hlayout>
                 </cell>
-                <cell colspan="2"/>
+                <cell colspan="3"/>
                 <cell>
                     <zk if="${vm.ricercaIndividuo.ricercaRettificatiEnabled}">
                         <button label="@load(vm.etichette['Ricerca_movimenti_rettificati'])"
                                 onClick="@command('onRicercaRettificati')"
-                                image="/images/icon/action/16x16/search_special.png"
+                                image="/images/icon/action/22x22/search_special.png"
                                 hflex="1"/>
                     </zk>
-                    <zk if="${!vm.ricercaIndividuo.ricercaRettificatiEnabled}">
+                    <zk if="${vm.ricercaIndividuo.ricercaAnsc}">
+                        <button label="@load(vm.etichette['Ricerca_ANSC'])"
+                                onClick="@command('onRicercaANSC')"
+                                image="/images/de4gsdzk/22x22/ansc.png"
+                                hflex="1"/>
+                    </zk>
+                    <zk if="${!(vm.ricercaIndividuo.ricercaRettificatiEnabled or vm.ricercaIndividuo.ricercaAnsc)}">
                         <buttonRicercaAnagrafe/>
                     </zk>
                 </cell>
             </row>
             <row>
                 <cell align="right">
-                    <customLabel value="@load(vm.etichette['Matricola'])"/>
-                </cell>
-                <cell>
-                    <hlayout valign="middle" hflex="1">
-                        <intbox value="@bind(vm.ricercaIndividuo.matricola)"
-                                onOK="@command('onRicerca')"
-                                hflex="1"/>
-                        <button image="/images/icon/action/16x16/cancel.png"
-                                tooltiptext="@load(vm.etichette['Cancella'])"
-                                onClick="@command('onCancellaCampoRicerca')">
-                            <custom-attributes proprieta="matricola"/>
-                        </button>
-                    </hlayout>
-                </cell>
-                <cell align="right">
                     <customLabel value="@load(vm.etichette['Id_scheda_ANPR'])"/>
                 </cell>
-                <cell>
+                <cell  colspan="2" >
                     <hlayout valign="middle" hflex="1">
                         <intbox value="@bind(vm.ricercaIndividuo.idSoggettoAnpr)"
                                 onOK="@command('onRicerca')"
@@ -157,7 +161,7 @@
                 <cell align="right">
                     <customLabel value="@load(vm.etichette['Id_unico_nazionale'])"/>
                 </cell>
-                <cell>
+                <cell  colspan="2">
                     <hlayout valign="middle" hflex="1">
                         <textbox value="@bind(vm.ricercaIndividuo.idUnicoAnpr)"
                                  onOK="@command('onRicerca')"
@@ -172,7 +176,7 @@
                 <cell>
                     <button label="@load(vm.etichette['Ricerca_in_ANPR'])"
                             onClick="@command('onRicercaANP')"
-                            image="/images/de4gsdzk/16x16/anpr.png"
+                            image="/images/de4gsdzk/22x22/anpr.png"
                             hflex="1"/>
                 </cell>
             </row>

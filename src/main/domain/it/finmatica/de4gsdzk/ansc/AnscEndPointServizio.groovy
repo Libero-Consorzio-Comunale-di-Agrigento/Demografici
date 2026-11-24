@@ -149,8 +149,19 @@ class AnscEndPointServizio extends GsdBaseDomain{
     Boolean flagVisibile
 
     @Convert(converter=BooleanToStringConverter.class)
+    @Column(name = "FLAG_CONSULTAZIONE_SOG_PAR", nullable = true)
+    Boolean flagConsultazioneSoggPar
+
+    @Convert(converter=BooleanToStringConverter.class)
+    @Column(name = "FLAG_ALERT_ATTO_RETTIFICATO", nullable = true)
+    Boolean flagAlertAttoRettificato
+
+    @Convert(converter=BooleanToStringConverter.class)
     @Column(name = "FLAG_CERTIFICAZIONE", nullable = true)
     Boolean flagCertificazione
+
+    @Column(name = "FLAG_ENTE_RICHIEDENTE", nullable = true)
+    String flagEnteRichiedente
 
     @Formula("CONCAT(SERVIZIO, CONCAT(CASE WHEN SERVIZIO IS NULL THEN '' ELSE ' - ' END, COALESCE(DESCRIZIONE, '')))")
     String descrizioneEstesa
@@ -170,7 +181,7 @@ class AnscEndPointServizio extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Servizio, Etichette.Descrizione, Etichette.Flag_Allegati, Etichette.Flag_Ripetizione,
-                                              Etichette.Flag_Verifica, Etichette.Flag_Download_Allegato, Etichette.Flag_Obbligatorio, Etichette.Flag_Visibile, Etichette.Url]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Servizio"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Flag_Allegati"), Etichette.getEtichetta("Flag_Ripetizione"),
+                                              Etichette.getEtichetta("Flag_Verifica"), Etichette.getEtichetta("Flag_Download_Allegato"), Etichette.getEtichetta("Flag_Obbligatorio"), Etichette.getEtichetta("Flag_Visibile"), Etichette.getEtichetta("Url")]
 
 }

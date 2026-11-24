@@ -31,7 +31,7 @@ class MatrimonioANSCListaViewModel extends AnscAttoListaParentViewModel {
 
         backFromListANSCEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_DATI_MATRIMONIO, Etichette.SEZIONE_SPOSO, Etichette.SEZIONE_SPOSA]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_DATI_MATRIMONIO"), Etichette.getEtichetta("SEZIONE_SPOSO"), Etichette.getEtichetta("SEZIONE_SPOSA")]
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams())
 

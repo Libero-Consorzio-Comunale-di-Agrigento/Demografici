@@ -28,4 +28,8 @@ class ParametroProtocolloDiz{
 
     @Column(name="DES_TIPO_ATTO_CIV") String descrizioneTipoAtto
 
+    @Column(name="COD_FASE_ANA") String codiceFaseAnagrafe
+
+    @Column(name="DES_FASE_ANA") String descrizioneFaseAnagrafe
+
 }

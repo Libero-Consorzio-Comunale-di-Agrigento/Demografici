@@ -1,12 +1,12 @@
 package restrict.statocivile.dizionari.minuta
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -40,7 +40,7 @@ class MinutaDettaglioViewModel extends DizionarioDettaglioViewModel implements T
     private CivCategoriaTipoRichiestaService civCategoriaTipoRichiestaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private ArcParametroService arcParametroService
@@ -50,23 +50,23 @@ class MinutaDettaglioViewModel extends DizionarioDettaglioViewModel implements T
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Minuta, Etichette.Testo, Etichette.Variabili_Cerca]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Minuta"), Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Variabili_Cerca")]
         eList.addAll(CivMinuta.etichetteDomain)
 
         // Aggiungo etichette tipo atto
         eList.addAll(Arrays.asList(ETipoAtto.values())*.etichettaDesc)
 
         // Aggiungo etichette tipo richiesta
-        eList.addAll([Etichette.Tipo_richiesta])
+        eList.addAll([Etichette.getEtichetta("Tipo_richiesta")])
 
         // Aggiungo etichette messaggi
-        eList.addAll(EtichetteMessaggi.Warn_Categoria_obsoleta_ANSC)
+        eList.addAll(Etichette.getEtichetta("Warn_Categoria_obsoleta_ANSC"))
 
         doInitEtichette(eList)
 
-        setListaStringhe( statoCivileService.listVariabili(CivTestoMinuta.class, tipoAttoEnum.valore), getEtichetta(Etichette.Variabili_Cerca), 13)
+        setListaStringhe( gsdService.listVariabili(CivTestoMinuta.class, tipoAttoEnum.valore), getEtichetta(Etichette.getEtichetta("Variabili_Cerca")), 13)
 
-        msgTitle = getEtichetta(Etichette.Minuta)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Minuta"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -128,11 +128,11 @@ class MinutaDettaglioViewModel extends DizionarioDettaglioViewModel implements T
         if (dettaglio) {
             Boolean anscOn = arcParametroService.isIntegrazioneAnscAttiva()
             if (anscOn && !(dettaglio.categoriaDomain?.flagAnsc ?: false)) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Categoria_obsoleta_ANSC), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Categoria_obsoleta_ANSC")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
 
             CivMinuta c = civMinutaService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

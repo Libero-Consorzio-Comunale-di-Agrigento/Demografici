@@ -1,0 +1,84 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@bind(vm.soggetto.matricola ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Recapiti_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell>
+                        <groupbox closable="false">
+                            <caption label="@load(vm.etichette['Recapiti'])"/>
+
+                            <hlayout valign="middle" sclass="navigazione" height="40px">
+                                <hlayout sclass="afc-control-bar" valign="middle">
+                                    <toolbarbutton image="/images/icon/action/22x22/add.png"
+                                                   disabled="@load(vm.readOnly)"
+                                                   tooltiptext="@load(vm.etichette['inserisci_recapito_tooltip'])"
+                                                   onClick="@command('onInserisciRecapito')"/>
+
+                                </hlayout>
+                            </hlayout>
+                            <listbox model="@load(vm.soggetto.recapiti)"
+                                     emptyMessage="@load(vm.etichette['Nessun_Recapito_Presente'])">
+                                <listhead>
+                                    <listheader label="@load(vm.etichette['Tipo_Recapito'])"/>
+                                    <listheader label="@load(vm.etichette['Numero_Telefonico'])"/>
+                                    <listheader label="@load(vm.etichette['Indirizzo'])"/>
+                                    <listheader label="@load(vm.etichette['Comune'])"/>
+                                    <listheader label="@load(vm.etichette['Note'])"/>
+                                    <listheader label="" width="60px"/>
+                                </listhead>
+                                <template name="model" var="item">
+                                    <listitem>
+                                        <listcell>
+                                            <combobox model="@load(vm.listaTipiRecapito)" readonly="true" hflex="1" disabled="@load(vm.readOnly or item.id ne null)"
+                                                      onChange="@command('onChangeTipoRecapito', recapito=item)"
+                                                      selectedItem="@bind(item.tipoRecapito) @converter('it.finmatica.zk.utils.PropertyConverter', property='codTr')">
+                                                <template name="model">
+                                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                                </template>
+                                            </combobox>
+                                        </listcell>
+                                        <listcell>
+                                            <textbox hflex="1" value="@bind(item.numeroTelefonico)" disabled="@load(vm.readOnly or not item.tipoRecapito.flagNumeroTelefonico)"/>
+                                        </listcell>
+                                        <listcell>
+                                            <textbox hflex="1" value="@bind(item.indirizzo)" disabled="@load(vm.readOnly or not item.tipoRecapito.flagIndirizzo)"/>
+                                        </listcell>
+                                        <listcell>
+                                            <bandboxComuni hflex="1"
+                                                           value="@load(item.comuneRecapito.descrizione)"
+                                                           disabled="@load(vm.readOnly or not item.tipoRecapito.flagComune)"
+                                                           onSelect="@command('onSelectComuneRecapito', comune=item.comuneRecapito)"/>
+                                        </listcell>
+                                        <listcell>
+                                            <textbox rows="2" hflex="1" value="@bind(item.note)" readonly="@load(vm.readOnly)"/>
+                                        </listcell>
+                                        <listcell>
+                                            <button image="/images/icon/action/22x22/delete.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['elimina_tooltip_recapito'])"
+                                                    onClick="@command('onEliminaRecapito', recapito=item)"/>
+                                        </listcell>
+                                    </listitem>
+                                </template>
+                            </listbox>
+                        </groupbox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

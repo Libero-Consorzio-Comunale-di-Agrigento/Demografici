@@ -51,15 +51,15 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
 
         this.servizio = servizio
 
-        List<Map<String, String>> eList = [Etichette.Chiudi, Etichette.Otp, Etichette.Elabora, Etichette.Recupera_Otp_Ansc]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Chiudi"), Etichette.getEtichetta("Otp"), Etichette.getEtichetta("Elabora"), Etichette.getEtichetta("Recupera_Otp_Ansc")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_firmatario, EtichetteMessaggi.Compilare_Codice_OTP, EtichetteMessaggi.Ask_salvataggio_otp_ANSC,
-                      EtichetteMessaggi.Compilare_campi_obbligatori, EtichetteMessaggi.Errore_ANSC_abilitazione_utente])
+        eList.addAll([Etichette.getEtichetta("Compilare_firmatario"), Etichette.getEtichetta("Compilare_Codice_OTP"), Etichette.getEtichetta("Ask_salvataggio_otp_ANSC"),
+                      Etichette.getEtichetta("Compilare_campi_obbligatori"), Etichette.getEtichetta("Errore_ANSC_abilitazione_utente")])
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
         recuperaOtpEnabled = Boolean.FALSE //((anscParametroService.get(ArcParametro.?)?.valore?:'N') == ETipoSN.S.name())
 
-        msgTitle = getEtichetta(etichette, Etichette.Otp)
+        msgTitle = getEtichetta(etichette, Etichette.getEtichetta("Otp"))
 
         // Parametro che attiva il pulsante per l'apertura della finestra di acquisizione dell'otp nella webapp ANSC
         urlOTP = (anscParametroService.get(AnscParametro.URL_OTP)?.valore?:"")
@@ -67,7 +67,7 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
         if (ansUte){
             this.anscOtp = ansUte.anscOtp
         } else {
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_ANSC_abilitazione_utente), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_ANSC_abilitazione_utente")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             chiudi()
         }
         self.addEventListener(CustomEvents.ON_SAVE_SETTINGS, new org.zkoss.zk.ui.event.EventListener() {
@@ -81,7 +81,7 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
                     ute.anscConsensoMemo = anscConsensoMemo
                     ute.anscOtp = (anscConsensoMemo.equals(ETipoSiNo.SI)?event.data.anscOtp:"")
                     ute.anscDataOtp = new Date()
-                    AnscUtente ansUteSaved = anscUtenteService.save(ute)
+                    AnscUtente ansUteSaved = anscUtenteService.save(ETipoOperazione.UPD, ute, false)
 
                     eseguiServizio(ansUteSaved, event.data.anscOtp, srv)
                 }
@@ -102,7 +102,7 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
                     otpScaduto = (dateLimit?.compareTo(new Date()) < 0)
                 }
                 if ( (ansUte.anscConsensoMemo == null) || otpScaduto || ( (ansUte.anscConsensoMemo == ETipoSiNo.SI) && (ansUte.anscOtp != anscOtp) ) && (!(servizio.flagOtpFirma)) ){
-                    Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Ask_salvataggio_otp_ANSC), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                    Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Ask_salvataggio_otp_ANSC")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                             new org.zkoss.zk.ui.event.EventListener() {
                                 void onEvent(Event e) {
                                     if (Messagebox.ON_YES.equals(e.getName())){
@@ -118,11 +118,11 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
                     eseguiServizio(ansUte, anscOtp, servizio)
                 }
             } else {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_ANSC_abilitazione_utente), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_ANSC_abilitazione_utente")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 chiudi()
             }
         } else {
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Compilare_Codice_OTP), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Compilare_Codice_OTP")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -133,7 +133,7 @@ class AnscOtpViewModel extends AbstractResizedViewModel{
                 Events.sendEvent(CustomEvents.ON_SEND_ANSC_SERVICE, self, [credenziali: cre])
                 chiudi()
             } else {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Compilare_campi_obbligatori), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Compilare_campi_obbligatori")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
             AnscCredenziali cre = new AnscCredenziali(ansUte, otpUte)

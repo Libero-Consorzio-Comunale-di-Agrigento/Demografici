@@ -377,7 +377,7 @@ class CivMargine extends GsdBaseDomain implements IEstremiAttoNascitaSoggetto1Do
     static final String INV1 = "INV1"
     static final String N = "N"
 
-    static final List<Map> etichetteDomain = [Etichette.Margine, Etichette.Affissione_nel_Comune_di, Etichette.Rilasciato_Libretto_famiglia,
-                                              Etichette.Dal, Etichette.Al]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Margine"), Etichette.getEtichetta("Affissione_nel_Comune_di"), Etichette.getEtichetta("Rilasciato_Libretto_famiglia"),
+                                              Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al")]
 
 }

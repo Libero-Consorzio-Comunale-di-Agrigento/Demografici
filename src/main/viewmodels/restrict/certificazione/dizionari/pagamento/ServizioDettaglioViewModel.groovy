@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.pagamento.depag.DepagServizio
 import it.finmatica.de4gsdzk.pagamento.depag.DepagServizioService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -31,12 +30,12 @@ class ServizioDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Servizio]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Servizio")]
         eList.addAll(DepagServizio.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Parametro)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Parametro"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -68,7 +67,7 @@ class ServizioDettaglioViewModel extends DizionarioDettaglioViewModel {
     void onSalvaRecord() {
         if (dettaglio) {
             DepagServizio c = depagServizioService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

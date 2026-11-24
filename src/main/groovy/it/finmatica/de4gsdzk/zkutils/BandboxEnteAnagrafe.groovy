@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.zkutils
 
 import it.finmatica.de4gsdzk.GsdEtichettaService
-import it.finmatica.de4gsdzk.anagrafe.AnaEnte
-import it.finmatica.de4gsdzk.anagrafe.AnaEnteService
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnte
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnteService
 import it.finmatica.de4gsdzk.config.Holders
 import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.Paginazione
@@ -40,8 +40,8 @@ class BandboxEnteAnagrafe extends CustomBandbox {
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 	
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -55,7 +55,7 @@ class BandboxEnteAnagrafe extends CustomBandbox {
 		Paginazione paginazione = new Paginazione(p?.getContent(), p?.getTotalElements())
 		listbox.setModel(new ListModelList( (paginazione?.lista?:[]) ) )
 		paging.setTotalSize( ( (int)(paginazione?.count?:0) ) )
-		label.value = getEtichetta(etichette, Etichette.Numero_record_trovati) + paging.totalSize
+		label.value = getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) + paging.totalSize
 	}
 
 }

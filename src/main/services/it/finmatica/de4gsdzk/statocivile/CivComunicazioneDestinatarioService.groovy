@@ -1,40 +1,54 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
+import it.finmatica.de4gsdzk.IArchivioComunicazioneService
+import it.finmatica.de4gsdzk.IComunicazioneAllegatoRepository
+import it.finmatica.de4gsdzk.IComunicazioneDestinatario
+import it.finmatica.de4gsdzk.IComunicazioneDestinatarioRepository
+import it.finmatica.de4gsdzk.IComunicazioneDestinatarioService
+import it.finmatica.de4gsdzk.TraitComunicazioneDestinatarioService
 import it.finmatica.de4gsdzk.errors.ErroreDatiComunicazioneRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneDestinatarioRepository
 import it.finmatica.de4gsdzk.utils.EStatoProtocollazione
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Slf4j
 @Transactional
 @Service
-class CivComunicazioneDestinatarioService {
+class CivComunicazioneDestinatarioService implements IComunicazioneDestinatarioService, TraitComunicazioneDestinatarioService {
 
 	private final CivArchivioComunicazioneService civArchivioComunicazioneService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivComunicazioneDestinatarioRepository civComunicazioneDestinatarioRepository
 
-    CivComunicazioneDestinatarioService(CivComunicazioneDestinatarioRepository civComunicazioneDestinatarioRepository, StatoCivileService statoCivileService,
-										CivArchivioComunicazioneService civArchivioComunicazioneService) {
+    CivComunicazioneDestinatarioService(CivComunicazioneDestinatarioRepository civComunicazioneDestinatarioRepository, GsdService gsdService,
+                                        CivArchivioComunicazioneService civArchivioComunicazioneService) {
 
 		this.civComunicazioneDestinatarioRepository = civComunicazioneDestinatarioRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civArchivioComunicazioneService = civArchivioComunicazioneService
 	}
 
-	CivComunicazioneDestinatario get (Long id){
-		return civComunicazioneDestinatarioRepository.findById(id)
-	}
+    @Override
+    IComunicazioneDestinatarioRepository getComunicazioneDestinatarioRepository() {
+        return civComunicazioneDestinatarioRepository
+    }
 
-	List<CivComunicazioneDestinatario> listAllByArchivioComunicazione(Long idArcCom){
-		return civComunicazioneDestinatarioRepository.findAllByArchivioComunicazione(idArcCom)
-	}
+    @Override
+    IArchivioComunicazioneService getArchivioComunicazioneService() {
+        return civArchivioComunicazioneService
+    }
+
+    @Override
+    GsdService getGsdService() {
+        return gsdService
+    }
+
 
 	List<Map> listAllByTipoAttoAndStampaEseguita(ETipoAtto tipoAttoEnum, Boolean stampaEseguita){
 		List<Object[]> lC = civComunicazioneDestinatarioRepository.findAllByTipoAttoAndStampaEseguita(new Integer(tipoAttoEnum.valore), stampaEseguita)
@@ -43,42 +57,6 @@ class CivComunicazioneDestinatarioService {
 			result.add([comuneDestinatario: o[0], provinciaDestinatario: o[1], ente:o[2]])
 		}
 		return result
-	}
-
-	private void validaDati(CivComunicazioneDestinatario obj) {
-
-		civArchivioComunicazioneService.bloccaSeProtocollata(obj.archivioComunicazione)
-
-		civArchivioComunicazioneService.bloccaSeInviataAlbo(obj.archivioComunicazione)
-
-	}
-
-	CivComunicazioneDestinatario save (CivComunicazioneDestinatario obj){
-		validaDati(obj)
-
-		if (obj.id == null){
-			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
-		}
-		log.info("Lancio salvataggio su CIVCOM_DEST per id " + obj.id)
-		return  civComunicazioneDestinatarioRepository.save(obj)
-	}
-
-	void delete(CivComunicazioneDestinatario obj){
-		validaDati(obj)
-
-		log.info("Tento cancellazione su CIVCOM_DEST per id " + obj.id)
-		civComunicazioneDestinatarioRepository.delete(obj)
-	}
-
-	String inviaPec(CivComunicazioneDestinatario obj){
-		EStatoProtocollazione sp = civArchivioComunicazioneService.getStatoProtocollazione(obj.archivioComunicazione.id)
-		if ( (sp == null) || (sp != EStatoProtocollazione.P) ) {
-			throw new ErroreDatiComunicazioneRuntimeException(EtichetteMessaggi.Errore_invio_pec_comunicazione_non_protocollata)
-		}
-
-		String retVal = statoCivileService.inviaPecComunicazione(obj.archivioComunicazione.id, obj.id)
-		return retVal
 	}
 
 }

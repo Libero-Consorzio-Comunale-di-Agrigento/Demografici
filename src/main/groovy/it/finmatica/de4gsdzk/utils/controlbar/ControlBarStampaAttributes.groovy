@@ -16,7 +16,7 @@ class ControlBarStampaAttributes extends ControlBarListaAttributes {
 		super.backEnabled = backFromListStampaEnabled
 	}
 
-	static final List<Map> etichetteCbStampaListDesc = [Etichette.Ordina_per, Etichette.back_tooltip, Etichette.csv_export_tooltip,
-														Etichette.xls_export_tooltip, Etichette.pdf_export_tooltip, Etichette.xml_export_tooltip]
+	static final List<Map> etichetteCbStampaListDesc = [Etichette.getEtichetta("Ordina_per"), Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("csv_export_tooltip"),
+														Etichette.getEtichetta("xls_export_tooltip"), Etichette.getEtichetta("pdf_export_tooltip"), Etichette.getEtichetta("xml_export_tooltip")]
 
 }

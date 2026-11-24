@@ -104,7 +104,7 @@
                     </caption>
                     <grid sclass="form">
                         <rows>
-                            <row>
+                            <row visible="@load(vm.dettaglio.tipoRichiedente.id ne 3)">
                                 <cell>
                                     <groupbox closable="false">
                                         <grid sclass="form">
@@ -196,6 +196,43 @@
                                                     </cell>
                                                     <cell>
                                                         <label value="@load(empty vm.dettaglio.richiedente.dataRilascioDocumento ? '' : c:formatDate(vm.dettaglio.richiedente.dataRilascioDocumento,'dd/MM/yyyy'))"
+                                                               style="font-weight:bold;"/>
+                                                    </cell>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </groupbox>
+                                </cell>
+                            </row>
+                            <row visible="@load(vm.dettaglio.tipoRichiedente.id eq 3)">
+                                <cell>
+                                    <groupbox closable="false">
+                                        <grid sclass="form">
+                                            <rows>
+                                                <row>
+                                                    <cell align="right" width="180px">
+                                                        <customLabel  value="@load(vm.etichette['Da'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <label value="@load(vm.dettaglio.enteRichiedente.denominazione)"
+                                                                style="font-weight:bold;"/>
+                                                    </cell>
+                                                </row>
+                                                <row>
+                                                    <cell align="right" width="180px">
+                                                        <customLabel value="@load(vm.etichette['Comune'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <comuneLabel value="@load(vm.dettaglio.enteRichiedente.comune)"
+                                                                     bold="true"/>
+                                                    </cell>
+                                                </row>
+                                                <row visible="@load(vm.dettaglio.enteRichiedente.consolato ne null)">
+                                                    <cell align="right">
+                                                        <customLabel value="@load(vm.etichette['Consolato'])"/>
+                                                    </cell>
+                                                    <cell>
+                                                        <label value="@load(vm.dettaglio.enteRichiedente.consolato.descrizione)"
                                                                style="font-weight:bold;"/>
                                                     </cell>
                                                 </row>
@@ -369,7 +406,7 @@
                                                     <label value="@load(vm.etichette['Nominativo_Stampa'])"/>
                                                 </cell>
                                                 <cell colspan="5">
-                                                    <checkbox checked="@load(vm.dettaglio.terminalista.flagInStampa)"
+                                                    <checkbox checked="@load(vm.dettaglio.flagInStampaTerminalista)"
                                                               disabled="true"/>
                                                 </cell>
                                             </row>

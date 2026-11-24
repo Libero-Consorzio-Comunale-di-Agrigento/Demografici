@@ -29,6 +29,31 @@ SELECT nas.*,
        f_provincia_stato_al(nas.cod_pro_res_md,nas.cod_com_res_md,'','S','',nas.data_nas) sigla_pro_res_md,
 -- flag_com_in_sospeso
        f_CIV_flag_com_in_sospeso(2,nas.ufficio,nas.anno,nas.parte,nas.serie,nas.atto) flag_com_in_sospeso,
+-- ufficio_lista
+       nas.ufficio ufficio_lista,
+-- anno_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(nas.id_atto_ansc, '', nas.anno),
+              nas.anno) anno_lista,
+-- parte_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(nas.id_atto_ansc, '', 
+                decode(nas.numero_unico, '', nas.parte)),
+              nas.parte) parte_lista,
+-- serie_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(nas.id_atto_ansc, '', 
+                decode(nas.numero_unico, '', nas.serie)),
+              nas.serie) serie_lista,
+-- atto_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(nas.id_atto_ansc, '', 
+                decode(nas.numero_unico, '', nas.atto, nas.numero_unico)),
+              nas.atto) atto_lista,
+-- id_atto_ansc_lista
+       decode(f_flag_ANSC(), 
+         'S', nas.id_atto_ansc,
+              to_char(null)) id_atto_ansc_lista,
 -- cognome_lista
        decode(nas.natura,'N','*** ANNULLATO',nas.cognome) 	cognome_1_lista,
 -- nome_lista

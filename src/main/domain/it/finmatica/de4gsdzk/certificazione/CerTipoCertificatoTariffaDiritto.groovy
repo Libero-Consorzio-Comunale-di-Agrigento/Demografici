@@ -11,6 +11,11 @@ import javax.persistence.*
 @IdClass(CerTipoCertificatoTariffaDirittoCompositeId.class)
 class CerTipoCertificatoTariffaDiritto extends GsdBaseDomain {
 
+    @Override
+    Object getId() {
+        throw new UnsupportedOperationException("Not implemented")
+    }
+
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COD_CERTIFICATO", nullable = false)

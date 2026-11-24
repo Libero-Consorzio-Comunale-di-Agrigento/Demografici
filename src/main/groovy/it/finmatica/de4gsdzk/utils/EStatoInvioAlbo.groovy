@@ -13,8 +13,8 @@ enum EStatoInvioAlbo {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case D: return Etichette.Da_Inviare_Albo
-            case I: return Etichette.Inviato_Albo
+            case D: return Etichette.getEtichetta("Da_Inviare_Albo")
+            case I: return Etichette.getEtichetta("Inviato_Albo")
         }
         return null
     }

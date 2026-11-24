@@ -2,7 +2,6 @@ package restrict
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.Command
@@ -97,7 +96,7 @@ abstract class AbstractListaViewModel extends AbstractCommonViewModel {
                 w.doEmbedded()
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), getEtichetta(Etichette.Modifica), Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), getEtichetta(Etichette.getEtichetta("Modifica")), Messagebox.OK, Messagebox.EXCLAMATION)
                 wOpen = Boolean.FALSE
             }
         }
@@ -121,7 +120,7 @@ abstract class AbstractListaViewModel extends AbstractCommonViewModel {
 
     void updateTotalSize(long v){
         totalSize = v
-        totalSizeLabel = (getEtichetta(Etichette.Numero_record_trovati)?:"") + totalSize
+        totalSizeLabel = (getEtichetta(Etichette.getEtichetta("Numero_record_trovati"))?:"") + totalSize
         BindUtils.postNotifyChange(null, null, this, "totalSize")
         BindUtils.postNotifyChange(null, null, this, "totalSizeLabel")
     }
@@ -146,8 +145,8 @@ abstract class AbstractListaViewModel extends AbstractCommonViewModel {
         return codice ? etichetteCustom[codice] : ""
     }
 
-    static final List<Map<String, String>> etichetteListaDefault = [EtichetteMessaggi.Errore_apertura_record, EtichetteMessaggi.Ask_Cancellazione_Record,
-                                                                    Etichette.Numero_record_trovati, Etichette.Nessun_dato_disponibile, Etichette.Nessun_record_trovato,
-                                                                    Etichette.Funzione_non_abilitata, Etichette.Modifica]
+    static final List<Map<String, String>> etichetteListaDefault = [Etichette.getEtichetta("Errore_apertura_record"), Etichette.getEtichetta("Ask_Cancellazione_Record"),
+                                                                    Etichette.getEtichetta("Numero_record_trovati"), Etichette.getEtichetta("Nessun_dato_disponibile"), Etichette.getEtichetta("Nessun_record_trovato"),
+                                                                    Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Modifica")]
 
 }

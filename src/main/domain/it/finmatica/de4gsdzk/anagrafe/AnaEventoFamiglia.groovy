@@ -29,5 +29,5 @@ class AnaEventoFamiglia {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Evento, Etichette.Descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Evento"), Etichette.getEtichetta("Descrizione")]
 }

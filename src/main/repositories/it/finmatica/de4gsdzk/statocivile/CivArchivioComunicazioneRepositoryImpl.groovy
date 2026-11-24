@@ -1,6 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
-import it.finmatica.de4gsdzk.statocivile.CivArchivioComunicazione
+
 import it.finmatica.de4gsdzk.utils.EStatoProtocollazione
 import org.springframework.data.domain.*
 
@@ -76,8 +76,12 @@ class CivArchivioComunicazioneRepositoryImpl implements CivArchivioComunicazione
             predicates.add(cb.equal(root.get("formulaDfa").get("id"), params.formulaDfa));
         }
 
-        if (params?.priorita != null){
-            predicates.add(cb.equal(root.get("comunicazione").get("priorita"), params.priorita));
+        if (params?.priorita != null) {
+            if (params.priorita) {
+                predicates.add(cb.isTrue(root.get("comunicazione").get("priorita")))
+            } else {
+                predicates.add(cb.isNull(root.get("comunicazione").get("priorita")))
+            }
         }
 
         query.where(predicates.toArray(new Predicate[predicates.size()]));
@@ -106,11 +110,11 @@ class CivArchivioComunicazioneRepositoryImpl implements CivArchivioComunicazione
 
         Pageable pageable = new PageRequest(activePage, pageSize)
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CivArchivioComunicazione> query = cb.createQuery(CivArchivioComunicazione.class);
-        Root<CivArchivioComunicazione> root = query.from(CivArchivioComunicazione.class);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder()
+        CriteriaQuery<CivArchivioComunicazione> query = cb.createQuery(CivArchivioComunicazione.class)
+        Root<CivArchivioComunicazione> root = query.from(CivArchivioComunicazione.class)
 
-        List<Predicate> predicates = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>()
 
         if (params?.fetch){
             for (Map f : params.fetch) {
@@ -124,47 +128,51 @@ class CivArchivioComunicazioneRepositoryImpl implements CivArchivioComunicazione
         }
 
         if (params?.tipoAtto){
-            predicates.add(cb.equal(root.get("tipoAtto"), params?.tipoAtto));
+            predicates.add(cb.equal(root.get("tipoAtto"), params?.tipoAtto))
         }
 
         if (params?.tipoAttoComunicazione){
-            predicates.add(cb.equal(root.get("tipoAttoComunicazione"), params?.tipoAttoComunicazione));
+            predicates.add(cb.equal(root.get("tipoAttoComunicazione"), params?.tipoAttoComunicazione))
         }
 
         if (params?.ufficio){
-            predicates.add(cb.equal(root.get("ufficio"), params?.ufficio));
+            predicates.add(cb.equal(root.get("ufficio"), params?.ufficio))
         }
 
         if (params?.anno){
-            predicates.add(cb.equal(root.get("anno"), params?.anno));
+            predicates.add(cb.equal(root.get("anno"), params?.anno))
         }
 
         if (params?.atto){
-            predicates.add(cb.equal(root.get("atto"), params?.atto));
+            predicates.add(cb.equal(root.get("atto"), params?.atto))
         }
 
         if (params?.stampaEseguita != null){
-            predicates.add(cb.equal(root.get("stampaEseguita"), params?.stampaEseguita));
+            predicates.add(cb.equal(root.get("stampaEseguita"), params?.stampaEseguita))
+        }
+
+        if (params?.idFormula != null){
+            predicates.add(cb.equal(root.get("formula"), params?.idFormula))
         }
 
         if (params?.idCom != null){
-            predicates.add(cb.equal(root.get("comunicazione").get("id"), params?.idCom));
+            predicates.add(cb.equal(root.get("comunicazione").get("id"), params?.idCom))
         }
 
         if (params?.idsCom?.size() > 0){
-            predicates.add(cb.in(root.get("comunicazione").get("id"), params?.idsCom));
+            predicates.add(cb.in(root.get("comunicazione").get("id"), params?.idsCom))
         }
 
         if (params?.statoProtocollazione){
-            predicates.add(cb.equal(root.get("statoProtocollazione"), params?.statoProtocollazione));
+            predicates.add(cb.equal(root.get("statoProtocollazione"), params?.statoProtocollazione))
         }
 
         if (params?.soloDaStampare){
-            predicates.add(cb.notEqual(root.get("statoProtocollazione"), EStatoProtocollazione.D));
-            predicates.add(cb.notEqual(root.get("statoProtocollazione"), EStatoProtocollazione.P));
+            predicates.add(cb.notEqual(root.get("statoProtocollazione"), EStatoProtocollazione.D))
+            predicates.add(cb.notEqual(root.get("statoProtocollazione"), EStatoProtocollazione.P))
         }
 
-        query.where(predicates.toArray(new Predicate[predicates.size()]));
+        query.where(predicates.toArray(new Predicate[predicates.size()]))
 
         if ((params?.order?.size?:0) > 0){
             List<javax.persistence.criteria.Order> ll = []
@@ -183,13 +191,13 @@ class CivArchivioComunicazioneRepositoryImpl implements CivArchivioComunicazione
         List<CivArchivioComunicazione> lista = entityManager.createQuery(query).setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList()
 
         // Create Count Query
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<CivArchivioComunicazione> itemsRootCount = countQuery.from(CivArchivioComunicazione.class);
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class)
+        Root<CivArchivioComunicazione> itemsRootCount = countQuery.from(CivArchivioComunicazione.class)
         countQuery.select(cb.count(itemsRootCount)).where(predicates.toArray(new Predicate[predicates.size()]))
 
-        Long count = entityManager.createQuery(countQuery).getSingleResult();
+        Long count = entityManager.createQuery(countQuery).getSingleResult()
 
-        return new PageImpl<>(lista, pageable, count);
+        return new PageImpl<>(lista, pageable, count)
     }
 
 }

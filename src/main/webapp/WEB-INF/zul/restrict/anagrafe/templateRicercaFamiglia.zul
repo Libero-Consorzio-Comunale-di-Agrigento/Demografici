@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <grid sclass="form">
+        <columns>
+            <column width="120px"/>
+            <column/>
+            <column width="120px"/>
+            <column/>
+            <column width="120px"/>
+            <column/>
+            <column width="120px"/>
+            <column/>
+            <column width="250px"/>
+        </columns>
+        <rows>
+            <row>
+                <cell align="right">
+                    <customLabel mandatory="true" value="@load(vm.etichette['Indirizzo'])"/>
+                </cell>
+                <cell colspan="5">
+                    <hlayout valign="middle" hflex="1">
+                        <bandboxVia hflex="1"
+                                    value="@load(vm.ricercaFamiglia.via.denominazione)"
+                                    onSelect="@command('onSelectVia')"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="via"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Civico'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaFamiglia.numeroCivico)" maxlength="6" hflex="1"
+                                style="text-transform:uppercase"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="numeroCivico"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Suffisso'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaFamiglia.suffisso)" maxlength="10" hflex="1"
+                                 style="text-transform:uppercase"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="suffisso"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Interno'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <intbox value="@bind(vm.ricercaFamiglia.interno)" maxlength="4"
+                                onOK="@command('onRicerca')"
+                                hflex="1"/>
+                        <label value="/"/>
+                        <textbox value="@bind(vm.ricercaFamiglia.subInterno)" maxlength="3"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="interno,subInterno"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Scala'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaFamiglia.scala)" maxlength="3"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="scala"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Piano'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaFamiglia.piano)" maxlength="3"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="piano"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Tipo'])"/>
+                </cell>
+                <cell>
+                    <combobox model="@load(vm.listaTipoFamiglia)" readonly="true" hflex="1"
+                              selectedItem="@bind(vm.ricercaFamiglia.tipoFamiglia) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                        <template name="model">
+                            <comboitem
+                                    label="@load(empty each?vm.etichette['Tutti']:vm.getEtichettaEnum(each))"
+                                    value="@load(each)"/>
+                        </template>
+                    </combobox>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.ricerca ? vm.etichette['Famiglia']: vm.etichette['Iscritto_in_APR'])"/>
+                </cell>
+                <zk if="${not vm.ricerca}">
+                    <cell style="@load(vm.ricerca ? 'display:none' : '')">
+                        <combobox model="@load(vm.listaIscrittoInAPR)" readonly="true" hflex="1"
+                                  selectedItem="@bind(vm.ricercaFamiglia.iscrittoInAPR) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem
+                                        label="@load(empty each?vm.etichette['Tutti']:vm.getEtichettaEnum(each))"
+                                        value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </zk>
+                <zk if="${vm.ricerca}">
+                    <cell>
+                        <label value="@load(vm.etichette[vm.famigliaLabel])" sclass="grassetto"/>
+                    </cell>
+                </zk>
+                <zk if="${not vm.ricerca}">
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Situazione_al'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaFamiglia.data)"
+                                     onOK="@command('onRicerca')" hflex="1"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoRicerca')">
+                                <custom-attributes proprieta="data"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="2"/>
+                </zk>
+                <zk if="${vm.ricerca}">
+                    <cell colspan="4"/>
+                </zk>
+                <cell>
+                    <button label="@load(vm.ricerca ? vm.etichette['Ricerca_Famiglie_Interni'] : vm.etichette['Ricerca_in_Anagrafe'])"
+                            image="/images/icon/action/22x22/search.png"
+                            onClick="@command('onRicerca')"
+                            hflex="1"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

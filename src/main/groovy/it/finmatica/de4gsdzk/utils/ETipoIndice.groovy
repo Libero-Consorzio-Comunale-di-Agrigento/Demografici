@@ -13,8 +13,8 @@ enum ETipoIndice {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case A: return Etichette.Indici_Annuali
-            case D: return Etichette.Indici_Decennali
+            case A: return Etichette.getEtichetta("Indici_Annuali")
+            case D: return Etichette.getEtichetta("Indici_Decennali")
         }
         return null
     }

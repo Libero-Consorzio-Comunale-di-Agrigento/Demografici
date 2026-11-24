@@ -10,6 +10,7 @@
 	<includeAll path="sql/ansc" relativeToChangelogFile="true"/>
 	<!--	<includeAll path="sql/gsdana" relativeToChangelogFile="true"/> -->
 	<includeAll path="sql/gsdarc" relativeToChangelogFile="true"/>
+	<includeAll path="sql/gsdana" relativeToChangelogFile="true"/>
 	<includeAll path="sql/gsdcer" relativeToChangelogFile="true"/>
 	<includeAll path="sql/gsdciv" relativeToChangelogFile="true"/>
 	<includeAll path="sql/gsdciv_ansc" relativeToChangelogFile="true"/>

@@ -38,7 +38,7 @@ class ComunicazioniAttoListaViewModel extends ComunicazioniAttoListaParentViewMo
         generaTestoComunicazioneEnabled = true
         goToFascicoloEnabled = true
 
-        List<Map> eList = [Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.SEZIONE_COMUNICAZIONI_ATTO]
+        List<Map> eList = [Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("SEZIONE_COMUNICAZIONI_ATTO")]
 
         eList.addAll(etichetteComunicazioniDefault)
 
@@ -59,12 +59,12 @@ class ComunicazioniAttoListaViewModel extends ComunicazioniAttoListaParentViewMo
 
         this.priorita = priorita
 
-        caricaManagePrincipale()
+        leggiParametri()
 
         doInit(eList, pkAtto, tipoAttoEnum) //carica anche atto e dati provenienza
 
-        msgTitle = getEtichetta(Etichette.Comunicazioni)
-        formLabel = getEtichetta(Etichette.SEZIONE_COMUNICAZIONI_ATTO) + (priorita?" (${getEtichetta(Etichette.adempimenti_tooltip)})":"")
+        msgTitle = getEtichetta(Etichette.getEtichetta("Comunicazioni"))
+        formLabel = getEtichetta(Etichette.getEtichetta("SEZIONE_COMUNICAZIONI_ATTO")) + (priorita?" (${getEtichetta(Etichette.getEtichetta("adempimenti_tooltip"))})":"")
 
         resize()
 

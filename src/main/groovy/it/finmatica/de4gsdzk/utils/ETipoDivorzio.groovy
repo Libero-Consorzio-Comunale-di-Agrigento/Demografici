@@ -15,10 +15,10 @@ enum ETipoDivorzio {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case X: return Etichette.Separazione
-            case C: return Etichette.Cessazione
-            case S: return Etichette.Scioglimento
-            case A: return Etichette.Altro
+            case X: return Etichette.getEtichetta("Separazione")
+            case C: return Etichette.getEtichetta("Cessazione")
+            case S: return Etichette.getEtichetta("Scioglimento")
+            case A: return Etichette.getEtichetta("Altro")
         }
         return null
     }

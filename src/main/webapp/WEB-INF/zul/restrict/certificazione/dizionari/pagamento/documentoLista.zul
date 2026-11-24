@@ -19,7 +19,7 @@
                 <label value="@load(vm.formLabel)" sclass="formTitle"/>
             </hlayout>
 
-            <totalSizeBlock/>
+            <orderByBlock/>
 
             <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
                      emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
@@ -31,7 +31,7 @@
                 <template name="model" var="item">
                     <listitem onDoubleClick="@command('onModifica')">
                         <listcell label="@load(c:cat3(item.tipoCertificato.id, ' - ', item.tipoCertificato.descrizione))"/>
-                        <listcell label="@load(c:cat3(item.servizio.id, ' - ' ,item.tipoCertificato.descrizione))"/>
+                        <listcell label="@load(c:cat3(item.servizio.id, ' - ' ,item.servizio.descrizione))"/>
                         <listcell>
                             <button image="/images/icon/action/18x18/edit.png"
                                     tooltiptext="@load(vm.etichette['modifica_tooltip'])"

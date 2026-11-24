@@ -2,7 +2,12 @@
 --changeset amonopoli:202502211555 runOnChange:true stripComments:false
 create or replace view anadev_x_stato
 AS
-select dev.* 
+select dev.cod_ev,
+       case
+         when dev.descrizione like '% DI' then substr(dev.descrizione, 1, length(dev.descrizione) - 3)
+         else dev.descrizione
+       end descrizione,
+       dev.segnalazione
   from anadev dev
  where exists (select 1 from anadce
                 where cod_eve = dev.cod_ev

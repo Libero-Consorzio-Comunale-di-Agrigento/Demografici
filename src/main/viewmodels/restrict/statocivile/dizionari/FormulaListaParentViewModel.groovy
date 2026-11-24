@@ -37,9 +37,9 @@ abstract class FormulaListaParentViewModel extends DizionarioListaViewModel {
         pagingAnnotazioneEnabled = true
         searchAnnotazioneEnabled = true
 
-        eList += [Etichette.Formula_crescente, Etichette.Formula_decrescente, Etichette.Funzione_non_abilitata]
+        eList += [Etichette.getEtichetta("Formula_crescente"), Etichette.getEtichetta("Formula_decrescente"), Etichette.getEtichetta("Funzione_non_abilitata")]
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_atto])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_atto")])
 
         eList.addAll(CivFormulaAnnotazione.etichetteDomain)
 
@@ -60,8 +60,8 @@ abstract class FormulaListaParentViewModel extends DizionarioListaViewModel {
 
         totalSizeLabel = ""
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Formula_crescente),   SortUtils.formulaAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Formula_decrescente), SortUtils.formulaDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Formula_crescente")),   SortUtils.formulaAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Formula_decrescente")), SortUtils.formulaDesc))
 
         //Default: formula crescente
         selectedOrder = listaOrder[0]
@@ -89,11 +89,15 @@ abstract class FormulaListaParentViewModel extends DizionarioListaViewModel {
             if (tipoAttoEnum != null) {
                 apriDettaglio(getUriDettaglio(), [tipoAttoEnum:tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
+    }
+
+    boolean getCanSaveRecord() {
+        return true
     }
 
 }

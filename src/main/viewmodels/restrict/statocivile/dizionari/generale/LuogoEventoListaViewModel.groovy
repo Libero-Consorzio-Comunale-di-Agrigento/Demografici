@@ -23,6 +23,9 @@ abstract class LuogoEventoListaViewModel extends DizionarioListaViewModel{
     List<Sezione> sezioniLuogo = []
     Sezione selectedSezioneLuogo
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     Component opener
 
     @Delegate
@@ -45,15 +48,26 @@ abstract class LuogoEventoListaViewModel extends DizionarioListaViewModel{
         }
         this.opener = opener
 
-        eList.addAll([Etichette.Luogo, Etichette.Luoghi_Evento, Etichette.Funzione_non_abilitata])
+        eList.addAll([Etichette.getEtichetta("Luogo"), Etichette.getEtichetta("Luoghi_Evento"), Etichette.getEtichetta("Funzione_non_abilitata")])
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Luoghi_Evento)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Luoghi_Evento"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")), SortUtils.idAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), SortUtils.idDesc)])
+
+        selectedOrder = listaOrder[0]
 
         caricaLista()
     }
@@ -75,7 +89,7 @@ abstract class LuogoEventoListaViewModel extends DizionarioListaViewModel{
         if (addEnabled && userModifyEnabled){
             apriDettaglio(getUriDettaglio(), opener, [:])
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -84,14 +98,14 @@ abstract class LuogoEventoListaViewModel extends DizionarioListaViewModel{
             if (userModifyEnabled){
                 apriDettaglio(getUriDettaglio(), opener, [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
 
     String getMessaggioCancellazione(){
         if (dettaglio) {
-            return (dettaglio.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

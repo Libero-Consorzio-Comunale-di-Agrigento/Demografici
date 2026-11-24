@@ -25,6 +25,16 @@ class HomeModuloService {
         if (competenzaService.isCivAny()) {
             l.add(EModulo.STATO_CIVILE)
         }
+        if (competenzaService.isEleAny()) {
+            l.add(EModulo.ELETTORALE)
+
+        }
+        if (competenzaService.isLevAny()) {
+            l.add(EModulo.LEVA_MILITARE)
+        }
+        if (competenzaService.isTopAny()) {
+            l.add(EModulo.TOPONOMASTICA)
+        }
         l.add(EModulo.SMART_STATS)
         return l
     }

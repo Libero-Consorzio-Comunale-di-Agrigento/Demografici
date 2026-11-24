@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <row>
+        <cell align="right" width="70px">
+            <label value="@load(vm.etichette['Numero_Atto'])"/>
+        </cell>
+        <cell width="80px">
+            <intbox value="@bind(vm.soggetto.attoNascita.atto)" width="75px" readonly="@load(vm.readOnly)" if="${arg.nascita eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoNascitaTrascritto.atto)" width="75px" readonly="@load(vm.readOnly)"
+                    if="${arg.nascitaTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonio.atto)" width="75px" readonly="@load(vm.readOnly)" if="${arg.matrimonio eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.atto)" width="75px" readonly="@load(vm.readOnly)"
+                    if="${arg.matrimonioTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoVedovanza.atto)" width="75px" readonly="@load(vm.readOnly)" if="${arg.vedovanza eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoDivorzio.atto)" width="75px" readonly="@load(vm.readOnly)" if="${arg.divorzio eq true}"/>
+            <intbox value="@bind(vm.urna.estremiAttoMorte.atto)" width="75px" readonly="@load(vm.readOnly)" if="${arg.urna eq true}"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Parte'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.soggetto.attoNascita.parte)" width="45px" readonly="@load(vm.readOnly)" if="${arg.nascita eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoNascitaTrascritto.parte)" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.nascitaTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonio.parte)" width="45px" readonly="@load(vm.readOnly)" if="${arg.matrimonio eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.parte)" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.matrimonioTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoVedovanza.parte)" width="45px" readonly="@load(vm.readOnly)" if="${arg.vedovanza eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoDivorzio.parte)" width="45px" readonly="@load(vm.readOnly)" if="${arg.divorzio eq true}"/>
+            <intbox value="@bind(vm.urna.estremiAttoMorte.parte)" width="45px" readonly="@load(vm.readOnly)" if="${arg.urna eq true}"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Serie'])"/>
+        </cell>
+        <cell width="50px">
+            <textbox value="@bind(vm.soggetto.attoNascita.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.nascita eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoNascitaTrascritto.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.nascitaTrascritto eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoMatrimonio.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.matrimonio eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.matrimonioTrascritto eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoVedovanza.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.vedovanza eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoDivorzio.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.divorzio eq true}"/>
+            <textbox value="@bind(vm.urna.estremiAttoMorte.serie)" width="45px" maxlength="1" readonly="@load(vm.readOnly)"
+                     style="text-transform:uppercase" if="${arg.urna eq true}"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Ufficio'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.soggetto.attoNascita.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.nascita eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoNascitaTrascritto.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.nascitaTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonio.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.matrimonio eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.matrimonioTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoVedovanza.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.vedovanza eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoDivorzio.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.divorzio eq true}"/>
+            <intbox value="@bind(vm.urna.estremiAttoMorte.ufficio)" maxlength="2" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.urna eq true}"/>
+        </cell>
+        <cell align="right" width="40px">
+            <label value="@load(vm.etichette['Anno'])"/>
+        </cell>
+        <cell width="50px">
+            <intbox value="@bind(vm.soggetto.attoNascita.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    onChange="@command('onAggiornaDataRiferimento', campoRiferimento='SOGG_ATTO_NAS')"
+                    if="${arg.nascita eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoNascitaTrascritto.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.nascitaTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonio.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    onChange="@command('onAggiornaDataRiferimento', campoRiferimento='SOGG_ATTO_MAT')"
+                    if="${arg.matrimonio eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    if="${arg.matrimonioTrascritto eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoVedovanza.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    onChange="@command('onAggiornaDataRiferimento', campoRiferimento='SOGG_ATTO_VED')"
+                    if="${arg.vedovanza eq true}"/>
+            <intbox value="@bind(vm.soggetto.attoDivorzio.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    onChange="@command('onAggiornaDataRiferimento', campoRiferimento='SOGG_ATTO_DIV')"
+                    if="${arg.divorzio eq true}"/>
+            <intbox value="@bind(vm.urna.estremiAttoMorte.anno)" maxlength="4" width="45px" readonly="@load(vm.readOnly)"
+                    onChange="@command('onAggiornaDataRiferimento', campoRiferimento='URNA_ATTO_MOR')"
+                    if="${arg.urna eq true}"/>
+        </cell>
+        <cell align="right" width="75px">
+            <label value="@load(vm.etichette['Id_Atto_Ansc'])"/>
+        </cell>
+        <cell>
+            <textbox value="@bind(vm.soggetto.attoNascita.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)" if="${arg.nascita eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoNascitaTrascritto.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)"
+                     if="${arg.nascitaTrascritto eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoMatrimonio.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)" if="${arg.matrimonio eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoMatrimonioTrascritto.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)"
+                     if="${arg.matrimonioTrascritto eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoVedovanza.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)" if="${arg.vedovanza eq true}"/>
+            <textbox value="@bind(vm.soggetto.attoDivorzio.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)" if="${arg.divorzio eq true}"/>
+            <textbox value="@bind(vm.urna.estremiAttoMorte.idAttoAnsc)" hflex="1" readonly="@load(vm.readOnly)" if="${arg.urna eq true}"/>
+        </cell>
+    </row>
+    <row if="${arg.nascitaTrascritto ne true and arg.matrimonioTrascritto ne true}">
+        <cell align="right">
+            <label value="@load(vm.etichette['Comune_Atto'])"/>
+        </cell>
+        <cell colspan="8">
+            <hlayout valign="middle" hflex="1" if="${arg.nascita eq true}">
+                <bandboxComuni hflex="1"
+                               disabled="@load(vm.readOnly)"
+                               value="@load(vm.soggetto.comuneAttoNascita.descrizione)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoNascita)"
+                               onSelect="@command('onSelectComune', campoRiferimento='SOGG_ATTO_NAS')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='SOGG_ATTO_NAS')"/>
+            </hlayout>
+            <hlayout valign="middle" hflex="1" if="${arg.matrimonio eq true}">
+                <bandboxComuni hflex="1"
+                               disabled="@load(vm.readOnly)"
+                               value="@load(vm.soggetto.comuneAttoMatrimonio.descrizione)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoMatrimonio)"
+                               onSelect="@command('onSelectComune', campoRiferimento='SOGG_ATTO_MAT')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='SOGG_ATTO_MAT')"/>
+            </hlayout>
+            <hlayout valign="middle" hflex="1" if="${arg.vedovanza eq true}">
+                <bandboxComuni hflex="1"
+                               disabled="@load(vm.readOnly)"
+                               value="@load(vm.soggetto.comuneAttoVedovanza.descrizione)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoVedovanza)"
+                               onSelect="@command('onSelectComune', campoRiferimento='SOGG_ATTO_VED')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='SOGG_ATTO_VED')"/>
+            </hlayout>
+            <hlayout valign="middle" hflex="1" if="${arg.divorzio eq true}">
+                <bandboxComuni hflex="1"
+                               disabled="@load(vm.readOnly)"
+                               value="@load(vm.soggetto.comuneAttoDivorzio.descrizione)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoDivorzio)"
+                               onSelect="@command('onSelectComune', campoRiferimento='SOGG_ATTO_DIV')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='SOGG_ATTO_DIV')"/>
+            </hlayout>
+            <hlayout valign="middle" hflex="1" if="${arg.urna eq true}">
+                <bandboxComuni hflex="1"
+                               disabled="@load(vm.readOnly)"
+                               value="@load(vm.urna.comuneAttoMorte.descrizione)"
+                               dataRiferimento="@load(vm.dataRiferimentoComuneAttoMorte)"
+                               onSelect="@command('onSelectComune', campoRiferimento='URNA_ATTO_MOR')"/>
+                <button image="/images/icon/action/16x16/cancel.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='URNA_ATTO_MOR')"/>
+            </hlayout>
+        </cell>
+        <cell>
+            <textbox value="@load(vm.soggetto.comuneAttoNascita.siglaProvincia)" hflex="1" readonly="true"
+                     if="${arg.nascita eq true}"/>
+            <textbox value="@load(vm.soggetto.comuneAttoMatrimonio.siglaProvincia)" hflex="1" readonly="true"
+                     if="${arg.matrimonio eq true}"/>
+            <textbox value="@load(vm.soggetto.comuneAttoVedovanza.siglaProvincia)" hflex="1" readonly="true"
+                     if="${arg.vedovanza eq true}"/>
+            <textbox value="@load(vm.soggetto.comuneAttoDivorzio.siglaProvincia)" hflex="1" readonly="true"
+                     if="${arg.divorzio eq true}"/>
+            <textbox value="@load(vm.urna.comuneAttoMorte.siglaProvincia)" hflex="1" readonly="true"
+                     if="${arg.urna eq true}"/>
+        </cell>
+        <cell colspan="2"/>
+    </row>
+</zk>

@@ -6,6 +6,7 @@ enum EAmbito {
     CO, //Comunicazioni
     ET, //Etichette
     TB, //Disposizioni Anticipate di Trattamento (Testamento Biologico)
-    TC  //Tipi Certificato
+    TC, //Tipi Certificato
+    CF, // Convivenza di fatto
 
 }

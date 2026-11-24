@@ -3,6 +3,7 @@ package it.finmatica.de4gsdzk.anagrafe
 
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.GsdBaseDomain
 import jdk.nashorn.internal.ir.annotations.Immutable
 
 import javax.persistence.*
@@ -10,11 +11,20 @@ import javax.persistence.*
 @Entity
 @Immutable
 @Table(name = "ANACDF_V_ZK")
-class AnaConvivenzaDiFatto {
+class AnaConvivenzaDiFatto  extends GsdBaseDomain{
 
     @Id
+    @Column(name = "ID")
+    Integer id
+
     @Column(name = "COD_CDF")
-    Long id
+    Long codCdf
+
+    @Column(name = "SEQUENZA")
+    Integer sequenza
+
+    @Column(name = "MATRICOLA")
+    Integer matricola
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MATRICOLA_CV", nullable = true)
@@ -26,11 +36,19 @@ class AnaConvivenzaDiFatto {
     @Column(name = "NOME_CV", nullable = true)
     String nomeConvivente
 
-    @Column(name = "NOTE", nullable = false)
-    String note
+    @Convert(converter= GsdBaseDomain.BooleanToStringConverter.class)
+    @Column(name = "SENZA_COGNOME_CV", nullable = true)
+    Boolean senzaCognomeConvivente
 
-    @Column(name = "D_DATA_REG", nullable = true)
-    Date dataRegistrazione
+    @Convert(converter= GsdBaseDomain.BooleanToStringConverter.class)
+    @Column(name = "SENZA_NOME_CV", nullable = true)
+    Boolean senzaNomeConvivente
+
+    @Column(name = "COGNOME_NOME_CV", nullable = true)
+    private String cognomeNomeConvivente
+
+    @Column(name = "NOTE", nullable = true)
+    String note
 
     @Convert(converter = EStatoConvivenza.EnumStatoConvivenzaToStringConverter.class)
     @Column(name = "STATO_CDF", nullable = true)
@@ -104,8 +122,18 @@ class AnaConvivenzaDiFatto {
     Integer annoPraticaFine
 
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Convivente, Etichette.Note, Etichette.Data_Registrazione, Etichette.Stato,
-                                              Etichette.Inizio, Etichette.Fine, Etichette.Nome, Etichette.Cognome,
-                                              Etichette.Data, Etichette.Comune, Etichette.Pratica, Etichette.Anno] as List<Map>
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Conv"), Etichette.getEtichetta("Convivente"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Stato"),
+                                              Etichette.getEtichetta("Inizio"), Etichette.getEtichetta("Fine"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Convivenza_di_fatto"),
+                                              Etichette.getEtichetta("Data"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Pratica"), Etichette.getEtichetta("Anno")] as List<Map>
 
+
+    @PrePersist
+    void beforeInsert() {
+        this.cognomeNomeConvivente = (cognomeConvivente?:"") + ((cognomeConvivente || nomeConvivente)?"/":"") + (nomeConvivente?:"")
+    }
+
+    @PreUpdate
+    void beforeUpdate() {
+        this.cognomeNomeConvivente = (cognomeConvivente?:"") + ((cognomeConvivente || nomeConvivente)?"/":"") + (nomeConvivente?:"")
+    }
 }

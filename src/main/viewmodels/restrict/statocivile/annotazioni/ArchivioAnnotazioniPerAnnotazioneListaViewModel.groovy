@@ -46,8 +46,8 @@ class ArchivioAnnotazioniPerAnnotazioneListaViewModel extends ArchivioAnnotazion
 
         ricercaAnnotazione = new RicercaAnnotazione()
 
-        List<Map> eList = [Etichette.Atti, Etichette.Cognome, Etichette.Nome, Etichette.Numero_Atti,
-                           Etichette.Gestione_Annotazioni_Archiviate, Etichette.Per_Annotazione]
+        List<Map> eList = [Etichette.getEtichetta("Atti"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Numero_Atti"),
+                           Etichette.getEtichetta("Gestione_Annotazioni_Archiviate"), Etichette.getEtichetta("Per_Annotazione")]
 
         // Aggiungo etichette ricerca
         eList.addAll(RicercaAnnotazione.etichetteRicercaAnnDesc)
@@ -58,7 +58,7 @@ class ArchivioAnnotazioniPerAnnotazioneListaViewModel extends ArchivioAnnotazion
 
         doInit(w, eList)
 
-        formLabel = getEtichetta(Etichette.Gestione_Annotazioni_Archiviate)?.toUpperCase() + " - " + getEtichetta(Etichette.Per_Annotazione)?.toUpperCase()
+        formLabel = getEtichetta(Etichette.getEtichetta("Gestione_Annotazioni_Archiviate"))?.toUpperCase() + " - " + getEtichetta(Etichette.getEtichetta("Per_Annotazione"))?.toUpperCase()
 
         onSelectTipoComune()
 
@@ -107,7 +107,7 @@ class ArchivioAnnotazioniPerAnnotazioneListaViewModel extends ArchivioAnnotazion
         if ( (tipoComune.value == 1) || (tipoComune.value == 0) ){
             p = civAnnotazioneAttoService.listAllDistinctFormulaDfa(params.dal, params.al, (ricercaAnnotazione.formulaDfa?.id?:"%"), params.stati, params.listaTipiatto, pr)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_comune), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_comune")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
 
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
@@ -164,19 +164,19 @@ class ArchivioAnnotazioniPerAnnotazioneListaViewModel extends ArchivioAnnotazion
             _dettaglio.annotazioni = []
             Map params = getParamsBase()
             List<CivAnnotazioneAtto> aaLista = civAnnotazioneAttoService.listAllByFormulaDfaAndDataRegistrazioneAndStatoAndTipoAttoIn(params.dal, params.al, _dettaglio.formulaDfa?.id, params.stati, params.listaTipiatto)
-            totalSizeDettaglioLabel = (getEtichetta(Etichette.Numero_Atti)?:"") + ": " + aaLista.size()
+            totalSizeDettaglioLabel = (getEtichetta(Etichette.getEtichetta("Numero_Atti"),)?:"") + ": " + aaLista.size()
             for (CivAnnotazioneAtto aa: aaLista){
                 Map<String,?> a = ["annotazione" : aa]
                 CivAttoBaseDomain abd
                 try{
                     abd = civAttoService.getAttoFromAnnotazione(aa.getTipoAtto(), aa.ufficio, aa.anno, aa.atto, aa.parte, aa.serie)
-                    a.put("attoAnnotazione", [tipoAttoEnum: abd.getTipoAttoEnum(), ufficio: abd.ufficio, anno: abd.anno, atto: abd.atto, parte: abd.parte, serie: abd.serie,
+                    a.put("attoAnnotazione", [tipoAttoEnum: abd.getTipoAttoEnum(), ufficio: abd.attoLista.ufficio, anno: abd.attoLista.anno, atto: abd.attoLista.atto, parte: abd.attoLista.parte, serie: abd.attoLista.serie, idAttoAnsc: abd.attoLista.idAttoAnsc,
                                               cognome: abd.getCognome1EstremiAtto(aa.tipoFormula), nome: abd.getNome1EstremiAtto(aa.tipoFormula),
                                               cognome2:abd.getCognome2EstremiAtto(), nome2: abd.getNome2EstremiAtto()])
                 } catch (EmptyResultDataAccessException e){
                     log.error(e.getMessage())
                     a.put("attoAnnotazione", [tipoAttoEnum: aa.getTipoAttoRifEnum(), ufficio: aa.ufficio, anno: aa.anno, atto: aa.atto, parte: aa.parte, serie: aa.serie,
-                                              cognome: ("*** " + getEtichetta(Etichette.Atto_non_in_Archivio) + " ***"), nome: "", fake: Boolean.TRUE,
+                                              cognome: ("*** " + getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")) + " ***"), nome: "", fake: Boolean.TRUE,
                                               cognome2: "", nome2: ""])
                 }
                 _dettaglio.annotazioni.add(a)

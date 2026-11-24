@@ -33,6 +33,7 @@ class UpDownButton extends Button{
         if (target){
             Boolean isOpen = target.open
             target.setOpen(!isOpen)
+            Events.postEvent(new OpenEvent(Events.ON_OPEN, target, !isOpen))
             updateImage(!isOpen)
         }
     }

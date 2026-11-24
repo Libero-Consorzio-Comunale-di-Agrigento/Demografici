@@ -19,6 +19,6 @@ class CivUfficio {
     @Column(name = "SEDE")
     String sede
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Sede]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Sede")]
 
 }

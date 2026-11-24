@@ -13,8 +13,8 @@ enum ETipoLuogoEvento {
 
     Map getEtichettaDesc() {
         switch(this) {
-            case NEL_COMUNE: return Etichette.nel_Comune
-            case FUORI_COMUNE: return Etichette.fuori_Comune
+            case NEL_COMUNE: return Etichette.getEtichetta("nel_Comune")
+            case FUORI_COMUNE: return Etichette.getEtichetta("fuori_Comune")
         }
         return null
     }

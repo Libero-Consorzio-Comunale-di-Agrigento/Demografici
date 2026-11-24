@@ -35,6 +35,9 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
     List<ETipoAtto> listaTipiAtto
     ETipoAtto tipoAttoEnum
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @WireVariable
     private CivRichiamoComposizioneService civRichiamoComposizioneService
 
@@ -46,8 +49,11 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
 
         searchEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Richiami_Composizione, Etichette.Formule, Etichette.Funzione_non_abilitata,
-                                           EtichetteMessaggi.Compilare_tipo_atto]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Richiami_Composizione"), Etichette.getEtichetta("Formule"), Etichette.getEtichetta("Funzione_non_abilitata"),
+                                           Etichette.getEtichetta("Compilare_tipo_atto")]
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Richiamo_crescente"), Etichette.getEtichetta("Richiamo_decrescente")])
 
         eList.addAll(CivRichiamoBaseDomain.etichetteDomain)
         eList.addAll(CivRichiamoComposizione.etichetteDomain)
@@ -59,11 +65,19 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Richiami_Composizione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Richiami_Composizione"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Richiamo_crescente")), SortUtils.richiamoProgressivoAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Richiamo_decrescente")),  SortUtils.richiamoProgressivoDesc)])
+
+        selectedOrder = listaOrder[0]
     }
 
     void caricaLista() {
@@ -78,7 +92,7 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
         List l = []
         long tot = 0
         if (tipoAttoEnum != null){
-            PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.richiamoProgressivoAsc))
+            PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
             Page<CivRichiamoComposizione> p = civRichiamoComposizioneService.listByTipoAtto(new Integer(tipoAttoEnum.valore), filtro, pr)
             if (p?.getContent()){
                 for (CivRichiamoComposizione rc: p?.getContent()){
@@ -88,7 +102,7 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
             }
             tot = (p?.getTotalElements()?:0)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
         return new Paginazione(l, tot)
     }
@@ -106,10 +120,10 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
             if (tipoAttoEnum != null) {
                 apriDettaglio(getUriDettaglio(), [tipoAttoEnum: tipoAttoEnum])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -120,13 +134,13 @@ class RichiamoComposizioneListaViewModel extends DizionarioListaViewModel{
                 if (cr.tipoAtto.intValue() == tipoAttoEnum?.valore) {
                     apriDettaglio(getUriDettaglio(), [id: cr.id, tipoAttoEnum: tipoAttoEnum])
                 } else {
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

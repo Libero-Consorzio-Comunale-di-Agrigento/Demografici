@@ -24,6 +24,6 @@ class CivVisualizzazioneDocumentiEntrata extends CivVisualizzazioneDocumentiBase
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Protocollo, Etichette.Registro, Etichette.Protocollo, Etichette.Anno_Protocollo, Etichette.Cognome_Nome]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Protocollo"), Etichette.getEtichetta("Registro"), Etichette.getEtichetta("Protocollo"), Etichette.getEtichetta("Anno_Protocollo"), Etichette.getEtichetta("Cognome_Nome")]
 
 }

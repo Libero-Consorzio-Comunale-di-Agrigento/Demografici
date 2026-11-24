@@ -154,7 +154,7 @@ trait TraitTemplateTrasportoESeppellimento {
                 numerazioneDocumentoTrasporto.numero = numerazioneDocumentoTrasporto.numero+1
                 trasporto.numeroProtocolloTrasporto = numerazioneDocumentoTrasporto.numero
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_protocollazione), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_protocollazione")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
         refreshUi()
@@ -175,7 +175,7 @@ trait TraitTemplateTrasportoESeppellimento {
                 numerazioneDocumentoSeppellimento.numero = numerazioneDocumentoSeppellimento.numero+1
                 trasporto.numeroProtocolloSeppellimento = numerazioneDocumentoSeppellimento.numero
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_protocollazione), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_protocollazione")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
         refreshUi()
@@ -196,7 +196,7 @@ trait TraitTemplateTrasportoESeppellimento {
                 numerazioneDocumentoCremazione.numero = numerazioneDocumentoCremazione.numero+1
                 trasporto.numeroProtocolloCremazione = numerazioneDocumentoCremazione.numero
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_protocollazione), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_protocollazione")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
         refreshUi()
@@ -218,7 +218,7 @@ trait TraitTemplateTrasportoESeppellimento {
             msg += " - Cremazione"
         }
         if (msg){
-            return getEtichetta(EtichetteMessaggi.Warn_dati_protocollo_incompleti) + msg
+            return getEtichetta(Etichette.getEtichetta("Warn_dati_protocollo_incompleti")) + msg
         }
         return null
     }
@@ -341,8 +341,8 @@ trait TraitTemplateTrasportoESeppellimento {
         allineaTestoTrasportoMinuscole()
     }
 
-    List<Map> etichetteTsDefault = [Etichette.Trasporto, Etichette.Dati_Trasporto,
-                                    Etichette.Cremazione, Etichette.Dati_Cremazione, Etichette.Estremi_Onoranze_Funebri, Etichette.Minuscole,
-                                    EtichetteMessaggi.Compilare_campi_obbligatori_protocollazione, EtichetteMessaggi.Warn_dati_protocollo_incompleti]
+    List<Map> etichetteTsDefault = [Etichette.getEtichetta("Trasporto"), Etichette.getEtichetta("Dati_Trasporto"),
+                                    Etichette.getEtichetta("Cremazione"), Etichette.getEtichetta("Dati_Cremazione"), Etichette.getEtichetta("Estremi_Onoranze_Funebri"), Etichette.getEtichetta("Minuscole"),
+                                    Etichette.getEtichetta("Compilare_campi_obbligatori_protocollazione"), Etichette.getEtichetta("Warn_dati_protocollo_incompleti")]
 
 }

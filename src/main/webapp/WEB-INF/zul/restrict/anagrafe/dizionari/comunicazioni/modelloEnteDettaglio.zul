@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.anagrafe.dizionari.comunicazioni.ModelloEnteDettaglioViewModel')"
+			apply="org.zkoss.bind.BindComposer"
+			border="none"
+			width="100%" height="100%"
+			sizable="false" closable="false">
+
+		<vlayout vflex="1">
+
+			<hlayout valign="middle">
+				<controlBarDettaglio/>
+
+				<label value="@load(vm.formLabel)" sclass="formTitle"/>
+			</hlayout>
+
+			<grid sclass="form">
+				<columns>
+					<column width="150px"/>
+					<column/>
+				</columns>
+				<rows>
+                    <row>
+                        <cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Tipo_Modello'])"/>
+                        </cell>
+                        <cell>
+                            <combobox model="@load(vm.listaTipiModello)" disabled="@load(vm.tipoOperazione.isUpdate())" onSelect="@command('onSelectTipoModello')"
+                                      selectedItem="@bind(vm.dettaglio.tipoModello) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')" readonly="true">
+                                <template name="model">
+                                    <comboitem label="@load(vm.getEtichettaEnum(each))" tooltiptext="@load(vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+					<row>
+						<cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Modello'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<combobox model="@load(vm.listaModelli)" readonly="true"
+										  selectedItem="@bind(vm.dettaglio.modello) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+										  mold="rounded"
+										  hflex="1"
+										  autodrop="true"
+										  buttonVisible="true">
+									<template name="model">
+										<comboitem label="@load(c:cat3(each.codModello, ' - ', each.descrizione))"/>
+									</template>
+								</combobox>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])"
+										onClick="@command('onCancellaCampoDizionario')">
+									<custom-attributes proprieta="modello"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>
+					<row>
+						<cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Ente'])"/>
+						</cell>
+						<cell>
+							<hlayout valign="middle" hflex="1">
+								<combobox model="@load(vm.listaEnti)" readonly="true"
+										  selectedItem="@bind(vm.dettaglio.ente) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+										  mold="rounded"
+										  hflex="1"
+										  autodrop="true"
+										  buttonVisible="true">
+									<template name="model">
+										<comboitem label="@load(each.descrizioneEstesa)"/>
+									</template>
+								</combobox>
+								<button image="/images/icon/action/16x16/cancel.png"
+										tooltiptext="@load(vm.etichette['Cancella'])"
+										onClick="@command('onCancellaCampoDizionario')">
+									<custom-attributes proprieta="ente"/>
+								</button>
+							</hlayout>
+						</cell>
+					</row>
+                    <row>
+                        <cell align="right">
+                            <h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Sequenza'])"/>
+                        </cell>
+                        <cell>
+                            <hlayout valign="middle" hflex="1">
+                                <intbox value="@bind(vm.dettaglio.sequenza)" mold="rounded" cols="3" maxlength="1"/>
+                                <button image="/images/icon/action/16x16/cancel.png"
+                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                        onClick="@command('onCancellaCampoDizionario')">
+                                    <custom-attributes proprieta="sequenza"/>
+                                </button>
+                            </hlayout>
+                        </cell>
+                    </row>
+				</rows>
+			</grid>
+
+		</vlayout>
+
+	</window>
+
+</zk>

@@ -26,8 +26,8 @@ class CertificazioneSezioneService {
     List<SezioneBusiness> listMenuPrincipale() {
         List<SezioneBusiness> l = []
         if (competenzaService.isCerAny()) {
-            SezioneBusiness certificazione = new SezioneBusiness(Sezione.CERTIFICAZIONE, Etichette.Certificazione)
-            certificazione.addSubSezione(new SezioneBusiness(Sezione.GESTIONE_CERTIFICAZIONE, Etichette.Gestione_Certificazione))
+            SezioneBusiness certificazione = new SezioneBusiness(Sezione.CERTIFICAZIONE, Etichette.getEtichetta("Certificazione"))
+            certificazione.addSubSezione(new SezioneBusiness(Sezione.GESTIONE_CERTIFICAZIONE, Etichette.getEtichetta("Gestione_Certificazione")))
             l.add(certificazione)
 
             if(arcParametroService.isIntegrazionePagamentiAttiva()) {
@@ -36,12 +36,12 @@ class CertificazioneSezioneService {
             }
         }
         if (competenzaService.isCerSuperUser()) {
-            SezioneBusiness dizionari = new SezioneBusiness(Sezione.DIZIONARI, Etichette.Dizionari)
-            dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_DATI_GENERALI, Etichette.Dati_Generali))
+            SezioneBusiness dizionari = new SezioneBusiness(Sezione.DIZIONARI, Etichette.getEtichetta("Dizionari"))
+            dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_DATI_GENERALI, Etichette.getEtichetta("Dati_Generali")))
             if (arcParametroService.isIntegrazionePagamentiAttiva()) {
-                dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO, Etichette.Pagamenti))
+                dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO, Etichette.getEtichetta("Pagamenti")))
             }
-            dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_CONFIGURAZIONE, Etichette.Configurazione))
+            dizionari.addSubSezione(new SezioneBusiness(Sezione.DIZIONARIO_CONFIGURAZIONE, Etichette.getEtichetta("Configurazione")))
             l.add(dizionari)
         }
         return l
@@ -50,23 +50,23 @@ class CertificazioneSezioneService {
     SezioneBusiness getMenuPagamenti() {
         EServizioPagamento servizioPagamento = arcParametroService.getServizioPagamento()
 
-        SezioneBusiness pagamenti = new SezioneBusiness(Sezione.PAGAMENTI, Etichette.Pagamenti)
-        pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_DA_INVIARE, Etichette.Da_inviare))
-        pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_INVIATI, Etichette.Inviati))
+        SezioneBusiness pagamenti = new SezioneBusiness(Sezione.PAGAMENTI, Etichette.getEtichetta("Pagamenti"))
+        pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_DA_INVIARE, Etichette.getEtichetta("Da_inviare")))
+        pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_INVIATI, Etichette.getEtichetta("Inviati")))
 
         if (servizioPagamento == EServizioPagamento.DEPAG) {
-            pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_RICERCA_PAGAMENTO, Etichette.Ricerca_pagamento))
+            pagamenti.addSubSezione(new SezioneBusiness(Sezione.PAGAMENTI_RICERCA_PAGAMENTO, Etichette.getEtichetta("Ricerca_pagamento")))
         }
 
         return pagamenti
     }
 
     List<SezioneBusiness> listDizionarioPagamento() {
-        SezioneBusiness parametri = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_PARAMETRI, Etichette.Parametri)
-        SezioneBusiness vociDiCosto = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_VOCI_DI_COSTO, Etichette.Voci_di_costo)
-        SezioneBusiness servizi = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_SERVIZI, Etichette.Servizi)
-        SezioneBusiness documenti = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_DOCUMENTI, Etichette.Documenti)
-        SezioneBusiness utenti = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_UTENTI, Etichette.Utenti)
+        SezioneBusiness parametri = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_PARAMETRI, Etichette.getEtichetta("Parametri"))
+        SezioneBusiness vociDiCosto = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_VOCI_DI_COSTO, Etichette.getEtichetta("Voci_di_costo"))
+        SezioneBusiness servizi = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_SERVIZI, Etichette.getEtichetta("Servizi"))
+        SezioneBusiness documenti = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_DOCUMENTI, Etichette.getEtichetta("Documenti"))
+        SezioneBusiness utenti = new SezioneBusiness(Sezione.DIZIONARIO_PAGAMENTO_UTENTI, Etichette.getEtichetta("Utenti"))
 
         EServizioPagamento servizioPagamento = arcParametroService.getServizioPagamento()
         switch (servizioPagamento) {

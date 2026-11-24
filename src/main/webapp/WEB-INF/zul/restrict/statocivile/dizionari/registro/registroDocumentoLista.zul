@@ -49,7 +49,7 @@
 
 		<vlayout vflex="1">
 
-			<totalSizeBlock/>
+            <orderByBlock/>
 
 			<listbox model="@load(vm.lista) @template(vm.tipoDocumento.isUscita() ? 'model1' : 'model2')"
 					 selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"

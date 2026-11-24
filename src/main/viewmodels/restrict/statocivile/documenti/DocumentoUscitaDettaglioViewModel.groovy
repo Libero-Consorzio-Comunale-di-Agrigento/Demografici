@@ -74,9 +74,9 @@ class DocumentoUscitaDettaglioViewModel extends AbstractDettaglioViewModel imple
                      cognomeIncaricatoTrasporto:Boolean.FALSE, nomeIncaricatoTrasporto: Boolean.FALSE]
         arcParametroService.checkMinuscoleOn(minuscole)
 
-        List<Map> eList = [Etichette.DOCUMENTO_USCITA, Etichette.Gestione_Documenti_Uscita, Etichette.Dati_Richiedente]
+        List<Map> eList = [Etichette.getEtichetta("DOCUMENTO_USCITA"), Etichette.getEtichetta("Gestione_Documenti_Uscita"), Etichette.getEtichetta("Dati_Richiedente")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_Numero_Protocollo])
+        eList.addAll([Etichette.getEtichetta("Errore_Numero_Protocollo")])
         eList.addAll(etichetteDettaglioDefault)
         eList.addAll(CivTrasportoESeppellimento.etichetteDomain)
 
@@ -84,7 +84,7 @@ class DocumentoUscitaDettaglioViewModel extends AbstractDettaglioViewModel imple
         eList.addAll(ControlBarDettaglioAttributes.etichetteCbDettaglioDesc)
 
         // Aggiungo etichetta tipo documento
-        eList.add(Etichette.Uscita)
+        eList.add(Etichette.getEtichetta("Uscita"))
 
         // Aggiungo etichette tipo si no
         eList.addAll(ETipoSiNo.values()*.getEtichettaDesc())
@@ -94,7 +94,7 @@ class DocumentoUscitaDettaglioViewModel extends AbstractDettaglioViewModel imple
         eList.addAll(listaSesso*.etichettaDesc)
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_ESTREMI_ATTO, Etichette.SEZIONE_ESTREMI_TRASPORTO, Etichette.SEZIONE_ESTREMI_CREMAZIONE])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_ESTREMI_ATTO"), Etichette.getEtichetta("SEZIONE_ESTREMI_TRASPORTO"), Etichette.getEtichetta("SEZIONE_ESTREMI_CREMAZIONE")])
 
         // Aggiungo etichette di base CivMorte
         eList.addAll(CivMorte.etichetteDomain)
@@ -106,9 +106,9 @@ class DocumentoUscitaDettaglioViewModel extends AbstractDettaglioViewModel imple
 
         initTrasporto(civRegistroDocumentiUscitaService)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Uscita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Uscita"))
 
-        formLabel = getEtichetta(Etichette.DOCUMENTO_USCITA)
+        formLabel = getEtichetta(Etichette.getEtichetta("DOCUMENTO_USCITA"))
 
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.MOR)
 
@@ -161,7 +161,7 @@ class DocumentoUscitaDettaglioViewModel extends AbstractDettaglioViewModel imple
             nd.put(CivTipoRegistro.ID_SEPPELLIMENTO, numerazioneDocumentoSeppellimento)
             nd.put(CivTipoRegistro.ID_CREMAZIONE, numerazioneDocumentoCremazione)
             CivTrasportoESeppellimento c = civTrasportoESeppellimentoService.save(dettaglio, nd, atto.isCodRec0())
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             if (c) {
                 caricaDettaglio(c.id)
             }

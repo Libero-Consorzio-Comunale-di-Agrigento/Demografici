@@ -5,6 +5,7 @@ import it.finmatica.de4gsdzk.IRiferimentoCertificatoDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaDocumento
 import it.finmatica.de4gsdzk.anagrafe.AnaFamiglia
+import it.finmatica.de4gsdzk.anagrafe.pratiche.AnaPratica
 import it.finmatica.smartdoc.api.struct.Campo
 
 class MetadatiGdmUtils {
@@ -27,6 +28,12 @@ class MetadatiGdmUtils {
 
     static final String METADATO_GDM_CODICE_FAMIGLIA = "COD_FAM"
     static final String METADATO_GDM_TIPO_RESIDENTE = "TIPO_RESIDENTE"
+
+    static final String METADATO_GDM_ANAGRAFE       = "ANAGRAFE"
+    static final String METADATO_GDM_TIPO_EVENTO    = "TIPO_EVENTO"
+    static final String METADATO_GDM_ANNO_PRATICA   = "ANNO_PRATICA"
+    static final String METADATO_GDM_PRATICA        = "PRATICA"
+
 
 
     static List<Campo> listMetadatiAtto(IRiferimentoAttoDomain doce, String identificativoAtto){
@@ -68,6 +75,15 @@ class MetadatiGdmUtils {
     static List<Campo> listMetadatiIndividuo(AnaAnagrafe anagrafe) {
         List<Campo> metadati = []
         metadati.add(new Campo(METADATO_GDM_MATRICOLA, anagrafe.id))
+        return metadati
+    }
+
+    static List<Campo> listMetadatiPratica(AnaPratica pratica) {
+        List<Campo> metadati = []
+        metadati.add(new Campo(METADATO_GDM_ANAGRAFE, pratica.archivioAnagrafe.id))
+        metadati.add(new Campo(METADATO_GDM_TIPO_EVENTO, pratica.tipoPratica.id))
+        metadati.add(new Campo(METADATO_GDM_ANNO_PRATICA, pratica.anno))
+        metadati.add(new Campo(METADATO_GDM_PRATICA, pratica.numero))
         return metadati
     }
 

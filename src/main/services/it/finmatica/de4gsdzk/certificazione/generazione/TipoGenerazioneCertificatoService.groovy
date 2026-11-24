@@ -32,7 +32,7 @@ class TipoGenerazioneCertificatoService {
             if (atto == null) {
                 return ETipoGenerazioneCertificato.ANSC
             }
-            if (civAttoService.isInviatoAnsc(atto.getTipoAttoEnum(), atto.id)) {
+            if (civAttoService.isInviatoAnsc(atto.getTipoAttoEnum(), atto.id, true)) {
                 return ETipoGenerazioneCertificato.ANSC
             } else {
                 return ETipoGenerazioneCertificato.GTE

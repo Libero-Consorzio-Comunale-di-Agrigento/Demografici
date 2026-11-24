@@ -13,8 +13,8 @@ enum ETipoMargineLaterale {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case D: return Etichette.Destro
-            case S: return Etichette.Sinistro
+            case D: return Etichette.getEtichetta("Destro")
+            case S: return Etichette.getEtichetta("Sinistro")
         }
         return null
     }

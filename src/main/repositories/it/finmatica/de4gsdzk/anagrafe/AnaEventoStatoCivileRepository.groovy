@@ -22,8 +22,7 @@ interface AnaEventoStatoCivileRepository extends JpaRepository<AnaEventoStatoCiv
     Page<AnaEventoStatoCivile> findAllByAnagrafe(@Param("anagrafe") AnaAnagrafe anagrafe,
                                                  Pageable pageable)
 
-    @Query("""SELECT count(e) FROM AnaEventoStatoCivile e 
-               LEFT JOIN e.coniuge.anagrafe
+    @Query("""SELECT count(e) FROM AnaEventoStatoCivile e
               WHERE e.anagrafe = :anagrafe
             """)
     long countByAnagrafe(@Param("anagrafe") AnaAnagrafe anagrafe)

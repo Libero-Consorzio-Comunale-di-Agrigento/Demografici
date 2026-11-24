@@ -13,7 +13,6 @@ import it.finmatica.de4gsdzk.pagamento.WspaVoceCostoServiceFactory
 import it.finmatica.de4gsdzk.pagamento.depag.DepagVoceCosto
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -50,7 +49,7 @@ class VoceCostoDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Voce_di_costo]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Voce_di_costo")]
         eList.addAll(WspaVoceCosto.etichetteDomain)
         eList.addAll(DepagVoceCosto.etichetteDomain)
         eList.addAll(CerTariffaDiritto.etichetteDomain)
@@ -58,7 +57,7 @@ class VoceCostoDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Voce_di_costo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Voce_di_costo"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -93,7 +92,7 @@ class VoceCostoDettaglioViewModel extends DizionarioDettaglioViewModel {
     void onSalvaRecord() {
         if (dettaglio) {
             WspaVoceCosto c = wspaVoceCostoService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

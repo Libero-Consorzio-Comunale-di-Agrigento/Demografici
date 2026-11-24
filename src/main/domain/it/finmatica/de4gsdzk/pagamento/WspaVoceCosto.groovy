@@ -33,9 +33,9 @@ abstract class WspaVoceCosto {
     String descrizioneVoceCosto2
 
 
-    static final List<Map> etichetteDomain = [Etichette.Tariffa_Diritto,
-                                              Etichette.Voce_costo_1_codice, Etichette.Voce_costo_1_descrizione,
-                                              Etichette.Voce_costo_2_codice, Etichette.Voce_costo_2_descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tariffa_Diritto"),
+                                              Etichette.getEtichetta("Voce_costo_1_codice"), Etichette.getEtichetta("Voce_costo_1_descrizione"),
+                                              Etichette.getEtichetta("Voce_costo_2_codice"), Etichette.getEtichetta("Voce_costo_2_descrizione")]
 
 
 }

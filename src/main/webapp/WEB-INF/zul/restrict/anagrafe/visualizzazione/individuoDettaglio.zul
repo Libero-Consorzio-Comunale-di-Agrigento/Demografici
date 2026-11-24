@@ -16,34 +16,6 @@
             <hlayout sclass="navigazione" valign="middle">
                 <controlBar value="@load(vm.controlBarAttributes)"/>
 
-                <controlBar>
-                    <toolbarbutton image="/images/icon/action/22x22/desk.png"
-                                   tooltiptext="@load(vm.etichette['Provvedimenti_tooltip'])"
-                                   disabled="@load(not vm.provvedimentiButtonEnabled)"
-                                   onClick="@command('onOpenProvvedimenti')"/>
-                    <toolbarbutton image="/images/icon/action/22x22/people_home.png"
-                                   tooltiptext="@load(vm.etichette['Famiglia_tooltip'])"
-                                   onClick="@command('onOpenFamiglia')"/>
-                    <toolbarbutton image="/images/icon/action/22x22/synchronize.png"
-                                   tooltiptext="@load(vm.etichette['Convivenza_di_fatto_tooltip'])"
-                                   disabled="@load(not vm.convivenzaButtonEnabled)"
-                                   onClick="@command('onOpenConvivenzaDiFatto')"/>
-                    <toolbarbuttonDocumenti/>
-                    <toolbarbutton image="/images/icon/action/22x22/building.png"
-                                   tooltiptext="@load(vm.etichette['Storico_anagrafe_tooltip'])"
-                                   disabled="@load(not vm.storicoAnagrafeButtonEnabled)"
-                                   onClick="@command('onOpenAnagrafeStorico')"/>
-                    <toolbarbutton image="/images/icon/action/22x22/hall.png"
-                                   tooltiptext="@load(vm.etichette['Storico_Stato_Civile_tooltip'])"
-                                   disabled="@load(not vm.statoCivileButtonEnabled)"
-                                   onClick="@command('onOpenStatoCivile')"/>
-                    <toolbarbutton image="/images/icon/action/22x22/profile.png"
-                                   tooltiptext="@load(vm.etichette['Variazioni_tooltip'])"
-                                   disabled="@load(not vm.variazioniButtonEnabled)"
-                                   onClick="@command('onOpenVariazioni')"/>
-                    <toolbarbuttonAllegati/>
-                </controlBar>
-
                 <label value="@load(vm.formLabel)" sclass="formTitle"/>
 
                 <estremiIndividuoFormLabel/>
@@ -53,9 +25,10 @@
                     <center vflex="1"
                             style="border: 1px solid #c5c5c5;">
                         <caption sclass="mainCaption">
-                            <div>
-                                <label value="@load(vm.etichette['Anagrafe'])" sclass="captionLabel"/>
-                            </div>
+                            <hlayout valign="middle">
+                                <controlBarVisualizzazioneLocale/>
+                                <label value="@load(vm.etichette['Anagrafe'])" sclass="captionLabel" style="text-transform: uppercase;"/>
+                            </hlayout>
                         </caption>
                         <templateSezioneIndividuoDettaglio/>
                     </center>
@@ -65,9 +38,14 @@
                           visible="@load(not empty vm.anpDettaglio)"
                           style="background-color: #EDEFF5;">
                         <caption sclass="mainCaption">
-                            <hlayout valign="middle">
+                            <hlayout valign="middle" hflex="1">
+                                <controlBarVisualizzazioneANPR/>
                                 <image src="/images/de4gsdzk/18x18/anpr.png"/>
                                 <label value="@load(vm.etichette['ANPR'])" sclass="captionLabel"/>
+                                <space hflex="1"/>
+                                <label value="@load(c:cat3(vm.etichette['Situazione_al'], ' ',empty vm.dataRiferimento ? '' : (c:formatDate(vm.dataRiferimento, 'dd/MM/yyyy'))))"
+                                       sclass="redText"  style="font-weight: bold"
+                                       visible="@load(not empty vm.dataRiferimento)"/>
                             </hlayout>
                         </caption>
                         <templateSezioneIndividuoDettaglio showAnp="true"/>

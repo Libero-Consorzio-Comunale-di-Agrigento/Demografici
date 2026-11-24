@@ -2,7 +2,7 @@ package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ArcComuneBaseDomain
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.LogGsd
 import it.finmatica.de4gsdzk.anagrafe.*
 import it.finmatica.de4gsdzk.anpr.AnpAnagrafe
@@ -42,6 +42,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     List<AnaMessaggio> messaggioList = []
 
     boolean convivenzaButtonEnabled = true
+    boolean famigliaAdsButtonEnabled = true
+    boolean famigliaAnprButtonEnabled = true
     boolean documentiButtonEnabled = true
     boolean statoCivileButtonEnabled = true
     boolean storicoAnagrafeButtonEnabled = true
@@ -80,6 +82,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     @WireVariable
     private LogsService logsService
 
+    Date dataRiferimento
+
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w,
          @ExecutionArgParam("soggetto") AnaAnagrafeBaseDomain soggetto) {
@@ -91,12 +95,17 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
         controlBarAttributes.addEnabled = false
         controlBarAttributes.modifyEnabled = false
 
-        List<Map<String, String>> eList = [Etichette.INDIVIDUO]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("INDIVIDUO")]
         // Aggiungo etichette controlbar
-        eList.addAll([Etichette.Storico_Stato_Civile_tooltip, Etichette.Storico_anagrafe_tooltip, Etichette.Famiglia_tooltip, Etichette.Convivenza_di_fatto_tooltip, Etichette.Storico_tooltip, Etichette.Variazioni_tooltip, Etichette.Documenti_tooltip, Etichette.allegati_tooltip, Etichette.Provvedimenti_tooltip])
+        eList.addAll([Etichette.getEtichetta("Storico_Stato_Civile_tooltip"), Etichette.getEtichetta("Storico_anagrafe_tooltip"),
+                      Etichette.getEtichetta("Famiglia_tooltip"), Etichette.getEtichetta("Famiglia_Anpr_tooltip"),
+                      Etichette.getEtichetta("Convivenza_di_fatto_tooltip"), Etichette.getEtichetta("Storico_tooltip"),
+                      Etichette.getEtichetta("Variazioni_tooltip"), Etichette.getEtichetta("Documenti_tooltip"),
+                      Etichette.getEtichetta("allegati_tooltip"), Etichette.getEtichetta("Provvedimenti_tooltip"),
+                      Etichette.getEtichetta("Altri_Dati_ANPR_tooltip"), Etichette.getEtichetta("Dati_Elettore_ANPR_tooltip")])
         // Aggiungo etichette per sezioni
-        eList.addAll([Etichette.Anagrafe, Etichette.ANPR,
-                      Etichette.Individuo])
+        eList.addAll([Etichette.getEtichetta("Anagrafe"), Etichette.getEtichetta("ANPR"), Etichette.getEtichetta("Matricola_Non_Trovata"),
+                      Etichette.getEtichetta("Individuo")])
         // Aggiungo etichette entita
         eList.addAll(AnaAnagrafe.etichetteDomain)
         eList.addAll(AnpAnagrafe.etichetteDomain)
@@ -107,11 +116,11 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
         eList.addAll(IndirizzoNonResidenteFamiglia.etichetteDomain)
         // Aggiungo etichette fascia
         eList.addAll(EFascia.values()*.getEtichettaDesc())
-        eList.addAll([Etichette.Per])
+        eList.addAll([Etichette.getEtichetta("Per")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.INDIVIDUO)
+        msgTitle = getEtichetta(Etichette.getEtichetta("INDIVIDUO"))
         formLabel = msgTitle?.toUpperCase()
 
         resize()
@@ -126,6 +135,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
 
     private void calcolaBottoni() {
         convivenzaButtonEnabled = dettaglio.convivenzaDiFatto != null
+        famigliaAdsButtonEnabled = dettaglio.famiglia != null
+        famigliaAnprButtonEnabled = anpDettaglio?.idFamigliaAnpr != null
         documentiButtonEnabled = anaDocumentoService.existsRecentiByAnagrafe(dettaglio) || anaDocumentoService.existsStoriciByAnagrafe(dettaglio)
         statoCivileButtonEnabled = anaEventoStatoCivileService.existsByAnagrafe(dettaglio)
         storicoAnagrafeButtonEnabled = anaEventoAnagrafeService.existsByAnagrafe(dettaglio)
@@ -137,9 +148,10 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
         if (soggetto == null) {
             throw new IllegalArgumentException("id non specificato")
         }
+        dataRiferimento = null
 
         try {
-            anpDettaglio = anpAnagrafeService.findBySoggetto(soggetto as GsdAnagrafeBaseDomain, true)
+            anpDettaglio = anpAnagrafeService.findBySoggetto(soggetto as AnagrafeBaseDomain, true)
 
             logsService.save(ETipoLog.Gsd, LogGsd.createLogGsdVisualizzazioneIndividuoAnp(anpDettaglio))
         } catch (Exception e) {
@@ -148,17 +160,17 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
         }
         setAnprIndividuoCorrente(anpDettaglio)
 
-        dettaglio = anaAnagrafeService.get((soggetto as GsdAnagrafeBaseDomain).matricola ?: anpDettaglio.matricola, [fetch: [
+        dettaglio = anaAnagrafeService.get((soggetto as AnagrafeBaseDomain).matricola ?: anpDettaglio.matricola, [fetch: [
                 [campo: 'nazionalita', tipo: JoinType.LEFT],
                 [campo: 'stato', tipo: JoinType.LEFT],
                 [campo: 'famiglia', tipo: JoinType.LEFT],
-                [campo: 'coabitante', tipo: JoinType.LEFT],
+                //[campo: 'coabitante', tipo: JoinType.LEFT],
                 [campo: 'coabitante.capoFamiglia', tipo: JoinType.LEFT],
                 [campo: 'padre', tipo: JoinType.LEFT],
                 [campo: 'madre', tipo: JoinType.LEFT],
-                [campo: 'coniuge.anagrafe', tipo: JoinType.LEFT],
+                //[campo: 'coniuge.anagrafe', tipo: JoinType.LEFT],
                 [campo: 'coniuge.anagrafe.nazionalita', tipo: JoinType.LEFT],
-                [campo: 'convivenzaDiFatto.conviventi', tipo: JoinType.LEFT],]])
+                [campo: 'convivenzaDiFatto', tipo: JoinType.LEFT],]])
 
         logsService.save(ETipoLog.Gsd, LogGsd.createLogGsdVisualizzazioneIndividuoAna(dettaglio))
 
@@ -174,7 +186,7 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     }
 
     void creaDettaglio(Map params) {
-        Messagebox.show(getEtichetta(Etichette.Matricola_Non_Trovata), msgTitle, Messagebox.OK, Messagebox.ERROR)
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Matricola_Non_Trovata")), msgTitle, Messagebox.OK, Messagebox.ERROR)
         throw new IllegalStateException("Non implementato")
     }
 
@@ -190,7 +202,7 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     }
 
     @Command
-    void onOpenIndividuo(@BindingParam("soggetto") GsdAnagrafeBaseDomain soggetto, @BindingParam("id") Integer id) {
+    void onOpenIndividuo(@BindingParam("soggetto") AnagrafeBaseDomain soggetto, @BindingParam("id") Integer id) {
         if(id) {
             soggetto = anaAnagrafeService.get(id)
         }
@@ -213,16 +225,16 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     }
 
     @Command
-    void onOpenFamiglia() {
+    void onOpenFamiglia(@BindingParam("tipo") String tipo) {
         try {
-            Window w = (Window) Executions.createComponents("/restrict/anagrafe/visualizzazione/famigliaLista.zul", self.parent, [:])
+            Window w = (Window) Executions.createComponents("/restrict/anagrafe/visualizzazione/famigliaLista.zul", self.parent, [dataRiferimento : tipo == 'A' ? dataRiferimento : null])
             self.setVisible(false)
             w.addEventListener(Events.ON_CLOSE, { event ->
                 self.setVisible(true)
             })
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                if (event.data.soggetto instanceof GsdAnagrafeBaseDomain) {
-                    caricaDettaglio(event.data.soggetto as GsdAnagrafeBaseDomain)
+                if (event.data.soggetto instanceof AnagrafeBaseDomain) {
+                    caricaDettaglio(event.data.soggetto as AnagrafeBaseDomain)
                 }
             })
             w.doEmbedded()
@@ -241,8 +253,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
                 self.setVisible(true)
             })
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                if (event.data.soggetto instanceof GsdAnagrafeBaseDomain) {
-                    caricaDettaglio(event.data.soggetto as GsdAnagrafeBaseDomain)
+                if (event.data.soggetto instanceof AnagrafeBaseDomain) {
+                    caricaDettaglio(event.data.soggetto as AnagrafeBaseDomain)
                 }
             })
             w.doEmbedded()
@@ -276,8 +288,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
                 self.setVisible(true)
             })
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                if (event.data.soggetto instanceof GsdAnagrafeBaseDomain) {
-                    caricaDettaglio(event.data.soggetto as GsdAnagrafeBaseDomain)
+                if (event.data.soggetto instanceof AnagrafeBaseDomain) {
+                    caricaDettaglio(event.data.soggetto as AnagrafeBaseDomain)
                 }
             })
             w.doEmbedded()
@@ -296,8 +308,8 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
                 self.setVisible(true)
             })
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                if (event.data.soggetto instanceof GsdAnagrafeBaseDomain) {
-                    caricaDettaglio(event.data.soggetto as GsdAnagrafeBaseDomain)
+                if (event.data.soggetto instanceof AnagrafeBaseDomain) {
+                    caricaDettaglio(event.data.soggetto as AnagrafeBaseDomain)
                 }
             })
             w.doEmbedded()
@@ -342,5 +354,52 @@ class IndividuoDettaglioViewModel extends DizionarioDettaglioViewModel implement
     private openMessaggiIndividuo() {
         Window popupScansione = (Window) Executions.createComponents('/restrict/afc/popupAvvisi.zul', self, [listaMessaggi: messaggioList])
         popupScansione.doModal()
+    }
+
+    String getUltimoEventoDesc() {
+        String result = "${getEtichettaEnum(dettaglio.fascia)} per ${dettaglio.stato.descrizione}"
+        if(dettaglio.dataUltimoEvento != null) {
+            result += " in data ${dettaglio.dataUltimoEvento.format('dd/MM/yyyy')}"
+        }
+        return result
+    }
+
+    @Command
+    void onOpenAltriDatiAnpr() {
+        try {
+            Window w = (Window) Executions.createComponents("/restrict/anagrafe/visualizzazione/altriDatiAnprLista.zul", self.parent, [:])
+            self.setVisible(false)
+            w.addEventListener(Events.ON_CLOSE, { event ->
+                self.setVisible(true)
+            })
+            w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
+                if (event.data.anpSoggetto instanceof AnpAnagrafe) {
+                    anpDettaglio = event.data.anpSoggetto
+                    dataRiferimento = event.data.dataRiferimento
+                    setAnprIndividuoCorrente(anpDettaglio)
+                    refreshUi()
+                }
+
+            })
+            w.doEmbedded()
+        } catch (Exception ex) {
+            log.error("Errore apertura form Altri dati ANPR", ex)
+            throw ex
+        }
+    }
+
+    @Command
+    void onOpenDatiElettoreAnpr() {
+        try {
+            Window w = (Window) Executions.createComponents("/restrict/anagrafe/visualizzazione/datiElettoreAnprLista.zul", self.parent, [:])
+            self.setVisible(false)
+            w.addEventListener(Events.ON_CLOSE, { event ->
+                self.setVisible(true)
+            })
+            w.doEmbedded()
+        } catch (Exception ex) {
+            log.error("Errore apertura form provvedimenti Dati Elettore ANPR", ex)
+            throw ex
+        }
     }
 }

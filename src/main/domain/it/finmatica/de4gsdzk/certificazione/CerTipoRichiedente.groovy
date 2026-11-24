@@ -39,6 +39,14 @@ class CerTipoRichiedente extends GsdBaseDomain {
         return flagAutorita ?: Boolean.FALSE
     }
 
+    Boolean isAttivaSezioneEnte() {
+        return id == ISTANZA_DI_UFFICIO
+    }
+
+    Boolean isIstanzaDiUfficio() {
+        return id == ISTANZA_DI_UFFICIO
+    }
+
     public static final Integer ISTANZA_DI_PARTE = 1
     public static final Integer ALTRO_RICHIEDENTE = 2
     public static final Integer ISTANZA_DI_UFFICIO = 3

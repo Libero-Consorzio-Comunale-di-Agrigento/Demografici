@@ -44,11 +44,11 @@ class IndirizzoResidenteEsteroFamiglia implements IIndirizzoResidenteEstero {
     @Column(name = "PRESSO", nullable = true)
     String presso
 
-    @Column(name = "COD_CONSOLATO_AIRE", nullable = true)
+    @Column(name = "COD_CONSOLATO_AIRE", nullable = true, updatable = false, insertable = false)
     String codiceConsolato
 
-    @Column(name = "SEDE_CONSOLATO_AIRE", nullable = true)
+    @Column(name = "SEDE_CONSOLATO_AIRE", nullable = true, updatable = false, insertable = false)
     String sedeConsolato
 
-    static final List<Map> etichetteDomain = [Etichette.Via, Etichette.Comune, Etichette.Zipcode, Etichette.Provincia_Contea, Etichette.Presso, Etichette.Consolato, Etichette.Sede]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Zipcode"), Etichette.getEtichetta("Provincia_Contea"), Etichette.getEtichetta("Presso"), Etichette.getEtichetta("Consolato"), Etichette.getEtichetta("Sede")]
 }

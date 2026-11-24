@@ -13,9 +13,9 @@ enum ETabComunicazioniAnsc {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case Allegati: return Etichette.Servizi_allegati
-            case Obbligatori: return Etichette.Servizi_obbligatori
-            case Aggiuntivi: return Etichette.Servizi_aggiuntivi
+            case Allegati: return Etichette.getEtichetta("Servizi_allegati")
+            case Obbligatori: return Etichette.getEtichetta("Servizi_obbligatori")
+            case Aggiuntivi: return Etichette.getEtichetta("Servizi_aggiuntivi")
         }
         return null
     }

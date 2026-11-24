@@ -23,7 +23,7 @@ class CivMinutaServiceSpec extends AbstractServiceSpec<CivMinuta> {
         gsdValidazioneTestoService = new GsdValidazioneTestoService()
         service = new CivMinutaService(
                 repo,
-                statoCivileService,
+                gsdService,
                 gsdValidazioneTestoService)
     }
 

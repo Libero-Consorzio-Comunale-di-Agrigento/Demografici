@@ -112,6 +112,9 @@ class CerTipoCertificato extends GsdBaseDomain {
     @Column(name = "FLAG_SFA", nullable = true)
     Boolean flagStatoDiFamiglia
 
+    @Column(name = "TIPO_CERTIFICATO_ANSC", nullable = true, updatable = false, insertable = false)
+    Integer tipoCertificatoAnsc
+
     Boolean shouldGenerateDocumentoAnagrafico() {
         return flagNumeraDocumentoAnagrafe && tipoDocumentoAnagrafe != null
     }
@@ -142,11 +145,11 @@ class CerTipoCertificato extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Categoria_Tipo_Certificato,
-                                              Etichette.Tipo_firma,
-                                              Etichette.Beneficiario, Etichette.Filtro, Etichette.Codice_controllo, Etichette.Validita,
-                                              Etichette.Dismesso, Etichette.Tipo_Certificato_esterno, Etichette.Modello, Etichette.Formato_testo,
-                                              Etichette.Tipi_di_Atto, Etichette.Controllo_Annotazioni,
-                                              Etichette.Storico, Etichette.Stato_di_famiglia, Etichette.Documento_Individuo,
-                                              Etichette.Tipo_Documento, Etichette.Numero]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Categoria_Tipo_Certificato"),
+                                              Etichette.getEtichetta("Tipo_firma"),
+                                              Etichette.getEtichetta("Beneficiario"), Etichette.getEtichetta("Filtro"), Etichette.getEtichetta("Codice_controllo"), Etichette.getEtichetta("Validita"),
+                                              Etichette.getEtichetta("Dismesso"), Etichette.getEtichetta("Tipo_Certificato_esterno"), Etichette.getEtichetta("Modello"), Etichette.getEtichetta("Formato_testo"),
+                                              Etichette.getEtichetta("Tipi_di_Atto"), Etichette.getEtichetta("Controllo_Annotazioni"),
+                                              Etichette.getEtichetta("Storico"), Etichette.getEtichetta("Stato_di_famiglia"), Etichette.getEtichetta("Documento_Individuo"),
+                                              Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Numero")]
 }

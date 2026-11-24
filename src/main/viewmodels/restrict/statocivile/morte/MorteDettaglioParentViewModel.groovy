@@ -1,6 +1,7 @@
 package restrict.statocivile.morte
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.anagrafe.*
@@ -42,7 +43,7 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
     List<Map> listaFirmatario = []
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivMorteService civMorteService
@@ -67,24 +68,24 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
 
         List<Map> eList = []
         eList.addAll(CivMorte.etichetteDomain)
-        eList.addAll([Etichette.Imprecisato, Etichette.Comune, Etichette.Data_Redazione_Atto_Originale,
-                      Etichette.Coniuge, Etichette.Genitori, Etichette.Interprete, Etichette.Dati_Dichiarante,
-                      Etichette.Tribunale, Etichette.Sentenza_n, Etichette.Atto_morte_n,
-                      Etichette.Ricevuto_da, Etichette.Documento_i, Etichette.Avviso_morte, Etichette.Comune_Atto, Etichette.Annotazione])
+        eList.addAll([Etichette.getEtichetta("Imprecisato"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"),
+                      Etichette.getEtichetta("Coniuge"), Etichette.getEtichetta("Genitori"), Etichette.getEtichetta("Interprete"), Etichette.getEtichetta("Dati_Dichiarante"),
+                      Etichette.getEtichetta("Tribunale"), Etichette.getEtichetta("Sentenza_n"), Etichette.getEtichetta("Atto_morte_n"),
+                      Etichette.getEtichetta("Ricevuto_da"),Etichette.getEtichetta("Documento_i"), Etichette.getEtichetta("Avviso_morte"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Annotazione")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivTrasportoESeppellimento.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Dati_Decesso, Etichette.Altri_Dati])
+        eList.addAll([Etichette.getEtichetta("Dati_Decesso"), Etichette.getEtichetta("Altri_Dati")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_DATI_DECEDUTO_A, Etichette.SEZIONE_DATI_DECESSO,
-                      Etichette.SEZIONE_ATTO_ORIGINALE, Etichette.SEZIONE_ESTREMI_TRASPORTO, Etichette.SEZIONE_ESTREMI_CREMAZIONE,
-                      Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_ANNOTAZIONI_DA_ATTO])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_DATI_DECEDUTO_A"), Etichette.getEtichetta("SEZIONE_DATI_DECESSO"),
+                      Etichette.getEtichetta("SEZIONE_ATTO_ORIGINALE"), Etichette.getEtichetta("SEZIONE_ESTREMI_TRASPORTO"), Etichette.getEtichetta("SEZIONE_ESTREMI_CREMAZIONE"),
+                      Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_DA_ATTO")])
 
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Warn_Data_Nascita_Anni_Alternativi, EtichetteMessaggi.Errore_data_futura])
+        eList.addAll([Etichette.getEtichetta("Warn_Data_Nascita_Anni_Alternativi"), Etichette.getEtichetta("Errore_data_futura")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriDecesso()
@@ -104,14 +105,14 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
         eList.addAll(etichetteTsDefault)
 
         // Aggiungo etichette avviso salvataggio annotazione con nascita non presente
-        eList.addAll(EtichetteMessaggi.Ask_annotazione_nascita_mancante)
+        eList.addAll(Etichette.getEtichetta("Ask_annotazione_nascita_mancante"))
         eList.addAll(ETipoSalvataggioAnnotazioneComuneCliente.values()*.getEtichettaDesc())
 
         doInitAllAtti(eList)
 
         initTrasporto(civRegistroDocumentiUscitaService)
 
-        msgTitle = getEtichetta(Etichette.Atto_Morte)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Morte"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.MOR)
 
         resize()
@@ -142,7 +143,7 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
 
     protected void setComuneDecessoAuto(){
         if (dettaglio.isPartePrima() || dettaglio.isSecondaB()) {
-            ArcComune comune = statoCivileService.checkComuneDecessoAuto()
+            ArcComune comune = gsdService.checkComuneDecessoAuto()
             if (comune) {
                 riempiComune(dettaglio.comuneMorte, comune)
             }
@@ -215,7 +216,7 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleDecesso(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleDecesso(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -440,13 +441,13 @@ abstract class MorteDettaglioParentViewModel extends AttoSoggettiDettaglioParent
 
     @Command void onCheckDataNascitaAnni() {
         if ( (dettaglio.anni != null) && (dettaglio.dataNascita != null) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Data_Nascita_Anni_Alternativi), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Data_Nascita_Anni_Alternativi")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         }
     }
 
     @Command void onSelectDataMorte(){
         if (DataUtils.isDataFutura(dettaglio.dataMorte)){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_data_futura), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_data_futura")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

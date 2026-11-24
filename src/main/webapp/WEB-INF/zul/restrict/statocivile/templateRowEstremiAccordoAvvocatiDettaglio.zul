@@ -49,7 +49,18 @@
 						<cell colspan="4">
 							<textbox value="@bind(vm.datiProvenienza.enteAccordo)" hflex="1" />
 						</cell>-->
-						<cell colspan="2"/>
+						<cell align="right" width="130px">
+								<label value="@load(vm.etichette['Data_Stipula'])"/>
+							</cell>
+							<cell>
+								<hlayout valign="middle" hflex="1">
+									<datebox value="@bind(vm.datiProvenienza.dataStipulaAccordo)" format="dd/MM/yyyy" width="100px"/>
+									<button image="/images/icon/action/16x16/cancel.png"
+											tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampoProvenienza')">
+										<custom-attributes proprieta="dataStipulaAccordo"/>
+									</button>
+								</hlayout>
+							</cell>
 					</row>
 					<row>
 						<cell align="right" width="70px">

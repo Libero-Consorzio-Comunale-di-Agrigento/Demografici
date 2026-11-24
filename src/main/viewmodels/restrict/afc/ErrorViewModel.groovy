@@ -27,8 +27,8 @@ import java.sql.SQLIntegrityConstraintViolationException
 
 import static it.finmatica.de4gsdzk.utils.ErorrUtils.decodeSqlExceptionMessage
 import static it.finmatica.de4gsdzk.utils.ErorrUtils.getSQLException
-import static it.finmatica.de4gsdzk.utils.EtichetteMessaggi.*
 import static it.finmatica.de4gsdzk.utils.EtichetteUtils.getEtichetta
+import it.finmatica.de4gsdzk.utils.Etichette
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
@@ -52,46 +52,46 @@ class ErrorViewModel {
     init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map> eList = [Errore_Db_Modifiche_Concorrenti, Errore_Db_Integrity, Errore_serie, Errore_parte,
-                           Errore_Ricerca_ANPR_No_Result,
-                           Errore_consolidamento_atto_provvisorio, Errore_natura_vs_tipo_atto, Errore_natura_vs_categoria,
-                           Errore_valore_ora, Errore_valore_minuti, Errore_nome_file, Errore_Lunghezza_Campo,
-                           Errore_cancellazione_tipo_atto, Errore_sesso_contraenti, Errore_tipo_divorzio,
-                           Errore_comune_nascita_vs_parte_serie, Errore_comune_residenza_vs_parte_serie,
-                           Errore_atto_nascita_sposo_non_presente_in_archivio, Errore_atto_nascita_sposa_non_presente_in_archivio,
-                           Errore_atto_nascita_contraente_1_non_presente_in_archivio, Errore_atto_nascita_contraente_2_non_presente_in_archivio,
-                           Errore_atto_nascita_deceduto_non_presente_in_archivio, Errore_atto_nascita_intestatario_non_presente_in_archivio,
-                           Errore_atto_nascita_soggetto_non_compatibile,
-                           Errore_atto_matrimonio_non_presente_in_archivio, Errore_atto_unione_civile_non_presente_in_archivio,
-                           Errore_modifica_comunicazioni_protocollate, Errore_modifica_comunicazioni_inviate_albo,
-                           Errore_salvataggio_testo_comunicazione, Errore_modifica_comunicazioni_eseguite, Errore_Numero_Protocollo,
-                           Errore_invio_pec_comunicazione_non_protocollata, Errore_protocollazione_comunicazioni_provvisorie,
-                           Errore_Inserimento_Formula_Duplicata, Errore_Inserimento_Minuta_Duplicata,
-                           Errore_Inserimento_Comunicazione_Duplicata, Errore_Inserimento_Ente_Duplicato, Errore_Inserimento_Registro_Duplicato,
-                           Errore_formula_libretto_internazionale, Errore_Operazione_non_consentita,
-                           Errore_Consenso_Disponente, Errore_Consenso_Fiduciario_1, Errore_Consenso_Fiduciario_2,
-                           Errore_Sottoscrizione_DAT_Fiduciario_1, Errore_Sottoscrizione_DAT_Fiduciario_2, Errore_Disponente_DAT,
-                           Errore_Consenso_Invio_DAT, Errore_Reperibilita_DAT, Errore_Db_Constraint_Violation,
-                           Errore_inserimento_annotazione_su_provvisorio,
-                           Compilare_campi_obbligatori_comunicazione,
-                           Compilare_campi_obbligatori_padre, Compilare_campi_obbligatori_madre,
-                           Compilare_campo_dichiarante,
-                           Compilare_campi_obbligatori_sposo, Compilare_campi_obbligatori_sposa,
-                           Compilare_campi_obbligatori_contraente_1, Compilare_campi_obbligatori_contraente_2,
-                           Compilare_campi_obbligatori_anagrafe, Compilare_campi_obbligatori_occhiello,
-                           Compilare_campi_obbligatori_deceduto_a, Compilare_campi_obbligatori_coniuge,
-                           Compilare_campi_documenti_presentati, Compilare_campi_obbligatori_trasporto,
-                           Compilare_campi_obbligatori_atto, Compilare_campi_obbligatori, Compilare_campi_ANPR,
-                           Compilare_campi_obbligatori_tipo_divorzio, Compilare_campi_obbligatori_tipo_accordo,
-                           Compilare_campi_obbligatori_atto_matrimonio, Compilare_campi_obbligatori_atto_unione_civile,
-                           Compilare_campi_obbligatori_atto_nascita_sposo, Compilare_campi_obbligatori_atto_nascita_sposa,
-                           Compilare_campi_obbligatori_atto_nascita_contraente_1, Compilare_campi_obbligatori_atto_nascita_contraente_2,
-                           Compilare_campi_obbligatori_atto_nascita_deceduto_a, Compilare_campi_obbligatori_atto_nascita_intestatario,
-                           Compilare_campi_obbligatori_convenzioni_patrimoniali,
-                           Compilare_campi_obbligatori_modello_istat, Compilare_tipo_atto,
-                           Errore_ora_imprecisata, Errore_minuti_imprecisati,
-                           Errore_data_futura, Errore_dati_parto_plurimo, Errore_natura_vs_certificazione,
-                           Errore_modifica_comunicazione, Errore_recupero_file_documentale]
+        List<Map> eList = [Etichette.getEtichetta("Errore_Db_Modifiche_Concorrenti"), Etichette.getEtichetta("Errore_Db_Integrity"), Etichette.getEtichetta("Errore_serie"), Etichette.getEtichetta("Errore_parte"),
+                           Etichette.getEtichetta("Errore_Ricerca_ANPR_No_Result"),
+                           Etichette.getEtichetta("Errore_consolidamento_atto_provvisorio"), Etichette.getEtichetta("Errore_natura_vs_tipo_atto"), Etichette.getEtichetta("Errore_natura_vs_categoria"),
+                           Etichette.getEtichetta("Errore_valore_ora"), Etichette.getEtichetta("Errore_valore_minuti"), Etichette.getEtichetta("Errore_nome_file"), Etichette.getEtichetta("Errore_Lunghezza_Campo"),
+                           Etichette.getEtichetta("Errore_cancellazione_tipo_atto"), Etichette.getEtichetta("Errore_sesso_contraenti"), Etichette.getEtichetta("Errore_tipo_divorzio"),
+                           Etichette.getEtichetta("Errore_comune_nascita_vs_parte_serie"), Etichette.getEtichetta("Errore_comune_residenza_vs_parte_serie"),
+                           Etichette.getEtichetta("Errore_atto_nascita_sposo_non_presente_in_archivio"), Etichette.getEtichetta("Errore_atto_nascita_sposa_non_presente_in_archivio"),
+                           Etichette.getEtichetta("Errore_atto_nascita_contraente_1_non_presente_in_archivio"), Etichette.getEtichetta("Errore_atto_nascita_contraente_2_non_presente_in_archivio"),
+                           Etichette.getEtichetta("Errore_atto_nascita_deceduto_non_presente_in_archivio"), Etichette.getEtichetta("Errore_atto_nascita_intestatario_non_presente_in_archivio"),
+                           Etichette.getEtichetta("Errore_atto_nascita_soggetto_non_compatibile"),
+                           Etichette.getEtichetta("Errore_atto_matrimonio_non_presente_in_archivio"), Etichette.getEtichetta("Errore_atto_unione_civile_non_presente_in_archivio"),
+                           Etichette.getEtichetta("Errore_modifica_comunicazioni_protocollate"), Etichette.getEtichetta("Errore_modifica_comunicazioni_inviate_albo"),
+                           Etichette.getEtichetta("Errore_salvataggio_testo_comunicazione"), Etichette.getEtichetta("Errore_modifica_comunicazioni_eseguite"), Etichette.getEtichetta("Errore_Numero_Protocollo"),
+                           Etichette.getEtichetta("Errore_invio_pec_comunicazione_non_protocollata"), Etichette.getEtichetta("Errore_protocollazione_comunicazioni_provvisorie"),
+                           Etichette.getEtichetta("Errore_Inserimento_Formula_Duplicata"), Etichette.getEtichetta("Errore_Inserimento_Minuta_Duplicata"),
+                           Etichette.getEtichetta("Errore_Inserimento_Comunicazione_Duplicata"), Etichette.getEtichetta("Errore_Inserimento_Ente_Duplicato"), Etichette.getEtichetta("Errore_Inserimento_Registro_Duplicato"),
+                           Etichette.getEtichetta("Errore_formula_libretto_internazionale"), Etichette.getEtichetta("Errore_Operazione_non_consentita"),
+                           Etichette.getEtichetta("Errore_Consenso_Disponente"), Etichette.getEtichetta("Errore_Consenso_Fiduciario_1"), Etichette.getEtichetta("Errore_Consenso_Fiduciario_2"),
+                           Etichette.getEtichetta("Errore_Sottoscrizione_DAT_Fiduciario_1"), Etichette.getEtichetta("Errore_Sottoscrizione_DAT_Fiduciario_2"), Etichette.getEtichetta("Errore_Disponente_DAT"),
+                           Etichette.getEtichetta("Errore_Consenso_Invio_DAT"), Etichette.getEtichetta("Errore_Reperibilita_DAT"), Etichette.getEtichetta("Errore_Db_Constraint_Violation"),
+                           Etichette.getEtichetta("Errore_inserimento_annotazione_su_provvisorio"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_comunicazione"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_padre"), Etichette.getEtichetta("Compilare_campi_obbligatori_madre"),
+                           Etichette.getEtichetta("Compilare_campo_dichiarante"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_sposo"), Etichette.getEtichetta("Compilare_campi_obbligatori_sposa"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_contraente_1"), Etichette.getEtichetta("Compilare_campi_obbligatori_contraente_2"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_anagrafe"), Etichette.getEtichetta("Compilare_campi_obbligatori_occhiello"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_deceduto_a"), Etichette.getEtichetta("Compilare_campi_obbligatori_coniuge"),
+                           Etichette.getEtichetta("Compilare_campi_documenti_presentati"), Etichette.getEtichetta("Compilare_campi_obbligatori_trasporto"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_atto"), Etichette.getEtichetta("Compilare_campi_obbligatori"), Etichette.getEtichetta("Compilare_campi_ANPR"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_tipo_divorzio"), Etichette.getEtichetta("Compilare_campi_obbligatori_tipo_accordo"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_atto_matrimonio"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_unione_civile"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposo"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposa"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_1"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_2"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_deceduto_a"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_intestatario"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_convenzioni_patrimoniali"),
+                           Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"), Etichette.getEtichetta("Compilare_tipo_atto"),
+                           Etichette.getEtichetta("Errore_ora_imprecisata"), Etichette.getEtichetta("Errore_minuti_imprecisati"),
+                           Etichette.getEtichetta("Errore_data_futura"), Etichette.getEtichetta("Errore_dati_parto_plurimo"), Etichette.getEtichetta("Errore_natura_vs_certificazione"),
+                           Etichette.getEtichetta("Errore_modifica_comunicazione"), Etichette.getEtichetta("Errore_recupero_file_documentale")]
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
         Throwable exception = (Throwable) Executions.getCurrent().getAttribute("javax.servlet.error.exception")
@@ -151,16 +151,16 @@ class ErrorViewModel {
             }
         } else if (e instanceof DataIntegrityViolationException) {
             if (e.cause instanceof ConstraintViolationException && e.cause.constraintName == null) {
-                title = getEtichetta(etichette, Compilare_campi_obbligatori)
+                title = getEtichetta(etichette, Etichette.getEtichetta("Compilare_campi_obbligatori"))
             } else {
                 if ( (e.cause instanceof ConstraintViolationException) && (getSQLException(e) instanceof SQLIntegrityConstraintViolationException)) {
-                    title = getEtichetta(etichette, Errore_Db_Constraint_Violation)
+                    title = getEtichetta(etichette, Etichette.getEtichetta("Errore_Db_Constraint_Violation"))
                 } else {
-                    title = getEtichetta(etichette, Errore_Db_Integrity)
+                    title = getEtichetta(etichette, Etichette.getEtichetta("Errore_Db_Integrity"))
                 }
             }
         } else if (e instanceof ObjectOptimisticLockingFailureException) {
-            title = getEtichetta(etichette, Errore_Db_Modifiche_Concorrenti)
+            title = getEtichetta(etichette, Etichette.getEtichetta("Errore_Db_Modifiche_Concorrenti"))
         } else if (e instanceof HibernateJdbcException) {
             title = e.getSQLException().message
         } else {

@@ -13,9 +13,31 @@
 
         <tabbox hflex="1" vflex="1">
             <tabs>
+                <tab label="@load(vm.etichette['Titoli_Studio'])" tooltiptext="@load(vm.etichette['Titoli_Studio'])"/>
+                <tab label="@load(vm.etichette['Professioni'])" tooltiptext="@load(vm.etichette['Professioni'])"/>
+                <tab label="@load(vm.etichette['Attivita'])" tooltiptext="@load(vm.etichette['Attivita'])"/>
+                <tab label="@load(vm.etichette['Posizioni_Professionali'])" tooltiptext="@load(vm.etichette['Posizioni_Professionali'])"/>
+                <tab label="@load(vm.etichette['Cittadinanze'])" tooltiptext="@load(vm.etichette['Cittadinanze'])"/>
+                <tab label="@load(vm.etichette['Alberi'])" tooltiptext="@load(vm.etichette['Alberi'])"/>
             </tabs>
             <tabpanels>
                 <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/titoloStudioLista.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/professioneLista.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/attivitaLista.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/posizioneProfessionaleLista.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/cittadinanzaLista.zul"/>
+                </tabpanel>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/anagrafe/dizionari/generale/alberoLista.zul"/>
                 </tabpanel>
             </tabpanels>
         </tabbox>

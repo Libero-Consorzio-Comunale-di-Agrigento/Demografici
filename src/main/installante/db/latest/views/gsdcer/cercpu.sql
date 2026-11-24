@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset amonopoli:202305051040 runAlways:true runOnChange:true stripComments:false
-create or replace view cercpu 
+create or replace view cercpu
 	(ufficio,anno,atto,parte,parte_edit,serie,serie_edit,
 	 cognome_nome_sposo,cognome_sposo,nome_sposo,
          nato,
@@ -50,13 +50,13 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
 -- comune_nascita_sposo
 --    a.descrizione||decode(a.sigla_provincia,'','',' ('||a.sigla_provincia||')'),
     rtrim(nvl(a.descrizione_al1,a.descrizione)||' '||
-            substr(f_provincia_stato(a.cod_provincia,a.cod_comune,a.sigla_provincia,'S','S'),1,100)), 
+            substr(f_provincia_stato(a.cod_provincia,a.cod_comune,a.sigla_provincia,'S','S'),1,100)),
 -- cap_comune_nascita_sposo
     lpad(a.cap,5,'0'),
 -- residenza_sposo
 --    b.descrizione||decode(b.sigla_provincia,'','',' ('||b.sigla_provincia||')'),
     rtrim(nvl(b.descrizione_al1,b.descrizione)||' '||
-            substr(f_provincia_stato(b.cod_provincia,b.cod_comune,b.sigla_provincia,'S','S'),1,100)), 
+            substr(f_provincia_stato(b.cod_provincia,b.cod_comune,b.sigla_provincia,'S','S'),1,100)),
 -- cap_residenza_sposo
     lpad(b.cap,5,'0'),
 -- indirizzo_ana_sposo
@@ -70,13 +70,13 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
        to_char(to_date(data_nas_f,'j'),'dd/mm/yyyy')),
 --    c.descrizione||decode(c.sigla_provincia,'','',' ('||c.sigla_provincia||')'),
     rtrim(nvl(c.descrizione_al1,c.descrizione)||' '||
-            substr(f_provincia_stato(c.cod_provincia,c.cod_comune,c.sigla_provincia,'S','S'),1,100)), 
+            substr(f_provincia_stato(c.cod_provincia,c.cod_comune,c.sigla_provincia,'S','S'),1,100)),
 -- cap_comune_nascita_sposa
     lpad(c.cap,5,'0'),
 -- residenza_sposa
 --    d.descrizione||decode(d.sigla_provincia,'','',' ('||d.sigla_provincia||')'),
     rtrim(nvl(d.descrizione_al1,d.descrizione)||' '||
-            substr(f_provincia_stato(d.cod_provincia,d.cod_comune,d.sigla_provincia,'S','S'),1,100)), 
+            substr(f_provincia_stato(d.cod_provincia,d.cod_comune,d.sigla_provincia,'S','S'),1,100)),
 -- cap_residenza_sposa
     lpad(d.cap,5,'0'),
 -- indirizzo_ana_sposa
@@ -125,7 +125,7 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
        nvl(lower(f_get_descrizione_DSC(ana_m.stato_civile,ana_m.sesso,'','','')),'_________________________'),
        nvl(prof_m,'_________________________'),
 -- cittadinanza_sposo
-       nvl(cittadinanza_m,nvl(mdci.descrizione,'_________________________')), 
+       nvl(cittadinanza_m,nvl(mdci.descrizione,'_________________________')),
 -- stato_civile_sposa
 --       nvl(stato_civile_f,'_________________________'),
        nvl(lower(f_get_descrizione_DSC(ana_f.stato_civile,ana_f.sesso,'','','')),'_________________________'),
@@ -168,7 +168,7 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
     to_char(to_date(mar.da_data_aff_1,'j'),'dd/mm/yyyy'),
 -- a_data_affissione
     to_char(to_date(mar.a_data_aff_1,'j'),'dd/mm/yyyy'),
--- giorni_affissione    
+-- giorni_affissione
     nvl(mar.giorni_aff_2,8),
 -- comune_affissione_2
     mar.comune_aff_2,
@@ -234,7 +234,7 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
 -- data_protocollo_prov
      to_char(to_date(dpa.data_protocollo,'j'),'dd/mm/yyyy'),
 -- terminalista_atto
-         terminalista
+         pub.terminalista
   from arccom a,arccom b,arccom c,arccom d,arccom e,arccom m,
        cilet ecl,cilet fcl,
      arcvie vie_m,arcvie vie_f,
@@ -264,26 +264,26 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
    and fdci.cod_ci   (+)    = pub.nazionalita_f
    and dpa.tipo_atto (+)    = 3
    and nvl(dpa.serie(+),' ')     = nvl(pub.serie,' ')
-   and dpa.parte     (+)        = pub.parte   
-   and dpa.atto     (+)        = pub.atto   
-   and dpa.anno     (+)        = pub.anno  
+   and dpa.parte     (+)        = pub.parte
+   and dpa.atto     (+)        = pub.atto
+   and dpa.anno     (+)        = pub.anno
    and dpa.ufficio     (+)    = pub.ufficio
-   and tes.parte     (+)         = spo.parte   
+   and tes.parte     (+)         = spo.parte
    and nvl(tes.serie(+),' ')    = nvl(spo.serie,' ')
-   and tes.atto     (+)         = spo.atto   
-   and tes.anno     (+)        = spo.anno  
+   and tes.atto     (+)         = spo.atto
+   and tes.anno     (+)        = spo.anno
    and tes.ufficio      (+)    = spo.ufficio
    and tes.tipo_atto     (+)    = 3
    and nvl(ttr.serie(+),' ')     = nvl(spo.serie,' ')
-   and ttr.parte     (+)        = spo.parte   
-   and ttr.atto     (+)        = spo.atto   
-   and ttr.anno     (+)        = spo.anno  
+   and ttr.parte     (+)        = spo.parte
+   and ttr.atto     (+)        = spo.atto
+   and ttr.anno     (+)        = spo.anno
    and ttr.ufficio     (+)    = spo.ufficio
    and ttr.tipo_atto     (+)    = 3
    and nvl(pdo.serie(+),' ')     = nvl(pub.serie,' ')
-   and pdo.parte     (+)        = pub.parte   
-   and pdo.atto     (+)        = pub.atto   
-   and pdo.anno     (+)        = pub.anno  
+   and pdo.parte     (+)        = pub.parte
+   and pdo.atto     (+)        = pub.atto
+   and pdo.anno     (+)        = pub.anno
    and pdo.ufficio     (+)    = pub.ufficio
    and nvl(spo.serie(+),' ')     = nvl(pub.serie,' ')
    and spo.parte     (+)        = pub.parte
@@ -315,7 +315,7 @@ select pub.ufficio,pub.anno,pub.atto,pub.parte,
    and c.cod_provincia                    = pub.cod_pro_nas_f
    and d.cod_comune     (+)               = pub.cod_com_res_f
    and d.cod_provincia  (+)               = pub.cod_pro_res_f
-   and (e.cod_provincia,e.cod_comune)     = 
+   and (e.cod_provincia,e.cod_comune)     =
      (select pro_cliente,com_cliente from menuditta)
    and pub.cod_rec                  in (0,3)
 /

@@ -136,7 +136,7 @@ class CivRubricaNascite implements ISoggettoAtto1Base {
     String getSiglaProvinciaNascita1() { comuneNascita.siglaProvincia }
     String getPaternita() {cognomeNomePadre}
     String getMaternita() {cognomeNomeMadre}
-    String getEstremiAttoLista(){
+    String getEstremiAttoListaPdf(){
         if (attoNascita.idAttoAnsc != null) {
             return attoNascita.idAttoAnsc
         }
@@ -148,15 +148,15 @@ class CivRubricaNascite implements ISoggettoAtto1Base {
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Anno_Registrazione, Etichette.Cognome, Etichette.Nome,
-                                              Etichette.Sesso, Etichette.Data_Nascita, Etichette.Comune_Nascita,
-                                              Etichette.Data_Registrazione,
-                                              Etichette.Estremi_Atto_Nascita,
-                                              Etichette.Comune_Atto_Nascita,
-                                              Etichette.Comune_Atto, Etichette.Ufficio, Etichette.Anno,
-                                              Etichette.Numero_Atto, Etichette.Atto, Etichette.Parte, Etichette.Serie, Etichette.Id_Atto_Ansc,
-                                              Etichette.Cognome_Padre, Etichette.Nome_Padre,
-                                              Etichette.Cognome_Madre, Etichette.Nome_Madre,
-                                              Etichette.Paternita, Etichette.Maternita]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Anno_Registrazione"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"),
+                                              Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Data_Nascita"), Etichette.getEtichetta("Comune_Nascita"),
+                                              Etichette.getEtichetta("Data_Registrazione"),
+                                              Etichette.getEtichetta("Estremi_Atto_Nascita"),
+                                              Etichette.getEtichetta("Comune_Atto_Nascita"),
+                                              Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"),
+                                              Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Id_Atto_Ansc"),
+                                              Etichette.getEtichetta("Cognome_Padre"), Etichette.getEtichetta("Nome_Padre"),
+                                              Etichette.getEtichetta("Cognome_Madre"), Etichette.getEtichetta("Nome_Madre"),
+                                              Etichette.getEtichetta("Paternita"), Etichette.getEtichetta("Maternita")]
 
 }

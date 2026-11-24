@@ -1,10 +1,10 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivDocumentoPubblicazioneRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,15 +13,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivDocumentoPubblicazioneService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDocumentoPubblicazioneRepository civDocumentoPubblicazioneRepository
 
     CivDocumentoPubblicazioneService(CivDocumentoPubblicazioneRepository civDocumentoPubblicazioneRepository,
-									 StatoCivileService statoCivileService) {
+                                     GsdService gsdService) {
 
 		this.civDocumentoPubblicazioneRepository = civDocumentoPubblicazioneRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivDocumentoPubblicazione getByUkAttoAndTipoAtto(String identificativoAtto, Integer tipoAtto) {
@@ -51,7 +51,7 @@ class CivDocumentoPubblicazioneService {
 		}
 		String sezioneDocPresentati = "'Documenti Presentati'"
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDocPresentati)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDocPresentati)
 		}
 	}
 
@@ -61,7 +61,7 @@ class CivDocumentoPubblicazioneService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su CIVPDO per id " + obj.id)
 		return  civDocumentoPubblicazioneRepository.save(obj)

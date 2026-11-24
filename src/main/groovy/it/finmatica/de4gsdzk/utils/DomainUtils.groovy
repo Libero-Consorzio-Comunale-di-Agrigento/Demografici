@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.utils
 
 import it.finmatica.de4gsdzk.*
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.anagrafe.pratiche.AnaPratica
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.statocivile.embed.SoggettoDAT
@@ -23,8 +24,11 @@ class DomainUtils {
         Class clazz = entity instanceof Class ? entity : entity.getClass()
         Table table = (Table) clazz.getAnnotation(Table.class)
         String tableName = table.name().toUpperCase()
-        if (tableName.endsWith("_V"))
+        if (tableName.endsWith("_V")) {
             tableName = tableName.substring(0, tableName.length()-2)
+        } else if (tableName.endsWith("_V_ZK")) {
+            tableName = tableName.substring(0, tableName.length()-5)
+        }
         return tableName
     }
 
@@ -84,6 +88,13 @@ class DomainUtils {
                 domainTarget.tipoAtto = domainSource.tipoAtto
                 break
         }
+    }
+
+    static void initFromPratica(def domainTarget, AnaPratica domainSource){
+        domainTarget.tipoPratica = domainSource.tipoPratica
+        domainTarget.archivioAnagrafe = domainSource.archivioAnagrafe
+        domainTarget.annoPratica = domainSource.anno
+        domainTarget.numeroPratica = domainSource.numero
     }
 
     static void initFromRiferimentoAtto(IRiferimentoAttoDomain domainTarget, IRiferimentoAttoDomain domainSource){
@@ -639,10 +650,10 @@ class DomainUtils {
 
         domainTarget.nazionalita1 = domainSource.nazionalita
 
-        domainTarget.codiceComuneResidenza1 = domainSource.comuneResidenza.codice
-        domainTarget.descrizioneComuneResidenza1 = domainSource.comuneResidenza.descrizione
-        domainTarget.codiceProvinciaResidenza1 = domainSource.comuneResidenza.codiceProvincia
-        domainTarget.siglaProvinciaResidenza1 = domainSource.comuneResidenza.siglaProvincia
+        domainTarget.codiceComuneResidenza1 = domainSource.comuneResidenza?.codice
+        domainTarget.descrizioneComuneResidenza1 = domainSource.comuneResidenza?.descrizione
+        domainTarget.codiceProvinciaResidenza1 = domainSource.comuneResidenza?.codiceProvincia
+        domainTarget.siglaProvinciaResidenza1 = domainSource.comuneResidenza?.siglaProvincia
 
         domainTarget.codiceFiscale1 = domainSource.codiceFiscale
         domainTarget.cfCalcolato1 = domainSource.cfCalcolato
@@ -661,10 +672,10 @@ class DomainUtils {
 
         domainTarget.nazionalita2 = domainSource.nazionalita
 
-        domainTarget.codiceComuneResidenza2 = domainSource.comuneResidenza.codice
-        domainTarget.descrizioneComuneResidenza2 = domainSource.comuneResidenza.descrizione
-        domainTarget.codiceProvinciaResidenza2 = domainSource.comuneResidenza.codiceProvincia
-        domainTarget.siglaProvinciaResidenza2 = domainSource.comuneResidenza.siglaProvincia
+        domainTarget.codiceComuneResidenza2 = domainSource.comuneResidenza?.codice
+        domainTarget.descrizioneComuneResidenza2 = domainSource.comuneResidenza?.descrizione
+        domainTarget.codiceProvinciaResidenza2 = domainSource.comuneResidenza?.codiceProvincia
+        domainTarget.siglaProvinciaResidenza2 = domainSource.comuneResidenza?.siglaProvincia
 
         domainTarget.codiceFiscale2 = domainSource.codiceFiscale
         domainTarget.cfCalcolato2 = domainSource.cfCalcolato

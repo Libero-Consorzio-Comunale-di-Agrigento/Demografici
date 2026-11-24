@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.GsdBaseDomain
+import it.finmatica.de4gsdzk.IComunicazione
 import it.finmatica.de4gsdzk.utils.ETipoComunicazione
 import it.finmatica.de4gsdzk.utils.ETipoSN
 import it.finmatica.de4gsdzk.utils.Etichette
@@ -11,7 +12,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "CIVDCO")
-class CivComunicazione extends GsdBaseDomain{
+class CivComunicazione extends GsdBaseDomain implements  IComunicazione {
 
     @Id
     @Column(name = "CODICE_CO")
@@ -28,22 +29,9 @@ class CivComunicazione extends GsdBaseDomain{
     @Column(name = "FLAG_ATTO_ALLEGATO", nullable = true)
     Boolean attoAllegato
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = BooleanToStringConverter.class)
     @Column(name = "FLAG_PRIORITA", nullable = true)
-    private ETipoSN prioritaDb
-
-    @Formula("CASE WHEN COALESCE(FLAG_PRIORITA, 'N') = 'N' THEN 0 ELSE 1 END")
-    @Type(type="numeric_boolean")
-    private Boolean priorita
-
-    Boolean getPriorita() {
-        return this.priorita
-    }
-
-    void setPriorita(Boolean val) {
-        this.priorita = val
-        this.prioritaDb = (val? ETipoSN.S: null)
-    }
+    Boolean priorita
 
     @Formula("CONCAT(CODICE_CO, CONCAT(' - ', DESCRIZIONE))")
     String descrizioneEstesa
@@ -52,6 +40,6 @@ class CivComunicazione extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Tipo_Comunicazione, Etichette.Adempimenti]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Tipo_Comunicazione"), Etichette.getEtichetta("Adempimenti")]
 
 }

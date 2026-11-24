@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.certificazione.CerSindaco
 import it.finmatica.de4gsdzk.certificazione.CerSindacoService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -30,12 +29,12 @@ class SindacoDettaglioViewModel extends DizionarioDettaglioViewModel implements 
         backFromRecordEnabled = false
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Sindaco]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Sindaco"),]
         eList.addAll(CerSindaco.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Sindaco)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Sindaco"),)
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -62,7 +61,7 @@ class SindacoDettaglioViewModel extends DizionarioDettaglioViewModel implements 
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CerSindaco c = cerSindacoService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

@@ -1,0 +1,119 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateListaDocumenti" macroURI="/restrict/anagrafe/templateListaDocumenti.zul" inline="true"?>
+<?component name="templateListaAllegati" macroURI="/restrict/templateListaAllegati.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@bind(vm.soggetto.matricola ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Documenti_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <grid sclass="form">
+            <rows visible="@bind(vm.soggetto.matricola ne null)">
+                <row>
+                    <cell>
+                        <groupbox closable="false">
+                            <caption label="@load(vm.etichette['Informazioni_Generali'])"/>
+                            <grid sclass="form">
+                                <columns>
+                                    <column width="140px"/>
+                                    <column/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel value="@load(vm.etichette['Possesso_Autoveicoli'])"/>
+                                        </cell>
+                                        <cell>
+                                            <radiogroup selectedItem="@bind(vm.soggetto.possessoCartaCircolazione)">
+                                                <radio label="@load(vm.etichette['SI'])" value="${true}" disabled="@load(vm.readOnly)"/>
+                                                <radio label="@load(vm.etichette['NO'])" value="${false}" disabled="@load(vm.readOnly)"/>
+                                            </radiogroup>
+                                        </cell>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel value="@load(vm.etichette['Titolare_Patente'])"/>
+                                        </cell>
+                                        <cell>
+                                            <radiogroup selectedItem="@bind(vm.soggetto.possessoPatente)">
+                                                <radio label="@load(vm.etichette['SI'])" value="${true}" disabled="@load(vm.readOnly)"/>
+                                                <radio label="@load(vm.etichette['NO'])" value="${false}" disabled="@load(vm.readOnly)"/>
+                                            </radiogroup>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+                </row>
+                <row height="300px">
+                    <cell>
+                        <groupbox closable="false" vflex="1">
+                            <caption label="@load(vm.etichette['Documenti'])"/>
+
+                            <borderlayout>
+                                <north vflex="min">
+                                    <hlayout valign="middle" sclass="navigazione" height="40px">
+                                        <hlayout sclass="afc-control-bar" valign="middle">
+                                            <toolbarbutton image="/images/icon/action/22x22/add.png"
+                                                           disabled="@load(vm.readOnly)"
+                                                           tooltiptext="@load(vm.etichette['inserisci_documento_tooltip'])"
+                                                           onClick="@command('onInserisciDocumento', tipologia='SOGG')"/>
+                                        </hlayout>
+                                    </hlayout>
+                                </north>
+                                <center>
+                                    <listbox model="@load(vm.documentiSoggetto)" vflex="1"
+                                             selectedItem="@bind(vm.selectedDocumentoSoggetto)"
+                                             emptyMessage="@load(vm.etichette['Nessun_Documento_Presente'])">
+                                        <templateListaDocumenti/>
+                                    </listbox>
+                                </center>
+                                <east vflex="1" size="40%" collapsible="true" splittable="true"
+                                      open="@load(not empty vm.selectedDocumentoSoggetto)">
+                                    <vlayout sclass="scroll" vflex="1">
+                                        <groupbox mold="3d" closable="false" style="background: #EDEFF5" vflex="1">
+                                            <caption label="@load(vm.etichette['Allegati'])" height="27px">
+                                                <hlayout sclass="testo-a-dx">
+
+                                                    <toolbarbutton image="/images/icon/action/22x22/export.png"
+                                                                   upload="true"
+                                                                   disabled="@load(vm.readOnly)"
+                                                                   tooltiptext="@load(vm.etichette['carica_documento_tooltip'])"
+                                                                   onUpload="@command('onUploadAllegato', tipologia='SOGG')"/>
+
+                                                    <ScanToolbarbutton
+                                                            disabled="@load(vm.readOnly)"
+                                                            onScanCompleted="@command('onScanAllegato', tipologia='SOGG')"/>
+
+                                                    <toolbarbutton image="/images/icon/action/22x22/import.png"
+                                                                   tooltiptext="@load(vm.etichette['scarica_allegati_tooltip'])"
+                                                                   onClick="@command('onDownloadAllegati', tipologia='SOGG')"/>
+                                                </hlayout>
+                                            </caption>
+                                            <listbox model="@load(vm.selectedDocumentoSoggetto.allegati)"
+                                                     nonselectableTags="" vflex="1"
+                                                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                                                <templateListaAllegati/>
+                                            </listbox>
+                                        </groupbox>
+                                    </vlayout>
+                                </east>
+                            </borderlayout>
+
+                        </groupbox>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

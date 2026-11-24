@@ -34,5 +34,5 @@ class IndirizzoNonResidenteFamiglia implements IIndirizzoNonResidente {
         this.comune = c
     }
 
-    static final List<Map> etichetteDomain = [Etichette.Via, Etichette.Comune]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via"), Etichette.getEtichetta("Comune")]
 }

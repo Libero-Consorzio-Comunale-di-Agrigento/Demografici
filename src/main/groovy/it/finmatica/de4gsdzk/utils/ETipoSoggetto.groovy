@@ -16,8 +16,8 @@ enum ETipoSoggetto {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case RICHIEDENTE_CERTIFICATO: return Etichette.Richiedente
-            case BENEFICIARIO_CERTIFICATO: return Etichette.Beneficiario
+            case RICHIEDENTE_CERTIFICATO: return Etichette.getEtichetta("Richiedente")
+            case BENEFICIARIO_CERTIFICATO: return Etichette.getEtichetta("Beneficiario")
         }
         return null
     }

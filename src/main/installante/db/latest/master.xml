@@ -7,11 +7,15 @@
 	<includeAll path="procedures/gsd" relativeToChangelogFile="true"/>
 	<!-- GSD -->
 	<includeAll path="functions/gsd_after" relativeToChangelogFile="true"/>
+	<!-- ARC -->
+	<includeAll path="functions/gsdarc" relativeToChangelogFile="true"/>
 	<!-- ANA -->
 	<includeAll path="functions/gsdana" relativeToChangelogFile="true"/>
 	<includeAll path="views/gsdana" relativeToChangelogFile="true"/>
 	<includeAll path="functions/gsdana_after_viw" relativeToChangelogFile="true"/>
 	<includeAll path="procedures/gsdana" relativeToChangelogFile="true"/>
+	<includeAll path="package_spec/gsdana" relativeToChangelogFile="true"/>
+	<includeAll path="package_body/gsdana" relativeToChangelogFile="true"/>
 	<!-- ANSC-CIV -->
 	<includeAll path="functions/ansc_gsdciv" relativeToChangelogFile="true"/>
 	<!-- CIV -->
@@ -56,16 +60,18 @@
 	<!-- GSD -->
 	<includeAll path="package_spec/gsd" relativeToChangelogFile="true"/>
 	<includeAll path="package_body/gsd" relativeToChangelogFile="true"/>
-	<includeAll path="functions/gsdciv_after_pkg" relativeToChangelogFile="true"/>
+	<includeAll path="functions/gsd_after_pkg" relativeToChangelogFile="true"/>
 	<includeAll path="views/gsd_after" relativeToChangelogFile="true"/>
 	<!-- TRIGGERS -->
 	<includeAll path="triggers/gsd" relativeToChangelogFile="true"/>
+	<includeAll path="triggers/gsdarc" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdana" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdcer" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdciv" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdele" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdist" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/gsdana_anpr" relativeToChangelogFile="true"/>
+	<includeAll path="triggers/anpr" relativeToChangelogFile="true"/>
 	<includeAll path="triggers/ansc" relativeToChangelogFile="true"/>
 	<!-- GTE -->
 	<includeAll path="functions/gte" relativeToChangelogFile="true"/>

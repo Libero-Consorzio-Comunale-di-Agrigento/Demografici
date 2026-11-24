@@ -28,6 +28,9 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
     List<DepagDocumento> lista
     DepagDocumento dettaglio
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -43,19 +46,30 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
         addPlusEnabled = true
         deleteEnabled = false
 
-        List<Map<String, String>> eList = [Etichette.Documenti, Etichette.Funzione_non_abilitata, Etichette.Sincronizza_con_altro, Etichette.Tipi_Certificato]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Sincronizza_con_altro"), Etichette.getEtichetta("Tipi_Certificato")]
         eList.addAll(DepagDocumento.etichetteDomain)
-        eList.addAll(EtichetteMessaggi.Info_Sincronizzazione_successo)
+        eList.addAll(Etichette.getEtichetta("Info_Sincronizzazione_successo"))
+
+        eList.addAll([Etichette.getEtichetta("Certificato_crescente"), Etichette.getEtichetta("Certificato_decrescente"),
+                      Etichette.getEtichetta("Servizio_crescente"), Etichette.getEtichetta("Servizio_decrescente")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Documenti)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Documenti"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
-        addPlusList.add([id: ADD_SINCRONIZZA, idDomain: ADD_SINCRONIZZA, descrizione: String.format(getEtichetta(Etichette.Sincronizza_con_altro), getEtichetta(Etichette.Tipi_Certificato)), tipo: "T"])
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Certificato_crescente")), [new Sort.Order(Sort.Direction.ASC, "tipoCertificato.id"), new Sort.Order(Sort.Direction.ASC, "tipoCertificato.descrizione")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Certificato_decrescente")), [new Sort.Order(Sort.Direction.DESC, "tipoCertificato.id"), new Sort.Order(Sort.Direction.DESC, "tipoCertificato.descrizione")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Servizio_crescente")), [new Sort.Order(Sort.Direction.ASC, "servizio.id"), new Sort.Order(Sort.Direction.ASC, "servizio.descrizione")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Servizio_decrescente")), [new Sort.Order(Sort.Direction.DESC, "servizio.id"), new Sort.Order(Sort.Direction.DESC, "servizio.descrizione")])])
+
+        selectedOrder = listaOrder[0]
+
+        addPlusList.add([id: ADD_SINCRONIZZA, idDomain: ADD_SINCRONIZZA, descrizione: String.format(getEtichetta(Etichette.getEtichetta("Sincronizza_con_altro")), getEtichetta(Etichette.getEtichetta("Tipi_Certificato"))), tipo: "T"])
 
         caricaLista()
     }
@@ -69,7 +83,7 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
     }
 
     Paginazione eseguiQuery(Boolean usePaging) {
-        PageRequest pr = new PageRequest((usePaging ? activePage : 0), (usePaging ? pageSize : Integer.MAX_VALUE), new Sort(SortUtils.idAsc))
+        PageRequest pr = new PageRequest((usePaging ? activePage : 0), (usePaging ? pageSize : Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page<DepagDocumento> p = depagDocumentoService.listAllByDescrizione(SqlUtils.beginsAndEndsLike(filtro), pr)
 
@@ -91,7 +105,7 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -102,7 +116,7 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [:])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -113,7 +127,7 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
             if (idDomain == ADD_SINCRONIZZA) {
                 try {
                     depagDocumentoService.sincronizza()
-                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(EtichetteMessaggi.Info_Sincronizzazione_successo))
+                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(Etichette.getEtichetta("Info_Sincronizzazione_successo")))
                 } catch (SincronizzazioneNessunElementoException e) {
                     MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.W, e.message)
                 } catch (SincronizzazioneErroreException e) {
@@ -122,13 +136,13 @@ class DocumentoListaViewModel extends DizionarioListaViewModel {
                 onRicarica()
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     String getMessaggioCancellazione() {
         if (dettaglio) {
-            return (dettaglio.tipoCertificato.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio.tipoCertificato.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

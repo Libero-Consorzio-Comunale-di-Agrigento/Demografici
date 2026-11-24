@@ -14,8 +14,10 @@
         <tabbox hflex="1" vflex="1">
             <tabs>
                 <tab label="@load(vm.etichette['Parametri'])" 				/>
-			    <tab label="@load(vm.etichette['Servizi_Ansc'])" tooltiptext="@load(vm.etichette['Servizi_Ansc'])"/>
-                <!--<tab label="@load(vm.etichette['Archivi_di_Riferimento'])" tooltiptext="@load(vm.etichette['Archivi_di_Riferimento'])"/>-->
+                <tab label="@load(vm.etichette['Utenti'])" tooltiptext="@load(vm.etichette['Utenti'])"/>
+			    <tab label="@load(vm.etichette['Servizi'])" tooltiptext="@load(vm.etichette['Servizi'])"/>
+			    <tab label="@load(vm.etichette['Casi_Uso_Servizi'])" tooltiptext="@load(vm.etichette['Casi_Uso_Servizi'])"/>
+			    <tab label="@load(vm.etichette['Casi_Uso_Allegati'])" tooltiptext="@load(vm.etichette['Casi_Uso_Allegati'])"/>
                 <tab label="@load(vm.etichette['Motivi_richiesta'])" tooltiptext="@load(vm.etichette['Motivi_richiesta'])"/>
             </tabs>
             <tabpanels>
@@ -23,11 +25,17 @@
                     <include src="/restrict/statocivile/dizionari/ansc/parametroLista.zul" />
                 </tabpanel>
                 <tabpanel>
+                    <include src="/restrict/statocivile/dizionari/ansc/anscUtenteLista.zul" />
+                </tabpanel>
+                <tabpanel>
                     <include src="/restrict/statocivile/dizionari/ansc/anscServiziLista.zul" />
                 </tabpanel>
-                <!--<tabpanel>
-                    <include src="/restrict/statocivile/dizionari/ansc/anscServiziArchiviLista.zul" />
-                </tabpanel>-->
+                <tabpanel>
+                    <include src="/restrict/statocivile/dizionari/ansc/anscCasiUsoArchiviLista.zul" />
+                </tabpanel>
+                <tabpanel>
+                    <include src="/restrict/statocivile/dizionari/ansc/anscCasiUsoAllegatiLista.zul" />
+                </tabpanel>
                 <tabpanel>
                     <include src="/restrict/statocivile/dizionari/ansc/motivoRichiestaLista.zul" />
                 </tabpanel>

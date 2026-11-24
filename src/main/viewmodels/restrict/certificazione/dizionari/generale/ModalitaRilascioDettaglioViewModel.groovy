@@ -48,7 +48,7 @@ class ModalitaRilascioDettaglioViewModel extends DizionarioDettaglioViewModel im
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.Modalita_rilascio]
+        List<Map> eList = [Etichette.getEtichetta("Modalita_rilascio")]
         eList.addAll(CerModalitaRilascio.etichetteDomain)
 
         // Aggiungo etichette tipo si no
@@ -65,7 +65,7 @@ class ModalitaRilascioDettaglioViewModel extends DizionarioDettaglioViewModel im
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Modalita_rilascio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Modalita_rilascio"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -140,7 +140,7 @@ class ModalitaRilascioDettaglioViewModel extends DizionarioDettaglioViewModel im
     void onSalvaRecord() {
         if (dettaglio) {
             CerModalitaRilascio c = cerModalitaRilascioService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }
@@ -162,12 +162,12 @@ class ModalitaRilascioDettaglioViewModel extends DizionarioDettaglioViewModel im
 
     String getLabelMotivoEsenzioneBollo() {
         if (dettaglio.categoriaTipoCertificato?.isStatoCivile()) {
-            return String.format(getEtichetta(Etichette.Uso), getEtichettaEnum(ETipoGenerazioneCertificato.ANSC))
+            return String.format(getEtichetta(Etichette.getEtichetta("Uso")), getEtichettaEnum(ETipoGenerazioneCertificato.ANSC))
         }
         if (dettaglio.categoriaTipoCertificato?.isAnagrafe()) {
-            return String.format(getEtichetta(Etichette.Uso), getEtichettaEnum(ETipoGenerazioneCertificato.ANPR))
+            return String.format(getEtichetta(Etichette.getEtichetta("Uso")), getEtichettaEnum(ETipoGenerazioneCertificato.ANPR))
         }
-        return String.format(getEtichetta(etichette, Etichette.Uso), "${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANSC)}")
+        return String.format(getEtichetta(etichette, Etichette.getEtichetta("Uso")), "${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(etichette, ETipoGenerazioneCertificato.ANSC)}")
     }
 
 }

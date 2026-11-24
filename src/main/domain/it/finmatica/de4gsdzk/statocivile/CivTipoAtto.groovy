@@ -136,8 +136,8 @@ class CivTipoAtto extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Parte, Etichette.Serie, Etichette.Descrizione, Etichette.Natura_Atto,
-                                              Etichette.Categoria, Etichette.Sequenza, Etichette.Note, Etichette.Minuta, Etichette.Caso_specifico,
-                                              Etichette.Tipo_Atto, Etichette.Tipo_Documento_CIA_Fascicolo, Etichette.Dismesso]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Natura_Atto"),
+                                              Etichette.getEtichetta("Categoria"), Etichette.getEtichetta("Sequenza"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Minuta"), Etichette.getEtichetta("Caso_specifico"),
+                                              Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Tipo_Documento_CIA_Fascicolo"), Etichette.getEtichetta("Dismesso")]
 
 }

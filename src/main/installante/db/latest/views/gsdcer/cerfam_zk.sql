@@ -57,11 +57,13 @@ SELECT
          DECODE (b1.descrizione,'', '',
            '- '||b1.descrizione|| ' '||f_provincia_stato_CER (b1.cod_provincia,b1.cod_comune,b1.sigla_provincia,'S','S',ana.data_nas)),
 -- atto_nascita
-         'atto N. '|| TO_CHAR (ana.atto_nas)|| 
-           ' p. '|| DECODE (ana.parte_nas,1,'I',2,'II')|| 
-           DECODE (ana.serie_nas, '', '', ' s. ' || ana.serie_nas)|| 
-           DECODE (ana.ufficio_nas,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_nas))|| 
-           ' / '|| TO_CHAR (ana.anno_atto_nas),
+         decode(ana.atto_nas_digitale,'',
+           'atto N. '|| TO_CHAR (ana.atto_nas)|| 
+             ' p. '|| DECODE (ana.parte_nas,1,'I',2,'II')|| 
+             DECODE (ana.serie_nas, '', '', ' s. ' || ana.serie_nas)|| 
+             DECODE (ana.ufficio_nas,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_nas))|| 
+             ' / '|| TO_CHAR (ana.anno_atto_nas),
+           'atto N. '|| ana.atto_nas_digitale),
 -- stato_civile
          dsc.descrizione_cer,
 -- coniugat_oa
@@ -91,26 +93,34 @@ SELECT
                  '' ),
 -- atto_mat_ved
          DECODE (ana.stato_civile,
-           'CN', 'atto N. '|| TO_CHAR (ana.atto_mat)|| 
-                    DECODE (ana.parte_mat,1,' p. I',2,' p. II')|| 
-                    DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
-                    DECODE (ana.ufficio_mat,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
-                    DECODE (ana.anno_atto_mat,'', '',' / ' || TO_CHAR (ana.anno_atto_mat)),
-           'VE', 'atto N. ' || TO_CHAR (ana.atto_ved)|| 
-                    DECODE (ana.parte_ved,1,' p. I',2,' p. II')|| 
-                    DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
-                    DECODE (ana.ufficio_ved,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
-                    DECODE (ana.anno_atto_ved,'', '',' / ' || TO_CHAR (ana.anno_atto_ved)),
-           'UC', 'atto N. '|| TO_CHAR (ana.atto_mat)|| 
-                    DECODE (ana.parte_mat,1,' p. I',2,' p. II')|| 
-                    DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
-                    DECODE (ana.ufficio_mat,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
-                    DECODE (ana.anno_atto_mat,'', '',' / ' || TO_CHAR (ana.anno_atto_mat)), 
-           'VU', 'atto N. ' || TO_CHAR (ana.atto_ved)|| 
-                    DECODE (ana.parte_ved,1,' p. I',2,' p. II')|| 
-                    DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
-                    DECODE (ana.ufficio_ved,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
-                    DECODE (ana.anno_atto_ved,'', '',' / ' || TO_CHAR (ana.anno_atto_ved))
+           'CN', decode(ana.atto_mat_digitale,'',
+                   'atto N. '|| TO_CHAR (ana.atto_mat)|| 
+                     DECODE (ana.parte_mat,1,' p. I',2,' p. II')|| 
+                     DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
+                     DECODE (ana.ufficio_mat,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
+                     DECODE (ana.anno_atto_mat,'', '',' / ' || TO_CHAR (ana.anno_atto_mat)),
+                   'atto N. '|| ana.atto_mat_digitale),
+           'VE', decode(ana.atto_ved_digitale,'',
+                   'atto N. ' || TO_CHAR (ana.atto_ved)|| 
+                     DECODE (ana.parte_ved,1,' p. I',2,' p. II')|| 
+                     DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
+                     DECODE (ana.ufficio_ved,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
+                     DECODE (ana.anno_atto_ved,'', '',' / ' || TO_CHAR (ana.anno_atto_ved)),
+                   'atto N. ' || ana.atto_ved_digitale),
+           'UC', decode(ana.atto_mat_digitale,'',
+                   'atto N. '|| TO_CHAR (ana.atto_mat)|| 
+                     DECODE (ana.parte_mat,1,' p. I',2,' p. II')|| 
+                     DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
+                     DECODE (ana.ufficio_mat,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
+                     DECODE (ana.anno_atto_mat,'', '',' / ' || TO_CHAR (ana.anno_atto_mat)), 
+                   'atto N. '|| ana.atto_mat_digitale),
+           'VU', decode(ana.atto_ved_digitale,'',
+                   'atto N. ' || TO_CHAR (ana.atto_ved)|| 
+                     DECODE (ana.parte_ved,1,' p. I',2,' p. II')|| 
+                     DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
+                     DECODE (ana.ufficio_ved,0, '','', '',' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
+                     DECODE (ana.anno_atto_ved,'', '',' / ' || TO_CHAR (ana.anno_atto_ved)),
+                   'atto N. ' || ana.atto_ved_digitale)
                  ),
 -- titolo_studio
          dts.descrizione,
@@ -180,11 +190,13 @@ SELECT
                                   || f_provincia_stato (f.cod_provincia, f.cod_comune,f.sigla_provincia,'S','S')))),
 -- pratica_ultimo_evento
          DECODE (ana.stato,
-           50, DECODE (ana.atto_mor,'','','atto N. '|| TO_CHAR (ana.atto_mor)|| 
-               DECODE (ana.parte_mor,1,' p. I',2,' p. II')|| 
-               DECODE (ana.serie_mor, '', '', ' s. ' || ana.serie_mor)|| 
-               DECODE (ana.ufficio_mor,'', '',' uff. ' || TO_CHAR (ana.ufficio_mor))|| 
-               ' / '|| TO_CHAR (ana.anno_atto_mor)),
+           50, decode(ana.atto_mor_digitale,'',
+                 DECODE (ana.atto_mor,'','','atto N. '|| TO_CHAR (ana.atto_mor)|| 
+                 DECODE (ana.parte_mor,1,' p. I',2,' p. II')|| 
+                 DECODE (ana.serie_mor, '', '', ' s. ' || ana.serie_mor)|| 
+                 DECODE (ana.ufficio_mor,'', '',' uff. ' || TO_CHAR (ana.ufficio_mor))|| 
+                 ' / '|| TO_CHAR (ana.anno_atto_mor)),
+               'atto N. '|| ana.atto_mor_digitale),
             DECODE (eve.pratica,'','','Pratica N. '||TO_CHAR (eve.pratica)|| '/'|| TO_CHAR (eve.anno_pratica))),
 -- matricola
          ana.matricola,
@@ -333,11 +345,13 @@ SELECT
        DECODE (b1.descrizione, '', '',
          '- '|| b1.descrizione|| ' '|| f_provincia_stato (b1.cod_provincia,b1.cod_comune,b1.sigla_provincia,'S','S')),
 -- atto_nascita
-       'atto N. '|| TO_CHAR (ana.atto_nas)|| 
-         ' p. '|| DECODE (ana.parte_nas,1,'I',2,'II')|| 
-         DECODE (ana.serie_nas, '', '', ' s. ' || ana.serie_nas)|| 
-         DECODE (ana.ufficio_nas, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_nas))|| 
-         ' / '|| TO_CHAR (ana.anno_atto_nas),
+       decode(ana.atto_nas_digitale,'',
+         'atto N. '|| TO_CHAR (ana.atto_nas)|| 
+           ' p. '|| DECODE (ana.parte_nas,1,'I',2,'II')|| 
+           DECODE (ana.serie_nas, '', '', ' s. ' || ana.serie_nas)|| 
+           DECODE (ana.ufficio_nas, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_nas))|| 
+           ' / '|| TO_CHAR (ana.anno_atto_nas),
+         'atto N. '|| ana.atto_nas_digitale),
 -- stato_civile
        dsc.descrizione_cer,
 -- coniugat_oa
@@ -369,24 +383,32 @@ SELECT
                  ''),
 -- atto_mat_ved
          DECODE (ana.stato_civile,
-           'CN', 'atto N. '||TO_CHAR (ana.atto_mat)|| 
-                 DECODE (ana.parte_mat, 1, ' p. I', 2, ' p. II')||DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
-                 DECODE (ana.ufficio_mat, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
-                 DECODE (ana.anno_atto_mat, '', '', ' / ' || TO_CHAR (ana.anno_atto_mat)),
-           'VE', 'atto N. '||TO_CHAR (ana.atto_ved)|| 
-                 DECODE (ana.parte_ved, 1, ' p. I', 2, ' p. II')|| 
-                 DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
-                 DECODE (ana.ufficio_ved, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
-                 DECODE (ana.anno_atto_ved, '', '', ' / ' || TO_CHAR (ana.anno_atto_ved)),
-           'UC', 'atto N. '||TO_CHAR (ana.atto_mat)|| 
-                 DECODE (ana.parte_mat, 1, ' p. I', 2, ' p. II')||DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
-                 DECODE (ana.ufficio_mat, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
-                 DECODE (ana.anno_atto_mat, '', '', ' / ' || TO_CHAR (ana.anno_atto_mat)),
-           'VU', 'atto N. '||TO_CHAR (ana.atto_ved)|| 
-                 DECODE (ana.parte_ved, 1, ' p. I', 2, ' p. II')|| 
-                 DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
-                 DECODE (ana.ufficio_ved, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
-                 DECODE (ana.anno_atto_ved, '', '', ' / ' || TO_CHAR (ana.anno_atto_ved))
+           'CN', decode(ana.atto_mat_digitale,'',
+                   'atto N. '||TO_CHAR (ana.atto_mat)|| 
+                     DECODE (ana.parte_mat, 1, ' p. I', 2, ' p. II')||DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
+                     DECODE (ana.ufficio_mat, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
+                     DECODE (ana.anno_atto_mat, '', '', ' / ' || TO_CHAR (ana.anno_atto_mat)),
+                   'atto N. '||ana.atto_mat_digitale),
+           'VE', decode(ana.atto_ved_digitale,'',
+                   'atto N. '||TO_CHAR (ana.atto_ved)|| 
+                     DECODE (ana.parte_ved, 1, ' p. I', 2, ' p. II')|| 
+                     DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
+                     DECODE (ana.ufficio_ved, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
+                     DECODE (ana.anno_atto_ved, '', '', ' / ' || TO_CHAR (ana.anno_atto_ved)),
+                   'atto N. '||ana.atto_ved_digitale),
+           'UC', decode(ana.atto_mat_digitale,'',
+                   'atto N. '||TO_CHAR (ana.atto_mat)|| 
+                     DECODE (ana.parte_mat, 1, ' p. I', 2, ' p. II')||DECODE (ana.serie_mat, '', '', ' s. ' || ana.serie_mat)|| 
+                     DECODE (ana.ufficio_mat, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_mat))|| 
+                     DECODE (ana.anno_atto_mat, '', '', ' / ' || TO_CHAR (ana.anno_atto_mat)),
+                   'atto N. '||ana.atto_mat_digitale),
+           'VU', decode(ana.atto_ved_digitale,'',
+                   'atto N. '||TO_CHAR (ana.atto_ved)|| 
+                     DECODE (ana.parte_ved, 1, ' p. I', 2, ' p. II')|| 
+                     DECODE (ana.serie_ved, '', '', ' s. ' || ana.serie_ved)|| 
+                     DECODE (ana.ufficio_ved, 0, '', '', '', ' uff. ' || TO_CHAR (ana.ufficio_ved))|| 
+                     DECODE (ana.anno_atto_ved, '', '', ' / ' || TO_CHAR (ana.anno_atto_ved)),
+                   'atto N. '||ana.atto_ved_digitale)
                  ),
 -- titolo_studio
          dts.descrizione,

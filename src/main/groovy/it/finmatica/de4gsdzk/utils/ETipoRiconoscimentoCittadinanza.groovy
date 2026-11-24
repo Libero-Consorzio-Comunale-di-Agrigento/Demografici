@@ -16,10 +16,10 @@ enum ETipoRiconoscimentoCittadinanza {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case MD: return Etichette.Riconoscimento_materno
-            case PD: return Etichette.Riconoscimento_paterno
-            case SP: return Etichette.Sentenza_padre
-            case SM: return Etichette.Sentenza_madre
+            case MD: return Etichette.getEtichetta("Riconoscimento_materno")
+            case PD: return Etichette.getEtichetta("Riconoscimento_paterno")
+            case SP: return Etichette.getEtichetta("Sentenza_padre")
+            case SM: return Etichette.getEtichetta("Sentenza_madre")
         }
         return null
     }

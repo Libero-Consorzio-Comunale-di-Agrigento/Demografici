@@ -1,8 +1,9 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoCertificabileService
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivMatrimonioService implements IAttoCertificabileService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -54,17 +55,17 @@ class CivMatrimonioService implements IAttoCertificabileService {
 
 	private final CivMatrimonioRepository civMatrimonioRepository
 
-	CivMatrimonioService(CivMatrimonioRepository civMatrimonioRepository, StatoCivileService statoCivileService,
-						 CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
-						 CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
-						 CivComunicazioneAttoService civComunicazioneAttoService, ArcComuneBaseService arcComuneBaseService,
-						 CivSposiAttoService civSposiAttoService, CivTestimoniAttoService civTestimoniAttoService,
-						 CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
-						 ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
-						 CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+	CivMatrimonioService(CivMatrimonioRepository civMatrimonioRepository, GsdService gsdService,
+                         CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
+                         CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
+                         CivComunicazioneAttoService civComunicazioneAttoService, ArcComuneBaseService arcComuneBaseService,
+                         CivSposiAttoService civSposiAttoService, CivTestimoniAttoService civTestimoniAttoService,
+                         CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
+                         ArcParametroService arcParametroService, CivSoggettoCollegatoService civSoggettoCollegatoService,
+                         CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civMatrimonioRepository = civMatrimonioRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -230,11 +231,11 @@ class CivMatrimonioService implements IAttoCertificabileService {
 		if (anscOn && obj.isCodRec3() && obj.isRiconoscimentoFigliVisibile() && !datiProvenienza.flagInViaggio) {
 			String sezioneRiconoscimento = "'Riconoscimento Figli'"
 			if (obj.riconoscimentoFigli == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneRiconoscimento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneRiconoscimento)
 			}
 			/*
 			if ( (obj.riconoscimentoFigli == ETipoSiNo.SI) && (obj.numeroFigli == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneRiconoscimento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneRiconoscimento)
 			}
 			*/
 		}
@@ -243,39 +244,39 @@ class CivMatrimonioService implements IAttoCertificabileService {
 			if (obj.isDifettoEtaParentelaDivietoTempVisibile()) {
 				String sezioneAltriDati = "'Redazione - Altri Dati'"
 				if ((obj.difettoEta == null) || (obj.impedimentoParentelaMatrimonio == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 				}
 				if ((obj.difettoEta == ETipoDifettoEta.D2) || (obj.difettoEta == ETipoDifettoEta.D4) && (obj.tipoAssistenzaMinore1 == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 				}
 				if ((obj.difettoEta == ETipoDifettoEta.D3) || (obj.difettoEta == ETipoDifettoEta.D4) && (obj.tipoAssistenzaMinore2 == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 				}
 				if (obj.difettoEta != ETipoDifettoEta.D1) {
 					if (!(ValidationUtils.isComuneAndDataFormazioneValid(datiProvenienza.comuneAttoImpedimentoEta, datiProvenienza.dataAttoImpedimentoEta))) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 
 					if (TestoUtils.isVuoto(datiProvenienza.enteImpedimentoEta) || TestoUtils.isVuoto(datiProvenienza.estremiDocumentoImpedimentoEta)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 				}
 				if (obj.impedimentoParentelaMatrimonio != ETipoImpedimentoParentelaMatrimonio.I0) {
 					if (!(ValidationUtils.isComuneAndDataFormazioneValid(datiProvenienza.comuneAttoImpedimentoParentela, datiProvenienza.dataAttoImpedimentoParentela))) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 
 					if (TestoUtils.isVuoto(datiProvenienza.enteImpedimentoParentela) || TestoUtils.isVuoto(datiProvenienza.estremiDocumentoImpedimentoParentela)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 				}
 				if (obj.flagDivietoTemporaneo) {
 					if (!(ValidationUtils.isComuneAndDataFormazioneValid(datiProvenienza.comuneAttoDivietoTemporaneo, datiProvenienza.dataAttoDivietoTemporaneo))) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 
 					if (TestoUtils.isVuoto(datiProvenienza.enteDivietoTemporaneo) || TestoUtils.isVuoto(datiProvenienza.estremiDocumentoDivietoTemporaneo)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 					}
 				}
 				if (datiProvenienza.isStranieriNonResidenti()) {
@@ -285,7 +286,7 @@ class CivMatrimonioService implements IAttoCertificabileService {
 							(datiProvenienza.comuneEnteStraniero.codiceProvincia == null) ||
 							TestoUtils.isVuoto(datiProvenienza.autoritaEnteStraniero) ||
 							TestoUtils.isVuoto(datiProvenienza.tipoAttoEnteStraniero)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, 'Redazione - Estremi Certificazione')
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), 'Redazione - Estremi Certificazione')
 					}
 				}
 			}
@@ -323,7 +324,7 @@ class CivMatrimonioService implements IAttoCertificabileService {
 		log.info("Lancio salvataggio dello storico su CIVMAT per id " + obj.id)
 
 		CivMatrimonio newest = DomainUtils.copyAtto(obj) as CivMatrimonio
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civMatrimonioRepository.save(newest)
@@ -380,7 +381,7 @@ class CivMatrimonioService implements IAttoCertificabileService {
 
 			if (margine.stampaFormulaLibretto){
 				if (!(FormulaUtils.addFormulaMatrimonio(FormulaUtils.FORMULA_MARGINE_LIBRETTO, tipoOperazione, obj, margine))) {
-					throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_formula_libretto_internazionale)
+					throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_formula_libretto_internazionale"))
 				}
 			}
 
@@ -559,12 +560,13 @@ class CivMatrimonioService implements IAttoCertificabileService {
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVMAT per id " + obj.id)
@@ -589,8 +591,8 @@ class CivMatrimonioService implements IAttoCertificabileService {
 		}
 		// refs #63527
 		if ( (obj.isTrascrizioneEsteroDaAutorita() || obj.isTrascrizioneEsteroDaPrivato()) &&
-			 (obj.nazionalita1?.id != null) && (obj.nazionalita2?.id != null) &&
-			 (obj.nazionalita1?.id != AnaNazionalita.ID_ITALIA) && (obj.nazionalita2?.id != AnaNazionalita.ID_ITALIA) ){
+			 (obj.nazionalita1?.codCi != null) && (obj.nazionalita2?.codCi != null) &&
+			 (obj.nazionalita1?.codCi != AnaCittadinanza.ID_ITALIA) && (obj.nazionalita2?.codCi != AnaCittadinanza.ID_ITALIA) ){
 			obj.certificabile = ETipoSiNo.NO
 			return
 		}
@@ -629,7 +631,7 @@ class CivMatrimonioService implements IAttoCertificabileService {
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java

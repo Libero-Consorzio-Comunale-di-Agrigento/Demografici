@@ -25,6 +25,8 @@ import restrict.TraitCancellazioneCampi
 import restrict.TraitComune
 import restrict.TraitGestioneCaseCampi
 
+import java.nio.charset.StandardCharsets
+
 /**
  * Documento in Entrata
  */
@@ -86,12 +88,12 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
         saveRecordEnabled = true
         deleteRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.DOCUMENTO_ENTRATA, Etichette.SEZIONE_DISPONENTE, Etichette.SEZIONE_FIDUCIARIO_1,
-                                           Etichette.SEZIONE_FIDUCIARIO_2, Etichette.SEZIONE_NOTAIO, Etichette.Numera, Etichette.Minuscole,
-                                           Etichette.Gestione_Documenti_Entrata]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("DOCUMENTO_ENTRATA"), Etichette.getEtichetta("SEZIONE_DISPONENTE"), Etichette.getEtichetta("SEZIONE_FIDUCIARIO_1"),
+                                           Etichette.getEtichetta("SEZIONE_FIDUCIARIO_2"), Etichette.getEtichetta("SEZIONE_NOTAIO"), Etichette.getEtichetta("Numera"), Etichette.getEtichetta("Minuscole"),
+                                           Etichette.getEtichetta("Gestione_Documenti_Entrata")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Warn_Trattamento_Dati, EtichetteMessaggi.Ask_Cancellazione_Record,
-                      EtichetteMessaggi.Errore_generazione_testo, EtichetteMessaggi.Errore_modello_testo_non_trovato])
+        eList.addAll([Etichette.getEtichetta("Warn_Trattamento_Dati"), Etichette.getEtichetta("Ask_Cancellazione_Record"),
+                      Etichette.getEtichetta("Errore_generazione_testo"), Etichette.getEtichetta("Errore_modello_testo_non_trovato")])
         eList.addAll(etichetteDettaglioDefault)
         eList.addAll(CivDisposizioniAnticipateTrattamento.etichetteDomain)
 
@@ -103,9 +105,9 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Entrata)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Entrata"))
 
-        formLabel = getEtichetta(Etichette.DOCUMENTO_ENTRATA)
+        formLabel = getEtichetta(Etichette.getEtichetta("DOCUMENTO_ENTRATA"))
 
         minuscole = [notaio:Boolean.FALSE]
         arcParametroService.checkMinuscoleOn(minuscole)
@@ -116,7 +118,7 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
             if (l.size() == 1){
                 registroDocumentiEntrata = l[0]
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
                 onChiudi()
                 return
             }
@@ -188,18 +190,18 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
         if (dettaglio && saveRecordEnabled) {
             CivDisposizioniAnticipateTrattamento c = civDisposizioniAnticipateTrattamentoService.save(dettaglio, numerazioneDocumentiEntrata)
             if (dettaglio.disponente.consensoTrattamento == ETipoSN.N){
-                Messagebox.show(String.format(getEtichetta(EtichetteMessaggi.Warn_Trattamento_Dati), getEtichetta(Etichette.SEZIONE_DISPONENTE)),
+                Messagebox.show(String.format(getEtichetta(Etichette.getEtichetta("Warn_Trattamento_Dati")), getEtichetta(Etichette.getEtichetta("SEZIONE_DISPONENTE"))),
                         msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
             if (dettaglio.fiduciario1.consensoTrattamento == ETipoSN.N) {
-                Messagebox.show(String.format(getEtichetta(EtichetteMessaggi.Warn_Trattamento_Dati), getEtichetta(Etichette.SEZIONE_FIDUCIARIO_1)),
+                Messagebox.show(String.format(getEtichetta(Etichette.getEtichetta("Warn_Trattamento_Dati")), getEtichetta(Etichette.getEtichetta("SEZIONE_FIDUCIARIO_1"))),
                         msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
             if (dettaglio.fiduciario2.consensoTrattamento == ETipoSN.N){
-                Messagebox.show(String.format(getEtichetta(EtichetteMessaggi.Warn_Trattamento_Dati), getEtichetta(Etichette.SEZIONE_FIDUCIARIO_2)),
+                Messagebox.show(String.format(getEtichetta(Etichette.getEtichetta("Warn_Trattamento_Dati")), getEtichetta(Etichette.getEtichetta("SEZIONE_FIDUCIARIO_2"))),
                         msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             if (c) {
                 caricaDettaglio(c.id)
             }
@@ -208,7 +210,7 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
 
     @Command void onEliminaRecord() {
         if (deleteRecordEnabled) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK.equals(e.getName())) {
@@ -246,7 +248,7 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
                 g = gestioneTestiGsdModelloService.get(id)
 
                 if (g == null){
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_modello_testo_non_trovato), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_modello_testo_non_trovato")), msgTitle, Messagebox.OK, Messagebox.ERROR)
                     return
                 }
 
@@ -254,13 +256,13 @@ class DocumentoEntrataDettaglioViewModel extends AbstractDettaglioViewModel impl
                 String formato = (g.formatoTesto?:g.tipo)
                 String nomeFile = "${g.descrizione}.${formato}"
                 ByteArrayInputStream bais = new ByteArrayInputStream(g.fileTemplate)
-                InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true)
+                InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true, StandardCharsets.UTF_8)
                 byte[] allegato = is.getBytes()
                 Filedownload.save(allegato, FileUtils.getMimeType(formato), nomeFile)
                 is.close()
             } catch (Exception ex){
                 log.error("Errore stampa DAT", ex)
-                Messagebox.show(g.descrizione + ":\n" +  getEtichetta(EtichetteMessaggi.Errore_generazione_testo), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(g.descrizione + ":\n" +  getEtichetta(Etichette.getEtichetta("Errore_generazione_testo")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
         }
     }

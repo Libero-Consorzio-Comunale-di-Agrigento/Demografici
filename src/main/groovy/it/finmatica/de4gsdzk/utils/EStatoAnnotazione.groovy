@@ -13,8 +13,8 @@ enum EStatoAnnotazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case E: return Etichette.Eseguita
-            case P: return Etichette.Proposta
+            case E: return Etichette.getEtichetta("Eseguita")
+            case P: return Etichette.getEtichetta("Proposta")
         }
         return null
     }

@@ -9,7 +9,6 @@ import it.finmatica.de4gsdzk.certificazione.CerMotivoSospensione
 import it.finmatica.de4gsdzk.certificazione.CerMotivoSospensioneService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -45,12 +44,12 @@ class MotivoSospensioneDettaglioViewModel extends DizionarioDettaglioViewModel i
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Motivo_sospensione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Motivo_sospensione")]
         eList.addAll(CerMotivoSospensione.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Motivo_sospensione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Motivo_sospensione"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -95,7 +94,7 @@ class MotivoSospensioneDettaglioViewModel extends DizionarioDettaglioViewModel i
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CerMotivoSospensione c = cerMotivoSospensioneService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

@@ -1,0 +1,45 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <listhead sizable="true">
+        <listheader label="@load(vm.etichette['Allegato'])"/>
+        <listheader label="@load(vm.etichette['Note'])"/>
+        <listheader width="52px"/>
+        <listheader width="52px"/>
+        <listheader width="52px"/>
+    </listhead>
+    <template name="model" var="item">
+        <listitem>
+            <listcell label="@load(item.nome)"/>
+            <listcell>
+                <hlayout valign="middle" hflex="4">
+                    <label value="@load(item.note)" tooltiptext="@load(item.note)" multiline="true" hflex="3"/>
+                    <button image="/images/icon/action/18x18/note.png"
+                            onClick="@command('onEditaNote', allegato=item)"/>
+                </hlayout>
+            </listcell>
+            <listcell>
+                <button image="/images/icon/action/18x18/import.png"
+                        tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
+                        onClick="@command('onDownloadAllegato', allegato=item)"
+                        disabled="@load(not item.canDownload())"/>
+            </listcell>
+            <listcell>
+                <button image="/images/icon/action/18x18/delete.png"
+                        tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                        disabled="@load(vm.readOnly eq true)"
+                        onClick="@command('onEliminaAllegato', allegato=item)"/>
+            </listcell>
+            <listcell>
+                <button image="/images/icon/action/18x18/info.png"
+                        tooltiptext="@load(vm.etichette['info_tooltip'])"
+                        onClick="@command('onShowInfo', allegato=item)"/>
+            </listcell>
+        </listitem>
+    </template>
+
+</zk>

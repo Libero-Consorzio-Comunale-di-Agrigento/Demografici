@@ -33,7 +33,7 @@ class CivRichiamoFormula extends CivRichiamoBaseDomain {
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Formula,
-                                              Etichette.Default, Etichette.Ricorrente,
-                                              Etichette.Testo_fisso, Etichette.Testo_ACapo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Formula"),
+                                              Etichette.getEtichetta("Default"), Etichette.getEtichetta("Ricorrente"),
+                                              Etichette.getEtichetta("Testo_fisso"), Etichette.getEtichetta("Testo_ACapo")]
 }

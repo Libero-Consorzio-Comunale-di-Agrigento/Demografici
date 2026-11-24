@@ -8,8 +8,8 @@ enum EStatoInvio {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case INVIATO_CON_SUCCESSO: return Etichette.Inviato
-            case INVIO_NON_RIUSCITO: return Etichette.Da_inviare
+            case INVIATO_CON_SUCCESSO: return Etichette.getEtichetta("Inviato")
+            case INVIO_NON_RIUSCITO: return Etichette.getEtichetta("Da_inviare")
         }
         return null
     }

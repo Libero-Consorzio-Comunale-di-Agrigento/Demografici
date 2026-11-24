@@ -2,10 +2,10 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GestioneTestiGsdModelloService
+import it.finmatica.de4gsdzk.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.apache.commons.io.FilenameUtils
 import org.springframework.data.domain.Page
@@ -57,8 +57,12 @@ class CivComunicazioneService {
 		}
 	}
 
-	List<CivComunicazione> listAllByTipoAttoComunicazioneAndStampaEseguita(Integer tipoAttoComunicazione, Boolean stampaEseguita){
-		return civComunicazioneRepository.findAllByTipoAttoComunicazioneAndStampaEseguita(tipoAttoComunicazione, stampaEseguita)
+	List<CivComunicazione> listAllByTipoAttoComunicazioneAndStampaEseguitaAndTipoComunicazione(Integer tipoAttoComunicazione, Boolean stampaEseguita, ETipoComunicazione tipoComunicazione){
+		return civComunicazioneRepository.findAllByTipoAttoComunicazioneAndStampaEseguitaAndTipoComunicazione(tipoAttoComunicazione, stampaEseguita, tipoComunicazione)
+	}
+
+	List<CivComunicazione> listAllByTipoAttoComunicazioneAndStampaEseguitaAndFormula(Integer tipoAttoComunicazione, Boolean stampaEseguita, CivFormulaAnnotazione formula){
+		return civComunicazioneRepository.findAllByTipoAttoComunicazioneAndStampaEseguitaAndFormula(tipoAttoComunicazione, stampaEseguita, formula)
 	}
 
 	/**
@@ -93,7 +97,7 @@ class CivComunicazioneService {
 		if (tipoOperazione.isInsert()){
 			long n = civComunicazioneRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Comunicazione_Duplicata)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Comunicazione_Duplicata"))
 			}
 		}
 	}
@@ -109,7 +113,7 @@ class CivComunicazioneService {
 			String nomeModelloCaricato = FilenameUtils.removeExtension(modelloRelazione.modello.nome)
 			String nomeModelloStandard = FileUtils.getNomeModelloComunicazioneStandard(c.id)
 			if ( (nomeModelloCaricato != nomeModelloStandard) && (!(force) ) ){
-				throw new FileNonValidoRuntimeException(EtichetteMessaggi.Warn_file_modello_comunicazione, "(Nome file atteso: ${nomeModelloStandard})")
+				throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Warn_file_modello_comunicazione"), "(Nome file atteso: ${nomeModelloStandard})")
 			}
 			modelloRelazione.modello.codice = FileUtils.getCodiceModelloComunicazioneStandard(c.id)
 			modelloRelazione.modello = gestioneTestiGsdModelloService.save(modelloRelazione.modello)

@@ -28,6 +28,6 @@ abstract class CivNumerazioneDocumentiBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Registro, Etichette.Numero]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Registro"), Etichette.getEtichetta("Numero")]
 
 }

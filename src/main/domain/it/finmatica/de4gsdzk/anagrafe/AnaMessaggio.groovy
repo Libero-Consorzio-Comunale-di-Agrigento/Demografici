@@ -9,7 +9,7 @@ import javax.persistence.*
 
 @Entity
 @Immutable
-@Table(name = "ANAMSG")
+@Table(name = "ANAMSG_ZK")
 class AnaMessaggio extends GsdBaseDomain implements IMessaggio {
 
     @EmbeddedId
@@ -37,6 +37,6 @@ class AnaMessaggio extends GsdBaseDomain implements IMessaggio {
         return flagAvviso != true
     }
 
-    static final List<Map> etichetteDomain = [Etichette.Bloccante, Etichette.Messaggio, Etichette.Dettaglio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Bloccante"), Etichette.getEtichetta("Messaggio"), Etichette.getEtichetta("Dettaglio")]
 
 }

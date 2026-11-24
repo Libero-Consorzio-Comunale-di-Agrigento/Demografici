@@ -2,7 +2,7 @@ package it.finmatica.de4gsdzk.zkutils
 
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.config.Holders
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Etichette
 import org.zkoss.zk.ui.Component
 import org.zkoss.zk.ui.Executions
@@ -36,13 +36,13 @@ class BandboxAutorita extends CustomBandbox {
 		}
 		setupVisibilyListHeaders()
 
-		List<Map> eList = [Etichette.Descrizione, Etichette.Luogo]
+		List<Map> eList = [Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Luogo")]
 		eList.addAll(etichetteBB)
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 
 	private void setupVisibilyListHeaders() {
@@ -68,7 +68,7 @@ class BandboxAutorita extends CustomBandbox {
 			b.append("%")
 		}
 		Map params = [parte: parte, serie: serie, categoria: categoria, filtro: b.toString()]
-		List<Map<String, String>> lista = Holders.getApplicationContext().getBean(StatoCivileService.class).listAutorita(tipoAtto, params)
+		List<Map<String, String>> lista = Holders.getApplicationContext().getBean(GsdService.class).listAutorita(tipoAtto, params)
 		listbox.setModel(new ListModelList<Map<String, String>>(lista))
 		paging.setTotalSize(lista.size())
 	}

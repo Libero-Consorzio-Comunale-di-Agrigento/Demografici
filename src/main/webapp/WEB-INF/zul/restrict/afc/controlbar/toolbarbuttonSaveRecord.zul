@@ -7,6 +7,7 @@
 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 
     <toolbarbutton image="/images/icon/action/22x22/save.png"
+                   disabled="@load(!vm.canSaveRecord)"
                    tooltiptext="@load(vm.etichette['salva_tooltip'])"
                    onClick="@command('onSalvaRecord')"/>
 </zk>

@@ -53,6 +53,10 @@ bootRun {
     classpath = classpathJar.outputs.files
 }
 
+bootRepackage {
+    enabled = false
+}
+
 //compileGroovy {
 //    configure(groovyOptions) {
 //        configurationScript = file("$rootDir/.settings/compiler-config.groovy")
@@ -108,6 +112,9 @@ sourceSets {
 configurations {
     integrationCompile.extendsFrom testCompile
     integrationRuntime.extendsFrom testRuntime
+    // 🔹 Esclusione di tutti i logging jar
+    all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+    all*.exclude group: "org.slf4j", module: "slf4j-jdk14"
 }
 
 task integrationTest(type: Test, group: 'verification') {
@@ -121,15 +128,36 @@ task integrationTest(type: Test, group: 'verification') {
 check.dependsOn integrationTest
 
 war {
-    rootSpec.exclude('finmatica-dms-*jar')
-    rootSpec.exclude('finmatica-jsign*jar')
-    rootSpec.exclude('ojdbc*jar')
+    rootSpec.exclude('itext*.jar')
+    rootSpec.exclude('angus*.jar')
+    rootSpec.exclude('axis*.jar')
+    rootSpec.exclude('bcmail*.jar')
+    rootSpec.exclude('bcpkix*.jar')
+    rootSpec.exclude('bcprov*.jar')
+    rootSpec.exclude('bctsp*.jar')
+    rootSpec.exclude('commons-dbcp*.jar')
+    rootSpec.exclude('finmatica-accesscontrol*.jar')
+    rootSpec.exclude('finmatica-dbutils*.jar')
+    rootSpec.exclude('finmatica-dms-*.jar')
+    rootSpec.exclude('finmatica-jfcutils*.jar')
+    rootSpec.exclude('finmatica-jsign*.jar')
+    rootSpec.exclude('istack*.jar')
+    rootSpec.exclude('jakarta*.jar')
+    rootSpec.exclude('javax.xml.soap-api*.jar')
+    rootSpec.exclude('jaxrpc*.jar')
+    rootSpec.exclude('ojdbc*.jar')
+    rootSpec.exclude('saaj-impl*.jar')
+    rootSpec.exclude('stax-ex*.jar')
+    rootSpec.exclude('txw2*.jar')
+    rootSpec.exclude('xercesImpl*.jar')
 }
 
 dependencies {
 
     // librerie per springboot
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-security'
     //compile 'org.springframework.boot:spring-boot-legacy:1.0.2.RELEASE'
@@ -153,13 +181,32 @@ dependencies {
     //compile("it.finmatica.spring:finmatica-hibernate-filters:1.0")
 
     // libreria per la configurazione automatica di zk:
-    compile("it.finmatica.spring:finmatica-zk:3.0.0.0")
+    String zkVersion = "6.5.8.1"
+    compile ("it.finmatica.spring:finmatica-zk:3.0.0.1") {
+        exclude group: "org.zkoss.zkee"
+    }
+    compile "org.zkoss.common:zcommon:${zkVersion}"
+    compile "org.zkoss.common:zel:${zkVersion}"
+    compile "org.zkoss.common:zweb:${zkVersion}"
+    compile "org.zkoss.zk:zhtml:${zkVersion}"
+    compile "org.zkoss.zk:zk:${zkVersion}"
+    compile "org.zkoss.zk:zkbind:${zkVersion}"
+    compile "org.zkoss.zk:zkplus:${zkVersion}"
+    compile "org.zkoss.zk:zul:${zkVersion}"
+    compile "org.zkoss.zk:zml:${zkVersion}"
+    compile ("org.zkoss.zk:zkmax:${zkVersion}") {
+        exclude group: "com.lowagie"
+    }
+    compile ("org.zkoss.zk:zkex:${zkVersion}") {
+        exclude group: "com.lowagie"
+    }
+
 
     // libreria per la gestione di testi:
-    compile("it.finmatica.spring:finmatica-gestione-testi:2.0.0.4"){
+    compile("it.finmatica.spring:finmatica-gestione-testi:2.0.0.5"){
         exclude module: 'jsign'
     }
-    compile("it.finmatica.reporter:finmatica-reporter2:1.2.33")
+    compile("it.finmatica.reporter:finmatica-reporter2:1.2.40")
 
     //apache-poi per export excel
     //compile 'org.apache.poi:poi:3.17'
@@ -194,50 +241,17 @@ dependencies {
         exclude group: 'javax.servlet', module: 'servlet-api'
     }
 
-    providedRuntime("it.finmatica.ag.jsuite:finmatica-dms:3.6.3") {
+    providedCompile("it.finmatica:finmatica-jfcutils:1.25.4")
+
+    providedCompile("it.finmatica.ag.jsuite:finmatica-dms:3.6.3") {
         exclude module: 'commons-io'
         exclude module: 'fop'
         exclude module: 'itext'
         exclude module: 'xercesImpl'
         exclude module: 'jsign'
     }
-    /*
-    //libreria per l'integrazione con il documentale
-    compile("it.finmatica:finmatica-smartdoc:1.1.15") {
-        exclude module: 'bcmail-jdk14'
-        exclude module: 'bcprov-jdk14'
-        exclude module: 'bctsp-jdk14'
-        exclude module: 'xercesImpl'
-        exclude module: 'jsign'
-    }
 
-    compile ("it.finmatica.ag.jsuite:finmatica-dms:3.6.1.0-SNAPSHOT"){
-        exclude module: 'jsign'
-    }
-    */
-
-    /*
-    compile("it.finmatica:finmatica-jsign:4.0.0") {
-        exclude module: 'uploaddownload-applet'
-        exclude module: 'iaikPkcs11Wrapper'
-        exclude module: 'axis'
-        exclude module: 'axis-jaxrpc'
-        exclude module: 'axis-saaj'
-        exclude module: 'guice'
-        exclude module: 'guice-multibindings'
-        exclude module: 'plugin'
-        exclude module: 'atr-xml'
-        exclude module: 'itextpdf'
-        exclude module: 'sc-light-jdk15on'
-        exclude module: 'scpkix-jdk15on'
-    }
-    */
-
-    compile('com.lowagie:itext:2.1.7') {
-        exclude module: 'bcmail-jdk14'
-        exclude module: 'bcprov-jdk14'
-        exclude module: 'bctsp-jdk14'
-    }
+    compile('com.github.librepdf:openpdf:1.3.34')
 
     //libreria per la scansione
     compile("it.finmatica.spring:finmatica-webscan:3.0.0.2")
@@ -245,7 +259,7 @@ dependencies {
     providedCompile "com.oracle:ojdbc6:11.2.0.3"
 
     // dipendenza tomcat necessaria per il run in locale
-    providedCompile 'org.springframework.boot:spring-boot-starter-tomcat'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     // le solite terribili db-utils
     providedCompile("it.finmatica:finmatica-dbutils:5.2.1.1") {
@@ -266,6 +280,9 @@ dependencies {
     // librerie per ansc
     implementation 'org.gaixie.json:json:1.0.0'
     implementation 'com.auth0:java-jwt:4.1.0'
+
+    // rilevazione MIME type da intestazione file (ISO 27001)
+    compile 'org.apache.tika:tika-core:1.3'
 
     // plugin per verificare compatibilità con jdk
     signature 'org.codehaus.mojo.signature:java17:1.0@signature'

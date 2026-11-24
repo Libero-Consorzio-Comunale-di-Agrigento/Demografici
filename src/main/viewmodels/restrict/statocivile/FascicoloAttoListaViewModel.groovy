@@ -1,6 +1,7 @@
 package restrict.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.ansc.AnscComunicazioneAllegatoService
 import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
@@ -53,7 +54,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
     private AnscComunicazioneAllegatoService anscComunicazioneAllegatoService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @Delegate
     ControlBarFascicoloAttributes cbFasc = new ControlBarFascicoloAttributes()
@@ -67,12 +68,12 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         scansionaEnabled = true
         importaDaProtocolloEnabled = true
 
-        List<Map> eList = [Etichette.Fascicolo, Etichette.Documento, Etichette.Chiusura, Etichette.inserisci_allegato_tooltip,
-                           Etichette.Data_decrescente, Etichette.Data_crescente, Etichette.Tipo_Documento_crescente, Etichette.Tipo_Documento_decrescente,
-                           Etichette.Numero_Protocollo_Anno, Etichette.Del, Etichette.Atto_Divorzio, Etichette.Atto_Scioglimento,
-                           Etichette.Allegati, Etichette.Allegato, Etichette.SEZIONE_FASCICOLO_ATTO]
+        List<Map> eList = [Etichette.getEtichetta("Fascicolo"), Etichette.getEtichetta("Documento"), Etichette.getEtichetta("Chiusura"), Etichette.getEtichetta("inserisci_allegato_tooltip"),
+                           Etichette.getEtichetta("Data_decrescente"), Etichette.getEtichetta("Data_crescente"), Etichette.getEtichetta("Tipo_Documento_crescente"), Etichette.getEtichetta("Tipo_Documento_decrescente"),
+                           Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("Del"), Etichette.getEtichetta("Atto_Divorzio"), Etichette.getEtichetta("Atto_Scioglimento"),
+                           Etichette.getEtichetta("Allegati"), Etichette.getEtichetta("Allegato"), Etichette.getEtichetta("SEZIONE_FASCICOLO_ATTO"), Etichette.getEtichetta("info_tooltip")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Sbustamento_File, EtichetteMessaggi.Ask_Cancellazione_Fascicolo, EtichetteMessaggi.Ask_tipo_file_ANSC])
+        eList.addAll([Etichette.getEtichetta("Ask_Sbustamento_File"), Etichette.getEtichetta("Ask_Cancellazione_Fascicolo"), Etichette.getEtichetta("Ask_tipo_file_ANSC")])
         eList.addAll(CivFascicoloAtto.etichetteDomain)
         eList.addAll(CivFascicoloAttoAllegato.etichetteDomain)
 
@@ -84,13 +85,13 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
 
         doInit(eList, pkAtto, tipoAttoEnum) //carica anche atto e dati provenienza
 
-        msgTitle = getEtichetta(Etichette.Fascicolo)
-        formLabel = getEtichetta(Etichette.SEZIONE_FASCICOLO_ATTO)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Fascicolo"))
+        formLabel = getEtichetta(Etichette.getEtichetta("SEZIONE_FASCICOLO_ATTO"))
 
         totalSizeLabel = ""
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Tipo_Documento_crescente),    SortUtils.tipoDocumentoFascicoloAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Tipo_Documento_decrescente),  SortUtils.tipoDocumentoFascicoloDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Tipo_Documento_crescente")),    SortUtils.tipoDocumentoFascicoloAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Tipo_Documento_decrescente")),  SortUtils.tipoDocumentoFascicoloDesc))
 
         //Default: data crescente
         selectedOrder = listaOrder[0]
@@ -173,7 +174,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
 
     @Command void onEliminaFascicolo(@BindingParam("fascicolo") CivFascicoloAtto fa) {
         if (fa && userModifyEnabled) {
-            Messagebox.show(fa.tipoDocumentoFascicolo.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(fa.tipoDocumentoFascicolo.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())){
@@ -183,7 +184,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
                     }
             )
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -211,7 +212,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         Media media = event.media
         byte[] _allegato = media.isBinary()?media.byteData:media.stringData.getBytes(StandardCharsets.UTF_8.name())
         String nomeFile = media.name
-        Map<String, String> m = FileUtils.checkFile(_allegato, nomeFile, FileUtils.defaultAcceptableMimeTypesXComEFas)
+        Map<String, String> m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXComEFas)
         if (m){
             Messagebox.show(nomeFile + ":\n" + getEtichetta(m), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } else {
@@ -220,9 +221,9 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
                 if ( e.data instanceof CivTipoDocumentoFascicolo ){
                     CivTipoDocumentoFascicolo tdf = (CivTipoDocumentoFascicolo)e.data
                     if (tdf.tipoAllegatoANSC != null) {
-                        String retVal = statoCivileService.verificaAllegatoAnsc(null, null, nomeFile)
+                        String retVal = gsdService.verificaAllegatoAnsc(null, null, nomeFile)
                         if ( (retVal?:"") != ""){
-                            Messagebox.show(retVal + ".\n" + getEtichetta(EtichetteMessaggi.Ask_tipo_file_ANSC), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                            Messagebox.show(retVal + ".\n" + getEtichetta(Etichette.getEtichetta("Ask_tipo_file_ANSC")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                                     new org.zkoss.zk.ui.event.EventListener(){
                                         void onEvent(Event evt){
                                             if (Messagebox.ON_OK == evt.getName()) {
@@ -262,7 +263,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
             })
             w.doModal()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -271,8 +272,8 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
             CivArchivioComunicazione arcCom = d?.fascicolo?.archivioComunicazione
             if (arcCom.isProtocollato()){
                 CivComunicazioneProtocollo cp = civComunicazioneProtocolloService.get(d.fascicolo.archivioComunicazione.id)
-                String estremiProtocolloLabel =  ((cp.numeroProtocollo != null)? getEtichetta(Etichette.Numero_Protocollo_Anno):"") + " " + (cp.numeroProtocollo?:"") + "/" + (cp.annoProtocollo?:"")
-                String dataProtocolloLabel = (cp.dataProtocollo? getEtichetta(Etichette.Del):"") + " " + (DataUtils.fromDateToString(cp.dataProtocollo)?:"")
+                String estremiProtocolloLabel =  ((cp.numeroProtocollo != null)? getEtichetta(Etichette.getEtichetta("Numero_Protocollo_Anno")):"") + " " + (cp.numeroProtocollo?:"") + "/" + (cp.annoProtocollo?:"")
+                String dataProtocolloLabel = (cp.dataProtocollo? getEtichetta(Etichette.getEtichetta("Del")):"") + " " + (DataUtils.fromDateToString(cp.dataProtocollo)?:"")
                 return estremiProtocolloLabel + " " + dataProtocolloLabel
             }
         }
@@ -287,16 +288,16 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         Media media = event.media
         byte[] _allegato = media.isBinary()?media.byteData:media.stringData.getBytes(StandardCharsets.UTF_8.name())
         String nomeFile = media.name
-        Map<String, String> m = FileUtils.checkFile(_allegato, nomeFile, FileUtils.defaultAcceptableMimeTypesXComEFas)
+        Map<String, String> m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXComEFas)
         if (m){
             Messagebox.show(nomeFile + ":\n" + getEtichetta(m), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } else {
             // In questo caso salvo solo su fascicolo e documentale (NON salvo su civcom_alle eventuali allegati di comunicazioni)
             CivTipoDocumentoFascicolo tdf = civTipoDocumentoFascicoloService.get(fa.tipoDocumentoFascicolo.id)
             if (tdf.tipoAllegatoANSC != null){
-                String retVal = statoCivileService.verificaAllegatoAnsc(null, null, nomeFile)
+                String retVal = gsdService.verificaAllegatoAnsc(null, null, nomeFile)
                 if ( (retVal?:"") != ""){
-                    Messagebox.show(retVal + ".\n" + getEtichetta(EtichetteMessaggi.Ask_tipo_file_ANSC), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                    Messagebox.show(retVal + ".\n" + getEtichetta(Etichette.getEtichetta("Ask_tipo_file_ANSC")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                             new org.zkoss.zk.ui.event.EventListener(){
                                 void onEvent(Event evt){
                                     if (Messagebox.ON_OK == evt.getName()) {
@@ -314,7 +315,7 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         }
     }
 
-    @Command void onDownloadAllegatoFascicolo(@BindingParam("allegatoFascicolo") CivFascicoloAttoAllegato fal) {
+    @Command void onDownloadAllegato(@BindingParam("allegato") CivFascicoloAttoAllegato fal) {
         scaricaAllegatoFascicolo(fal, true)
     }
 
@@ -323,8 +324,8 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
             civFascicoloAttoAllegatoService.scaricaAllegato(fal, sbusta, segnalaSbustamento)
         } catch (FileNonValidoRuntimeException fre){
             Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
-            String[] buttonsLabel = [getEtichetta(Etichette.SI), getEtichetta(Etichette.NO), getEtichetta(Etichette.Annulla)] as String[]
-            Messagebox.show(fal.nome + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Sbustamento_File), getEtichetta(Etichette.Allegati), buttons, buttonsLabel , Messagebox.QUESTION, null,
+            String[] buttonsLabel = [getEtichetta(Etichette.getEtichetta("SI")), getEtichetta(Etichette.getEtichetta("NO")), getEtichetta(Etichette.getEtichetta("Annulla"))] as String[]
+            Messagebox.show(fal.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Sbustamento_File")), getEtichetta(Etichette.getEtichetta("Allegati")), buttons, buttonsLabel , Messagebox.QUESTION, null,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (e.getName() == Messagebox.ON_YES){
@@ -339,9 +340,9 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         }
     }
 
-    @Command void onEliminaAllegatoFascicolo(@BindingParam("allegatoFascicolo") CivFascicoloAttoAllegato fal) {
+    @Command void onEliminaAllegato(@BindingParam("allegato") CivFascicoloAttoAllegato fal) {
         if (fal && userModifyEnabled) {
-            Messagebox.show(fal.nome + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Fascicolo), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(fal.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Fascicolo")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_OK.equals(e.getName())){
@@ -356,9 +357,9 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         }
     }
 
-    @Command void onEditaNote(@BindingParam("allegatoFascicolo") CivFascicoloAttoAllegato fal) {
+    @Command void onEditaNote(@BindingParam("allegato") CivFascicoloAttoAllegato fal) {
         CivFascicoloAtto fa = fal.fascicoloAtto
-        Window w = (Window) Executions.createComponents("/restrict/afc/popupNote.zul", self, [fascicoloAllegato: fal])
+        Window w = (Window) Executions.createComponents("/restrict/afc/popupNote.zul", self, [allegato: fal, serviceBeanName: "civFascicoloAttoAllegatoService"])
         w.addEventListener(CustomEvents.ON_CLOSE_RELOAD, { e ->
             onPagina()
             caricaFascicolo(fa.id)
@@ -370,6 +371,19 @@ class FascicoloAttoListaViewModel extends RiferimentiAttoListaParentViewModel{
         //FIXME competenze
         //return competenzaService.hasRuolo(ConfigurazioneUtils.RUOLO_CIV_SU)
         return true
+    }
+
+    @Command
+    void onShowInfo(@BindingParam("allegato") CivFascicoloAttoAllegato fal) {
+        String message
+        if (fal.utenteIns || fal.dateCreated) {
+            message = "${getEtichetta(Etichette.getEtichetta("Terminalista"))}: ${fal.utenteIns?.nominativo ?: "-"}\n${getEtichetta(Etichette.getEtichetta("Data_Registrazione"))}: ${DataUtils.fromDateToString(fal.dateCreated)}"
+        } else {
+            message = getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile"))
+        }
+
+        Messagebox.show(message, msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+
     }
 
 }

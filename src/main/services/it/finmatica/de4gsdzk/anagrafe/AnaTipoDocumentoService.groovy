@@ -1,11 +1,19 @@
 package it.finmatica.de4gsdzk.anagrafe
 
+import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
+import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
+import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
-import it.finmatica.de4gsdzk.anagrafe.AnaTipoDocumentoRepository
+import it.finmatica.de4gsdzk.utils.ETipoOperazione
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.SortUtils
+import it.finmatica.de4gsdzk.utils.SqlUtils
+import it.finmatica.de4gsdzk.utils.TestoUtils
 import it.finmatica.de4gsdzk.zkutils.ETipoDocumentoAnagrafeFiltro
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,14 +21,57 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class AnaTipoDocumentoService {
 
-	private final AnaTipoDocumentoRepository anatipoDocumentoRepository
+	private final AnaTipoDocumentoRepository anaTipoDocumentoRepository
 
-	AnaTipoDocumentoService(AnaTipoDocumentoRepository anatipoDocumentoRepository) {
-		this.anatipoDocumentoRepository = anatipoDocumentoRepository
+    private final UtenteCustomService utenteCustomService
+
+	AnaTipoDocumentoService(AnaTipoDocumentoRepository anaTipoDocumentoRepository,
+                            UtenteCustomService utenteCustomService) {
+		this.anaTipoDocumentoRepository = anaTipoDocumentoRepository
+        this.utenteCustomService = utenteCustomService
+	}
+
+	List<AnaTipoDocumento> findAll(){
+		return anaTipoDocumentoRepository.findAll(new Sort(SortUtils.descrizioneAsc))
 	}
 
 	AnaTipoDocumento get (String id){
-		return anatipoDocumentoRepository.findById(id)
+		return anaTipoDocumentoRepository.findByIdWithFetch(id)
+	}
+
+	Page<AnaTipoDocumento> listAllByFiltroLike(String filtro, PageRequest p) {
+		if ((filtro?.trim() ?: "") != "") {
+			return anaTipoDocumentoRepository.findAllByFiltroLike(SqlUtils.beginsAndEndsLike(filtro), p)
+		} else {
+			return anaTipoDocumentoRepository.findAllByFiltroLike("%", p)
+		}
+	}
+
+    List<AnaTipoDocumento> findAllByFlagConvivenzaDiFattoNull() {
+        return anaTipoDocumentoRepository.findAllByFlagConvivenzaDiFattoNullOrderByDescrizioneAsc()
+    }
+
+	private void validaDati(ETipoOperazione tipoOperazione, AnaTipoDocumento obj) {
+		if ( (obj.id == null) || TestoUtils.isVuoto(obj?.descrizione) ){
+			throw new CampoMandatoryRuntimeException()
+		}
+
+		if (tipoOperazione.isInsert()){
+			long n = anaTipoDocumentoRepository.countById(obj.id)
+			if (n > 0) {
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_duplicato"))
+			}
+		}
+	}
+
+	AnaTipoDocumento save(ETipoOperazione tipoOperazione, AnaTipoDocumento obj) {
+		validaDati(tipoOperazione, obj)
+        obj.terminalista = utenteCustomService.getLoggedUser()
+		return anaTipoDocumentoRepository.save(obj)
+	}
+
+	void delete(AnaTipoDocumento obj) {
+		anaTipoDocumentoRepository.delete(obj)
 	}
 
 	Page<AnaTipoDocumento> listAllByDocumentoIdentita(ETipoDocumentoAnagrafeFiltro filtro, String filtroDescrizione, PageRequest p) {
@@ -28,13 +79,13 @@ class AnaTipoDocumentoService {
 			return null
 		}
 		if (filtro == ETipoDocumentoAnagrafeFiltro.IDENTITA) {
-			return anatipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndFlagIdentitaIsTrue(filtroDescrizione, p)
+			return anaTipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndFlagIdentitaIsTrue(filtroDescrizione, p)
 		}
 		if (filtro == ETipoDocumentoAnagrafeFiltro.RICONOSCIMENTO) {
-			return anatipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndFlagRiconoscimentoIsTrue(filtroDescrizione, p)
+			return anaTipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndFlagRiconoscimentoIsTrue(filtroDescrizione, p)
 		}
 		if (filtro == ETipoDocumentoAnagrafeFiltro.ALLEGABILITA_CERTIFICAZIONE) {
-			return anatipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndIdIn(filtroDescrizione, [AnaTipoDocumento.CE, AnaTipoDocumento.U1, AnaTipoDocumento.U2], p)
+			return anaTipoDocumentoRepository.findAllByDescrizioneEstesaLikeIgnoreCaseAndIdIn(filtroDescrizione, [AnaTipoDocumento.CE, AnaTipoDocumento.U1, AnaTipoDocumento.U2], p)
 		}
 		return null
 	}
@@ -86,16 +137,9 @@ class AnaTipoDocumentoService {
 		}
 	}
 
-	/**
-	 * Disabilitare il controllo sulla competenza permette ai documenti gdm di essere manipolati da utenti diversi
-	 * Controllo non necessario per quei documenti che vengono solo creati.
-	 * Controllo necessario per quei documenti che vengono modificati e/o di cui vengono aggiunti file (allegati).
-	 * */
-	boolean shouldCheckCompetenza(AnaTipoDocumento tipoDocumento) {
-		if (tipoDocumento.id in [AnaTipoDocumento.CE]) {
-			return true
-		}
-		return false
+	List<AnaTipoDocumento> findAllByFlagConvivenzaDiFattoNotNull(){
+		return anaTipoDocumentoRepository.findAllByFlagConvivenzaDiFattoNotNullOrderByDescrizioneAsc()
 	}
+
 
 }

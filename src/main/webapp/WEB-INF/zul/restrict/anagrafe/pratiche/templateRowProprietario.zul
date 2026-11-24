@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <row visible="@load(vm.pratica.occupazioneImmobile.flagLegittima and vm.estremiStradario)">
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Sezione'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="${arg.legittima ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.sezioneCatastoTpr)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="sezioneCatastoTpr"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="${arg.proprietario ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.sezioneCatasto)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="sezioneCatasto"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Foglio'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="${arg.legittima ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.foglioCatastoTpr)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="foglioCatastoTpr"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="${arg.proprietario ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.foglioCatasto)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="foglioCatasto"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Particella'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="${arg.legittima ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.numeroCatastoTpr)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="numeroCatastoTpr"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="${arg.proprietario ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.numeroCatasto)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="numeroCatasto"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Subalterno'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="${arg.legittima ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.subalternoCatastoTpr)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="subalternoCatastoTpr"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="${arg.proprietario ne null}">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.subalternoCatasto)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="subalternoCatasto"/>
+                </button>
+            </hlayout>
+        </cell>
+    </row>
+
+</zk>

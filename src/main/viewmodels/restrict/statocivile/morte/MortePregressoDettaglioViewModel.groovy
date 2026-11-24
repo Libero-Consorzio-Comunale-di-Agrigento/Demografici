@@ -2,6 +2,7 @@ package restrict.statocivile.morte
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
@@ -20,7 +21,7 @@ import javax.persistence.criteria.JoinType
 class MortePregressoDettaglioViewModel extends MorteDettaglioParentViewModel {
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivMorteService civMorteService
@@ -59,7 +60,7 @@ class MortePregressoDettaglioViewModel extends MorteDettaglioParentViewModel {
 
         try {
             dettaglio = new CivMorte(codiceRecord: new Integer(0), estremiDecessoNoti: ETipoSiNo.SI, morteViolenta: ETipoSiNo.NO)
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             //Nel caso di inserimento di un pregresso non devo creare il collegamento con CivAnagrafe
 
@@ -80,7 +81,7 @@ class MortePregressoDettaglioViewModel extends MorteDettaglioParentViewModel {
 
             datiProvenienza = new CivDatiProvenienzaAtto()
             if (dettaglio.isSecondaB()) {
-                datiProvenienza.documentoDecesso = getEtichetta(Etichette.Avviso_morte)
+                datiProvenienza.documentoDecesso = getEtichetta(Etichette.getEtichetta("Avviso_morte"))
             }
 
             caricaListaComparente()
@@ -142,7 +143,7 @@ class MortePregressoDettaglioViewModel extends MorteDettaglioParentViewModel {
 
             } catch (Exception ex) {
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException) {
                     errorMsg = (getEtichetta(ex.getEtichetta()) ?: ex.getMessage())
                 }
@@ -171,7 +172,7 @@ class MortePregressoDettaglioViewModel extends MorteDettaglioParentViewModel {
                     nd.put(CivTipoRegistro.ID_CREMAZIONE, numerazioneDocumentoCremazione)
                     c = civMorteService.save(tipoOperazione, dettaglio, null, datiProvenienza, margine, trasporto, nd, mapFormule, null, composizioneTestoAttiva, gc, margineMandatory, listaSoggettiCollegati, [:], hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && composizioneTestoAttiva) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (composizioneTestoAttiva && (statoFrammenti == 1)) {
                         statoFrammenti = 2

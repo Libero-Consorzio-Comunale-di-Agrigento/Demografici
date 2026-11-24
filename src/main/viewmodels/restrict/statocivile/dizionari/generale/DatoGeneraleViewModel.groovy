@@ -15,7 +15,7 @@ import restrict.AbstractTabNavigatorViewModel
 class DatoGeneraleViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Uffici, Etichette.Ufficiali, Etichette.Luoghi_Evento]
+        List<Map> eList = [Etichette.getEtichetta("Uffici"), Etichette.getEtichetta("Ufficiali"), Etichette.getEtichetta("Luoghi_Evento")]
 
         doInit(w, eList)
 

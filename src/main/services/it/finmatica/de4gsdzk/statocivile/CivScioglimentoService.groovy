@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoAnscService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivScioglimentoService implements IAttoAnscService{
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -51,17 +52,17 @@ class CivScioglimentoService implements IAttoAnscService{
 
 	private final CivUnioneCivileRepository civUnioneCivileRepository
 
-    CivScioglimentoService(CivUnioneCivileRepository civUnioneCivileRepository, StatoCivileService statoCivileService,
+    CivScioglimentoService(CivUnioneCivileRepository civUnioneCivileRepository, GsdService gsdService,
                            CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
                            CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
                            CivComunicazioneAttoService civComunicazioneAttoService, ArcComuneBaseService arcComuneBaseService,
                            CivSposiAttoService civSposiAttoService, CivTestimoniAttoService civTestimoniAttoService,
                            CivAnnotazioneAttoService civAnnotazioneAttoService, CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
-						   CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
-						   CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+                           CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
+                           CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civUnioneCivileRepository = civUnioneCivileRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -172,7 +173,7 @@ class CivScioglimentoService implements IAttoAnscService{
 		// Solo per atti in inserimento e integrazione ANSC attiva
 		Boolean checkDatiAggiuntivi2 = (obj.isCodRec3() && anscOn)
         String sezioneC2 = "'Contraenti' - Generalità Contraente 2 incomplete "
-		civValidazioneAttoService.checkDatiObbligatoriIncompletiSoggetto2(obj, sezioneC2, checkDatiAggiuntivi2, checkDatiAggiuntivi2, Boolean.FALSE, checkDatiAggiuntivi2)
+		civValidazioneAttoService.checkDatiObbligatoriIncompletiSoggetto2(obj, sezioneC2, checkDatiAggiuntivi2, checkDatiAggiuntivi2, checkDatiAggiuntivi2, Boolean.FALSE, checkDatiAggiuntivi2)
 
 		civValidazioneAttoService.checkCognomeNomeTroppoLunghiSoggetto2(obj, "Cognome/Nome Contraente 2")
 
@@ -213,7 +214,7 @@ class CivScioglimentoService implements IAttoAnscService{
 		// IN FUNZIONE DI PARTE E SERIE / CATEGORIA
 
 		if ( (datiProvenienza.tipoDivorzioAltro == null) && obj.isUfficialeAltro() ){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_tipo_divorzio_altro_scioglimento)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_tipo_divorzio_altro_scioglimento"))
 		}
 
 	}
@@ -231,7 +232,7 @@ class CivScioglimentoService implements IAttoAnscService{
 		log.info("Lancio salvataggio dello storico su CIVUCI per id " + obj.id)
 
 		CivUnioneCivile newest = DomainUtils.copyAtto(obj) as CivUnioneCivile
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civUnioneCivileRepository.save(newest)
@@ -385,12 +386,13 @@ class CivScioglimentoService implements IAttoAnscService{
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVUCI per id " + obj.id)
@@ -431,7 +433,7 @@ class CivScioglimentoService implements IAttoAnscService{
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java
@@ -444,11 +446,11 @@ class CivScioglimentoService implements IAttoAnscService{
 	}
 
 	private Boolean isAvvocato1Presente(CivDatiProvenienzaAtto obj) {
-		statoCivileService.flagComparente(obj.tipoComparente, 'A1')
+		gsdService.flagComparente(obj.tipoComparente, 'A1')
 	}
 
 	private Boolean isAvvocato2Presente(CivDatiProvenienzaAtto obj) {
-		statoCivileService.flagComparente(obj.tipoComparente, 'A2')
+		gsdService.flagComparente(obj.tipoComparente, 'A2')
 	}
 
 }

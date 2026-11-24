@@ -112,7 +112,8 @@ begin
 
      elsif w_rito is not null then
 -- rito religioso
-        if upper(w_rito) = 'CATTOLICO' then
+--        if upper(w_rito) = 'CATTOLICO' then
+        if nvl(f_CIV_flag_rito_cattolico(w_rito),'N') = 'S' then
 -- rito cattolico
            w_qualifica := w_qualifica_min_art;
            if w_qualifica like '%PARROCO%' then

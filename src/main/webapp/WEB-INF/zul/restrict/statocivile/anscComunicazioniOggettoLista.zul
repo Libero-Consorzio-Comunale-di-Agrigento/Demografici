@@ -10,7 +10,7 @@
 	<window viewModel="@id('vm') @init('restrict.statocivile.AnscComunicazioniOggettoListaViewModel')"
 			apply="org.zkoss.bind.BindComposer"
 			border="none"
-			width="800px" height="400px"
+            width="1000px" height="500px"
 			title="@load(vm.etichette['ANSC'])"
 			sizable="false" closable="false">
 
@@ -25,9 +25,9 @@
 			<listbox model="@load(vm.lista)" multiple="true" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
 					 emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
 				<listhead>
-					<listheader label="@load(c:cat3('Id', ' - ', vm.etichette['Data_Registrazione']) )" width="200px"/>
+					<listheader label="@load(c:cat3(vm.etichette['Id'], ' - ', vm.etichette['Data_Registrazione']) )" width="200px"/>
 					<listheader label="@load(vm.etichette['Data_Invio'])" width="135px"/>
-					<listheader label="@load(vm.etichette['Esito'])"/>
+					<listheader label="@load(vm.etichette['Esito'])" width="190px"/>
 					<listheader label="@load(vm.etichette['Note'])"/>
 					<listheader label="" width="52px"/>
 				</listhead>
@@ -43,7 +43,7 @@
 							<label value="@load(subItem.comunicazione.esitoDescrizione)"/>
 						</listcell>
 						<listcell>
-							<label value="@load(subItem.comunicazione.infoWSAnsc)"/>
+							<html content="@load(subItem.comunicazione.infoWSAnsc)"/>
 						</listcell>
 						<listcell sclass="testo-al-centro">
 							<button image="/images/icon/action/18x18/warning_light.png"

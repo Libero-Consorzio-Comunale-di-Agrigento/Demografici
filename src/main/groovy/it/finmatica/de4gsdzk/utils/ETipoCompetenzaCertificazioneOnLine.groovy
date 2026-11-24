@@ -13,8 +13,8 @@ enum ETipoCompetenzaCertificazioneOnLine {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case AN: return Etichette.Anagrafe
-            case SC: return Etichette.Stato_Civile
+            case AN: return Etichette.getEtichetta("Anagrafe")
+            case SC: return Etichette.getEtichetta("Stato_Civile")
         }
         return null
     }

@@ -32,18 +32,18 @@ class DocumentoUscitaNonAssociatoListaViewModel extends DocumentoParentListaView
 
         showDetailsProtocollazione = Boolean.FALSE
 
-        List<Map<String, String>> eList = [Etichette.Gestione_Documenti_Uscita, Etichette.Dati_parzialmente_compilati, Etichette.Dati_da_compilare]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Gestione_Documenti_Uscita"), Etichette.getEtichetta("Dati_parzialmente_compilati"), Etichette.getEtichetta("Dati_da_compilare")]
         eList.addAll(CivVisualizzazioneDocumentiUscita.etichetteDomain)
 
         doInit(w, eList, ETipoDocumento.Uscita)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Uscita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Uscita"))
 
         formLabel = msgTitle?.toUpperCase() + " - " + getDescrizioneStato()?.toUpperCase()
     }
 
     String getDescrizioneStato(){
-        return getEtichetta(Etichette.Documenti_Non_Associati)
+        return getEtichetta(Etichette.getEtichetta("Documenti_Non_Associati"))
     }
 
     @Override Paginazione eseguiQuery(Boolean usePaging) {

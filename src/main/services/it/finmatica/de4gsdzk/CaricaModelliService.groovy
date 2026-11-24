@@ -1,6 +1,8 @@
 package it.finmatica.de4gsdzk
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaModello
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaModelloService
 import it.finmatica.de4gsdzk.archivi.ArcParametro
 import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
 import it.finmatica.de4gsdzk.GestioneTestiGsdModelloRepository
@@ -15,39 +17,46 @@ import it.finmatica.de4gsdzk.statocivile.CivComunicazioneAtto
 import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazione
 import it.finmatica.de4gsdzk.utils.*
 import org.apache.commons.io.FilenameUtils
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import static org.apache.commons.io.FileUtils.readFileToByteArray
 
 @Slf4j
+@Transactional
 @Service
 class CaricaModelliService {
 
-    @Autowired
-    GestioneTestiGsdModelloRepository gestioneTestiGsdModelloRepository
+    private final GestioneTestiGsdModelloRepository gestioneTestiGsdModelloRepository
+    private final GestioneTestiGsdTipoModelloRepository gestioneTestiGsdTipoModelloRepository
+    private final CivComunicazioneRepository civComunicazioneRepository
+    private final CivComunicazioneAttoRepository civComunicazioneAttoRepository
+    private final GestioneTestiModelloRelazioneRepository gestioneTestiModelloRelazioneRepository
+    private final ArcParametroRepository arcParametroRepository
+    private final CerTipoCertificatoRepository cerTipoCertificatoRepository
+    private final AnaModelloService anaModelloService
 
-    @Autowired
-    GestioneTestiGsdTipoModelloRepository gestioneTestiGsdTipoModelloRepository
+    CaricaModelliService(GestioneTestiGsdModelloRepository gestioneTestiGsdModelloRepository,
+                         GestioneTestiGsdTipoModelloRepository gestioneTestiGsdTipoModelloRepository,
+                         CivComunicazioneRepository civComunicazioneRepository,
+                         CivComunicazioneAttoRepository civComunicazioneAttoRepository,
+                         GestioneTestiModelloRelazioneRepository gestioneTestiModelloRelazioneRepository,
+                         ArcParametroRepository arcParametroRepository,
+                         CerTipoCertificatoRepository cerTipoCertificatoRepository,
+                         AnaModelloService anaModelloService) {
+        this.gestioneTestiGsdModelloRepository = gestioneTestiGsdModelloRepository
+        this.gestioneTestiGsdTipoModelloRepository = gestioneTestiGsdTipoModelloRepository
+        this.civComunicazioneRepository = civComunicazioneRepository
+        this.civComunicazioneAttoRepository = civComunicazioneAttoRepository
+        this.gestioneTestiModelloRelazioneRepository = gestioneTestiModelloRelazioneRepository
+        this.arcParametroRepository = arcParametroRepository
+        this.cerTipoCertificatoRepository = cerTipoCertificatoRepository
+        this.anaModelloService = anaModelloService
+    }
 
-    @Autowired
-    CivComunicazioneRepository civComunicazioneRepository
-
-    @Autowired
-    CivComunicazioneAttoRepository civComunicazioneAttoRepository
-
-    @Autowired
-    GestioneTestiModelloRelazioneRepository gestioneTestiModelloRelazioneRepository
-
-    @Autowired
-    ArcParametroRepository arcParametroRepository
-
-    @Autowired
-    CerTipoCertificatoRepository cerTipoCertificatoRepository
-
-    boolean modelliComunicazioniLoaded(){
+    boolean modelliComunicazioniLoaded() {
         if (gestioneTestiGsdModelloRepository.countByGruppoAndAmbito(EGruppo.CIV, EAmbito.CO) > 0) {
-            log.info ("La tabella contiene già dei modelli CO, aggiornamento non consentito")
+            log.info("La tabella contiene già dei modelli CO, aggiornamento non consentito")
             return true
         }
         return false
@@ -72,18 +81,18 @@ class CaricaModelliService {
             log.info(" - " + f.getName() + "...")
 
             String estensione = FilenameUtils.getExtension(f.getName())
-            if (estensione.equalsIgnoreCase(ETipoFile.TXT.estensione)){
+            if (estensione.equalsIgnoreCase(ETipoFile.TXT.estensione)) {
                 continue
             }
 
             String codice = FilenameUtils.removeExtension(f.getName())
-            if (codice.startsWith(GestioneTestiGsdModello.PREFISSO_MODELLI_STANDARD) && (codice.length() == 7) ){
+            if (codice.startsWith(GestioneTestiGsdModello.PREFISSO_MODELLI_STANDARD) && (codice.length() == 7)) {
                 codice = codice.substring(4)
 
                 try {
                     String codiceTipoAtto = codice.substring(0, 1)
                     int tipoAtto
-                    if (codiceTipoAtto == ParametroProtocolloDiz.CODICE_TIPO_ATTO_UCI){
+                    if (codiceTipoAtto == ParametroProtocolloDiz.CODICE_TIPO_ATTO_UCI) {
                         tipoAtto = -4
                     } else {
                         tipoAtto = Integer.parseInt(codiceTipoAtto)
@@ -103,15 +112,15 @@ class CaricaModelliService {
                     )
 
                     GestioneTestiModelloRelazione mr
-                    if (tipoAtto == 0){ // E' una comunicazione formula
+                    if (tipoAtto == 0) { // E' una comunicazione formula
                         CivComunicazione co = civComunicazioneRepository.findById(new Integer(codiceComunicazione))
-                        if (co){
+                        if (co) {
                             mr = new GestioneTestiModelloRelazione(comunicazione: co, modello: modello)
                             log.info("Tento registrazione testo della comunicazione ${co.id}...")
                         }
                     } else { // E' una comunicazione atto
                         CivComunicazioneAtto ca = civComunicazioneAttoRepository.findById(codice)
-                        if (ca){
+                        if (ca) {
                             mr = new GestioneTestiModelloRelazione(comunicazioneAtto: ca, modello: modello)
                             log.info("Tento registrazione testo della comunicazione atto ${codice}...")
                         }
@@ -123,8 +132,8 @@ class CaricaModelliService {
                         gestioneTestiModelloRelazioneRepository.save(mr)
                     }
 
-                } catch (NumberFormatException ex){
-                    log.error(ex.getMessage())
+                } catch (NumberFormatException ex) {
+                    log.error("Errore elaborazione file ${f.getName()}", ex)
                 }
             }
 
@@ -133,9 +142,9 @@ class CaricaModelliService {
         return count
     }
 
-    boolean modelliDATLoaded(){
+    boolean modelliDATLoaded() {
         if (gestioneTestiGsdModelloRepository.countByGruppoAndAmbito(EGruppo.CIV, EAmbito.TB) > 0) {
-            log.info ("La tabella contiene già dei modelli TB, aggiornamento non consentito")
+            log.info("La tabella contiene già dei modelli TB, aggiornamento non consentito")
             return true
         }
         return false
@@ -152,7 +161,7 @@ class CaricaModelliService {
         List<File> xmlFiles = []
         List<File> modelliFiles = []
         for (File f : files) {
-            if (FilenameUtils.getExtension(f.getName()).equalsIgnoreCase(ETipoFile.XML.estensione)){
+            if (FilenameUtils.getExtension(f.getName()).equalsIgnoreCase(ETipoFile.XML.estensione)) {
                 xmlFiles.add(f)
             } else {
                 modelliFiles.add(f)
@@ -160,9 +169,9 @@ class CaricaModelliService {
         }
 
         GestioneTestiGsdTipoModello tm = null
-        if (xmlFiles.size() == 1){
+        if (xmlFiles.size() == 1) {
             File f = xmlFiles[0]
-            tm = gestioneTestiGsdTipoModelloRepository.save( new GestioneTestiGsdTipoModello(
+            tm = gestioneTestiGsdTipoModelloRepository.save(new GestioneTestiGsdTipoModello(
                     utenteIns: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
                     utenteUpd: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
                     codice: FilenameUtils.removeExtension(f.getName()),
@@ -213,8 +222,8 @@ class CaricaModelliService {
                     gestioneTestiGsdModelloRepository.save(m)
                     count++
                 }
-            } catch (Exception ex){
-                log.error(ex.getMessage())
+            } catch (Exception ex) {
+                log.error("Errore elaborazione file ${f.getName()}", ex)
             }
         }
 
@@ -266,9 +275,9 @@ class CaricaModelliService {
         }
     }
 
-    boolean modelloEtichettaLoaded(){
+    boolean modelloEtichettaLoaded() {
         if (gestioneTestiGsdModelloRepository.countByGruppoAndAmbito(EGruppo.CIV, EAmbito.ET) > 0) {
-            log.info ("La tabella contiene già un modello ET, aggiornamento non consentito")
+            log.info("La tabella contiene già un modello ET, aggiornamento non consentito")
             return true
         }
         return false
@@ -284,7 +293,7 @@ class CaricaModelliService {
         List<File> xmlFiles = []
         List<File> modelliFiles = []
         for (File f : files) {
-            if (FilenameUtils.getExtension(f.getName()).equalsIgnoreCase(ETipoFile.XML.estensione)){
+            if (FilenameUtils.getExtension(f.getName()).equalsIgnoreCase(ETipoFile.XML.estensione)) {
                 xmlFiles.add(f)
             } else {
                 modelliFiles.add(f)
@@ -292,10 +301,10 @@ class CaricaModelliService {
         }
 
         GestioneTestiGsdTipoModello tm = null
-        if (xmlFiles.size() == 1){
+        if (xmlFiles.size() == 1) {
             tm = gestioneTestiGsdTipoModelloRepository.findByCodice("ETI_PERS")
             if (tm != null) {
-                log.info ("La tabella contiene già il tipo modello dell'etichetta, aggiornamento tipo modello non consentito")
+                log.info("La tabella contiene già il tipo modello dell'etichetta, aggiornamento tipo modello non consentito")
             } else {
                 File f = xmlFiles[0]
                 tm = gestioneTestiGsdTipoModelloRepository.save(new GestioneTestiGsdTipoModello(
@@ -310,7 +319,7 @@ class CaricaModelliService {
             }
         }
 
-        if (tm == null){
+        if (tm == null) {
             return 0
         }
 
@@ -323,7 +332,7 @@ class CaricaModelliService {
                         utenteIns: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
                         utenteUpd: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
                         codice: tm.codice,
-                        descrizione:"Modello etichetta personalizzato",
+                        descrizione: "Modello etichetta personalizzato",
                         nome: f.getName(),
                         tipo: FilenameUtils.getExtension(f.getName()),
                         ambito: EAmbito.ET,
@@ -336,8 +345,8 @@ class CaricaModelliService {
                     gestioneTestiGsdModelloRepository.save(m)
                     count++
                 }
-            } catch (Exception ex){
-                log.error(ex.getMessage())
+            } catch (Exception ex) {
+                log.error("Errore elaborazione file ${f.getName()}", ex)
             }
         }
 
@@ -412,6 +421,85 @@ class CaricaModelliService {
             log.info("Registrato modello ${modello.codice}")
             gestioneTestiModelloRelazioneRepository.save(mr)
             log.info("Registrato relazione modello ${mr.modello.codice} <-> tipo certificato ${mr.tipoCertificato.id}")
+        }
+
+        return count
+    }
+
+
+    boolean modelliComunicazioneAnagrafeLoaded() {
+        if (gestioneTestiGsdModelloRepository.countByGruppoAndAmbito(EGruppo.ANA, EAmbito.CO) > 0) {
+            log.info("La tabella contiene già dei modelli ANA-CO, aggiornamento non consentito")
+            return true
+        }
+        if (gestioneTestiGsdModelloRepository.countByGruppoAndAmbito(EGruppo.ANA, EAmbito.CF) > 0) {
+            log.info("La tabella contiene già dei modelli ANA-CO, aggiornamento non consentito")
+            return true
+        }
+        return false
+    }
+
+/**
+ * Carica i modelli ODT nel DB
+ *
+ * @param files i modelli ODT da caricare
+ * @return il numero di modelli caricati con successo
+ */
+    int caricaModelliComunicazioneAnagrafe(File[] files) {
+
+        int count = 0
+
+        if (modelliComunicazioneAnagrafeLoaded()) {
+            return 0
+        }
+
+        for (File f : files) {
+
+            log.info(" - " + f.getName() + "...")
+
+            String estensione = FilenameUtils.getExtension(f.getName())
+            if (estensione.equalsIgnoreCase(ETipoFile.TXT.estensione)) {
+                continue
+            }
+
+            String fileBaseName = FilenameUtils.removeExtension(f.getName())
+            if (TestoUtils.isVuoto(fileBaseName)) {
+                log.error("Il file ${f.getName()} non ha un nome base")
+                continue
+            }
+
+            String idModelloAnagrafe = FileUtils.getIdModelloAnagrafeFromNomeModello(fileBaseName)
+            if (TestoUtils.isVuoto(idModelloAnagrafe)) {
+                log.error("Il file ${f.getName()} non ha un codModelloAnagrafe")
+                continue
+            }
+
+            AnaModello modelloAnagrafe = anaModelloService.findById(idModelloAnagrafe)
+            if (!modelloAnagrafe) {
+                log.error("Modello anagrafe ${idModelloAnagrafe} non trovato")
+                continue
+            }
+
+            GestioneTestiGsdModello modello = new GestioneTestiGsdModello(
+                    utenteIns: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
+                    utenteUpd: ConfigurazioneUtils.CODICE_UTENZA_TECNICA,
+                    codice: FileUtils.getCodiceModelloComunicazioneAnagrafeStandard(modelloAnagrafe.tipoModello, modelloAnagrafe.codModello),
+                    nome: f.getName(),
+                    tipo: FilenameUtils.getExtension(f.getName()),
+                    ambito: idModelloAnagrafe.startsWith('F') ? EAmbito.CF : EAmbito.CO,
+                    gruppo: EGruppo.ANA,
+                    valido: true,
+                    fileTemplate: readFileToByteArray(f)
+            )
+
+            GestioneTestiModelloRelazione mr = new GestioneTestiModelloRelazione(modello: modello, modelloAnagrafe: modelloAnagrafe)
+
+            count++
+
+            gestioneTestiGsdModelloRepository.save(modello)
+            log.info("Registrato modello ${modello.codice}")
+            gestioneTestiModelloRelazioneRepository.save(mr)
+            log.info("Registrato relazione modello ${mr.modello.codice} <-> tipo certificato ${mr.modelloAnagrafe.id}")
         }
 
         return count

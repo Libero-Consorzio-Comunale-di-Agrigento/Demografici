@@ -11,8 +11,8 @@ select 1 w_ord
      , uci.atto
 -- coniuge1
      , uci.cod_fiscale_m codiceFiscale
-     , nvl(occ.cognome,uci.cognome_m) cognome
-     , nvl(occ.nome,uci.nome_m) nome
+     , f_ANSC_stringa_unicode('CIVUCI',uci.id,'COGNOME_1',nvl(occ.cognome,uci.cognome_m)) cognome
+     , f_ANSC_stringa_unicode('CIVUCI',uci.id,'NOME_1',nvl(occ.nome,uci.nome_m)) nome
      , uci.sesso_m sesso
      , decode(uci.sesso_m, 'F', 'femminile', 'M', 'maschile') descrizioneSesso
      , to_char(uci.d_data_nas_m,'yyyy-mm-dd') dataNascita
@@ -71,8 +71,8 @@ select 2 w_ord
      , uci.atto
 -- coniuge2
      , uci.cod_fiscale_f codiceFiscale
-     , nvl(occ.cognome_cn,uci.cognome_f) cognome
-     , nvl(occ.nome_cn,uci.nome_f) nome
+     , f_ANSC_stringa_unicode('CIVUCI',uci.id,'COGNOME_2',nvl(occ.cognome_cn,uci.cognome_f)) cognome
+     , f_ANSC_stringa_unicode('CIVUCI',uci.id,'NOME_2',nvl(occ.nome_cn,uci.nome_f)) nome
      , uci.sesso_f sesso
      , decode(uci.sesso_f, 'F', 'femminile', 'M', 'maschile') descrizioneSesso
      , to_char(uci.d_data_nas_f,'yyyy-mm-dd') dataNascita

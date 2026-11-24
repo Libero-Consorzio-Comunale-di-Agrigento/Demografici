@@ -7,10 +7,10 @@ return clob
 
 IS
 
--- 
+--
 -- 08/10/2024 (AM)
 -- la function viene utilizzata:
--- 1. dalla certificazione da portale: 
+-- 1. dalla certificazione da portale:
 --    viene eseguita con le viste già create (procedure ..._viw).
 --    prende in input la session_id oracle passata del package che si occupa dell'elaborazione
 -- 2. dalla certificazione zk:
@@ -26,6 +26,7 @@ select inc.*
      , cem.data_storico data_storico
      , dce.tipo_archivio
      , ana.fascia fascia_ana
+     , ana.cod_fam cod_fam_ana
   from anaana ana
      , cerdce dce
      , cercem cem
@@ -57,6 +58,7 @@ w_progr_emissione	number;
 w_anno_emissione	number;
 w_cognome_nome		varchar2(255);
 w_fascia_ana		number;
+w_cod_fam_ana		varchar2(255);
 w_session_id		number := a_session_id;
 
 w_count    			number;
@@ -120,7 +122,7 @@ begin
      goto xml_row;
   end if;
 
-<< certificazione_zk >>     
+<< certificazione_zk >>
   w_tipo_ogg := 'tab';
   w_nome_ogg := 'CERW_'||w_session_id||'_INT';
   w_check_db := f_GSD_check_db(w_tipo_ogg,w_nome_ogg,'');
@@ -144,6 +146,7 @@ begin
          w_anno_emissione  := rec.anno_emissione;
          w_cognome_nome    := rec.cognome_nome;
          w_fascia_ana      := nvl(rec.fascia_ana,-1);
+         w_cod_fam_ana     := rec.cod_fam_ana;
 
          w_session_id      := f_tabrep_terminale();
      end loop;
@@ -171,10 +174,10 @@ begin
   end;
 
 -- dbms_output.put_line('w_count: '||w_count);
-  if w_count = 0 then 
+  if w_count = 0 then
 --     w_note_log    := 'CERW_'||w_session_id||'_INT - NON trovata';
 --     w_return_log  := f_GTE_inserisci_log(w_operazione_log, w_note_log, w_result, w_modulo_rif_log, a_session_id);
-     goto fine; 
+     goto fine;
   else
 --     w_note_log    := 'CERW_'||w_session_id||'_INT - trovata';
 --     w_return_log  := f_GTE_inserisci_log(w_operazione_log, w_note_log, w_result, w_modulo_rif_log, a_session_id);
@@ -672,53 +675,53 @@ begin
   if w_tipo_archivio = 0 then
      w_data_cert_j := nvl(w_data_cert_j,to_char(sysdate,'j'));
      w_query_logo := w_query_logo||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),1) AS FAM_1';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),1) AS FAM_1';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),2) AS FAM_2';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),2) AS FAM_2';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),3) AS FAM_3';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),3) AS FAM_3';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),4) AS FAM_4';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),4) AS FAM_4';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),5) AS FAM_5';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),5) AS FAM_5';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),6) AS FAM_6';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),6) AS FAM_6';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),7) AS FAM_7';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),7) AS FAM_7';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),8) AS FAM_8';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),8) AS FAM_8';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),9) AS FAM_9';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),9) AS FAM_9';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),10) AS FAM_10';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),10) AS FAM_10';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),11) AS FAM_11';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),11) AS FAM_11';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),12) AS FAM_12';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),12) AS FAM_12';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),13) AS FAM_13';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),13) AS FAM_13';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),14) AS FAM_14';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),14) AS FAM_14';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),15) AS FAM_15';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),15) AS FAM_15';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),16) AS FAM_16';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),16) AS FAM_16';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),17) AS FAM_17';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),17) AS FAM_17';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),18) AS FAM_18';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),18) AS FAM_18';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),19) AS FAM_19';
+                       ', f_CERW_catalogo_FAM_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),19) AS FAM_19';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),1) AS FAM_1_MIN';
+                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),1) AS FAM_1_MIN';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),2) AS FAM_2_MIN';
+                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),2) AS FAM_2_MIN';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),3) AS FAM_3_MIN';
+                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),3) AS FAM_3_MIN';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),4) AS FAM_4_MIN';
+                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),4) AS FAM_4_MIN';
      w_query_logo := w_query_logo||chr(10)||
-                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','''','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),5) AS FAM_5_MIN';
+                       ', f_CERW_catalogo_FAM_MIN_zk('||w_matricola||','||nvl(w_cod_fam_ana,'''''')||','||w_fascia_ana||',to_date('''||w_data_cert_j||''',''j''),5) AS FAM_5_MIN';
      w_query_logo := w_query_logo||chr(10)||
                        ', f_CERW_catalogo_DOC('||w_matricola||',''XX'',1) AS DOC_1';
      w_query_logo := w_query_logo||chr(10)||

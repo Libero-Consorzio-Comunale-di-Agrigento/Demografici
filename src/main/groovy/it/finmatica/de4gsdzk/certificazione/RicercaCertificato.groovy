@@ -15,20 +15,13 @@ class RicercaCertificato extends BaseRicercaCertificato {
 
     RicercaCertificato() {
         this.escludiAnnullati = Boolean.TRUE
+        this.tipoSoggettoCertificato = ETipoSoggetto.BENEFICIARIO_CERTIFICATO
 
         this.dataEmissioneDal = DataUtils.getDataCorrente()
         this.dataEmissioneAl = DataUtils.getDataCorrente()
     }
 
-    Boolean findRichiedenti(){
-        return tipoSoggettoCertificato == ETipoSoggetto.RICHIEDENTE_CERTIFICATO || tipoSoggettoCertificato == null
-    }
-
-    Boolean findBeneficiari(){
-        return tipoSoggettoCertificato == ETipoSoggetto.BENEFICIARIO_CERTIFICATO || tipoSoggettoCertificato == null
-    }
-
-    static final List<Map> etichetteRicercaCerDesc = [Etichette.Effettua_Ricerca, Etichette.Da, Etichette.A,
-                                                      Etichette.Escludi_annullati, Etichette.Annullati, Etichette.Tipo_Soggetto, Etichette.Tutti]
+    static final List<Map> etichetteRicercaCerDesc = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A"),
+                                                      Etichette.getEtichetta("Escludi_annullati"),Etichette.getEtichetta("Annullati"),Etichette.getEtichetta("Tipo_Soggetto"), Etichette.getEtichetta("Tutti")]
 
 }

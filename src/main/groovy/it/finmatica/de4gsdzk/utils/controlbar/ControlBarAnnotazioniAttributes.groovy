@@ -108,9 +108,9 @@ class ControlBarAnnotazioniAttributes extends ControlBarListaAttributes {
 	void setAdditionalListaToolbarbutton3(String additionalListaToolbarbutton3) {
 		super.additionalToolbarbutton3 = additionalListaToolbarbutton3
 	}
-	static List<Map> etichetteCbAnnListDesc = [Etichette.filtro_ricerca_placeholder, Etichette.ricerca_tooltip, Etichette.filtro_ricerca_tooltip,
-											   Etichette.inserisci_tooltip, Etichette.modifica_tooltip, Etichette.back_tooltip, Etichette.comunicazioni_tooltip,
-											   Etichette.Ordina_per, Etichette.salva_tooltip, Etichette.elimina_tooltip,
-											   Etichette.blocca_testo_tooltip, Etichette.stampa_etichetta_tooltip]
+	static List<Map> etichetteCbAnnListDesc = [Etichette.getEtichetta("filtro_ricerca_placeholder"), Etichette.getEtichetta("ricerca_tooltip"), Etichette.getEtichetta("filtro_ricerca_tooltip"),
+											   Etichette.getEtichetta("inserisci_tooltip"), Etichette.getEtichetta("modifica_tooltip"), Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("comunicazioni_tooltip"),
+											   Etichette.getEtichetta("Ordina_per"), Etichette.getEtichetta("salva_tooltip"), Etichette.getEtichetta("elimina_tooltip"),
+											   Etichette.getEtichetta("blocca_testo_tooltip"), Etichette.getEtichetta("stampa_etichetta_tooltip")]
 
 }

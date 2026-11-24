@@ -1,5 +1,6 @@
 package restrict.statocivile.morte
 
+import it.finmatica.de4gsdzk.utils.Etichette
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.IstMd4Bis
 import it.finmatica.de4gsdzk.utils.*
@@ -30,14 +31,14 @@ class MorteD4BisDettaglioViewModel extends IstatDettaglioParentViewModel {
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_MODELLO_D4BIS, Etichette.SEZIONE_DATI_DECESSO, Etichette.SEZIONE_DECEDUTO,
-                           Etichette.SEZIONE_PARTO, Etichette.SEZIONE_MADRE, Etichette.SEZIONE_PADRE, Etichette.SEZIONE_PRECEDENTI]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_MODELLO_D4BIS"), Etichette.getEtichetta("SEZIONE_DATI_DECESSO"), Etichette.getEtichetta("SEZIONE_DECEDUTO"),
+                           Etichette.getEtichetta("SEZIONE_PARTO"), Etichette.getEtichetta("SEZIONE_MADRE"), Etichette.getEtichetta("SEZIONE_PADRE"), Etichette.getEtichetta("SEZIONE_PRECEDENTI")]
         eList.addAll(IstMd4Bis.etichetteDomain)
 
         // Aggiungo etichette tipo si/no
         eList.addAll(Arrays.asList(ETipoSiNo.values())*.etichettaDesc)
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D4BIS, Etichette.SEZIONE_MODELLO_D4BIS)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D4BIS, Etichette.getEtichetta("SEZIONE_MODELLO_D4BIS"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita', tipo: JoinType.LEFT]]])

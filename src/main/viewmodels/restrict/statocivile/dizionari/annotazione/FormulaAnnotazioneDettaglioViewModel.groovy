@@ -65,10 +65,10 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Chiudi, Etichette.Eventuale_Testo_fisso, Etichette.Eventuale_Testo_fisso_finale,
-                                           Etichette.Funzione_non_abilitata, Etichette.Formula_Annotazione, Etichette.Annotazioni, Etichette.anteprima_testo_tooltip]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Chiudi"), Etichette.getEtichetta("Eventuale_Testo_fisso"), Etichette.getEtichetta("Eventuale_Testo_fisso_finale"),
+                                           Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Formula_Annotazione"), Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("anteprima_testo_tooltip")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Aggiornamento_Annotazione, EtichetteMessaggi.Errore_creazione_frammenti_formula])
+        eList.addAll([Etichette.getEtichetta("Ask_Aggiornamento_Annotazione"), Etichette.getEtichetta("Errore_creazione_frammenti_formula")])
         eList.addAll(etichetteDettaglioDefault)
 
         eList.addAll(CivTestoFormula.etichetteDomain)
@@ -89,11 +89,11 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Formula_Annotazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formula_Annotazione"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        annotazioniAutomaticheEnabled = false //(statoCivileService.getValoreParametro(ArcParametro.TANN_AUTO) == ETipoSN.S.name() )
+        annotazioniAutomaticheEnabled = false //(gsdService.getValoreParametro(ArcParametro.TANN_AUTO) == ETipoSN.S.name() )
         anscOn = arcParametroService.isIntegrazioneAnscAttiva()
 
         resize()
@@ -163,7 +163,7 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
         if (saveRecordEnabled && dettaglio && userModifyEnabled) {
             Boolean inUso = civAnnotazioneAttoService.checkAnnotazioneInUso(dettaglio.id)
             if (inUso){
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Aggiornamento_Annotazione), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Aggiornamento_Annotazione")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                         new org.zkoss.zk.ui.event.EventListener(){
                             void onEvent(Event e){
                                 if (Messagebox.ON_OK.equals(e.getName())){
@@ -176,7 +176,7 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
                 salvaFormula()
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -187,7 +187,7 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
             dettaglio.testo?.testoA4 = m.testo
 
             CivFormulaAnnotazione cfa = civFormulaAnnotazioneService.save(tipoOperazione, dettaglio, lnf)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(cfa.id)
         }
     }
@@ -256,7 +256,7 @@ class FormulaAnnotazioneDettaglioViewModel extends AbstractDettaglioViewModel{
 
         int newVarPosition = getLastNotaFormulaPosition() + 1
         if (newVarPosition >= CivNotaFormula.MAX_NOTA_FORMULA_ELEMENTS){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_creazione_frammenti_formula), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_creazione_frammenti_formula")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             FrammentoFormulaAnnotazione newFr = new FrammentoFormulaAnnotazione("", new CivNotaFormula(variabile: new Integer(newVarValue), formula : dettaglio))
             listaFrammentiFormula.add(newVarPosition, newFr)

@@ -1,8 +1,10 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.IComunicazioneAllegatoRepository
+import it.finmatica.de4gsdzk.IEnteRepository
+import it.finmatica.de4gsdzk.TraitEnteService
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivEnteRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Slf4j
 @Transactional
 @Service
-class CivEnteService {
+class CivEnteService implements TraitEnteService {
 
 	private final CivEnteRepository civEnteRepository
 
@@ -21,7 +23,13 @@ class CivEnteService {
 		this.civEnteRepository = civEnteRepository
 	}
 
-	CivEnte get (Integer id){
+    @Override
+    IEnteRepository getEnteRepository() {
+        return civEnteRepository
+    }
+
+
+    /*CivEnte get (Integer id){
 		return civEnteRepository.findById(id)
 	}
 
@@ -51,7 +59,7 @@ class CivEnteService {
 		if (tipoOperazione.isInsert()){
 			long n = civEnteRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Ente_Duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Ente_Duplicato"))
 			}
 		}
 	}
@@ -62,6 +70,6 @@ class CivEnteService {
 
 		log.info("Lancio salvataggio su CIVDEN_V per id " + obj.id)
 		return civEnteRepository.save(obj)
-	}
+	}*/
 
 }

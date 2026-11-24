@@ -1,7 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazione
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -23,5 +22,9 @@ interface GestioneTestiModelloRelazioneRepository extends JpaRepository<Gestione
     @Query("""SELECT c FROM GestioneTestiModelloRelazione c JOIN FETCH c.modello m LEFT JOIN FETCH m.tipoModello t
                WHERE c.tipoCertificato.id = :idTipoCertificato """)
     GestioneTestiModelloRelazione findByTipoCertificato(@Param("idTipoCertificato") String idTipoCertificato)
+
+    @Query("""SELECT c FROM GestioneTestiModelloRelazione c JOIN FETCH c.modello m LEFT JOIN FETCH m.tipoModello t
+               WHERE c.modelloAnagrafe.id = :idModelloAnagrafe """)
+    GestioneTestiModelloRelazione findByIdModelloAnagrafe(@Param("idModelloAnagrafe") String idModelloAnagrafe)
 
 }

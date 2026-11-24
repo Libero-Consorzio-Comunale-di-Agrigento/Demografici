@@ -1,6 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
-import it.finmatica.de4gsdzk.utils.ESiglaEnte
+import it.finmatica.de4gsdzk.GsdBaseDomain
+import it.finmatica.de4gsdzk.IEnte
+import it.finmatica.de4gsdzk.utils.ESiglaEnteStatoCivile
 import it.finmatica.de4gsdzk.utils.ETipoEnteDestinatario
 import it.finmatica.de4gsdzk.utils.Etichette
 import org.hibernate.annotations.Formula
@@ -9,7 +11,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "CIVDEN_V")
-class CivEnte {
+class CivEnte extends GsdBaseDomain implements IEnte {
 
     @Id
     @Column(name = "CODICE_EN", nullable = false)
@@ -18,9 +20,9 @@ class CivEnte {
     @Column(name = "DESCRIZIONE", nullable = false)
     String descrizione
 
-    @Column(nullable = false)
+    @Column(name = "SIGLA", nullable = false)
     @Enumerated(EnumType.STRING)
-    ESiglaEnte sigla
+    ESiglaEnteStatoCivile sigla
 
     @Column(name = "INDIRIZZO_PEC")
     String pec
@@ -45,7 +47,7 @@ class CivEnte {
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Sigla, Etichette.PEC,
-                                              Etichette.Codice_AMM, Etichette.Codice_AOO, Etichette.Codice_UO]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Sigla"), Etichette.getEtichetta("PEC"),
+                                              Etichette.getEtichetta("Codice_AMM"), Etichette.getEtichetta("Codice_AOO"), Etichette.getEtichetta("Codice_UO")]
 
 }

@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.certificazione
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmesso
-import it.finmatica.de4gsdzk.certificazione.CerTerminalista
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -21,6 +21,8 @@ interface CerCertificatoEmessoRepository extends JpaRepository<CerCertificatoEme
                     LEFT JOIN FETCH c.tipoPagamento
                     LEFT JOIN FETCH c.richiedente.nazionalita
                     LEFT JOIN FETCH c.richiedente.tipoDocumento
+                    LEFT JOIN FETCH c.tipoRichiedente
+                    LEFT JOIN FETCH c.enteRichiedente.consolato
                     LEFT JOIN FETCH c.terminalista
                     LEFT JOIN FETCH c.terminalistaAnnullamento
                     LEFT JOIN FETCH c.pagamentoInviatoDettaglio pid
@@ -42,7 +44,7 @@ interface CerCertificatoEmessoRepository extends JpaRepository<CerCertificatoEme
 
     @Modifying
     @Query("""UPDATE CerCertificatoEmesso c SET 
-                c.annullamento = it.finmatica.de4gsdzk.utils.ETipoSiNo.NO,
+                c.annullamento = null,
                 c.terminalistaAnnullamento = null,
                 c.dataAnnullamento = null,
                 c.noteAnnullamento = null,
@@ -52,5 +54,16 @@ interface CerCertificatoEmessoRepository extends JpaRepository<CerCertificatoEme
     void ripristinaCertificato(@Param("id") Long id,
                                @Param("utenteRipristino") String utenteRipristino,
                                @Param("dataRipristino") Date dataRipristino)
+
+    @Query(value = """SELECT DISTINCT c.enteRichiedente.denominazione
+                        FROM CerCertificatoEmesso c
+                       WHERE c.enteRichiedente.denominazione IS NOT NULL
+                         AND UPPER(c.enteRichiedente.denominazione) LIKE UPPER(:filtro)
+                       ORDER BY c.enteRichiedente.denominazione""",
+           countQuery = """SELECT COUNT(DISTINCT c.enteRichiedente.denominazione)
+                        FROM CerCertificatoEmesso c
+                       WHERE c.enteRichiedente.denominazione IS NOT NULL
+                         AND UPPER(c.enteRichiedente.denominazione) LIKE UPPER(:filtro)""")
+    Page<String> listEntiRichiedenti(@Param("filtro") String filtro, Pageable pageable)
 
 }

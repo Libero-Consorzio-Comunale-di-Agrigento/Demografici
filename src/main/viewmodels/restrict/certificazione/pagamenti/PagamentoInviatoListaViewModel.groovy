@@ -67,7 +67,7 @@ class PagamentoInviatoListaViewModel extends AbstractListaViewModel implements T
         ricercaPagamentoInviato = new RicercaPagamentoInviato()
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Pagamenti_inviati, Etichette.Pagamento, Etichette.Inviato, Etichette.info_tooltip]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Pagamenti_inviati"), Etichette.getEtichetta("Pagamento"), Etichette.getEtichetta("Inviato"), Etichette.getEtichetta("info_tooltip")]
         eList.addAll(WspaPagamentoInviato.etichetteDomain)
         eList.addAll(CerCertificatoEmesso.etichetteDomain)
         eList.addAll(CerTipoCertificato.etichetteDomain)
@@ -82,28 +82,28 @@ class PagamentoInviatoListaViewModel extends AbstractListaViewModel implements T
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
         // Aggiungo etichette order
-        eList.addAll([Etichette.Data_Invio_decrescente, Etichette.Data_Invio_crescente])
+        eList.addAll([Etichette.getEtichetta("Data_Invio_decrescente"), Etichette.getEtichetta("Data_Invio_crescente")])
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette funzioni dettaglio
         eList.addAll(EFunzionePagamentoInviato.values()*.getEtichettaDesc())
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
-        eList.addAll([EtichetteMessaggi.Info_Invio_pagamento_successo, EtichetteMessaggi.Errore_Invio_pagamento,
-                      EtichetteMessaggi.Info_Verifica_pagamento_successo, EtichetteMessaggi.Errore_Verifica_pagamento,
-                      EtichetteMessaggi.Info_Annullamento_pagamento_successo, EtichetteMessaggi.Errore_Annulla_pagamento, EtichetteMessaggi.Ask_Annulla_pagamento])
+        eList.addAll([Etichette.getEtichetta("Info_Invio_pagamento_successo"), Etichette.getEtichetta("Errore_Invio_pagamento"),
+                      Etichette.getEtichetta("Info_Verifica_pagamento_successo"), Etichette.getEtichetta("Errore_Verifica_pagamento"),
+                      Etichette.getEtichetta("Info_Annullamento_pagamento_successo"), Etichette.getEtichetta("Errore_Annulla_pagamento"), Etichette.getEtichetta("Ask_Annulla_pagamento")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Pagamenti_inviati)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Pagamenti_inviati"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
-        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.Data_Invio_decrescente), SortUtils.dataPagamentoDesc),
-                           new OrderBy(getEtichetta(Etichette.Data_Invio_crescente), SortUtils.dataPagamentoAsc)])
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Invio_decrescente")), SortUtils.dataPagamentoDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Invio_crescente")), SortUtils.dataPagamentoAsc)])
 
         //Default: data emissione discendente
         selectedOrder = listaOrder[0]
@@ -198,7 +198,7 @@ class PagamentoInviatoListaViewModel extends AbstractListaViewModel implements T
     void onVerificaPagamento() {
         try {
             wspaPagamentoInviatoService.verificaPagamento(dettaglio)
-            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(EtichetteMessaggi.Info_Verifica_pagamento_successo))
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(Etichette.getEtichetta("Info_Verifica_pagamento_successo")))
         } catch (VerificaPagamentoRuntimeException ex) {
             MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, String.format(getEtichetta(ex.etichetta), ex.additionalInfo))
         }
@@ -207,13 +207,13 @@ class PagamentoInviatoListaViewModel extends AbstractListaViewModel implements T
 
     @Command
     void onAnnullaPagamento() {
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Annulla_pagamento), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Annulla_pagamento")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_YES.equals(e.getName())) {
                             try {
                                 wspaPagamentoInviatoService.annullaPagamento(dettaglio)
-                                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(EtichetteMessaggi.Info_Annullamento_pagamento_successo))
+                                MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(Etichette.getEtichetta("Info_Annullamento_pagamento_successo")))
                             } catch (AnnullaPagamentoRuntimeException ex) {
                                 MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, String.format(getEtichetta(ex.etichetta), ex.additionalInfo))
                             }

@@ -46,8 +46,8 @@ class BandboxDiritto extends CustomCurrencyFakeBandbox {
 
         paging.setPageSize(Paginazione.pageSize)
 
-        errorTitle = getEtichetta(etichette, Etichette.Validazione)
-        errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+        errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+        errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
     }
 
     private void setupVisibilyListHeaders() {
@@ -95,7 +95,7 @@ class BandboxDiritto extends CustomCurrencyFakeBandbox {
 
         listbox.setModel(new ListModelList<CerTariffaDiritto>(p.getContent()))
         paging.setTotalSize((int) p.getTotalElements())
-        label.value = (getEtichetta(etichette, Etichette.Numero_record_trovati) ?: "") + paging.totalSize
+        label.value = (getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) ?: "") + paging.totalSize
     }
 
     private Page<CerTariffaDiritto> getPage(String filtro) {

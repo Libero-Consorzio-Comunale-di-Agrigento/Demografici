@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@load(vm.soggetto.matricola ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Urne_Cinerarie'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Affidamento_Urne_Cinerarie'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaSiNo)" hflex="1" onCheck="@command('onSelectUrne')"
+                                        selectedItem="@bind(vm.affidamentoUrneCinerarie) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <radio label="@load(vm.etichette[each.name()])" value="@load(each)"
+                                           disabled="@load(vm.readOnly)" style="padding-left:10px"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                </row>
+
+                <row visible="@bind(vm.soggetto.matricola ne null and vm.affidamentoUrneCinerarie eq 'SI')">
+                    <cell colspan="2">
+                        <groupbox closable="false">
+                            <caption label="@load(vm.etichette['Urne_Cinerarie'])"/>
+
+                            <hlayout valign="middle" sclass="navigazione" height="40px">
+                                <hlayout sclass="afc-control-bar" valign="middle">
+                                    <toolbarbutton image="/images/icon/action/22x22/add.png"
+                                                   disabled="@load(vm.readOnly)"
+                                                   tooltiptext="@load(vm.etichette['inserisci_urna_tooltip'])"
+                                                   onClick="@command('onInserisciUrna')"/>
+
+                                </hlayout>
+                            </hlayout>
+
+                            <listbox model="@load(vm.soggetto.urneCinerarie)"
+                                     emptyMessage="@load(vm.etichette['Nessuna_Urna_Cineraria_Presente'])">
+                                <listhead>
+                                    <listheader label="@load(vm.etichette['Cognome_Defunto'])"/>
+                                    <listheader label="@load(vm.etichette['Nome_Defunto'])"/>
+                                    <listheader label="@load(vm.etichette['Sesso_Defunto'])"/>
+                                    <listheader label="@load(vm.etichette['Data_Nascita_Defunto'])"/>
+                                    <listheader label="@load(vm.etichette['Comune_Nascita_Defunto'])"/>
+                                    <listheader label="@load(vm.etichette['Data_Morte'])"/>
+                                    <listheader label="@load(vm.etichette['Comune_Morte'])"/>
+                                    <listheader label="" width="60px"/>
+                                    <listheader label="" width="60px"/>
+                                </listhead>
+                                <template name="model" var="item">
+                                    <listitem>
+                                        <listcell label="@load(item.cognomeMorto)" style="text-transform:uppercase"/>
+                                        <listcell label="@load(item.nomeMorto)" style="text-transform:uppercase"/>
+                                        <listcell label="@load(item.sessoMorto.id)"/>
+                                        <listcell label="@load(empty item.dataNascitaMorto? null:(c:formatDate(item.dataNascitaMorto, 'dd/MM/yyyy')))"/>
+                                        <listcell label="@load(item.comuneNascitaMorto.descrizione)"/>
+                                        <listcell label="@load(empty item.dataMorte? null:(c:formatDate(item.dataMorte, 'dd/MM/yyyy')))"/>
+                                        <listcell label="@load(item.comuneMorte.descrizione)"/>
+                                        <listcell>
+                                            <button image="/images/icon/action/22x22/edit.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                                    onClick="@command('onModificaUrna', urna=item)"/>
+                                        </listcell>
+                                        <listcell>
+                                            <button image="/images/icon/action/22x22/delete.png"
+                                                    disabled="@load(vm.readOnly)"
+                                                    tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                                                    onClick="@command('onEliminaUrna', urna=item)"/>
+                                        </listcell>
+                                    </listitem>
+                                </template>
+                            </listbox>
+
+                        </groupbox>
+                    </cell>
+                </row>
+
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

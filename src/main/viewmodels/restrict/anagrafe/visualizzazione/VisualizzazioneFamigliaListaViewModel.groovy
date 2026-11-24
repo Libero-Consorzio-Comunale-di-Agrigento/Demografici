@@ -2,10 +2,11 @@ package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdEtichettaService
-import it.finmatica.de4gsdzk.anagrafe.*
+import it.finmatica.de4gsdzk.anagrafe.AnaFamigliaStorico
+import it.finmatica.de4gsdzk.anagrafe.AnaFamigliaStoricoService
+import it.finmatica.de4gsdzk.anagrafe.RicercaFamiglia
 import it.finmatica.de4gsdzk.archivi.ArcVia
 import it.finmatica.de4gsdzk.utils.DataUtils
-import it.finmatica.de4gsdzk.utils.ETipoSiNo
 import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.Paginazione
 import org.springframework.data.domain.Page
@@ -19,16 +20,11 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
 import org.zkoss.zul.Window
-import restrict.AbstractListaViewModel
-import restrict.TraitCancellazioneCampi
-import restrict.TraitControlBarCapable
-import restrict.TraitVia
+import restrict.anagrafe.AbstractFamigliaViewModel
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
-class VisualizzazioneFamigliaListaViewModel extends AbstractListaViewModel implements TraitCancellazioneCampi, TraitControlBarCapable, TraitVia {
-    final List<ETipoFamiglia> listaTipoFamiglia = [null] + Arrays.asList(ETipoFamiglia.values())
-    final List<ETipoSiNo> listaIscrittoInAPR = [null] + Arrays.asList(ETipoSiNo.values())
+class VisualizzazioneFamigliaListaViewModel extends AbstractFamigliaViewModel {
 
     List<AnaFamigliaStorico> lista
     AnaFamigliaStorico dettaglio
@@ -46,31 +42,15 @@ class VisualizzazioneFamigliaListaViewModel extends AbstractListaViewModel imple
         self = w
 
         controlBarAttributes.backEnabled = false
-        controlBarAttributes.modifyEnabled = false
-        controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Visualizzazione_Famiglia]
-        // Aggiungo etichette standard
-        eList.addAll(etichetteListaDefault)
-        // Aggiungo etichette header
-        eList.addAll(AnaAnagrafe.etichetteDomain)
-        eList.addAll(AnaFamiglia.etichetteDomain)
-        eList.addAll([Etichette.Iscritto_in_APR])
-        // Aggiungo etichette ricerca
-        eList.addAll(RicercaFamiglia.etichetteRicercaDesc)
-        eList.addAll(ETipoFamiglia.values()*.etichettaDesc)
-        eList.addAll(ETipoSiNo.values()*.etichettaDesc)
-        eList.add(Etichette.Tutti)
-        // Aggiungo etichette per bottoni ricerca
-        eList.addAll([Etichette.Ricerca_in_Anagrafe])
-        // Aggiungo etichette per valori campi di ricerca
-        eList.addAll([Etichette.Cancella])
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Visualizzazione_Famiglia")]
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Visualizzazione_Famiglia)
+        doInitVMFamglia(eList)
 
+        msgTitle = getEtichetta(Etichette.getEtichetta("Visualizzazione_Famiglia"))
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
@@ -78,7 +58,6 @@ class VisualizzazioneFamigliaListaViewModel extends AbstractListaViewModel imple
         resize()
 
         ricercaFamiglia = new RicercaFamiglia()
-        ricercaFamiglia.data = DataUtils.getDataCorrente()
     }
 
     void caricaLista() {

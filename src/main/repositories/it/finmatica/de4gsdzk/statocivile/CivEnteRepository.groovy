@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivEnte
+import it.finmatica.de4gsdzk.IEnteRepository
 import it.finmatica.de4gsdzk.utils.ETipoEnteDestinatario
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 
 @CompileStatic
 @Repository
-interface CivEnteRepository extends JpaRepository<CivEnte, Integer> {
+interface CivEnteRepository extends JpaRepository<CivEnte, Integer>, IEnteRepository {
 
     CivEnte findById(Integer id)
 

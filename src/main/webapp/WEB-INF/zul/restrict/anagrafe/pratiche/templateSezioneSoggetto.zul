@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowIndividuo" macroURI="/restrict/anagrafe/pratiche/templateRowIndividuo.zul" inline="true"?>
+<?component name="templateRowNascita" macroURI="/restrict/anagrafe/pratiche/templateRowNascita.zul" inline="true"?>
+<?component name="templateRowGenitori" macroURI="/restrict/anagrafe/pratiche/templateRowGenitori.zul" inline="true"?>
+<?component name="templateRowMatrimonio" macroURI="/restrict/anagrafe/pratiche/templateRowMatrimonio.zul" inline="true"?>
+<?component name="templateRowVedovanza" macroURI="/restrict/anagrafe/pratiche/templateRowVedovanza.zul" inline="true"?>
+<?component name="templateRowDivorzio" macroURI="/restrict/anagrafe/pratiche/templateRowDivorzio.zul" inline="true"?>
+<?component name="templateRowAltriDati" macroURI="/restrict/anagrafe/pratiche/templateRowAltriDati.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Soggetto_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell>
+                        <templateRowIndividuo/>
+
+                        <templateRowNascita/>
+
+                        <templateRowGenitori/>
+
+                        <templateRowMatrimonio/>
+
+                        <templateRowVedovanza/>
+
+                        <templateRowDivorzio/>
+
+                        <templateRowAltriDati/>
+
+                    </cell>
+                </row>
+                <row visible="@load(vm.soggetto.matricola eq null)">
+                    <cell>
+                        <hlayout hflex="1" sclass="testo-al-centro" >
+                            <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                                    style="font-size:12px; font-weight: bold;" height="35px" width="200px"/>
+                        </hlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

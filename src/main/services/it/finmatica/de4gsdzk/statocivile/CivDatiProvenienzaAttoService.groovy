@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreLunghezzaCampiRuntimeException
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivDatiProvenienzaAttoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivTipoComprensioneService civTipoComprensioneService
 
@@ -28,14 +29,14 @@ class CivDatiProvenienzaAttoService {
 	private final CivDatiProvenienzaAttoRepository civDatiProvenienzaAttoRepository
 
 	CivDatiProvenienzaAttoService(CivDatiProvenienzaAttoRepository civDatiProvenienzaAttoRepository,
-								  CivTipoComprensioneService civTipoComprensioneService, ArcParametroService arcParametroService,
-								  CivUfficialeService civUfficialeService, StatoCivileService statoCivileService) {
+                                  CivTipoComprensioneService civTipoComprensioneService, ArcParametroService arcParametroService,
+                                  CivUfficialeService civUfficialeService, GsdService gsdService) {
 
 		this.civDatiProvenienzaAttoRepository = civDatiProvenienzaAttoRepository
 		this.civTipoComprensioneService = civTipoComprensioneService
 		this.arcParametroService = arcParametroService
 		this.civUfficialeService = civUfficialeService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivDatiProvenienzaAtto create() {
@@ -69,7 +70,7 @@ class CivDatiProvenienzaAttoService {
 
 		Boolean emptyMandatoryFields = TipoAttoUtils.isEstremiAttoEmpty(obj, dvc.tipoAttoEnumSource)
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 
 		////////////////////////// ATTO ORIGINALE /////////////////////////
@@ -78,12 +79,12 @@ class CivDatiProvenienzaAttoService {
 		// Serie
 		Boolean serieOk = TipoAttoUtils.isSerieOk(dvc.tipoAttoEnumSource, obj.serieAttoOriginale)
 		if (!(serieOk)) {
-			throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, sezione)
+			throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), sezione)
 		}
 		// Parte
 		Boolean parteOk = TipoAttoUtils.isParteOk(dvc.tipoAttoEnumSource, obj.parteAttoOriginale)
 		if (!(parteOk)) {
-			throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione)
+			throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione)
 		}
 		// Atto
 		Boolean isAttoOk = TipoAttoUtils.isAttoOk(obj.attoAttoOriginale)
@@ -92,11 +93,11 @@ class CivDatiProvenienzaAttoService {
 		}
 		// Orario
 		if ( !(OrarioUtils.isOraValida(obj.oraAttoOriginale)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_ora, sezione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_ora"), sezione)
 		}
 
 		if ( !(OrarioUtils.isMinutoValido(obj.minutoAttoOriginale)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_minuti, sezione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_minuti"), sezione)
 		}
 
 		////////////////////////// ATTO RICONOSCIMENTO /////////////////////////
@@ -138,20 +139,20 @@ class CivDatiProvenienzaAttoService {
 				// Serie
 				Boolean serieAttoRic1Ok = TipoAttoUtils.isSerieOk(ETipoAtto.NAS, obj.serieAttoRiconoscimento1)
 				if (!(serieAttoRic1Ok)) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, "( " + sezioneAttoRic + " )")
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), "( " + sezioneAttoRic + " )")
 				}
 				Boolean serieAttoRic2Ok = TipoAttoUtils.isSerieOk(ETipoAtto.NAS, obj.serieAttoRiconoscimento2)
 				if (!(serieAttoRic2Ok)) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, "( " + sezioneAttoRic + " )")
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), "( " + sezioneAttoRic + " )")
 				}
 				// Parte
 				Boolean parteAttoRic1Ok = TipoAttoUtils.isParteOk(ETipoAtto.NAS, obj.parteAttoRiconoscimento1)
 				if (!(parteAttoRic1Ok)) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, "( " + sezioneAttoRic + " )")
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), "( " + sezioneAttoRic + " )")
 				}
 				Boolean parteAttoRic2Ok = TipoAttoUtils.isParteOk(ETipoAtto.NAS, obj.parteAttoRiconoscimento2)
 				if (!(parteAttoRic2Ok)) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, "( " + sezioneAttoRic + " )")
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), "( " + sezioneAttoRic + " )")
 				}
 				// Atto
 				Boolean isAttoRic1Ok = TipoAttoUtils.isAttoOk(obj.numeroAttoRiconoscimento1)
@@ -164,21 +165,21 @@ class CivDatiProvenienzaAttoService {
 				}
 				if (dvc.riconoscimento1Mandatory) {
 					if ((obj.dataAttoRiconoscimento1 == null) || (obj.comuneAttoRiconoscimento1.codice == null) || (obj.comuneAttoRiconoscimento1.codiceProvincia == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoRic)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoRic)
 					}
 					if (TestoUtils.isVuoto(obj.idAttoAnscRiconoscimento1)) {
 						if ((obj.numeroAttoRiconoscimento1 == null) || (obj.annoAttoRiconoscimento1 == null)) {
-							throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoRic)
+							throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoRic)
 						}
 					}
 				}
 				if (dvc.riconoscimento2Mandatory) {
 					if ((obj.dataAttoRiconoscimento2 == null) || (obj.comuneAttoRiconoscimento2.codice == null) || (obj.comuneAttoRiconoscimento2.codiceProvincia == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoRic)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoRic)
 					}
 					if (TestoUtils.isVuoto(obj.idAttoAnscRiconoscimento2)) {
 						if ((obj.numeroAttoRiconoscimento2 == null) || (obj.annoAttoRiconoscimento2 == null)) {
-							throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoRic)
+							throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoRic)
 						}
 					}
 				}
@@ -228,11 +229,11 @@ class CivDatiProvenienzaAttoService {
 				if (dvc.assensoMandatory) {
 					if (TestoUtils.isVuoto(obj.idAttoAnscAssenso)) {
 						if ((obj.numeroAttoAssenso == null) || (obj.annoAttoAssenso == null)) {
-							throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoAssenso)
+							throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoAssenso)
 						}
 					}
 					if (!(ValidationUtils.isComuneAndDataFormazioneValid(obj.comuneAttoAssenso, obj.dataAttoAssenso))) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoAssenso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoAssenso)
 					}
 				}
 			}
@@ -242,7 +243,7 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.tipoAccordoMandatory) {
 			if (obj.tipoAccordo == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_tipo_accordo)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_tipo_accordo"))
 			}
 		}
 
@@ -250,7 +251,7 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.tipoDivorzioAltroMandatory && anscOn) {
 			if (obj.tipoDivorzioAltro == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_tipo_divorzio_altro_divorzio)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_tipo_divorzio_altro_divorzio"))
 			}
 		}
 
@@ -269,11 +270,11 @@ class CivDatiProvenienzaAttoService {
 			String sezioneProvvSeparazione = "'Dati Atto' - 'Estremi separazione'"
 
 			if (TestoUtils.isVuoto(obj.enteSeparazione) || TestoUtils.isVuoto(obj.estremiSeparazione)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneProvvSeparazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneProvvSeparazione)
 			}
 
 			if (!(ValidationUtils.isComuneAndDataFormazioneValid(obj.comuneAttoSeparazione, obj.dataAttoSeparazione)) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneProvvSeparazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneProvvSeparazione)
 			}
 		}
 
@@ -298,11 +299,11 @@ class CivDatiProvenienzaAttoService {
 				String sezioneConfermaSeparazione = "'Dati Atto' - 'Estremi Conferma Accordo Separazione'"
 
 				if ((obj.attoConfermaAccordoSeparazione == null) || (obj.annoConfermaAccordoSeparazione == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneConfermaSeparazione)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneConfermaSeparazione)
 				}
 
 				if (!(ValidationUtils.isComuneAndDataFormazioneValid(obj.comuneConfermaAccordoSeparazione, obj.dataConfermaAccordoSeparazione))) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneConfermaSeparazione)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneConfermaSeparazione)
 				}
 			}
 		}
@@ -328,12 +329,12 @@ class CivDatiProvenienzaAttoService {
 				ValidationUtils.validaEstremiAttoComune(evc, sezioneDatiAccordo)
 			} else {
 				if ((obj.comuneAccordo.codice == null) || (obj.comuneAccordo.codiceProvincia == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAccordo)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAccordo)
 				}
 
 				if (TestoUtils.isVuoto(obj.idAttoAnscAccordo)) {
 					if ((obj.attoAccordo == null) || (obj.annoAccordo == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAccordo)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAccordo)
 					}
 				}
 			}
@@ -346,23 +347,23 @@ class CivDatiProvenienzaAttoService {
 		// Dati avvocati per tutte le cat ad eslcusione di RCN e AVV
 		if (dvc.avvocatiMandatory && anscOn){
 			if ( ( obj.cognomeAvvocato1?.trim() || obj.nomeAvvocato1?.trim() ) && TestoUtils.isVuoto(obj.foroAvvocato1) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " (foro di appartenenza) ")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " (foro di appartenenza) ")
 			}
 
 			if ( ( obj.cognomeAvvocato2?.trim() || obj.nomeAvvocato2?.trim() ) && TestoUtils.isVuoto(obj.foroAvvocato2) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " (foro di appartenenza) ")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " (foro di appartenenza) ")
 			}
 		}
 
 		if (dvc.avvocato1Mandatory) {
 			if (TestoUtils.isVuoto(obj.cognomeAvvocato1) || TestoUtils.isVuoto(obj.nomeAvvocato1) || TestoUtils.isVuoto(obj.foroAvvocato1)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " (Avvocato Marito) ")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " (Avvocato Marito) ")
 			}
 		}
 
 		if (dvc.avvocato2Mandatory) {
 			if (TestoUtils.isVuoto(obj.cognomeAvvocato2) || TestoUtils.isVuoto(obj.nomeAvvocato2) || TestoUtils.isVuoto(obj.foroAvvocato2)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " (Avvocato Moglie) ")
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " (Avvocato Moglie) ")
 			}
 		}
 
@@ -371,42 +372,42 @@ class CivDatiProvenienzaAttoService {
 		String sezioneRedazione = "'Redazione' - 'Dati per Redazione'"
 
 		if ( !(OrarioUtils.isOraValida(obj.oraAtto)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_ora, sezioneRedazione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_ora"), sezioneRedazione)
 		}
 
 		if ( !(OrarioUtils.isMinutoValido(obj.minutoAtto)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_minuti, sezioneRedazione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_minuti"), sezioneRedazione)
 		}
 
 		if (dvc.negozAssistitaMandatory && anscOn){
 			if ( TestoUtils.isVuoto(obj.nomeAvvocato1) && TestoUtils.isVuoto(obj.cognomeAvvocato1) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati)
 			}
 
 			if ( TestoUtils.isVuoto(obj.nomeAvvocato2) && TestoUtils.isVuoto(obj.cognomeAvvocato2) ) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati)
 			}
 
 			if ( [ETipoAtto.MAT].contains(dvc.tipoAttoEnumSource) ){
 				if (obj.ricezioneAttoAvvocati == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati)
 				}
 				// ansc103
 				Boolean avv1Mandatory = ( (obj.ricezioneAttoAvvocati.compareTo(new Integer(1)) == 0) || (obj.ricezioneAttoAvvocati.compareTo(new Integer(3)) == 0) )
 				if (avv1Mandatory && ( (obj.dataComunicazioneAvvocato1Accordo == null) || (obj.protocolloAvvocato1Accordo == null) ) ) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " - indicare i valori noti del protocollo e della data comunicazione")
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " - indicare i valori noti del protocollo e della data comunicazione")
 				}
 				// ansc103
 				Boolean avv2Mandatory = ( (obj.ricezioneAttoAvvocati.compareTo(new Integer(2)) == 0) || (obj.ricezioneAttoAvvocati.compareTo(new Integer(3)) == 0) )
 				if (avv2Mandatory && ( (obj.dataComunicazioneAvvocato2Accordo == null) || (obj.protocolloAvvocato2Accordo == null) ) ) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAvvocati + " - indicare i valori noti del protocollo e della data comunicazione")
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAvvocati + " - indicare i valori noti del protocollo e della data comunicazione")
 				}
 			}
 
 			// https://github.com/italia/ansc/issues/377 (eliminato ente accordo)
 			// https://github.com/italia/ansc/issues/150 (eliminata obbligatorietà numero/comune accordo)
 			if ( (obj.dataAccordo == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAccordo)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAccordo)
 			}
 
 			// Solo divorzi (no scioglimenti)
@@ -414,12 +415,12 @@ class CivDatiProvenienzaAttoService {
 				String sezioneAutoritaGiudiziaria = "'Redazione' - 'Provvedimento Autorità Giudiziaria'"
 
 				if ((obj.tipoProvvedimentoAutoritaGiudiziaria == null) || (obj.dataAttoAutoritaGiudiziaria == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAutoritaGiudiziaria)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAutoritaGiudiziaria)
 				}
 
 				if ( (obj.comuneAutoritaGiudiziaria.codice == null) || (obj.comuneAutoritaGiudiziaria.codiceProvincia == null) ||
 					 (obj.dataDepositoAutoritaGiudiziaria == null) || (obj.dataComunicazioneAvvocatiAutoritaGiudiziaria == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAutoritaGiudiziaria)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAutoritaGiudiziaria)
 				}
 			}
 
@@ -431,16 +432,16 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.luogoCelebrazioneMandatory && anscOn){
 			if (TestoUtils.isVuoto(obj.luogoMatrimonio)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if (TestoUtils.isVuoto(obj.rito) || TestoUtils.isVuoto(obj.celebrante)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 			/*
 			//https://github.com/italia/ansc/issues/245
 			if ( ( (obj.indirizzo?:"") == "") || ( (obj.civico?:"") == "") ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 			*/
 		}
@@ -449,27 +450,27 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.fuoriCasaComunaleMandatory && anscOn) {
 			if (obj.flagCasaComunale == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if (TestoUtils.isVuoto(obj.luogoPvuUci) || TestoUtils.isVuoto(obj.indirizzo) || TestoUtils.isVuoto(obj.civico) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if (TestoUtils.isVuoto(obj.segretario) || TestoUtils.isVuoto(obj.impossibilitato) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if (TestoUtils.isVuoto(obj.certificato) || (obj.dataCertificato == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if ((obj.estremiCertificato == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 
 			if ((obj.comuneCertificato.codice == null) || (obj.comuneCertificato.codiceProvincia == null)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneLuogoCelebrazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneLuogoCelebrazione)
 			}
 		}
 
@@ -479,10 +480,10 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.accertamentoMandatory && anscOn) {
 			if (TestoUtils.isVuoto(obj.enteAccertamento) || TestoUtils.isVuoto(obj.estremiDocumentoAccertamento)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAccertamento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAccertamento)
 			}
 			if (!(ValidationUtils.isComuneAndDataFormazioneValid(obj.comuneAccertamento, obj.dataDocumentoAccertamento)) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAccertamento)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAccertamento)
 			}
 		}
 
@@ -492,7 +493,7 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.riassuntoMandatory && anscOn){
 			if (TestoUtils.isVuoto(obj.testoRiassunto)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 			}
 		}
 
@@ -502,7 +503,7 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.autoritaGiudizialeMandatory && anscOn){
 			if (obj.flagGiudizioPendente && TestoUtils.isVuoto(obj.enteAutoritaGiudiziaria)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiAtto)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiAtto)
 			}
 		}
 
@@ -512,10 +513,10 @@ class CivDatiProvenienzaAttoService {
 
 		if ((obj.tipoDocumentoFineOpposizione != null) && anscOn) {
 			if (TestoUtils.isVuoto(obj.enteFineOpposizione) || TestoUtils.isVuoto(obj.estremiDocumentoFineOpposizione)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneOpposizione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneOpposizione)
 			}
 			if (!(ValidationUtils.isComuneAndDataFormazioneValid(obj.comuneFineOpposizione, obj.dataDocumentoFineOpposizione)) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneOpposizione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneOpposizione)
 			}
 		}
 
@@ -525,7 +526,7 @@ class CivDatiProvenienzaAttoService {
 			String sezioneRichCost = "'Redazione' - 'Richiesta'"
 
 			if ( (obj.comuneRichiestaCostituzione1.codice == null) || (obj.comuneRichiestaCostituzione1.codiceProvincia == null) || (obj.dataRichiestaCostituzione1 == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneRichCost)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneRichCost)
 			}
 		}
 
@@ -535,7 +536,7 @@ class CivDatiProvenienzaAttoService {
 			String sezioneCpdProvenienza = "'Provenienza - Comune delegante'"
 
 			if ( (obj.comuneProvenienza.codice == null) || (obj.comuneProvenienza.codiceProvincia == null) || (obj.dataNotaRif == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneCpdProvenienza)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneCpdProvenienza)
 			}
 		}
 
@@ -545,31 +546,31 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.richiedenteTeaMandatory && anscOn){
 			if ( [ETipoAtto.NAS].contains(dvc.tipoAttoEnumSource) && !obj.flagInViaggio && (obj.dichiarazioneGiudiziale == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 			}
             if ( TestoUtils.isVuoto(obj.autorita) || (obj.comuneProvenienza.codice == null) || (obj.comuneProvenienza.codiceProvincia == null) ){
-                throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+                throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
             }
 			if ( dvc.consolatoMandatory && (obj.consolato == null) ){
 				// refs #71624: nel caso delle cittadinanze, consolato obbligatorio solo per comuni prov esteri
 				if ( [ETipoAtto.CIT].contains(dvc.tipoAttoEnumSource)){
-					Boolean comuneProvEstero = statoCivileService.checkComuneEstero(obj.comuneProvenienza.codiceProvincia, obj.comuneProvenienza.codice)
+					Boolean comuneProvEstero = gsdService.checkComuneEstero(obj.comuneProvenienza.codiceProvincia, obj.comuneProvenienza.codice)
 					if (comuneProvEstero){
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 					}
 				} else {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 				}
 			}
 			if (dvc.dataTrascrizioneMandatory && (obj.dataNotaRif == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 			}
 			if (dvc.estremiTrascrizioneMandatory && (TestoUtils.isVuoto(obj.notaRif)) && (TestoUtils.isVuoto(obj.annoNotaRif))) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 			}
 			// Per il momento solo UCI, se serve estendiamo controllo ad altri tipi di atto
 			if ( [ETipoAtto.UCI].contains(dvc.tipoAttoEnumSource) &&  (obj.tipoRichiestaTrascrizione == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTeaRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTeaRichedente)
 			}
         }
 
@@ -579,18 +580,18 @@ class CivDatiProvenienzaAttoService {
 
 		if (dvc.richiedenteTepMandatory && anscOn){
 			if ( [ETipoAtto.NAS].contains(dvc.tipoAttoEnumSource) && ( (obj.dichiarazioneGiudiziale == null) || (TestoUtils.isVuoto(obj.tipoDichiarante)) ) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTepRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTepRichedente)
 			}
 			if ( [ETipoAtto.NAS, ETipoAtto.MAT, ETipoAtto.UCI].contains(dvc.tipoAttoEnumSource)){
 				if ( (obj.tipoRichiestaTrascrizione == null)){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTepRichedente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTepRichedente)
 				}
 				if (dvc.firmatarioMandatory && TestoUtils.isVuoto(obj.tipoFirmatario)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTepRichedente)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTepRichedente)
 				}
 			}
 			if (obj.dataRichiestaTrascrizione == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneTepRichedente)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneTepRichedente)
 			}
 		}
 
@@ -602,13 +603,13 @@ class CivDatiProvenienzaAttoService {
 		if (dvc.attoDaTrascrivereMandatory && anscOn) {
 			if (TestoUtils.isVuoto(obj.autoritaEnteStraniero) || (obj.dataAttoEnteStraniero == null) ||
 					(obj.comuneEnteStraniero.codice == null) || (obj.comuneEnteStraniero.codiceProvincia == null)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoDaTrascrivere)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoDaTrascrivere)
 			}
 		}
 
 		if (dvc.estremiAttoDaTrascrivereMandatory && anscOn) {
 			if(TestoUtils.isVuoto(obj.estremiAttoEnteStraniero)){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAttoDaTrascrivere)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAttoDaTrascrivere)
 			}
 		}
 
@@ -617,7 +618,7 @@ class CivDatiProvenienzaAttoService {
 		String sezioneSentenza = "'Redazione - Sentenza'"
 		if(dvc.dataPubblicazioneSentenzaMandatory && anscOn){
 			if(obj.dataPubblicazioneSentenza == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneSentenza)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneSentenza)
 			}
 		}
 
@@ -627,11 +628,11 @@ class CivDatiProvenienzaAttoService {
 		if ( ( dvc.attoNotarileMandatory || (obj.attoNotarile == ETipoSiNo.SI) ) && anscOn && [ETipoAtto.NAS].contains(dvc.tipoAttoEnumSource) ){
 			String sezioneAN = "'Dati Atto Notarile'"
 			if ( (obj.dataAttoNotarile == null) || (obj.comuneAttoNotarile.codice == null) || (obj.comuneAttoNotarile.codiceProvincia == null) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAN)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAN)
 			}
 
 			if( (!(obj.nomeEnteNotarile?.trim())) || (!(obj.estremiAttoNotarile?.trim())) ){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAN)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAN)
 			}
 		}
 
@@ -640,11 +641,11 @@ class CivDatiProvenienzaAttoService {
 		if ((dvc.tipoAttoEnumSource == ETipoAtto.NAS && dvc.dichiaranteMandatory) || (dvc.tipoAttoEnumSource == ETipoAtto.CIT && dvc.dichiaranteMandatory && anscOn)) {
 			String sezioneDatiDichiarazione = "'Redazione - 'Dati Dichiarazione'"
 			if (obj.comprensioneDichiarante == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 			} else {
 				CivTipoComprensione tc = civTipoComprensioneService.get(obj.comprensioneDichiarante.id)
 				if ( (tc.flagMotivazioneImpedimento) && ((obj.motivoImpedimentoDichiarante?:"") == "") ){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 				}
 			}
 		}
@@ -654,7 +655,7 @@ class CivDatiProvenienzaAttoService {
 		if(dvc.tipoLuogoNascitaMandatory) {
 			String sezioneDatiDichiarazione = "'Redazione - 'Altri dati' - 'Tipo luogo nascita'"
 			if (obj.tipoLuogoNascita == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiDichiarazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiDichiarazione)
 			}
 		}
 
@@ -664,45 +665,45 @@ class CivDatiProvenienzaAttoService {
 			// Parte prima o parte seconda
 			if ( (obj.parte.intValue() == 1) || ( (obj.parte.intValue() == 2) && ((obj.serie?:"") == CivTipoAtto.SERIE_A) ) ){
 				if ( (!(obj.cognomeDichiarante?.trim())) && (!(obj.nomeDichiarante?.trim())) ){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 				}
 
 				if ( (!(obj.cognomeDichiarante?.trim())) && (!(obj.senzaCognomeDichiarante)) ){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 				}
 
 				if ( (!(obj.nomeDichiarante?.trim())) && (!(obj.senzaNomeDichiarante)) ){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 				}
 				// Per Ansc refs #60743
 				if (anscOn) {
 					if (obj.sessoDichiarante == null) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 
 					if (obj.dataNascitaDichiarante == null) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 
 					if ((obj.comuneNascitaDichiarante.codice == null) || (obj.comuneNascitaDichiarante.codiceProvincia == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 
 					if ((obj.comuneResidenzaDichiarante.codice == null) || (obj.comuneResidenzaDichiarante.codiceProvincia == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 
 					if (obj.nazionalitaDichiarante == null) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 				}
 
 				if (obj.comprensioneDichiarante == null){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 				} else {
 					CivTipoComprensione tc = civTipoComprensioneService.get(obj.comprensioneDichiarante.id)
 					if ( (tc.flagMotivazioneImpedimento) && ((obj.motivoImpedimentoDichiarante?:"") == "") ){
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDichiaranteDecesso)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDichiaranteDecesso)
 					}
 				}
 			}
@@ -714,7 +715,7 @@ class CivDatiProvenienzaAttoService {
 		validaDati(obj, dvc)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		// refs #60743
 		if (!(obj.comprensioneDichiarante?.flagMotivazioneImpedimento)) {

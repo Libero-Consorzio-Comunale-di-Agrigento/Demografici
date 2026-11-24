@@ -6,7 +6,6 @@ import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreDatiFascicoloRuntimeException
-import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
 import it.finmatica.de4gsdzk.export.JasperExporter
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
@@ -15,7 +14,6 @@ import it.finmatica.gestionetesti.GestioneTestiService
 import it.finmatica.smartdoc.api.DocumentaleRuntimeException
 import net.sf.jasperreports.engine.JREmptyDataSource
 import org.springframework.dao.EmptyResultDataAccessException
-import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.BindingParam
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
@@ -29,12 +27,13 @@ import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
+import restrict.TraitComunicazioni
 
 import java.nio.charset.StandardCharsets
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
-abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoListaParentViewModel{
+abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoListaParentViewModel implements TraitComunicazioni {
 
     List<OrderBy> listaOrder = []
     OrderBy selectedOrder
@@ -44,7 +43,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     CivArchivioComunicazione _dettaglio
     CivComunicazioneProtocollo comunicazioneProtocollo
     List<CivComunicazioneDestinatario> listaDestinatari
-    List<Map> listaAllegati
+    List<CivComunicazioneAllegato> listaAllegati
 
     Boolean massiveCheck
     Boolean showDetailsComunicazione = Boolean.FALSE
@@ -54,6 +53,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     Boolean showRecapMessage = Boolean.TRUE
 
     String managePrincipale
+    Boolean firmaRemotaAutomatica
 
     @Delegate
     ControlBarComunicazioniAttributes cbComList = new ControlBarComunicazioniAttributes()
@@ -61,14 +61,30 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     @WireVariable
     private CivArchivioComunicazioneService civArchivioComunicazioneService
 
+    IArchivioComunicazioneService getArchivioComunicazioneService() {
+        return civArchivioComunicazioneService
+    }
+
     @WireVariable
     private CivComunicazioneProtocolloService civComunicazioneProtocolloService
+
+    IComunicazioneProtocolloService getComunicazioneProtocolloService() {
+        return civComunicazioneProtocolloService
+    }
 
     @WireVariable
     private CivComunicazioneDestinatarioService civComunicazioneDestinatarioService
 
+    IComunicazioneDestinatarioService getComunicazioneDestinatarioService() {
+        return civComunicazioneDestinatarioService
+    }
+
     @WireVariable
     private CivComunicazioneAllegatoService civComunicazioneAllegatoService
+
+    IComunicazioneAllegatoService getComunicazioneAllegatoService() {
+        return civComunicazioneAllegatoService
+    }
 
     @WireVariable
     private CivComunicazioneAttoService civComunicazioneAttoService
@@ -77,7 +93,11 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     private CivComunicazioneFormulaService civComunicazioneFormulaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
+
+    GsdService getGsdService() {
+        return gsdService
+    }
 
     @WireVariable
     private CivAttoService civAttoService
@@ -91,29 +111,29 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     @WireVariable
     private GsdFirmaService gsdFirmaService
 
+    GsdFirmaService getGsdFirmaService() {
+        return gsdFirmaService
+    }
+
     @WireVariable
     private StampaAttoService stampaAttoService
 
     @WireVariable
     private ArcParametroService arcParametroService
 
-    void caricaManagePrincipale(){
+    void leggiParametri(){
         managePrincipale = arcParametroService.isModificaAllegatoPrincipaleComunicazioneAttiva()
+        firmaRemotaAutomatica = arcParametroService.isFirmaRemotaAutomaticaAttiva()
     }
 
     CivArchivioComunicazione getDettaglio(){
         return _dettaglio
     }
 
-    void setDettaglio(CivArchivioComunicazione arcCom){
-        _dettaglio = arcCom
-
-        caricaComunicazioneProtocollo(arcCom?.id)
-        caricaDestinatari(arcCom)
-        caricaAllegati(arcCom)
-
-        BindUtils.postNotifyChange(null, null, this, "dettaglio")
+    void setArchivio(IArchivioComunicazione arcCom) {
+        _dettaglio = arcCom as CivArchivioComunicazione
     }
+
 
     void resetDettaglio(){
         setDettaglio(null)
@@ -150,61 +170,26 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     }
 
     @Command void onSelezionaTutte() {
-        for (CivArchivioComunicazione c: lista){
-            if (massiveCheck && c.protocollato){
-                continue
-            }
-            seleziona(massiveCheck, c)
-        }
-        refreshUi()
+        selezionaTutte()
     }
 
     @Command void onSelezionaComunicazione(@BindingParam("selected") Boolean selected, @BindingParam("comunicazione") CivArchivioComunicazione arcCom) {
         seleziona(selected, arcCom, Boolean.TRUE)
     }
 
-    void seleziona(Boolean selected, CivArchivioComunicazione arcCom, Boolean updateDettaglio=false) {
-        if (selected){
-            if ( !(isSelezionata(arcCom)) ){
-                listaComunicazioniSelezionate.add(arcCom)
-                if (updateDettaglio){
-                    setDettaglio(arcCom)
-                }
-            }
-        } else {
-            if ( isSelezionata(arcCom) ){
-                listaComunicazioniSelezionate.remove(arcCom)
-            }
-        }
-        BindUtils.postNotifyChange(null, null, this, "listaComunicazioniSelezionate")
-    }
-
-    Boolean isSelezionata(CivArchivioComunicazione arcCom){
-        for (CivArchivioComunicazione c : listaComunicazioniSelezionate){
-            if (c.id.compareTo(arcCom.id) == 0){
-                return Boolean.TRUE
-            }
-        }
-        return Boolean.FALSE
-    }
-
     @Command void onEliminaComunicazione(@BindingParam("comunicazione") CivArchivioComunicazione arcCom) {
         if (arcCom?.comunicazione && showDeleteOption){
-            Messagebox.show(arcCom.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(arcCom.comunicazione.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())){
                                 eliminaERicaricaComunicazione(arcCom)
+                                onRicarica()
                             }
                         }
                     }
             )
         }
-    }
-
-    void eliminaERicaricaComunicazione(CivArchivioComunicazione arcCom){
-        civComunicazioneAllegatoService.deleteComunicazioneEAllegati(arcCom)
-        onRicarica()
     }
 
     IDaFascicolare getTipologiaComunicazione(CivArchivioComunicazione c){
@@ -220,27 +205,6 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         return null
     }
 
-    boolean isListaComunicazioniSelezionateEmpty(){
-        if (listaComunicazioniSelezionate.size() == 0){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Nessuna_comunicazione_selezionata), msgTitle, Messagebox.OK, Messagebox.ERROR)
-            return true
-        }
-        return false
-    }
-
-    boolean isListaComunicazioniDaElaborareEmpty(List<CivArchivioComunicazione> listaComunicazioniDaElaborare, ETipoElaborazioneComunicazione tipoElaborazione){
-        if (listaComunicazioniDaElaborare.size() == 0){
-            String errorMsg
-            if (tipoElaborazione == ETipoElaborazioneComunicazione.PROTOCOLLAZIONE){
-                errorMsg = getEtichetta(EtichetteMessaggi.Warn_Nessuna_comunicazione_da_protocollare)
-            } else {
-                errorMsg = getEtichetta(EtichetteMessaggi.Warn_Nessuna_comunicazione_da_inviare_albo)
-            }
-            Messagebox.show(errorMsg, msgTitle, Messagebox.OK, Messagebox.ERROR)
-            return true
-        }
-        return false
-    }
 
     @Command void onFascicolaComunicazione(@BindingParam("arcCom") CivArchivioComunicazione arcCom) {
         if (arcCom) {
@@ -248,7 +212,8 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         }
     }
 
-    void fascicolaComunicazioneEAllegati(CivArchivioComunicazione arcCom, Boolean refreshComunicazione=Boolean.FALSE){
+    void fascicolaComunicazioneEAllegati(IArchivioComunicazione _arcCom, Boolean refreshComunicazione=Boolean.FALSE){
+        CivArchivioComunicazione arcCom = _arcCom as CivArchivioComunicazione
         IDaFascicolare df = getTipologiaComunicazione(arcCom)
         int retVal = -1
         try{
@@ -261,43 +226,33 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
             if (retVal == 0) {
                 Messagebox.show(arcCom.comunicazione.descrizione + ":\n" + "non risultano allegati da inserire nel fascicolo dell'atto", msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             } else if (retVal > 0) {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
                 onPagina()
                 caricaComunicazione(arcCom.id)
             } else {
-                Messagebox.show(arcCom.comunicazione.descrizione + "\n" + getEtichetta(EtichetteMessaggi.Warn_comunicazione_fascicolata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(arcCom.comunicazione.descrizione + "\n" + getEtichetta(Etichette.getEtichetta("Warn_comunicazione_fascicolata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
 
     @Command void onGeneraTesti() {
-        if (isListaComunicazioniSelezionateEmpty())
-            return
-
-        for (CivArchivioComunicazione c : listaComunicazioniSelezionate) {
-            if (c.isProtocollato() || c.isInviatoAlbo()){
-                String msg = (c.protocollato?getEtichetta(EtichetteMessaggi.Errore_esecuzione_comunicazioni_protocollate):getEtichetta(EtichetteMessaggi.Errore_esecuzione_comunicazioni_inviate_albo))
-                Messagebox.show(c.comunicazione.descrizione + ":\n" + msg, msgTitle, Messagebox.OK, Messagebox.ERROR)
-            } else {
-                Boolean hasPrincipale = civArchivioComunicazioneService.checkAllegatoPrincipale(c.id)
-                if (hasPrincipale){
-                    Window w = (Window) Executions.createComponents("/restrict/statocivile/customMessagebox.zul", self, [titolo: getEtichetta(Etichette.Comunicazioni),
-                                                                                                                         msg: (c.comunicazione.descrizione + ":\n" +  getEtichetta(EtichetteMessaggi.Ask_Aggiornamento_Testo_Comunicazione) ),
-                                                                                                                         listaOpzioni:[Etichette.SI, Etichette.NO], params: [arcCom: c]])
-                    w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                        if (event.data.opzione.codice == Etichette.SI.codice){
-                            generaTestoComunicazione(event.data.params.arcCom)
-                        }
-                    })
-                    w.doModal()
-                } else {
-                    generaTestoComunicazione(c)
-                }
-            }
-        }
+        generaTesti()
     }
 
-    void generaTestoComunicazione(CivArchivioComunicazione c){
+    void showCustomMessagebox(IArchivioComunicazione c) {
+        Window w = (Window) Executions.createComponents("/restrict/statocivile/customMessagebox.zul", self, [titolo      : getEtichetta(Etichette.getEtichetta("Comunicazioni")),
+                                                                                                             msg         : (c.comunicazione.descrizione + ":\n" +  getEtichetta(Etichette.getEtichetta("Ask_Aggiornamento_Testo_Comunicazione")) ),
+                                                                                                             listaOpzioni:[Etichette.getEtichetta("SI"), Etichette.getEtichetta("NO")], params: [arcCom: c]])
+        w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
+            if (event.data.opzione.codice == Etichette.getEtichetta("SI").codice){
+                generaTestoComunicazione(event.data.params.arcCom, Boolean.TRUE)
+            }
+        })
+        w.doModal()
+    }
+
+    void generaTestoComunicazione(IArchivioComunicazione _c, Boolean scaricaDopoGenerazione){
+        CivArchivioComunicazione c = _c as CivArchivioComunicazione
         CivComunicazioneAllegato alleCom = (civComunicazioneAllegatoService.getPrincipale(c.id)?:new CivComunicazioneAllegato(archivioComunicazione:c, principale: Boolean.TRUE))
 
         ETipoComunicazione tipoComunicazione = c.comunicazione.tipoComunicazione
@@ -314,20 +269,20 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
                 g = gestioneTestiModelloRelazioneService.getByIdComunicazione(((CivComunicazioneFormula)df).comunicazione.id)?.modello
             }
             if (g == null){
-                Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Errore_modello_testo_non_trovato), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Errore_modello_testo_non_trovato")), msgTitle, Messagebox.OK, Messagebox.ERROR)
                 return
             }
             log.info("Avvio recupero xml data per comunicazione ${c.id}")
-            String queryModello = statoCivileService.getDataSourceXmlComunicazione(c)
+            String queryModello = gsdService.getDataSourceXmlComunicazione(c)
             log.info("Recuperato xml data per comunicazione ${c.id}")
             String formato = (g.formatoTesto?.name()?:g.tipo).toLowerCase()
             alleCom.nomeAllegato = "${c.nomeFileComunicazione}_${c.idAtto}.${formato}"
             ByteArrayInputStream bais = new ByteArrayInputStream(g.fileTemplate)
-            InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true)
-            salvaAllegato(alleCom, Boolean.TRUE, is, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE)
+            InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true, StandardCharsets.UTF_8)
+            salvaAllegato(alleCom, Boolean.TRUE, is, Boolean.TRUE, Boolean.TRUE, scaricaDopoGenerazione)
         } catch (Exception ex){
             log.error("Errore stampa comunicazione", ex)
-            String msg = getEtichetta(EtichetteMessaggi.Errore_generazione_testo)
+            String msg = getEtichetta(Etichette.getEtichetta("Errore_generazione_testo"))
             if (ex instanceof De4gsdzkRuntimeException){
                 msg = ex.message
             }
@@ -336,12 +291,25 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         refreshLista()
     }
 
+    void scaricaAllegatiComeZip(List<IArchivioComunicazione> comunicazioniGenerate) {
+        List<IComunicazioneAllegato> allegati = []
+        for (IArchivioComunicazione c : comunicazioniGenerate) {
+            IComunicazioneAllegato alle = civComunicazioneAllegatoService.getPrincipale(c.id)
+            if (alle) {
+                allegati.add(alle)
+            }
+        }
+        if (!allegati.isEmpty()) {
+            gsdFirmaService.scaricaAllegatiZip("comunicazioni_${atto?.idAtto ?: DataUtils.fromDateToString(DataUtils.getDataCorrente(), "ddMMyyyy")}", allegati)
+        }
+    }
+
     void salvaAllegato(CivComunicazioneAllegato alleCom, Boolean salvaSuDocumentale, InputStream is,
                        Boolean ignoreStampaEseguita=Boolean.FALSE, Boolean aggiornaStampaEseguita=Boolean.FALSE, Boolean scaricaAllegato=Boolean.FALSE){
         try {
             civComunicazioneAllegatoService.save(alleCom, salvaSuDocumentale, is, Boolean.FALSE, ignoreStampaEseguita, aggiornaStampaEseguita)
             if (scaricaAllegato){
-                onDownloadAllegato([id: alleCom.id])
+                onDownloadAllegato(alleCom)
             }
             if (alleCom.archivioComunicazione) {
                 if (alleCom.archivioComunicazione.isDaProtocollare() || alleCom.archivioComunicazione.isDaInviareAlbo()) {
@@ -359,7 +327,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
             refreshLista()
         } catch(DocumentaleRuntimeException dre) {
             log.error(dre.message, dre)
-            Messagebox.show(alleCom.nome + ":\n" + (getEtichetta(EtichetteMessaggi.Errore_salvataggio_file_documentale)?:dre.getMessage()) + "\n" + getEtichetta(EtichetteMessaggi.Ask_Conferma_Salvataggio_Documento),
+            Messagebox.show(alleCom.nome + ":\n" + (getEtichetta(Etichette.getEtichetta("Errore_salvataggio_file_documentale"))?:dre.getMessage()) + "\n" + getEtichetta(Etichette.getEtichetta("Ask_Conferma_Salvataggio_Documento")),
                     msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
@@ -374,150 +342,17 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     }
 
     @Command void onProtocolla() {
-        if (isListaComunicazioniSelezionateEmpty())
-            return
-
-        List<CivArchivioComunicazione> comunicazioniDaElaborare = []
-        for (CivArchivioComunicazione c: listaComunicazioniSelezionate){
-            if (c.atto.compareTo(new Integer(0)) < 0){
-                Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Errore_protocollazione_comunicazioni_provvisorie), msgTitle, Messagebox.OK, Messagebox.ERROR)
-                continue
-            }
-            if (c.protocollato){
-                Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Errore_esecuzione_comunicazioni_protocollate), msgTitle, Messagebox.OK, Messagebox.ERROR)
-            } else {
-                if (c.isDaProtocollare()){
-                    comunicazioniDaElaborare.add(c)
-                }
-            }
-            // Se non è protocollata o da protocollare salto anche se selezionata
-        }
-        checkFirmaComunicazioni(comunicazioniDaElaborare, ETipoElaborazioneComunicazione.PROTOCOLLAZIONE)
+        protocolla()
     }
 
     @Command void onInviaAlbo() {
         if (tipoAttoEnum == ETipoAtto.PUB){
-            if (isListaComunicazioniSelezionateEmpty())
-                return
-
-            List<CivArchivioComunicazione> comunicazioniDaElaborare = []
-            for (CivArchivioComunicazione c: listaComunicazioniSelezionate){
-                if (c.atto.compareTo(new Integer(0)) < 0){
-                    Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Errore_protocollazione_comunicazioni_provvisorie), msgTitle, Messagebox.OK, Messagebox.ERROR)
-                    continue
-                }
-                if (c.inviatoAlbo){
-                    Messagebox.show(c.comunicazione.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Errore_esecuzione_comunicazioni_inviate_albo), msgTitle, Messagebox.OK, Messagebox.ERROR)
-                } else {
-                    if (c.isDaInviareAlbo()){
-                        comunicazioniDaElaborare.add(c)
-                    }
-                }
-                // Se non è da inviare all'albo o già inviata salto anche se selezionata
-            }
-            checkFirmaComunicazioni(comunicazioniDaElaborare, ETipoElaborazioneComunicazione.INVIO_ALBO)
+            inviaAlbo()
         }
     }
 
-    void checkFirmaComunicazioni(List<CivArchivioComunicazione> listaComunicazioniDaElaborare, ETipoElaborazioneComunicazione tipoElaborazione){
-        if (isListaComunicazioniDaElaborareEmpty(listaComunicazioniDaElaborare, tipoElaborazione))
-            return
-
-        //Verifico se devo firmare
-        Boolean daFirmare = civComunicazioneAllegatoService.checkAllegatiDaFirmare(listaComunicazioniDaElaborare*.id)
-        if (daFirmare){
-            Boolean firmaRemotaAutomatica = arcParametroService.isFirmaRemotaAutomaticaAttiva()
-            if (firmaRemotaAutomatica){
-                firma(listaComunicazioniDaElaborare, null, null, tipoElaborazione)
-            } else {
-                Window w = (Window) Executions.createComponents("/restrict/statocivile/otp.zul", self, [:])
-                w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
-                    if (event.data.codUtentefirmatario && event.data.otp){
-                        firma(listaComunicazioniDaElaborare, event.data.codUtentefirmatario, event.data.otp, tipoElaborazione)
-                    }
-                })
-                w.doModal()
-            }
-        } else {
-            protocollaOInvia(listaComunicazioniDaElaborare, tipoElaborazione)
-        }
-    }
-
-    void firma(List<CivArchivioComunicazione> listaComunicazioniDaFirmare, String utente, String otp, ETipoElaborazioneComunicazione tipoElaborazione){
-        StringBuilder ids = new StringBuilder("")
-        List<CivArchivioComunicazione> listaComunicazioniDaElaborare = []
-
-        for (CivArchivioComunicazione c: listaComunicazioniDaFirmare){
-            if (c.isDaProtocollare() || c.isDaInviareAlbo()){
-                Boolean hasPrincipale = civArchivioComunicazioneService.checkAllegatoPrincipale(c.id)
-                if (hasPrincipale){
-                    ids.append(c.id.toString())
-                    ids.append(TestoUtils.cancelletto)
-                    listaComunicazioniDaElaborare.add(c)
-                } else {
-                    Messagebox.show(c.comunicazione.descrizione + ":\n" +  getEtichetta(EtichetteMessaggi.Errore_testo_principale_comunicazione), msgTitle, Messagebox.OK, Messagebox.ERROR)
-                }
-            }
-        }
-
-        if (ids.toString() != ""){
-            String retVal = civArchivioComunicazioneService.firmaComunicazione(listaComunicazioniDaElaborare, ids.toString(), null, utente, otp)
-            if ( (retVal?:"") == ""){
-                protocollaOInvia(listaComunicazioniDaElaborare, tipoElaborazione)
-            } else {
-                Messagebox.show(retVal, getEtichetta(Etichette.Comunicazioni), Messagebox.OK, Messagebox.ERROR)
-                for (CivArchivioComunicazione c: listaComunicazioniDaFirmare){
-                    if (c.isDaProtocollare() || c.isDaInviareAlbo()){
-                        caricaAllegati(c)
-                    }
-                }
-            }
-        }
-    }
-
-    void protocollaOInvia(List<CivArchivioComunicazione> listaComunicazioniDaElaborare, ETipoElaborazioneComunicazione tipoElaborazione){
-        if (isListaComunicazioniDaElaborareEmpty(listaComunicazioniDaElaborare, tipoElaborazione))
-            return
-
-        Boolean almenoUnaElaborata = Boolean.FALSE
-        String recapMsg = ""
-        for (CivArchivioComunicazione c: listaComunicazioniDaElaborare){
-            if (c.isDaProtocollare() || c.isDaInviareAlbo()){
-                try {
-                    String retVal
-                    if ((tipoElaborazione == ETipoElaborazioneComunicazione.PROTOCOLLAZIONE) && c.isDaProtocollare()){
-                        retVal = civArchivioComunicazioneService.protocolla(c)
-                    } else
-                    if ((tipoElaborazione == ETipoElaborazioneComunicazione.INVIO_ALBO) && c.isDaInviareAlbo()){
-                        retVal = civArchivioComunicazioneService.inviaAlbo(c)
-                    } else {
-                        continue
-                    }
-                    if ((retVal ?: "") == "") {
-                        almenoUnaElaborata = Boolean.TRUE
-                        recapMsg = addToRecapMsg(recapMsg, tipoElaborazione, c)
-                        // Per quanto riguarda le comunicazioni da inviare all'albo, adottiamo lo stesso comportamento e quindi fascicoliamo dopo l'invio
-                        // o mediante click su apposito pulsante, anche se in teoria nel fascicolo andrebbero dopo la pubblicazione
-                        fascicolaComunicazioneEAllegati(c)
-                    } else {
-                        String preErrMsg = getDettaglioComunicazioneRecapMsg(c)
-                        Messagebox.show(preErrMsg + retVal, msgTitle, Messagebox.OK, Messagebox.ERROR)
-                    }
-                } catch (FileNonValidoRuntimeException fnv){
-                    String preErrMsg = getDettaglioComunicazioneRecapMsg(c)
-                    Messagebox.show(preErrMsg + (getEtichetta(fnv.getEtichetta())?:fnv.getMessage()), msgTitle, Messagebox.OK, Messagebox.ERROR)
-                }
-            }
-        }
-        if (almenoUnaElaborata){
-            caricaLista()
-            if (showRecapMessage){
-                Messagebox.show(getEtichetta(Etichette.RIEPILOGO_ELABORAZIONE) + "\n\n" + recapMsg, msgTitle, Messagebox.OK, Messagebox.INFORMATION)
-            }
-        }
-    }
-
-    protected String getDettaglioComunicazioneRecapMsg(CivArchivioComunicazione arcCom){
+    String getDettaglioComunicazioneRecapMsg(IArchivioComunicazione _arcCom){
+        CivArchivioComunicazione arcCom = _arcCom as CivArchivioComunicazione
         String msg = arcCom.comunicazione.descrizione + ":\n"
         if (showRecapMessage){
             msg += "  " + getNominativoAtto(arcCom) + "\n"
@@ -525,15 +360,16 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         return msg
     }
 
-    protected String addToRecapMsg(String initStr, ETipoElaborazioneComunicazione tipoElaborazione, CivArchivioComunicazione arcCom){
+    String addToRecapMsg(String initStr, ETipoElaborazioneComunicazione tipoElaborazione, IArchivioComunicazione _arcCom) {
+        CivArchivioComunicazione arcCom = _arcCom as CivArchivioComunicazione
         if (showRecapMessage) {
             CivComunicazioneProtocollo comProt = (arcCom.id ? civComunicazioneProtocolloService.get(arcCom.id) : null)
             String msg = arcCom.comunicazione.descrizione + ":\n"
             msg += "  " + getNominativoAtto(arcCom) + "\n"
-            msg += (tipoElaborazione == ETipoElaborazioneComunicazione.PROTOCOLLAZIONE) ? getEtichetta(Etichette.Numero_Protocollo_Anno) : getEtichetta(Etichette.Numero_Registro_Anno)
+            msg += (tipoElaborazione == ETipoElaborazioneComunicazione.PROTOCOLLAZIONE) ? getEtichetta(Etichette.getEtichetta("Numero_Protocollo_Anno")) : getEtichetta(Etichette.getEtichetta("Numero_Registro_Anno"))
             msg += " : " + comProt?.numeroProtocollo + "/" + comProt?.annoProtocollo
             if (comProt?.dataProtocollo != null) {
-                msg += "  " + getEtichetta(Etichette.Del) + " " + DataUtils.fromDateToString(comProt.dataProtocollo)
+                msg += "  " + getEtichetta(Etichette.getEtichetta("Del")) + " " + DataUtils.fromDateToString(comProt.dataProtocollo)
             }
             return initStr + (msg ?: "") + "\n\n"
         } else {
@@ -547,7 +383,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
             CivAttoBaseDomain abd = civAttoService.getAttoFromComunicazione(arcCom.getTipoAtto(), arcCom.ufficio, arcCom.anno, arcCom.atto, arcCom.parte, arcCom.serie)
             nominativo = abd.getNominativoEstremiAtto(arcCom.tipoFormula, arcCom.tipoAttoComunicazione)
         } catch (EmptyResultDataAccessException e){
-            nominativo = ("*** " + getEtichetta(Etichette.Atto_non_in_Archivio) + " ***")
+            nominativo = ("*** " + getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")) + " ***")
             log.error(e.getMessage())
         }
         return nominativo
@@ -560,10 +396,10 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
                 CivAttoBaseDomain abd = civAttoService.getAttoFromComunicazione(c.getTipoAtto(), c.ufficio, c.anno, c.atto, c.parte, c.serie)
                 s = abd.getNominativoEstremiAtto(c.tipoFormula, c.tipoAttoComunicazione)
                 if (c.isAttoDiAltroComune()){
-                    s = s + " " + getEtichetta(Etichette.Generata_da) + " " + getEtichettaEnum(abd.getTipoAttoEnum()) + " "
+                    s = s + " " + getEtichetta(Etichette.getEtichetta("Generata_da")) + " " + getEtichettaEnum(abd.getTipoAttoEnum()) + " "
                 }
             } catch (EmptyResultDataAccessException e){
-                s = ("*** " + getEtichetta(Etichette.Atto_non_in_Archivio) + " ***")
+                s = ("*** " + getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")) + " ***")
                 log.error(e.getMessage())
             }
         }
@@ -577,7 +413,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
                 abd = civAttoService.getAttoFromComunicazione(c.getTipoAtto(), c.ufficio, c.anno, c.atto, c.parte, c.serie)
             } catch (EmptyResultDataAccessException e){
                 log.error(e.getMessage())
-                Messagebox.show(getEtichetta(Etichette.Atto_non_in_Archivio), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
         }
         return abd
@@ -587,32 +423,21 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
     //////////////////////////////// PROTOCOLLO ////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    void caricaComunicazioneProtocollo(Long id){
-        comunicazioneProtocollo = (id?civComunicazioneProtocolloService.get(id):null)
-        BindUtils.postNotifyChange(null, null, this, "comunicazioneProtocollo")
+    void setComunicazioneProtocollo(IComunicazioneProtocollo protocollo) {
+        comunicazioneProtocollo = protocollo as CivComunicazioneProtocollo
     }
 
     @Command void onSalvaComunicazioneProtocollo(@BindingParam("arcCom") CivArchivioComunicazione arcCom) {
-        if (comunicazioneProtocollo){
-            CivComunicazioneProtocollo cp = civComunicazioneProtocolloService.save(comunicazioneProtocollo, arcCom)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
-            caricaComunicazioneProtocollo(cp.id)
-        }
+        salvaComunicazioneProtocollo(arcCom)
     }
 
     ////////////////////////////////////////////////////////////////////////
     //////////////////////////////// DESTINATARI ///////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    void caricaDestinatari(CivArchivioComunicazione arcCom){
-        listaDestinatari = []
-        if (arcCom?.id){
-            listaDestinatari = civComunicazioneDestinatarioService.listAllByArchivioComunicazione(arcCom.id)
-            for (CivComunicazioneDestinatario d:listaDestinatari){
-                d.pec = statoCivileService.get_prot_indirizzo_pec(ConfigurazioneUtils.ARCHIVIO_RIFERIMENTO_STATO_CIVILE, d.ente?.id, d.codiceProvinciaDestinatario, d.codiceComuneDestinatario)
-            }
-        }
-        BindUtils.postNotifyChange(null, null, this, "listaDestinatari")
+
+    void setListaDestinatari(List<IComunicazioneDestinatario> destinatari) {
+        listaDestinatari = destinatari as List<CivComunicazioneDestinatario>
     }
 
     @Command void onInserisciDestinatario(@BindingParam("arcCom") CivArchivioComunicazione arcCom) {
@@ -633,14 +458,9 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         w.doModal()
     }
 
-    void salvaERicaricaDestinatari(CivComunicazioneDestinatario destinatario, CivArchivioComunicazione arcCom){
-        civComunicazioneDestinatarioService.save(destinatario)
-        caricaDestinatari(arcCom)
-    }
-
     @Command void onEliminaDestinatario(@BindingParam("destinatario") CivComunicazioneDestinatario destinatario) {
         if (destinatario && (!(destinatario.archivioComunicazione.isProtocollato())) ){
-            Messagebox.show(destinatario.denominazione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), getEtichetta(Etichette.Destinatari), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(destinatario.denominazione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), getEtichetta(Etichette.getEtichetta("Destinatari")), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())){
@@ -652,15 +472,10 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         }
     }
 
-    void eliminaERicaricaDestinatari(Long idDestinatario, CivArchivioComunicazione arcCom){
-        CivComunicazioneDestinatario dest = civComunicazioneDestinatarioService.get(idDestinatario)
-        civComunicazioneDestinatarioService.delete(dest)
-        caricaDestinatari(arcCom)
-    }
 
     @Command void onInviaPecDestinatario(@BindingParam("destinatario") CivComunicazioneDestinatario destinatario) {
         if (destinatario && destinatario.archivioComunicazione.isProtocollato() ){
-            Messagebox.show(destinatario.denominazione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Invio_Pec), getEtichetta(Etichette.Destinatari), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(destinatario.denominazione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Invio_Pec")), getEtichetta(Etichette.getEtichetta("Destinatari")), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())){
@@ -672,35 +487,22 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         }
     }
 
-    void inviaPec(CivComunicazioneDestinatario destinatario){
-        String msg = civComunicazioneDestinatarioService.inviaPec(destinatario)
-        if ( (msg?:"") != ""){
-            Messagebox.show(msg, getEtichetta(Etichette.Comunicazioni), Messagebox.OK, Messagebox.ERROR)
-        } else {
-            Messagebox.show(getEtichetta(Etichette.Mail_Inviata), getEtichetta(Etichette.Comunicazioni), Messagebox.OK, Messagebox.INFORMATION)
-        }
-        caricaDestinatari(destinatario.archivioComunicazione)
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ///////////////////////////////// ALLEGATI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    void caricaAllegati(CivArchivioComunicazione arcCom){
-        listaAllegati = []
-        if (arcCom?.id){
-            listaAllegati = civComunicazioneAllegatoService.listAllMetadatiByArchivioComunicazione(arcCom.id)
-        }
-        BindUtils.postNotifyChange(null, null, this, "listaAllegati")
+
+    void setListaAllegati(List<IComunicazioneAllegato> allegati) {
+        listaAllegati = allegati as List<CivComunicazioneAllegato>
     }
 
-    @Command void onEliminaAllegato(@BindingParam("allegato") Map allegatoMap, @BindingParam("arcCom") CivArchivioComunicazione arcCom) {
-        if (allegatoMap?.id){
-            Messagebox.show((String)allegatoMap.nomeAllegato + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), getEtichetta(Etichette.Allegati), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+    @Command void onEliminaAllegato(@BindingParam("allegato") CivComunicazioneAllegato allegato, @BindingParam("arcCom") CivArchivioComunicazione arcCom) {
+        if (allegato?.id){
+            Messagebox.show((String)allegato.nomeAllegato + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), getEtichetta(Etichette.getEtichetta("Allegati")), Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())){
-                                eliminaERicaricaAllegati(allegatoMap.id, arcCom)
+                                eliminaERicaricaAllegati(allegato.id, arcCom)
                             }
                         }
                     }
@@ -708,38 +510,29 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         }
     }
 
-    void eliminaERicaricaAllegati(Long idAllegato, CivArchivioComunicazione arcCom){
-        CivComunicazioneAllegato alle = civComunicazioneAllegatoService.get(idAllegato)
-        civComunicazioneAllegatoService.deleteAllegato(alle)
-        caricaAllegati(arcCom)
-    }
 
-    @Command void onDownloadAllegato(@BindingParam("allegato") Map allegatoMap) {
-        if (allegatoMap){
-            scaricaAllegato(allegatoMap.id, true)
+    @Command void onDownloadAllegato(@BindingParam("allegato") CivComunicazioneAllegato allegato) {
+        if (allegato){
+            scaricaAllegato(allegato.id, true)
         }
     }
 
-    void scaricaAllegato(Long id, boolean sbusta = false, boolean segnalaSbustamento = true){
-        CivComunicazioneAllegato alleCom = civComunicazioneAllegatoService.get(id)
-        try{
-            gsdFirmaService.scaricaAllegato(alleCom.archivioComunicazione, alleCom, sbusta, segnalaSbustamento)
-        } catch (FileNonValidoRuntimeException fre){
-            Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
-            String[] buttonsLabel = [getEtichetta(Etichette.SI), getEtichetta(Etichette.NO), getEtichetta(Etichette.Annulla)] as String[]
-            Messagebox.show(alleCom.nome + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Sbustamento_File), getEtichetta(Etichette.Allegati), buttons, buttonsLabel , Messagebox.QUESTION, null,
-                    new org.zkoss.zk.ui.event.EventListener(){
-                        void onEvent(Event e){
-                            if (e.getName() == Messagebox.ON_YES){
-                                scaricaAllegato(id, true, false)
-                            }
-                            if (e.getName() == Messagebox.ON_NO){
-                                scaricaAllegato(id, false, false)
-                            }
+    void fileNonValido(IComunicazioneAllegato _alleCom, Long id) {
+        CivComunicazioneAllegato alleCom = _alleCom as CivComunicazioneAllegato
+        Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
+        String[] buttonsLabel = [getEtichetta(Etichette.getEtichetta("SI")), getEtichetta(Etichette.getEtichetta("NO")), getEtichetta(Etichette.getEtichetta("Annulla"))] as String[]
+        Messagebox.show(alleCom.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Sbustamento_File")), getEtichetta(Etichette.getEtichetta("Allegati")), buttons, buttonsLabel , Messagebox.QUESTION, null,
+                new org.zkoss.zk.ui.event.EventListener(){
+                    void onEvent(Event e){
+                        if (e.getName() == Messagebox.ON_YES){
+                            scaricaAllegato(id, true, false)
+                        }
+                        if (e.getName() == Messagebox.ON_NO){
+                            scaricaAllegato(id, false, false)
                         }
                     }
-            )
-        }
+                }
+        )
     }
 
     @Command void onUploadAllegato(@ContextParam(ContextType.TRIGGER_EVENT)UploadEvent event, @BindingParam("arcCom") CivArchivioComunicazione arcCom) {
@@ -747,7 +540,7 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         byte[] _allegato = media.isBinary()?media.byteData:media.stringData.getBytes(StandardCharsets.UTF_8.name())
         String nomeFile = media.name
         // refs #62971
-        Map<String, String> m = FileUtils.checkFile(_allegato, nomeFile, FileUtils.defaultAcceptableMimeTypesXComEFas)
+        Map<String, String> m = FileUtils.checkFile(_allegato, FileUtils.defaultAcceptableMimeTypesXComEFas)
         if (m){
             Messagebox.show(nomeFile + ":\n" + getEtichetta(m), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } else {
@@ -773,24 +566,24 @@ abstract class ComunicazioniAttoListaParentViewModel extends RiferimentiAttoList
         }
     }
 
-    @Command void onCambiaPrincipaleAllegato(@BindingParam("allegato") Map allegatoMap) {
-        CivComunicazioneAllegato alleCom = civComunicazioneAllegatoService.get(allegatoMap.id)
-        alleCom.principale = allegatoMap.principale
+    @Command void onCambiaPrincipaleAllegato(@BindingParam("allegato") CivComunicazioneAllegato allegato) {
+        CivComunicazioneAllegato alleCom = civComunicazioneAllegatoService.get(allegato.id) as CivComunicazioneAllegato
+        alleCom.principale = allegato.principale
         salvaAllegato(alleCom, Boolean.FALSE, null)
     }
 
-    static List<Map> etichetteComunicazioniDefault = [Etichette.Comunicazioni, Etichette.Destinatari, Etichette.Comunicazione, Etichette.Destinatario, Etichette.Generata_da,
-                                                      Etichette.Allegati, Etichette.Numero_Protocollo_Anno, Etichette.Numero_Registro_Anno, Etichette.Del,
-                                                      Etichette.Atto_non_in_Archivio, Etichette.RIEPILOGO_ELABORAZIONE, Etichette.Mail_Inviata,
-                                                      EtichetteMessaggi.Salvataggio_Completato,
-                                                      EtichetteMessaggi.Ask_Cancellazione_Record, EtichetteMessaggi.Ask_Aggiornamento_Testo_Comunicazione,
-                                                      EtichetteMessaggi.Ask_Invio_Pec, EtichetteMessaggi.Ask_Conferma_Salvataggio,
-                                                      EtichetteMessaggi.Ask_Conferma_Salvataggio_Documento, EtichetteMessaggi.Ask_Sbustamento_File,
-                                                      EtichetteMessaggi.Errore_protocollazione_comunicazioni_provvisorie,
-                                                      EtichetteMessaggi.Errore_esecuzione_comunicazioni_protocollate, EtichetteMessaggi.Errore_esecuzione_comunicazioni_inviate_albo,
-                                                      EtichetteMessaggi.Errore_generazione_testo, EtichetteMessaggi.Errore_modello_testo_non_trovato,
-                                                      EtichetteMessaggi.Errore_testo_principale_comunicazione, EtichetteMessaggi.Errore_no_tipo_documento_x_fascicolazione,
-                                                      EtichetteMessaggi.Errore_Operazione_non_consentita, EtichetteMessaggi.Errore_salvataggio_file_documentale,
-                                                      EtichetteMessaggi.Warn_Nessuna_comunicazione_selezionata, EtichetteMessaggi.Warn_comunicazione_fascicolata,
-                                                      EtichetteMessaggi.Warn_Nessuna_comunicazione_da_protocollare, EtichetteMessaggi.Warn_Nessuna_comunicazione_da_inviare_albo]
+    static List<Map> etichetteComunicazioniDefault = [Etichette.getEtichetta("Comunicazioni"), Etichette.getEtichetta("Destinatari"), Etichette.getEtichetta("Comunicazione"), Etichette.getEtichetta("Destinatario"), Etichette.getEtichetta("Generata_da"),
+                                                      Etichette.getEtichetta("Allegati"), Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("Numero_Registro_Anno"), Etichette.getEtichetta("Del"),
+                                                      Etichette.getEtichetta("Atto_non_in_Archivio"), Etichette.getEtichetta("RIEPILOGO_ELABORAZIONE"), Etichette.getEtichetta("Mail_Inviata"),
+                                                      Etichette.getEtichetta("Salvataggio_Completato"),
+                                                      Etichette.getEtichetta("Ask_Cancellazione_Record"), Etichette.getEtichetta("Ask_Aggiornamento_Testo_Comunicazione"),
+                                                      Etichette.getEtichetta("Ask_Invio_Pec"), Etichette.getEtichetta("Ask_Conferma_Salvataggio"),
+                                                      Etichette.getEtichetta("Ask_Conferma_Salvataggio_Documento"), Etichette.getEtichetta("Ask_Sbustamento_File"),
+                                                      Etichette.getEtichetta("Errore_protocollazione_comunicazioni_provvisorie"),
+                                                      Etichette.getEtichetta("Errore_esecuzione_comunicazioni_protocollate"), Etichette.getEtichetta("Errore_esecuzione_comunicazioni_inviate_albo"),
+                                                      Etichette.getEtichetta("Errore_generazione_testo"), Etichette.getEtichetta("Errore_modello_testo_non_trovato"),
+                                                      Etichette.getEtichetta("Errore_testo_principale_comunicazione"), Etichette.getEtichetta("Errore_no_tipo_documento_x_fascicolazione"),
+                                                      Etichette.getEtichetta("Errore_Operazione_non_consentita"), Etichette.getEtichetta("Errore_salvataggio_file_documentale"),
+                                                      Etichette.getEtichetta("Warn_Nessuna_comunicazione_selezionata"), Etichette.getEtichetta("Warn_comunicazione_fascicolata"),
+                                                      Etichette.getEtichetta("Warn_Nessuna_comunicazione_da_protocollare"), Etichette.getEtichetta("Warn_Nessuna_comunicazione_da_inviare_albo")]
 }

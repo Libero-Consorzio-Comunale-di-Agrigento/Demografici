@@ -1,10 +1,10 @@
 package it.finmatica.de4gsdzk.certificazione.error
 
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 
 class UtenteNonTerminalistaRuntimeException extends De4gsdzkRuntimeException {
-    private static final Map<String, String> etichettaDefault = EtichetteMessaggi.Errore_Utente_non_terminalista
+    private static final Map<String, String> etichettaDefault = Etichette.getEtichetta("Errore_Utente_non_terminalista")
 
     UtenteNonTerminalistaRuntimeException() {
         this('')

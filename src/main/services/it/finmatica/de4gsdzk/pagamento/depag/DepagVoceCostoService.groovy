@@ -6,8 +6,7 @@ import it.finmatica.de4gsdzk.pagamento.IWspaVoceCostoService
 import it.finmatica.de4gsdzk.pagamento.WspaVoceCosto
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneErroreException
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneNessunElementoException
-import it.finmatica.de4gsdzk.pagamento.depag.DepagVoceCostoRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -19,11 +18,11 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class DepagVoceCostoService implements IWspaVoceCostoService {
     private final DepagVoceCostoRepository depagVoceCostoRepository
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
-    DepagVoceCostoService(DepagVoceCostoRepository depagVoceCostoRepository, StatoCivileService statoCivileService) {
+    DepagVoceCostoService(DepagVoceCostoRepository depagVoceCostoRepository, GsdService gsdService) {
         this.depagVoceCostoRepository = depagVoceCostoRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     @Override
@@ -35,7 +34,7 @@ class DepagVoceCostoService implements IWspaVoceCostoService {
     void sincronizza() {
         Integer ret
         try {
-            ret = statoCivileService.popolaVociCostoWspa()
+            ret = gsdService.popolaVociCostoWspa()
         } catch (De4gsdzkRuntimeException e) {
             log.error(e.message, e)
             throw new SincronizzazioneErroreException()

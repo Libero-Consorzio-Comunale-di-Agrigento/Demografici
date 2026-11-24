@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk>
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client">
     <vlayout>
         <listbox model="@load(vm.listaStringhe)" rows="@load(vm.listaStringheSize)" multiple="false" width="290px" xmlns="http://www.zkoss.org/2005/zul">
             <listhead>
@@ -10,8 +10,22 @@
             <template name="model" var="item">
                 <listitem>
                     <listcell>
-                        <hbox align="center" hflex="1" spacing="7px">
-                            <image src="/images/icon/action/16x16/back.png" draggable="true" tooltiptext="@load(item)"/>
+                        <hbox align="center" hflex="1" spacing="7px" draggable="true" tooltiptext="@load(item)"
+                              style="cursor: grab; -webkit-user-select: none; -moz-user-select: none; user-select: none;"
+                              w:onDoubleClick="
+                                  var txt = this.$f('testoConVariabili');
+                                  if (!txt) return;
+                                  var node = txt.$n();
+                                  var orig = jq(node).val();
+                                  var cursor = node.selectionStart || orig.length;
+                                  var varText = this.getTooltiptext();
+                                  txt.setValue(orig.substr(0, cursor) + varText + orig.substr(cursor));
+                                  txt.fireOnChange(null);
+                                  var newPos = cursor + varText.length;
+                                  node.setSelectionRange(newPos, newPos);
+                                  node.focus();
+                              ">
+                            <image src="/images/icon/action/16x16/back.png"/>
                             <label value="@load(item)" hflex="1"/>
                         </hbox>
                     </listcell>
@@ -19,11 +33,21 @@
             </template>
         </listbox>
         <script defer="true"><![CDATA[
-              this.$f().testoConVariabili.listen({onDrop: function(e) {
-                  var orig = $(e.target._node).val();
-                  var cursor = e.target._node.selectionStart;
-                  this.setValue(orig.substr(0, cursor) + e.dragged.getTooltiptext() + orig.substr(cursor));
-                  this.fireOnChange(null);
+              var txtBox = this.$f().testoConVariabili;
+              if (!txtBox) return;
+
+              // Drag & Drop
+              txtBox.listen({onDrop: function(e) {
+                  var node = txtBox.$n();
+                  if (!node) return;
+                  var orig = jq(node).val();
+                  var cursor = node.selectionStart || orig.length;
+                  var varText = e.dragged.getTooltiptext();
+                  txtBox.setValue(orig.substr(0, cursor) + varText + orig.substr(cursor));
+                  txtBox.fireOnChange(null);
+                  var newPos = cursor + varText.length;
+                  node.setSelectionRange(newPos, newPos);
+                  node.focus();
               }});
         ]]></script>
     </vlayout>

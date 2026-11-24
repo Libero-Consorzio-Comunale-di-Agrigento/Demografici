@@ -29,7 +29,9 @@ w_return		number;
 begin
   w_return := 0;
 
-  if a_servizio is not null and a_archivio_rif is not null and ( (a_servizio <> 'R008_R' and a_id_rif is not null) or (a_servizio = 'R008_R') ) then
+  if a_servizio is not null and a_archivio_rif is not null and
+     ( (a_servizio not in ('R008_R','R005_C') and a_id_rif is not null) or (a_servizio in ('R008_R','R005_C') ) )
+  then
      if w_id_operazione is not null then
         begin
           insert into ansciu

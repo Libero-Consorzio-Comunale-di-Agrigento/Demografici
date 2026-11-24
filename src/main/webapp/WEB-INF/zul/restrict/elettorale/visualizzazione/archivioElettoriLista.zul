@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRicercaElettore" macroURI="/restrict/elettorale/visualizzazione/templateRicercaElettore.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.elettorale.visualizzazione.ArchivioElettoriListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="@load(vm.wCenterHeight)"
+            sizable="false" closable="false">
+        <vlayout vflex="1">
+
+            <hlayout sclass="navigazione" valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+            <groupbox closable="false">
+                <templateRicercaElettore/>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead>
+                    <listheader label="@load(vm.etichette['Tipo_Lista'])" width="120px"/>
+                    <listheader label="@load(vm.etichette['Cognome'])"/>
+                    <listheader label="@load(vm.etichette['Nome'])"/>
+                    <listheader label="@load(vm.etichette['Sesso'])" width="90px"/>
+                    <listheader label="@load(vm.etichette['Stato'])" width="90px"/>
+                    <listheader label="@load(vm.etichette['Fascicolo'])" width="70px"/>
+                    <listheader label="@load(vm.etichette['Anno'])" width="70px"/>
+                    <listheader label="@load(vm.etichette['Sezione'])" width="70px"/>
+                    <listheader label="@load(vm.etichette['Progressivo_Generale'])"/>
+                    <listheader label="@load(vm.etichette['Progressivo_Sezionale'])"/>
+                    <listheader label="@load(vm.etichette['Tessera'])" width="70px"/>
+                    <listheader label="@load(vm.etichette['Giacenza'])" width="70px" align="center"/>
+                    <listheader label="@load(vm.etichette['Data_Tessera'])" width="100px"/>
+                    <listheader label="@load(vm.etichette['Matricola'])" width="70px"/>
+                    <listheader label="" width="52px" visible="false"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem>
+                        <listcell label="@load(item.tipoLista.descrizioneBreve)"/>
+                        <listcell label="@load(item.cognome)"/>
+                        <listcell label="@load(item.nome)"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.sesso))"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.stato))"/>
+                        <listcell label="@load(item.fascicolo)"/>
+                        <listcell label="@load(item.anno)"/>
+                        <listcell label="@load(item.sezione)"/>
+                        <listcell label="@load(item.progressivoGenerale)"/>
+                        <listcell label="@load(item.progressivoSezionale)"/>
+                        <listcell label="@load(item.tessera)"/>
+                        <listcell>
+                            <checkbox checked="@load(item.flagGiacenza)" disabled="true"/>
+                        </listcell>
+                        <listcell
+                                label="@load(empty item.dataTessera? null:(c:formatDate(item.dataTessera, 'dd/MM/yyyy')))"/>
+                        <listcell label="@load(item.matricola)"/>
+                        <listcell visible="false">
+                            <button image="/images/icon/action/16x16/forward.png"
+                                    tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+                                    onClick="@command('onSeleziona')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+        </vlayout>
+
+    </window>
+<!--        <button label="Genera lista" onClick="@command('onGeneraLista')"/>-->
+
+</zk>

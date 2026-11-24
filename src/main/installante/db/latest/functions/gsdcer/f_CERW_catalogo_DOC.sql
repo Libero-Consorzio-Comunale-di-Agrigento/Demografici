@@ -53,7 +53,7 @@ begin
 	 if p_tipo_documento||p_id_catalogo in ('CC2','PT2') then
   	    w_catalogo 	:= w_catalogo||' - '||w_dati_doc;
 	 else
-  	    w_catalogo 	:= w_catalogo||chr(10)||chr(10)||w_dati_doc;
+  	    w_catalogo 	:= w_catalogo||chr(10)||w_dati_doc;
 	 end if;
       end if;
   end loop;

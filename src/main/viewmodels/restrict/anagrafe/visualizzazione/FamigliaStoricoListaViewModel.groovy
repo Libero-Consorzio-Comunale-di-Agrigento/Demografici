@@ -7,7 +7,6 @@ import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoNonRe
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteEsteroFamiglia
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteFamiglia
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.SortUtils
 import org.springframework.data.domain.Page
@@ -24,8 +23,6 @@ import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
 import org.zkoss.zul.Window
 import restrict.TraitControlBarCapable
-
-import javax.persistence.criteria.JoinType
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
@@ -55,7 +52,7 @@ class FamigliaStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Storico, Etichette.Famiglia, Etichette.Situazione_al]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Storico"), Etichette.getEtichetta("Famiglia"), Etichette.getEtichetta("Situazione_al")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaAnagrafe.etichetteDomain)
@@ -71,16 +68,16 @@ class FamigliaStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
         eList.addAll(etichetteListaDefault)
 
         // Aggiungo etichette della Controlbar
-        eList.addAll([Etichette.allegati_tooltip])
+        eList.addAll([Etichette.getEtichetta("allegati_tooltip")])
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = "${getEtichetta(Etichette.Storico)} ${getEtichetta(Etichette.Famiglia)}"
+        msgTitle = "${getEtichetta(Etichette.getEtichetta("Storico"))} ${getEtichetta(Etichette.getEtichetta("Famiglia"))}"
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -100,9 +97,7 @@ class FamigliaStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
     }
 
     private void caricaFamiglia(String id) {
-        this.famiglia = anaFamigliaService.get(id,
-                [fetch: [[campo: 'indirizzoResidente.via', tipo: JoinType.LEFT],
-                         [campo: 'intestatarioConvivenza', tipo: JoinType.LEFT]]])
+        this.famiglia = anaFamigliaService.findById(id)
         refreshUi()
     }
 
@@ -115,7 +110,7 @@ class FamigliaStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
 
     void caricaLista() {
         Paginazione p = eseguiQuery(Boolean.TRUE)
-        lista = p.lista
+        lista = (p.lista as List<AnaEventoFamiglia>).sort(false) { it.dataEvento}
         updateTotalSize(p.count)
 
         refreshLista()

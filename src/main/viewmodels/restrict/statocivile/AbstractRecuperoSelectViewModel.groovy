@@ -7,7 +7,7 @@ import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
@@ -32,13 +32,13 @@ abstract class AbstractRecuperoSelectViewModel extends AbstractSelectViewModel{
                 //Se il soggetto è residente, segnalo che la matricola è nulla e che quindi il soggetto dovrebbe essere ripescato
                 switch (tipoAttoEnum) {
                     case ETipoAtto.MAT:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Sposo_nulla) + "\n" + getEtichetta(EtichetteMessaggi.Warn_ricerca_in_anagrafe)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Sposo_nulla")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_ricerca_in_anagrafe"))
                         break
                     case ETipoAtto.UCI:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Contraente_1_nulla) + "\n" + getEtichetta(EtichetteMessaggi.Warn_ricerca_in_anagrafe)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Contraente_1_nulla")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_ricerca_in_anagrafe"))
                         break
                     case ETipoAtto.CIT:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Richiedente_nulla) + "\n" + getEtichetta(EtichetteMessaggi.Warn_ricerca_in_anagrafe)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Richiedente_nulla")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_ricerca_in_anagrafe"))
                         break
                 }
             } else {
@@ -47,13 +47,13 @@ abstract class AbstractRecuperoSelectViewModel extends AbstractSelectViewModel{
                 if (l.size() > 0){
                     switch (tipoAttoEnum) {
                         case ETipoAtto.MAT:
-                            s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Sposo_nulla_ma_soggetto_in_anagrafe) + "\n" + getEtichetta(EtichetteMessaggi.Warn_verifica_in_anagrafe)
+                            s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Sposo_nulla_ma_soggetto_in_anagrafe")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_verifica_in_anagrafe"))
                             break
                         case ETipoAtto.UCI:
-                            s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Contraente_1_nulla_ma_soggetto_in_anagrafe) + "\n" + getEtichetta(EtichetteMessaggi.Warn_verifica_in_anagrafe)
+                            s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Contraente_1_nulla_ma_soggetto_in_anagrafe")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_verifica_in_anagrafe"))
                             break
                         case ETipoAtto.CIT:
-                            s = getEtichetta(EtichetteMessaggi.Warn_Matricola_Richiedente_nulla_ma_soggetto_in_anagrafe) + "\n" + getEtichetta(EtichetteMessaggi.Warn_verifica_in_anagrafe)
+                            s = getEtichetta(Etichette.getEtichetta("Warn_Matricola_Richiedente_nulla_ma_soggetto_in_anagrafe")) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_verifica_in_anagrafe"))
                             break
                     }
                 }
@@ -66,13 +66,13 @@ abstract class AbstractRecuperoSelectViewModel extends AbstractSelectViewModel{
                ) {
                 switch (tipoAttoEnum) {
                     case ETipoAtto.MAT:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Residenza_Sposo_Cambiata)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Residenza_Sposo_Cambiata"))
                         break
                     case ETipoAtto.UCI:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Residenza_Contraente_1_Cambiata)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Residenza_Contraente_1_Cambiata"))
                         break
                     case ETipoAtto.CIT:
-                        s = getEtichetta(EtichetteMessaggi.Warn_Residenza_Richiedente_Cambiata)
+                        s = getEtichetta(Etichette.getEtichetta("Warn_Residenza_Richiedente_Cambiata"))
                         break
                 }
             }
@@ -85,11 +85,11 @@ abstract class AbstractRecuperoSelectViewModel extends AbstractSelectViewModel{
         if (sr.idAnagrafe2 == null) {
             if (arcComuneBaseService.isComuneClienteOggi(sr.codiceComuneResidenza2, sr.codiceProvinciaResidenza2)) {
                 //Se il soggetto è residente, segnalo che la matricola è nulla e che quindi il soggetto dovrebbe essere ripescato
-                s = ( (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(EtichetteMessaggi.Warn_Matricola_Sposa_nulla):getEtichetta(EtichetteMessaggi.Warn_Matricola_Contraente_2_nulla) ) + "\n" + getEtichetta(EtichetteMessaggi.Warn_ricerca_in_anagrafe)
+                s = ( (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(Etichette.getEtichetta("Warn_Matricola_Sposa_nulla")):getEtichetta(Etichette.getEtichetta("Warn_Matricola_Contraente_2_nulla")) ) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_ricerca_in_anagrafe"))
             } else {
                 List<AnaAnagrafe> l = anaAnagrafeService.listXDatiAnagraficiSuResidenti(sr.cognome2, sr.nome2, sr.dataNascita2, sr.sesso2)
                 if (l.size() > 0){
-                    s = ( (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(EtichetteMessaggi.Warn_Matricola_Sposa_nulla_ma_soggetto_in_anagrafe):getEtichetta(EtichetteMessaggi.Warn_Matricola_Contraente_2_nulla_ma_soggetto_in_anagrafe) ) + "\n" + getEtichetta(EtichetteMessaggi.Warn_verifica_in_anagrafe)
+                    s = ( (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(Etichette.getEtichetta("Warn_Matricola_Sposa_nulla_ma_soggetto_in_anagrafe")):getEtichetta(Etichette.getEtichetta("Warn_Matricola_Contraente_2_nulla_ma_soggetto_in_anagrafe")) ) + "\n" + getEtichetta(Etichette.getEtichetta("Warn_verifica_in_anagrafe"))
                 }
             }
         } else {
@@ -98,19 +98,19 @@ abstract class AbstractRecuperoSelectViewModel extends AbstractSelectViewModel{
                  ( (ana.comuneResidenza?.codice == null) && (sr.codiceComuneResidenza2 != null) ) ||
                  ( (ana.comuneResidenza?.codice != null) && (sr.codiceComuneResidenza2 != null) && ( (ana.comuneResidenza?.codice?.compareTo(sr.codiceComuneResidenza2) != 0) || (ana.comuneResidenza?.codiceProvincia?.compareTo(sr.codiceProvinciaResidenza2) != 0) ) )
             ) {
-                s = (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(EtichetteMessaggi.Warn_Residenza_Sposa_Cambiata):getEtichetta(EtichetteMessaggi.Warn_Residenza_Contraente_2_Cambiata)
+                s = (tipoAttoEnum == ETipoAtto.MAT)?getEtichetta(Etichette.getEtichetta("Warn_Residenza_Sposa_Cambiata")):getEtichetta(Etichette.getEtichetta("Warn_Residenza_Contraente_2_Cambiata"))
             }
         }
         return s
     }
 
-    static final List<Map<String, String>> etichetteRecuperoDefault = [EtichetteMessaggi.Warn_ricerca_in_anagrafe, EtichetteMessaggi.Warn_verifica_in_anagrafe,
-                                                                       EtichetteMessaggi.Warn_Matricola_Sposo_nulla, EtichetteMessaggi.Warn_Matricola_Contraente_1_nulla,
-                                                                       EtichetteMessaggi.Warn_Matricola_Sposa_nulla, EtichetteMessaggi.Warn_Matricola_Contraente_2_nulla,
-                                                                       EtichetteMessaggi.Warn_Matricola_Sposo_nulla_ma_soggetto_in_anagrafe, EtichetteMessaggi.Warn_Matricola_Contraente_1_nulla_ma_soggetto_in_anagrafe,
-                                                                       EtichetteMessaggi.Warn_Matricola_Sposa_nulla_ma_soggetto_in_anagrafe, EtichetteMessaggi.Warn_Matricola_Contraente_2_nulla_ma_soggetto_in_anagrafe,
-                                                                       EtichetteMessaggi.Warn_Residenza_Sposo_Cambiata, EtichetteMessaggi.Warn_Residenza_Contraente_1_Cambiata,
-                                                                       EtichetteMessaggi.Warn_Residenza_Sposa_Cambiata, EtichetteMessaggi.Warn_Residenza_Contraente_2_Cambiata,
-                                                                       EtichetteMessaggi.Warn_Matricola_Richiedente_nulla, EtichetteMessaggi.Warn_Matricola_Richiedente_nulla_ma_soggetto_in_anagrafe, EtichetteMessaggi.Warn_Residenza_Richiedente_Cambiata]
+    static final List<Map<String, String>> etichetteRecuperoDefault = [Etichette.getEtichetta("Warn_ricerca_in_anagrafe"), Etichette.getEtichetta("Warn_verifica_in_anagrafe"),
+                                                                       Etichette.getEtichetta("Warn_Matricola_Sposo_nulla"), Etichette.getEtichetta("Warn_Matricola_Contraente_1_nulla"),
+                                                                       Etichette.getEtichetta("Warn_Matricola_Sposa_nulla"), Etichette.getEtichetta("Warn_Matricola_Contraente_2_nulla"),
+                                                                       Etichette.getEtichetta("Warn_Matricola_Sposo_nulla_ma_soggetto_in_anagrafe"), Etichette.getEtichetta("Warn_Matricola_Contraente_1_nulla_ma_soggetto_in_anagrafe"),
+                                                                       Etichette.getEtichetta("Warn_Matricola_Sposa_nulla_ma_soggetto_in_anagrafe"), Etichette.getEtichetta("Warn_Matricola_Contraente_2_nulla_ma_soggetto_in_anagrafe"),
+                                                                       Etichette.getEtichetta("Warn_Residenza_Sposo_Cambiata"), Etichette.getEtichetta("Warn_Residenza_Contraente_1_Cambiata"),
+                                                                       Etichette.getEtichetta("Warn_Residenza_Sposa_Cambiata"), Etichette.getEtichetta("Warn_Residenza_Contraente_2_Cambiata"),
+                                                                       Etichette.getEtichetta("Warn_Matricola_Richiedente_nulla"), Etichette.getEtichetta("Warn_Matricola_Richiedente_nulla_ma_soggetto_in_anagrafe"), Etichette.getEtichetta("Warn_Residenza_Richiedente_Cambiata")]
 
 }

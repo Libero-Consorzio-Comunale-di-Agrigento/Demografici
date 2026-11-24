@@ -1,10 +1,10 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivFormulaTestoLiberoRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.TipoAttoUtils
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.stereotype.Service
@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivFormulaTestoLiberoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivFormulaTestoLiberoRepository civFormulaTestoLiberoRepository
 
-	CivFormulaTestoLiberoService(CivFormulaTestoLiberoRepository civFormulaTestoLiberoRepository, StatoCivileService statoCivileService){
+	CivFormulaTestoLiberoService(CivFormulaTestoLiberoRepository civFormulaTestoLiberoRepository, GsdService gsdService){
 
 		this.civFormulaTestoLiberoRepository = civFormulaTestoLiberoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivFormulaTestoLibero get (Long id){
@@ -44,7 +44,7 @@ class CivFormulaTestoLiberoService {
 	private void validaDati(CivFormulaTestoLibero obj, ETipoAtto tipoAttoEnumSource){
 		Boolean emptyMandatoryFields = TipoAttoUtils.isEstremiAttoEmpty(obj, tipoAttoEnumSource)
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 
 		ValidationUtils.validaDatiObbligatori(obj, [idAtto: false, version:false])
@@ -55,7 +55,7 @@ class CivFormulaTestoLiberoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su CIVTLI_FORMULE per id " + obj.id)
 		return  civFormulaTestoLiberoRepository.save(obj)

@@ -47,9 +47,9 @@ class MatrimonioListaViewModel extends AttoListaParentViewModel{
 
         ricercaAtto = new RicercaAtto(ETipoAtto.MAT)
 
-        List<Map<String, String>> eList = [Etichette.Atti_Matrimonio, Etichette.Data_Evento,
-                                           Etichette.Generalita_Sposo_decrescente, Etichette.Generalita_Sposo_crescente,
-                                           Etichette.Generalita_Sposa_decrescente, Etichette.Generalita_Sposa_crescente]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Atti_Matrimonio"), Etichette.getEtichetta("Data_Evento"),
+                                           Etichette.getEtichetta("Generalita_Sposo_decrescente"), Etichette.getEtichetta("Generalita_Sposo_crescente"),
+                                           Etichette.getEtichetta("Generalita_Sposa_decrescente"), Etichette.getEtichetta("Generalita_Sposa_crescente")]
 
         eList.addAll(CivMatrimonio.etichetteDomain)
 
@@ -59,7 +59,7 @@ class MatrimonioListaViewModel extends AttoListaParentViewModel{
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.Atti_Matrimonio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atti_Matrimonio"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -67,14 +67,14 @@ class MatrimonioListaViewModel extends AttoListaParentViewModel{
 
         onCaricaTipiAttoByCategoria()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),            SortUtils.estremiAttoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),              SortUtils.estremiAttoAsc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposo_decrescente),        SortUtils.cognomeNomeConiuge1Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposo_crescente),          SortUtils.cognomeNomeConiuge1Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposa_decrescente),        SortUtils.cognomeNomeConiuge2Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposa_crescente),          SortUtils.cognomeNomeConiuge2Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_decrescente),             SortUtils.dataEventoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_crescente),               SortUtils.dataEventoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),            SortUtils.estremiAttoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),              SortUtils.estremiAttoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposo_decrescente")),        SortUtils.cognomeNomeConiuge1Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposo_crescente")),          SortUtils.cognomeNomeConiuge1Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposa_decrescente")),        SortUtils.cognomeNomeConiuge2Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposa_crescente")),          SortUtils.cognomeNomeConiuge2Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_decrescente")),             SortUtils.dataEventoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_crescente")),               SortUtils.dataEventoAsc ))
 
         //Default: estremi atto discendente
         selectedOrder = listaOrder[0]
@@ -153,7 +153,7 @@ class MatrimonioListaViewModel extends AttoListaParentViewModel{
                 Map params = [tipoAttoDomain: ta]
                 apriDettaglio(uriDettaglioDivorzio, params)
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

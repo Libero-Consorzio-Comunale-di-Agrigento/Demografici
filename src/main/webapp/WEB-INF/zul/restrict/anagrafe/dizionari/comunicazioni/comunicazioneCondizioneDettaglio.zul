@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window viewModel="@id('vm') @init('restrict.anagrafe.dizionari.comunicazioni.ComunicazioneCondizioneDettaglioViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            contentStyle="overflow:auto;"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+		<hlayout valign="middle">
+			<controlBarDettaglio/>
+			<label value="@load(vm.formLabel)" sclass="formTitle"/>
+		</hlayout>
+
+		<vlayout width="100%">
+			<grid sclass="form">
+				<rows>
+					<row>
+						<cell align="right" width="150px">
+							<label value="@load(vm.etichette['Descrizione'])"/>
+						</cell>
+                        <cell>
+                            <combobox model="@load(vm.listaCondizioni)" readonly="true" width="300px"
+                                      selectedItem="@bind(vm.dettaglio.condizioneSql)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </cell>
+                    </row>
+                    <row>
+                        <cell align="right" width="150px">
+                            <label value="@load(vm.etichette['Condizione'])"/>
+                        </cell>
+                        <cell>
+                            <textbox value="@load(vm.dettaglio.condizioneSql.condizione)"
+                                     multiline="true" hflex="1" rows="5" disabled="true"/>
+                        </cell>
+                    </row>
+				</rows>
+			</grid>
+		</vlayout>
+
+	</window>
+
+</zk>

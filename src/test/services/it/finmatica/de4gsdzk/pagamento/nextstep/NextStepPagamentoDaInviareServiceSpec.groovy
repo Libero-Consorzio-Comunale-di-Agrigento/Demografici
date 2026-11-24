@@ -11,7 +11,7 @@ class NextStepPagamentoDaInviareServiceSpec extends WspaPagamentoDaInviareServic
 
     void setup() {
         NextStepPagamentoDaInviareRepository nextStepPagamentoDaInviareRepository = Mock(NextStepPagamentoDaInviareRepository)
-        nextStepPagamentoDaInviareService = new NextStepPagamentoDaInviareService(statoCivileService, utenteCustomService, nextStepPagamentoDaInviareRepository)
+        nextStepPagamentoDaInviareService = new NextStepPagamentoDaInviareService(gsdService, utenteCustomService, nextStepPagamentoDaInviareRepository)
     }
 
     @Override

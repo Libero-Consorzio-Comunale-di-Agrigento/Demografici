@@ -15,9 +15,9 @@ enum ETipoProvvedimentoSeparazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PR: return Etichette.Provvedimento
-            case NA: return Etichette.Negoziazione_assistita
-            case AC: return Etichette.Accordo_separazione
+            case PR: return Etichette.getEtichetta("Provvedimento")
+            case NA: return Etichette.getEtichetta("Negoziazione_assistita")
+            case AC: return Etichette.getEtichetta("Accordo_separazione")
         }
         return null
     }

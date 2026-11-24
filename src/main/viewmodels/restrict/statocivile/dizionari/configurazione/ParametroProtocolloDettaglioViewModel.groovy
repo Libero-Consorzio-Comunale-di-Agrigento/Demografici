@@ -36,7 +36,7 @@ class ParametroProtocolloDettaglioViewModel extends DizionarioDettaglioViewModel
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Parametro_Protocollo]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Parametro_Protocollo")]
         eList.addAll(CivParametroProtocollo.etichetteDomain)
 
         // Aggiungo etichette liste
@@ -45,7 +45,7 @@ class ParametroProtocolloDettaglioViewModel extends DizionarioDettaglioViewModel
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Parametro_Protocollo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Parametro_Protocollo"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -86,7 +86,7 @@ class ParametroProtocolloDettaglioViewModel extends DizionarioDettaglioViewModel
             })
             w.doModal()
         } catch(Exception e) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             log.error("Codice Tipo Atto non scelto?", e)
         }
     }
@@ -100,7 +100,7 @@ class ParametroProtocolloDettaglioViewModel extends DizionarioDettaglioViewModel
     @Command void onSalvaRecord() {
         if (dettaglio){
             CivParametroProtocollo c = civParametroProtocolloService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

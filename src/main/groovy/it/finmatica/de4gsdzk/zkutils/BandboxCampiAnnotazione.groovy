@@ -3,7 +3,7 @@ package it.finmatica.de4gsdzk.zkutils
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.config.Holders
 import it.finmatica.de4gsdzk.statocivile.CivNotaFormula
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Etichette
 import org.zkoss.zk.ui.Component
 import org.zkoss.zk.ui.Executions
@@ -37,8 +37,8 @@ class BandboxCampiAnnotazione extends CustomBandbox {
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -47,10 +47,10 @@ class BandboxCampiAnnotazione extends CustomBandbox {
 			b.insert(0,"%")
 			b.append("%")
 		}
-		List<String> lista = Holders.getApplicationContext().getBean(StatoCivileService.class).listVariabili(CivNotaFormula.class, tipoAtto, b.toString(), campoDb)
+		List<String> lista = Holders.getApplicationContext().getBean(GsdService.class).listVariabili(CivNotaFormula.class, tipoAtto, b.toString(), campoDb)
 		listbox.setModel(new ListModelList<String>(lista))
 		paging.setTotalSize(lista.size())
-		label.value = getEtichetta(etichette, Etichette.Numero_record_trovati) + paging.totalSize
+		label.value = getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) + paging.totalSize
 	}
 
 }

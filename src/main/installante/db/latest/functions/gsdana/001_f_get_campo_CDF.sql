@@ -15,7 +15,8 @@ w_valore	varchar2(255);
 begin
   begin
     select decode(w_campo,
-             'COD_CDF', cdf.cod_cdf)
+             'COD_CDF', cdf.cod_cdf,
+             'ID', cdf.id)
       into w_valore
       from anacdf cdf
      where matricola = a_matricola

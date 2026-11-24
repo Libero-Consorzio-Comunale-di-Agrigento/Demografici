@@ -15,13 +15,18 @@
 
 		<tabbox hflex="1" vflex="1">
 			<tabs>
-				<tab label="@load(vm.etichette['Per_Comunicazione'])"			tooltiptext="@load(vm.etichette['Per_Comunicazione'])"/>
+				<tab label="@load(vm.etichette['Per_Atto'])"			tooltiptext="@load(vm.etichette['Per_Atto'])"/>
+				<tab label="@load(vm.etichette['Per_Annotazione'])"			tooltiptext="@load(vm.etichette['Per_Annotazione'])"/>
 				<tab label="@load(vm.etichette['Per_Destinatario'])"			tooltiptext="@load(vm.etichette['Per_Destinatario'])"/>
 			</tabs>
 			<tabpanels>
 				<tabpanel>
-					<include src="/restrict/statocivile/comunicazioni/comunicazioniDaElaborareXComunicazioneLista.zul" />
+					<include src="/restrict/statocivile/comunicazioni/comunicazioniDaElaborareXAttoLista.zul" />
 				</tabpanel>
+
+                <tabpanel>
+                    <include src="/restrict/statocivile/comunicazioni/comunicazioniDaElaborareXAnnotazioneLista.zul" />
+                </tabpanel>
 
 				<tabpanel>
 					<include src="/restrict/statocivile/comunicazioni/comunicazioniDaElaborareXDestinatarioLista.zul" />

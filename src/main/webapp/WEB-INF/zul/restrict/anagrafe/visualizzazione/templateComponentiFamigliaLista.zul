@@ -25,14 +25,14 @@
             </zk>
         </listhead>
         <template name="model" var="item">
-            <listitem>
+            <listitem style="height: 40px;">
                 <listcell label="@load(item.cognome)"/>
                 <listcell label="@load(item.nome)"/>
                 <listcell label="@load(item.sesso)"/>
                 <listcell>
                     <dateLabel value="@load(item.dataNascita)"/>
                 </listcell>
-                <listcell label="@load(item.rapportoParentela)"/>
+                <listcell label="@load(item.rapportoParentelaDescrizione)"/>
                 <zk if="${not vm.showAnp}">
                     <listcell>
                         <checkbox checked="@load(not empty item.convivenzaDiFatto)" disabled="true"/>

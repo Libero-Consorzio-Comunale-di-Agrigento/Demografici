@@ -280,7 +280,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="64" splitType="Stretch">
+		<band height="84" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField isBlankWhenNull="true">
@@ -412,7 +412,7 @@
 				</reportElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="40" width="204" height="20" uuid="da9b8567-4bf3-487f-acc6-f25785e91de3"/>
+				<reportElement x="0" y="60" width="800" height="20" uuid="da9b8567-4bf3-487f-acc6-f25785e91de3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>

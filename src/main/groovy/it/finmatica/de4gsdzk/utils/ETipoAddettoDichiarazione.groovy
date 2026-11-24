@@ -13,8 +13,8 @@ enum ETipoAddettoDichiarazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case AD: return Etichette.Addetto_Delegato
-            case DS: return Etichette.Direttore_Sanitario
+            case AD: return Etichette.getEtichetta("Addetto_Delegato")
+            case DS: return Etichette.getEtichetta("Direttore_Sanitario")
         }
         return null
     }

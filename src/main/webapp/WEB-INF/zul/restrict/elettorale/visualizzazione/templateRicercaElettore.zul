@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <grid sclass="form">
+        <columns>
+            <column width="160px"/>
+            <column/>
+            <column width="160px"/>
+            <column/>
+            <column width="160px"/>
+            <column width="150px"/>
+            <column width="52px"/>
+        </columns>
+        <rows>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Tipo_Lista'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <combobox model="@load(vm.listaTipoLista)" readonly="true" onSelect="@command('onRicerca')"
+                                  selectedItem="@bind(vm.ricercaElettore.tipoLista)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each?vm.etichette['Tutti']: each.descrizioneBreve)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="tipoLista"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Stato'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <combobox model="@load(vm.listaStatiElettore)" readonly="true" onSelect="@command('onRicerca')"
+                                  selectedItem="@bind(vm.ricercaElettore.stato)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutti'))"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="stato"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Anno'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaElettore.anno)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="anno"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Sesso'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <combobox model="@load(vm.listaSesso)" readonly="true" onSelect="@command('onRicerca')"
+                                  selectedItem="@bind(vm.ricercaElettore.sesso)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutti'))"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="sesso"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Matricola'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaElettore.matricola)" hflex="1"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="matricola"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell colspan="2"/>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Cognome'])"/>
+                </cell>
+                <cell colspan="5">
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaElettore.cognome)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1" style="text-transform:uppercase"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="cognome"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <customLabel value="@load(vm.etichette['Nome'])"/>
+                </cell>
+                <cell colspan="5">
+                    <hlayout valign="middle" hflex="1">
+                        <textbox value="@bind(vm.ricercaElettore.nome)"
+                                 onOK="@command('onRicerca')"
+                                 hflex="1" style="text-transform:uppercase"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="nome"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Fascicolo'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.fascicoloDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.fascicoloA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="fascicoloDa,fascicoloA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Sezione'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.sezioneDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.sezioneA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="sezioneDa,sezioneA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell colspan="2"/>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Progressivo_Sezionale'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.progressivoSezionaleDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.progressivoSezionaleA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="progressivoSezionaleDa,progressivoSezionaleA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Progressivo_Generale'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.progressivoGeneraleDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.progressivoGeneraleA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="progressivoGeneraleDa,progressivoGeneraleA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell colspan="2"/>
+                <cell/>
+            </row>
+            <row>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Tessera'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.tesseraDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <intbox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.tesseraA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="tesseraDa,tesseraA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Data_Tessera'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                        <label value="@load(vm.etichette['Da'])"/>
+                        <datebox onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.dataTesseraDa)"/>
+                        <space/>
+                        <label value="@load(vm.etichette['A'])"/>
+                        <datebox  onOK="@command('onRicerca')" width="110px"
+                                value="@bind(vm.ricercaElettore.dataTesseraA)"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="dataTesseraDa,dataTesseraA"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell align="right">
+                    <label value="@load(vm.etichette['Giacenza'])"/>
+                </cell>
+                <cell>
+                    <hlayout valign="middle">
+                    <combobox model="@load(vm.listaTipoGiacenza)" readonly="true" width="90px" onSelect="@command('onRicerca')"
+                              selectedItem="@bind(vm.ricercaElettore.giacenza)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                        <template name="model">
+                            <comboitem label="@load(vm.getEtichettaEnum(each, 'Tutte'))"
+                                       value="@load(each)"/>
+                        </template>
+                    </combobox>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampoRicerca')">
+                            <custom-attributes proprieta="giacenza"/>
+                        </button>
+                    </hlayout>
+                </cell>
+                <cell>
+                    <button tooltiptext="@load(vm.etichette['Effettua_Ricerca'])"
+                            image="/images/icon/action/16x16/search.png"
+                            onClick="@command('onRicerca')"
+                            hflex="1"/>
+                </cell>
+            </row>
+        </rows>
+    </grid>
+</zk>

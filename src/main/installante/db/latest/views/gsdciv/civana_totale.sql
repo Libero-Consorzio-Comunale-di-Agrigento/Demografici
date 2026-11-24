@@ -2,14 +2,14 @@
 --changeset amonopoli:202505191635 runOnChange:true stripComments:false
 create or replace view civana_totale
       (ID, ID_ATTO,
-       TIPO_ATTO, UFFICIO, ANNO, ATTO, PARTE, SERIE, 
+       TIPO_ATTO, UFFICIO, ANNO, ATTO, PARTE, SERIE,
        MATRICOLA_1, MATRICOLA_2,
        UFFICIO_ORIG, ANNO_ORIG, ATTO_ORIG, PARTE_ORIG, SERIE_ORIG, COD_PRO_ATTO_ORIG, COD_COM_ATTO_ORIG, ID_ATTO_ANSC_ORIG,
 --
        FLAG_AGGIORNATO_NA0,
        COMPOSIZIONE_COMPLETA_NA0,
 --
-       des_com_atto, sigla_pro_atto, cod_rec, id_atto_ansc, 
+       des_com_atto, sigla_pro_atto, cod_rec, id_atto_ansc,
        numero_unico, natura,
        cognome_nome, sesso, data_nas, cod_pro_nas, cod_com_nas, cod_pro_res, cod_com_res, cod_fiscale, cf_calcolato, nazionalita,
        cognome_nome_m, sesso_m, data_nas_m, cod_pro_nas_m, cod_com_nas_m, cod_pro_res_m, cod_com_res_m, cod_fiscale_m, cf_calcolato_m, nazionalita_m,
@@ -366,29 +366,31 @@ select
        to_number(na0.anno||lpad(nvl(na0.idNotifica,rownum),10,'0'))
 -- ID_ATTO
      , na0.idAnsc
--- TIPO_ATTO 
+-- TIPO_ATTO
 -- idTipoEvento: 1 - 'Nascita', 2 - 'Morte', 3 - 'Matrimonio', 4 - 'Unione Civile', 5 - 'Cittadinanza'
-     , decode(na0.idTipoEvento, 1, 2, 2, 5, 3, 4, 4, -4, 5, 1) 
+     , decode(na0.idTipoEvento, 1, 2, 2, 5, 3, 4, 4, -4, 5, 1)
 -- UFFICIO
-     , decode(na0.idTipoEvento, 1, nas.ufficio, 2, mor.ufficio, 3, mat.ufficio, 4, uci.ufficio, 5, cit.ufficio) 
+     , decode(na0.idTipoEvento, 1, nas.ufficio, 2, mor.ufficio, 3, mat.ufficio, 4, uci.ufficio, 5, cit.ufficio)
 -- ANNO
-     , nvl(decode(na0.idTipoEvento, 1, nas.anno, 2, mor.anno, 3, mat.anno, 4, uci.anno, 5, cit.anno), na0.anno)
+--     , nvl(decode(na0.idTipoEvento, 1, nas.anno, 2, mor.anno, 3, mat.anno, 4, uci.anno, 5, cit.anno), na0.anno)
+     , decode(na0.idTipoEvento, 1, nas.anno, 2, mor.anno, 3, mat.anno, 4, uci.anno, 5, cit.anno)
 -- ATTO
-     , nvl(decode(na0.idTipoEvento, 1, nas.atto, 2, mor.atto, 3, mat.atto, 4, uci.atto, 5, cit.atto), na0.numeroComunale)
+--     , nvl(decode(na0.idTipoEvento, 1, nas.atto, 2, mor.atto, 3, mat.atto, 4, uci.atto, 5, cit.atto), na0.numeroComunale)
+     , decode(na0.idTipoEvento, 1, nas.atto, 2, mor.atto, 3, mat.atto, 4, uci.atto, 5, cit.atto)
 -- PARTE
      , decode(na0.idTipoEvento, 1, nas.parte, 2, mor.parte, 3, mat.parte, 4, uci.parte, 5, to_number(null))
 -- SERIE
      , decode(na0.idTipoEvento, 1, nas.serie, 2, mor.serie, 3, mat.serie, 4, uci.serie, 5, to_char(null))
 -- MATRICOLA_1
 -- idTipoEvento: 1 - 'Nascita', 2 - 'Morte', 3 - 'Matrimonio', 4 - 'Unione Civile', 5 - 'Cittadinanza'
-     , decode(na0.idTipoEvento, 
+     , decode(na0.idTipoEvento,
          1, f_ADS_matricola(na0.idSchedaSoggettoAnpr_PD, na0.codFiscale_PD, na0.cognome_PD, na0.nome_1, na0.sesso_PD, na0.dataNascita_PD),
             f_ADS_matricola(na0.idSchedaSoggettoAnpr_1, na0.codFiscale_1, na0.cognome_1, na0.nome_1, na0.sesso_1, na0.dataNascita_1))
 -- MATRICOLA_2
 -- idTipoEvento: 1 - 'Nascita', 2 - 'Morte', 3 - 'Matrimonio', 4 - 'Unione Civile', 5 - 'Cittadinanza'
-     , decode(na0.idTipoEvento, 
-         1, f_ADS_matricola(na0.idSchedaSoggettoAnpr_MD, na0.codFiscale_MD, na0.cognome_MD, na0.nome_MD, na0.sesso_MD, na0.dataNascita_MD), 
-         2, f_ADS_matricola(na0.idSchedaSoggettoAnpr_CN, na0.codFiscale_CN, na0.cognome_CN, na0.nome_CN, na0.sesso_CN, na0.dataNascita_CN), 
+     , decode(na0.idTipoEvento,
+         1, f_ADS_matricola(na0.idSchedaSoggettoAnpr_MD, na0.codFiscale_MD, na0.cognome_MD, na0.nome_MD, na0.sesso_MD, na0.dataNascita_MD),
+         2, f_ADS_matricola(na0.idSchedaSoggettoAnpr_CN, na0.codFiscale_CN, na0.cognome_CN, na0.nome_CN, na0.sesso_CN, na0.dataNascita_CN),
             f_ADS_matricola(na0.idSchedaSoggettoAnpr_2, na0.codFiscale_2, na0.cognome_2, na0.nome_2, na0.sesso_2, na0.dataNascita_2))
 -- UFFICIO_ORIG
      , to_number(null)
@@ -425,8 +427,8 @@ select
      , decode(na0.idTipoEvento,
          1, nvl(nas.natura, 'O'),
          2, nvl(mor.natura, 'O'),
-         3, nvl(mat.natura, decode(na0.SEP_dataTrascrizione_ACC, '', 'O', 'D')),
-         4, nvl(uci.natura, decode(na0.SCI_dataEvento,'', 'O','D')),
+         3, nvl(mat.natura, decode(na0.idTipoNotifica,'SC10','D','O')),
+         4, nvl(uci.natura, decode(na0.idTipoNotifica,'SC12','D','O')),
          5, nvl(cit.natura, 'A'))
 -- COGNOME_NOME
      , na0.cognome_1||'/'||na0.nome_1
@@ -523,20 +525,42 @@ select
 -- FLAG_AA_IMPRECISATO
      , to_char(null)
 -- DATA_MAT
-     , f_ADS_data(na0.MAT_dataEvento)
+     ,  decode(na0.idTipoEvento,
+         3, decode(na0.idTipoNotifica,'SC10',
+              decode(na0.TRA_dataTrascrizione,'',f_ADS_data(na0.dataFormazioneAtto),f_ADS_data(na0.TRA_dataTrascrizione)),
+              f_ADS_data(na0.MAT_dataEvento)),
+         4, decode(na0.idTipoNotifica,'SC12',
+              decode(na0.TRA_dataTrascrizione,'',f_ADS_data(na0.dataFormazioneAtto),f_ADS_data(na0.TRA_dataTrascrizione)),
+              f_ADS_data(na0.UCI_dataEvento)))
 -- COD_PRO_MAT
 -- idTipoEvento: 1 - 'Nascita', 2 - 'Morte', 3 - 'Matrimonio', 4 - 'Unione Civile', 5 - 'Cittadinanza'
      , decode(na0.idTipoEvento,
-         3, to_number(substr(f_ADS_codice_comune(na0.MAT_codiceIstat, na0.MAT_nomeComune, na0.MAT_siglaProvinciaIstat, na0.MAT_codiceStato, na0.MAT_descrizioneLocalita, na0.MAT_dataEvento),1,3)),
-         4, to_number(substr(f_ADS_codice_comune(na0.UCI_codiceIstat, na0.UCI_nomeComune, na0.UCI_siglaProvinciaIstat, na0.UCI_codiceStato, na0.UCI_descrizioneLocalita, na0.UCI_dataEvento),1,3)))
+         3, decode(na0.idTipoNotifica,'SC10',
+              decode(na0.TRA_nomeEnte, '',
+                to_number(substr(f_ADS_codice_comune(na0.REG_codiceIstat, na0.REG_nomeComune, na0.REG_siglaProvinciaIstat, '', '', na0.dataFormazioneAtto),1,3)),
+                to_number(substr(f_ADS_codice_comune(na0.TRA_codiceIstat, na0.TRA_nomeComune, na0.TRA_siglaProvinciaIstat, na0.TRA_codiceStato, na0.TRA_descrizioneLocalita, na0.TRA_dataTrascrizione),1,3))),
+              to_number(substr(f_ADS_codice_comune(na0.MAT_codiceIstat, na0.MAT_nomeComune, na0.MAT_siglaProvinciaIstat, na0.MAT_codiceStato, na0.MAT_descrizioneLocalita, na0.MAT_dataEvento),1,3))),
+         4, decode(na0.idTipoNotifica,'SC12',
+              decode(na0.TRA_nomeEnte, '',
+                to_number(substr(f_ADS_codice_comune(na0.REG_codiceIstat, na0.REG_nomeComune, na0.REG_siglaProvinciaIstat, '', '', na0.dataFormazioneAtto),1,3)),
+                to_number(substr(f_ADS_codice_comune(na0.TRA_codiceIstat, na0.TRA_nomeComune, na0.TRA_siglaProvinciaIstat, na0.TRA_codiceStato, na0.TRA_descrizioneLocalita, na0.TRA_dataTrascrizione),1,3))),
+              to_number(substr(f_ADS_codice_comune(na0.UCI_codiceIstat, na0.UCI_nomeComune, na0.UCI_siglaProvinciaIstat, na0.UCI_codiceStato, na0.UCI_descrizioneLocalita, na0.UCI_dataEvento),1,3))))
 -- COD_COM_MAT
 -- idTipoEvento: 1 - 'Nascita', 2 - 'Morte', 3 - 'Matrimonio', 4 - 'Unione Civile', 5 - 'Cittadinanza'
      ,  decode(na0.idTipoEvento,
-         3, to_number(substr(f_ADS_codice_comune(na0.MAT_codiceIstat, na0.MAT_nomeComune, na0.MAT_siglaProvinciaIstat, na0.MAT_codiceStato, na0.MAT_descrizioneLocalita, na0.MAT_dataEvento),4,3)),
-         4, to_number(substr(f_ADS_codice_comune(na0.UCI_codiceIstat, na0.UCI_nomeComune, na0.UCI_siglaProvinciaIstat, na0.UCI_codiceStato, na0.UCI_descrizioneLocalita, na0.UCI_dataEvento),4,3)))
+         3, decode(na0.idTipoNotifica,'SC10',
+              decode(na0.TRA_nomeEnte, '',
+                to_number(substr(f_ADS_codice_comune(na0.REG_codiceIstat, na0.REG_nomeComune, na0.REG_siglaProvinciaIstat, '', '', na0.dataFormazioneAtto),4,3)),
+                to_number(substr(f_ADS_codice_comune(na0.TRA_codiceIstat, na0.TRA_nomeComune, na0.TRA_siglaProvinciaIstat, na0.TRA_codiceStato, na0.TRA_descrizioneLocalita, na0.TRA_dataTrascrizione),4,3))),
+              to_number(substr(f_ADS_codice_comune(na0.MAT_codiceIstat, na0.MAT_nomeComune, na0.MAT_siglaProvinciaIstat, na0.MAT_codiceStato, na0.MAT_descrizioneLocalita, na0.MAT_dataEvento),4,3))),
+         4, decode(na0.idTipoNotifica,'SC12',
+              decode(na0.TRA_nomeEnte, '',
+                to_number(substr(f_ADS_codice_comune(na0.REG_codiceIstat, na0.REG_nomeComune, na0.REG_siglaProvinciaIstat, '', '', na0.dataFormazioneAtto),4,3)),
+                to_number(substr(f_ADS_codice_comune(na0.TRA_codiceIstat, na0.TRA_nomeComune, na0.TRA_siglaProvinciaIstat, na0.TRA_codiceStato, na0.TRA_descrizioneLocalita, na0.TRA_dataTrascrizione),4,3))),
+              to_number(substr(f_ADS_codice_comune(na0.UCI_codiceIstat, na0.UCI_nomeComune, na0.UCI_siglaProvinciaIstat, na0.UCI_codiceStato, na0.UCI_descrizioneLocalita, na0.UCI_dataEvento),4,3))))
 -- DATA_DIV
-     , decode(na0.SEP_dataTrascrizione_ACC, '', 
-         decode(na0.SCI_dataEvento,'', to_number(null), 
+     , decode(na0.SEP_dataTrascrizione_ACC, '',
+         decode(na0.SCI_dataEvento,'', to_number(null),
            f_ADS_data(na0.SCI_dataEvento)),
          f_ADS_data(na0.SEP_dataTrascrizione_ACC))
 -- CAMBIO_COGNOME_M

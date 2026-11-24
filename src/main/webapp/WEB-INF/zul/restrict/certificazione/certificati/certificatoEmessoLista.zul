@@ -221,7 +221,7 @@
                         </listcell>
 						<listcell label="@load(item.tipoCertificato.descrizione)"/>
 						<listcell label="@load(item.beneficiario.cognomeNome)" />
-						<listcell label="@load(item.richiedente.cognomeNome)" />
+						<listcell label="@load(item.richiedenteLista)" />
 						<listcell label="@load(item.terminalista.cognomeNome)" />
 						<listcell label="@load(item.modalitaRilascio.descrizioneStampa)" />
 						<listcell sclass="testo-al-centro">

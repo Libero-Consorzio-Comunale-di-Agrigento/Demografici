@@ -3,13 +3,16 @@ package restrict.statocivile.annotazioni
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.StampaAttoService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAtto
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
 import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazione
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.EStatoAnnotazione
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.TestoUtils
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.zkutils.CustomPopupAnnotazione
 import org.springframework.dao.EmptyResultDataAccessException
@@ -51,7 +54,7 @@ abstract class ArchivioAnnotazioniListaParentViewModel extends AbstractListaView
     private StampaAttoService stampaAttoService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivAttoService civAttoService
@@ -59,10 +62,10 @@ abstract class ArchivioAnnotazioniListaParentViewModel extends AbstractListaView
     void doInit(Window w, List<Map> eList=[]) {
         self = w
 
-        eList.addAll([Etichette.Annotazioni, Etichette.Tipo_Atto, Etichette.Comune, Etichette.Altro_comune, Etichette.Annulla,
-                      Etichette.Chiudi, Etichette.Modello_Personalizzato, Etichette.Generata_da, Etichette.Atto_non_in_Archivio])
+        eList.addAll([Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Altro_comune"), Etichette.getEtichetta("Annulla"),
+                      Etichette.getEtichetta("Chiudi"), Etichette.getEtichetta("Modello_Personalizzato"), Etichette.getEtichetta("Generata_da"), Etichette.getEtichetta("Atto_non_in_Archivio")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_comune, EtichetteMessaggi.Ask_Formato_etichette])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_comune"), Etichette.getEtichetta("Ask_Formato_etichette")])
         eList.addAll(etichetteListaDefault)
 
         // Aggiungo etichette della Controlbar
@@ -82,12 +85,12 @@ abstract class ArchivioAnnotazioniListaParentViewModel extends AbstractListaView
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
 
-        listaUffici = [null] + statoCivileService.listUffici()
+        listaUffici = [null] + gsdService.listUffici()
 
-        ArcComune comune = statoCivileService.getComuneCliente()
-        tipiComune = [[label:"${comune.descrizioneComune}", value: 1], [label:getEtichetta(Etichette.Altro_comune), value: 0]]
+        ArcComune comune = gsdService.getComuneCliente()
+        tipiComune = [[label:"${comune.descrizioneComune}", value: 1], [label:getEtichetta(Etichette.getEtichetta("Altro_comune")), value: 0]]
         tipoComune = tipiComune[0]
     }
 
@@ -110,9 +113,9 @@ abstract class ArchivioAnnotazioniListaParentViewModel extends AbstractListaView
         if (annotazioneAtto?.id) {
 
             Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.RETRY, Messagebox.Button.CANCEL]
-            String[] buttonLabels = [TestoUtils.formatoA4, TestoUtils.formatoA3, getEtichetta(Etichette.Modello_Personalizzato), getEtichetta(Etichette.Annulla)]
+            String[] buttonLabels = [TestoUtils.formatoA4, TestoUtils.formatoA3, getEtichetta(Etichette.getEtichetta("Modello_Personalizzato")), getEtichetta(Etichette.getEtichetta("Annulla"))]
 
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Formato_etichette), msgTitle, buttons, buttonLabels , Messagebox.QUESTION, null,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Formato_etichette")), msgTitle, buttons, buttonLabels , Messagebox.QUESTION, null,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             switch (e.getName()) {

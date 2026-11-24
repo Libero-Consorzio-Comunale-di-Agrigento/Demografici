@@ -74,15 +74,15 @@
 							<listcell label="@load(item.cognome2)"/>
 							<listcell label="@load(item.nome2)"/>
 						</zk>
-						<listcell label="@load(item.atto)"/>
-						<listcell label="@load(item.parte)"/>
+						<listcell label="@load(item.attoLista.atto)"/>
+						<listcell label="@load(item.attoLista.parte)"/>
 						<zk if="${vm.tipoAttoEnum.hasSerie()}">
-							<listcell label="@load(item.serie)"/>
+							<listcell label="@load(item.attoLista.serie)"/>
 						</zk>
-						<listcell label="@load(item.anno)"/>
-						<listcell label="@load(item.ufficio)"/>
+						<listcell label="@load(item.attoLista.anno)"/>
+						<listcell label="@load(item.attoLista.ufficio)"/>
 						<zk if="${vm.anscOn}">
-							<listcell label="@load(item.idAttoAnsc)"/>
+							<listcell label="@load(item.attoLista.idAttoAnsc)"/>
 						</zk>
 						<listcell>
 							<button image="/images/icon/action/16x16/forward.png"

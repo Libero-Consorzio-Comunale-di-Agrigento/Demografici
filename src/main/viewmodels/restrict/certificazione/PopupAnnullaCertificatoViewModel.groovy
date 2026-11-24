@@ -4,7 +4,6 @@ import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.utils.CustomEvents
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Events
@@ -33,8 +32,8 @@ class PopupAnnullaCertificatoViewModel {
 
         this.showCertificatoEsternoWarning = showCertificatoEsternoWarning ?: Boolean.FALSE
 
-        List<Map<String, String>> eList = [Etichette.annulla_certificato_tooltip, Etichette.Note, Etichette.Conferma, Etichette.Chiudi]
-        eList.addAll(EtichetteMessaggi.Warn_annullamento_certificato_esterno)
+        List<Map<String, String>> eList = [Etichette.getEtichetta("annulla_certificato_tooltip"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Conferma"), Etichette.getEtichetta("Chiudi")]
+        eList.addAll(Etichette.getEtichetta("Warn_annullamento_certificato_esterno"))
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
     }
 

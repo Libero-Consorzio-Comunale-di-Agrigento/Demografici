@@ -15,7 +15,7 @@ import restrict.AbstractTabNavigatorViewModel
 class RegistroViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Registri_Documenti, Etichette.Modelli_DAT]
+        List<Map> eList = [Etichette.getEtichetta("Registri_Documenti"), Etichette.getEtichetta("Modelli_DAT")]
 
         doInit(w, eList)
 

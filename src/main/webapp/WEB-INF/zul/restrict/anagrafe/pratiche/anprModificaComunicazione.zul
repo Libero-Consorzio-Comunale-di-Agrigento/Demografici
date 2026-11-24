@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.AnprModificaComunicazioneViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="1000px"
+            title="@load(vm.etichette['ANPR'])"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell>
+                            <!--SERVIZIO-->
+                            <zk if="${vm.dettaglio.servizio.flagModificaPre}">
+                                <groupbox closable="false">
+                                    <caption label="@load(vm.etichette['Modifica_Servizio'])"/>
+                                    <grid sclass="form">
+                                        <columns>
+                                            <column width="180px"/>
+                                            <column/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <cell align="right">
+                                                    <customLabel value="@load(vm.etichette['Servizio'])"/>
+                                                </cell>
+                                                <cell>
+                                                    <combobox model="@load(vm.listaServizi)" readonly="true"
+                                                              width="300px"
+                                                              selectedItem="@bind(vm.dettaglio.servizio)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                                        <template name="model">
+                                                            <comboitem
+                                                                    label="@load(c:cat3(each.id, ' - ', each.descrizione))"
+                                                                    value="@load(each)"/>
+                                                        </template>
+                                                    </combobox>
+                                                </cell>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </groupbox>
+                            </zk>
+
+                            <!--CODICE FISCALE-->
+                            <groupbox closable="false">
+                                <caption label="@load(vm.etichette['Codice_Fiscale'])"/>
+                                <grid sclass="form">
+                                    <columns>
+                                        <column width="180px"/>
+                                        <column/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <cell align="right">
+                                                <customLabel value="@load(vm.etichette['Gestione_Codice_Fiscale'])"/>
+                                            </cell>
+                                            <cell>
+                                                <hlayout valign="center">
+                                                    <radiogroup model="@load(vm.listaTipiGestioneCF)"
+                                                                selectedItem="@bind(vm.dettaglio.datiAggiuntivi.gestioneCfAnpr)">
+                                                        <template name="model">
+                                                            <radio label="@load(vm.getEtichettaEnum(each))"
+                                                                   value="@load(each)" style="padding:10px"/>
+                                                        </template>
+                                                    </radiogroup>
+                                                    <button image="/images/icon/action/16x16/cancel.png"
+                                                            tooltiptext="@load(vm.etichette['Annulla_Scelta'])"
+                                                            onClick="@command('onAnnullaScelta')">
+                                                    </button>
+                                                </hlayout>
+                                            </cell>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupbox>
+
+                            <!--DATI AGGIUNTIVI-->
+                            <groupbox closable="false">
+                                <caption label="@load(vm.etichette['Dati_Aggiuntivi'])"/>
+                                <grid sclass="form">
+                                    <columns>
+                                        <column width="180px"/>
+                                        <column width="45px"/>
+                                        <column/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <cell align="right">
+                                                <customLabel value="@load(vm.etichette['Forza_Data_Decorrenza'])"/>
+                                            </cell>
+                                            <cell colspan="2">
+                                                <datebox format="dd/MM/yyyy"
+                                                         value="@bind(vm.dettaglio.datiAggiuntivi.dataDecorrenza)"
+                                                         width="120px"/>
+                                            </cell>
+                                        </row>
+                                        <row>
+                                            <cell align="right">
+                                                <customLabel value="@load(vm.etichette['Forza_CF_Ricerca'])"/>
+                                            </cell>
+                                            <cell align="center">
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.flagCfRic)"/>
+                                            </cell>
+                                            <cell>
+                                                <textbox value="@bind(vm.dettaglio.datiAggiuntivi.codFiscaleRicerca)"
+                                                         width="250px"/>
+                                            </cell>
+                                        </row>
+                                        <row>
+                                            <cell align="right">
+                                                <customLabel value="@load(vm.etichette['Forza_CF_ANPR'])"/>
+                                            </cell>
+                                            <cell align="center">
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.flagCfAnpr)"/>
+                                            </cell>
+                                            <cell>
+                                                <textbox value="@bind(vm.dettaglio.datiAggiuntivi.codFiscaleAnpr)"
+                                                         width="250px"/>
+                                            </cell>
+                                        </row>
+                                        <row>
+                                            <cell align="right">
+                                                <customLabel value="@load(vm.etichette['Inibizione_Id_Anpr'])"/>
+                                            </cell>
+                                            <cell colspan="2">
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnpr)"
+                                                          label="@load(vm.etichette['Soggetto'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprFam)"
+                                                          label="@load(vm.etichette['Famiglia'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprPd)"
+                                                          label="@load(vm.etichette['Padre'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprMd)"
+                                                          label="@load(vm.etichette['Madre'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprCn)"
+                                                          label="@load(vm.etichette['Coniuge'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprUc)"
+                                                          label="@load(vm.etichette['Contraente_UCI'])"/>
+                                                <space/>
+                                                <checkbox checked="@bind(vm.dettaglio.datiAggiuntivi.noIdAnprCv)"
+                                                          label="@load(vm.etichette['Convivente_CdF'])"/>
+                                            </cell>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </groupbox>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+
+
+        </vlayout>
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                        image="/images/icon/action/16x16/save.png"/>
+                <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                        image="/images/icon/action/16x16/close.png"/>
+            </h:div>
+        </h:div>
+
+    </window>
+
+</zk>

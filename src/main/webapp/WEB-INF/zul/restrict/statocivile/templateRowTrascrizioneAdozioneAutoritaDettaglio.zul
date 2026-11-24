@@ -33,10 +33,10 @@
                             </button>
                         </hlayout>
                     </cell>
-                    <cell/>
+                    <cell colspan="3"/>
                 </row>
                 <row>
-                    <cell align="right">
+                    <cell align="right" width="160px">
                         <zk if="${vm.anscOn}">
                             <h:span class="mandatoryLabel">*</h:span>
                         </zk>
@@ -58,12 +58,29 @@
                         <textbox value="@load(vm.datiProvenienza.comuneProvenienza.siglaProvincia)" width="60px"
                                  readonly="true"/>
                     </cell>
+                    <cell align="right">
+                            <customLabel visible="@load(vm.dettaglio.motivoNascita.flagConsolato)"
+                                         value="@load(vm.etichette['Consolato'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1"
+                                 visible="@load(vm.dettaglio.motivoNascita.flagConsolato)">
+                            <bandboxConsolati hflex="1"
+                                              value="@load(vm.datiProvenienza.consolato.descrizione)"
+                                              onSelect="@command('onSelectConsolato', campoRiferimento='PROVENIENZA')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoProvenienza')">
+                                <custom-attributes proprieta="consolato"/>
+                            </button>
+                        </hlayout>
+                    </cell>
                 </row>
                 <row visible="@load(vm.dettaglio.motivoNascita.flagAutoritaEstremi)">
-                    <cell align="right">
+                    <cell align="right" width="160px">
                         <customLabel mandatory="true" value="@load(vm.etichette['Nota_Rif_Anno'])"/>
                     </cell>
-                    <cell valign="middle" colspan="3">
+                    <cell valign="middle" colspan="5">
                         <textbox value="@bind(vm.datiProvenienza.notaRif)"/>
                         <label value="/"/>
                         <textbox value="@bind(vm.datiProvenienza.annoNotaRif)"/>
@@ -75,11 +92,11 @@
                     </cell>
                 </row>
                 <row visible="@load(vm.dettaglio.motivoNascita.flagAutoritaEstremi)">
-                    <cell align="right">
+                    <cell align="right" width="160px">
                         <customLabel mandatory="true"
                                      value="@load(vm.etichette['In_data'])"/>
                     </cell>
-                    <cell colspan="3">
+                    <cell colspan="5">
                         <hlayout valign="middle" hflex="1">
                             <datebox value="@bind(vm.datiProvenienza.dataNotaRif)"
                                      width="100px"
@@ -100,7 +117,7 @@
         <grid sclass="form">
             <rows>
                 <row>
-                    <cell align="right" width="180px">
+                    <cell align="right" width="160px">
                         <h:span class="mandatoryLabel">*</h:span>
                         <label value="@load(vm.etichette['Data_Formazione'])"/>
                     </cell>
@@ -115,7 +132,7 @@
                             </button>
                         </hlayout>
                     </cell>
-                    <cell align="right" width="180px">
+                    <cell align="right" width="160px">
                         <h:span class="mandatoryLabel">*</h:span>
                         <label value="@load(vm.etichette['Estremi_Atto'])"/>
                     </cell>

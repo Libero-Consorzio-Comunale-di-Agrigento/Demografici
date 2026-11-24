@@ -32,8 +32,8 @@ w_return		varchar2(32000);
 begin
   if a_servizio      is not null and
      a_id_operazione is not null and
-     a_archivio_rif  is not null and 
-     ( (a_servizio <> 'R008_R' and a_id_rif is not null) or (a_servizio = 'R008_R') )
+     a_archivio_rif  is not null and
+     ( (a_servizio not in ('R008_R','R005_C') and a_id_rif is not null) or (a_servizio in ('R008_R','R005_C') ) )
   then
      begin
        w_ansciu_ins   := f_ansciu_ins(a_id_operazione,a_servizio,a_archivio_rif,a_id_rif,'',a_terminalista,'', a_id_atto);
@@ -48,7 +48,7 @@ begin
        else
           w_return := 'Problemi nell''invio della comunicazione ANSC';
        end if;
-     exception 
+     exception
        when others then
             w_return := 'OPS! Qualcosa è andato storto...'||'('||sqlerrm||')';
      end;
@@ -58,4 +58,3 @@ begin
 
 end;
 /
-

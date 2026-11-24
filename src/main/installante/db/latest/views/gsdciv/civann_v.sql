@@ -25,14 +25,12 @@ select v.*,
        '1') tipo_formula,
 -- testo_annotazione_per_atto
        v.testo_annotazione||
-         decode(v.atti_a3,
-           'S', chr(10)||chr(10)|| 
-                '   li __________'||chr(10)||chr(10)||  
-                '          L''UFFICIALE DELLO STATO CIVILE'||chr(10)||chr(10)||
-                '          ______________________________' ,
-            chr(10)||
-            ltrim(decode(f_CIV_get_campo(v.tipo_atto, v.id_atto, 'NATURA'),'O', f_valore_inp('ATTI_LI',1,255,'X','')||' ')||
-              'li '|| nvl(to_char(to_date(v.data_reg,'j'),'dd/mm/yyyy'),'__________') ||' L''UFFICIALE DELLO STATO CIVILE'||' ______________________________' )) testo_annotazione_per_atto,
+         decode(f_flag_ANSC(),'S',to_char(null),
+           ltrim(decode(f_CIV_get_campo(v.tipo_atto, v.id_atto, 'NATURA'), 'O',
+              chr(10)||
+              f_valore_inp('ATTI_LI',1,255,'X','')||' '||
+              'li '|| nvl(to_char(to_date(v.data_reg,'j'),'dd/mm/yyyy'),'__________') ||
+              ' L''UFFICIALE DELLO STATO CIVILE'||' ______________________________' ))) testo_annotazione_per_atto,
 -- num_colonne
        41 num_colonne,
 -- num_righe
@@ -45,7 +43,7 @@ select v.*,
        f_provincia_stato_al(v.cod_pro_prov,v.cod_com_prov,'','S','',to_char(v.d_data_prov,'j')) sigla_pro_prov,
 -- flag_modello_provv
        f_CIV_flag_modello_istat('PROVV',null,v.id) flag_modello_provv
- from (select ann.*, 
+ from (select ann.*,
               f_CIV_formula_ann(ann.tipo_atto,ann.formula,'') formula_dfa,
               f_CIV_formula_ann(ann.tipo_atto,ann.formula,'S') des_formula,
               nvl(rtrim(f_valore_inp('ATTI_A3',1,1,'X','S')),'N') atti_a3

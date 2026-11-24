@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.anagrafe
 
 import javax.persistence.AttributeConverter
 import javax.persistence.Converter
+import it.finmatica.de4gsdzk.utils.Etichette
 
 enum ETipoAnagrafe {
     RESIDENTI("RES"),
@@ -20,6 +21,16 @@ enum ETipoAnagrafe {
             throw new IllegalArgumentException("Id ${id} non valido")
         }
         return result
+    }
+
+    Map getEtichettaDesc(){
+        switch(this) {
+            case RESIDENTI: return Etichette.getEtichetta("Apr")
+            case NON_RESIDENTI: return Etichette.getEtichetta("Non_Residenti")
+            case AIRE: return Etichette.getEtichetta("Aire")
+        }
+        return null
+
     }
 
     @Converter

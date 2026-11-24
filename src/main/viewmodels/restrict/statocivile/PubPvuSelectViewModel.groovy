@@ -44,7 +44,7 @@ class PubPvuSelectViewModel extends AbstractRecuperoSelectViewModel {
         modifyEnabled = false
         searchEnabled = true
 
-        List<Map> eList = [Etichette.Processi_Verbali, Etichette.Pubblicazioni, Etichette.Seleziona_Processo_Verbale, Etichette.Seleziona_Pubblicazione]
+        List<Map> eList = [Etichette.getEtichetta("Processi_Verbali"), Etichette.getEtichetta("Pubblicazioni"), Etichette.getEtichetta("Seleziona_Processo_Verbale"), Etichette.getEtichetta("Seleziona_Pubblicazione")]
         eList.addAll(CivPubblicazione.etichetteDomain)
         eList.addAll(CivProcessoVerbale.etichetteDomain)
         eList.addAll(etichetteRecuperoDefault)
@@ -61,13 +61,13 @@ class PubPvuSelectViewModel extends AbstractRecuperoSelectViewModel {
         this.tipoAttoEnum = tipoAttoEnum
         switch (tipoAttoEnum) {
             case ETipoAtto.MAT:
-                msgTitle = getEtichetta(Etichette.Pubblicazioni)
-                windowTitle = getEtichetta(Etichette.Seleziona_Pubblicazione)
+                msgTitle = getEtichetta(Etichette.getEtichetta("Pubblicazioni"))
+                windowTitle = getEtichetta(Etichette.getEtichetta("Seleziona_Pubblicazione"))
                 caricaLista()
                 break
             case ETipoAtto.UCI:
-                msgTitle = getEtichetta(Etichette.Processi_Verbali)
-                windowTitle = getEtichetta(Etichette.Seleziona_Processo_Verbale)
+                msgTitle = getEtichetta(Etichette.getEtichetta("Processi_Verbali"))
+                windowTitle = getEtichetta(Etichette.getEtichetta("Seleziona_Processo_Verbale"))
                 caricaLista()
                 break
         }
@@ -118,7 +118,7 @@ class PubPvuSelectViewModel extends AbstractRecuperoSelectViewModel {
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [idVerbale: dettaglio.id, idAnagrafe1: dettaglio.idAnagrafe1, idAnagrafe2: dettaglio.idAnagrafe2] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

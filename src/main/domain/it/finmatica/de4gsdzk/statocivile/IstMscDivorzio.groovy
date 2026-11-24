@@ -536,15 +536,15 @@ class IstMscDivorzio extends IstMscMsuBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_Registrazione, Etichette.Data_Atto, Etichette.Data_Trascrizione,
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Data_Atto"), Etichette.getEtichetta("Data_Trascrizione"),
 
-                                              Etichette.Avvocato_Marito, Etichette.Avvocato_Moglie, Etichette.Importo,
-                                              Etichette.Tipo_accordo_extragiudiziale, Etichette.Albo_Iscrizione, Etichette.Numero_Figli,
-                                              Etichette.Causa_separazione, Etichette.Causa_divorzio, Etichette.Data_Separazione,
-                                              Etichette.Data_Stipula, Etichette.Data_stipula_accordo, Etichette.Data_trascrizione_accordo,
-                                              Etichette.Mantenimento, Etichette.Tipo_Affidamento, Etichette.Presenza_Figli,
-                                              Etichette.Mantenimento_Maggiorenni, Etichette.Sostentamento_coniuge, Etichette.Chi_obbligato,
-                                              Etichette.Mensile, Etichette.Una_Tantum, Etichette.Assegnazione_abitazione, Etichette.Numero_Pernotti,
-                                              Etichette.Figli_Minorenni, Etichette.Figli_Maggiorenni, Etichette.Figli_Maggiorenni_A_Carico]
+                                              Etichette.getEtichetta("Avvocato_Marito"), Etichette.getEtichetta("Avvocato_Moglie"), Etichette.getEtichetta("Importo"),
+                                              Etichette.getEtichetta("Tipo_accordo_extragiudiziale"), Etichette.getEtichetta("Albo_Iscrizione"), Etichette.getEtichetta("Numero_Figli"),
+                                              Etichette.getEtichetta("Causa_separazione"), Etichette.getEtichetta("Causa_divorzio"), Etichette.getEtichetta("Data_Separazione"),
+                                              Etichette.getEtichetta("Data_Stipula"), Etichette.getEtichetta("Data_stipula_accordo"), Etichette.getEtichetta("Data_trascrizione_accordo"),
+                                              Etichette.getEtichetta("Mantenimento"), Etichette.getEtichetta("Tipo_Affidamento"), Etichette.getEtichetta("Presenza_Figli"),
+                                              Etichette.getEtichetta("Mantenimento_Maggiorenni"), Etichette.getEtichetta("Sostentamento_coniuge"), Etichette.getEtichetta("Chi_obbligato"),
+                                              Etichette.getEtichetta("Mensile"), Etichette.getEtichetta("Una_Tantum"), Etichette.getEtichetta("Assegnazione_abitazione"), Etichette.getEtichetta("Numero_Pernotti"),
+                                              Etichette.getEtichetta("Figli_Minorenni"), Etichette.getEtichetta("Figli_Maggiorenni"), Etichette.getEtichetta("Figli_Maggiorenni_A_Carico")]
 
 }

@@ -1,14 +1,19 @@
 package it.finmatica.de4gsdzk.ansc
 
-import it.finmatica.de4gsdzk.ansc.AnscEndPointServizioArchivio
+
 import it.finmatica.de4gsdzk.utils.ETipoArchivioAnsc
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface AnscEndPointServizioArchivioRepository extends JpaRepository<AnscEndPointServizioArchivio, Long> {
 
-    @Query("SELECT c FROM AnscEndPointServizioArchivio c INNER JOIN FETCH c.servizio WHERE c.id = :id ")
+    @Query("""SELECT c FROM AnscEndPointServizioArchivio c 
+              LEFT OUTER JOIN FETCH c.servizio 
+              LEFT OUTER JOIN FETCH c.servizioPrecedente 
+              WHERE c.id = :id """)
     AnscEndPointServizioArchivio findById(@Param("id") Long id)
 
     @Query("""SELECT c FROM AnscEndPointServizioArchivio c INNER JOIN FETCH c.servizio LEFT OUTER JOIN FETCH c.servizioPrecedente
@@ -132,5 +137,24 @@ interface AnscEndPointServizioArchivioRepository extends JpaRepository<AnscEndPo
                ORDER BY c.sequenza""")
     List<AnscEndPointServizioArchivio> findAllByArchivioAndCasoUsoAndFlagConsultazioneEventoIsTrueOrderBySequenza(@Param("archivio") ETipoArchivioAnsc archivio,
                                                                                                                   @Param("idCasoUso") Long idCasoUso)
+
+
+    @Query("""SELECT c FROM AnscEndPointServizioArchivio c 
+              INNER JOIN FETCH c.servizio 
+              WHERE c.servizio.flagConsultazioneSoggPar = java.lang.Boolean.TRUE""")
+    List<AnscEndPointServizioArchivio> findByServizioFlagConsultazioneSoggParIsTrue()
+
+    @Query(value = """SELECT c FROM AnscEndPointServizioArchivio c 
+                      LEFT OUTER JOIN FETCH c.servizio 
+                      LEFT OUTER JOIN FETCH c.servizioPrecedente
+                      WHERE c.archivio = :archivio
+                      AND (:idCasoUso is NULL OR c.idCasoUso = :idCasoUso)""",
+            countQuery = """SELECT count(c) 
+                            FROM AnscEndPointServizioArchivio c 
+                            WHERE c.archivio = :archivio
+                            AND (:idCasoUso is NULL OR c.idCasoUso = :idCasoUso)""")
+    Page<AnscEndPointServizioArchivio> findAllByArchivioAndCasoUso(@Param("archivio") ETipoArchivioAnsc archivio,
+                                                                   @Param("idCasoUso") Long idCasoUso,
+                                                                    Pageable pageable)
 
 }

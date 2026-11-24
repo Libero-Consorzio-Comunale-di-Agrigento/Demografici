@@ -204,5 +204,5 @@ dbms_output.put_line('oggetto '||w_des_ogg||' esistente');
   end if;
 end;
 /
-comment on table GSDLOG_V is 'Servizi Demografici - Log Applicativi'
+comment on table GSDLOG is 'Servizi Demografici - Log Applicativi'
 /

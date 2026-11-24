@@ -14,9 +14,9 @@ enum ETipoRiconoscimentoPrenatale {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case MD: return Etichette.Materno
-            case PD: return Etichette.Entrambi_riconoscimento_unico
-            case PDMD: return Etichette.Entrambi_riconoscimento_diverso
+            case MD: return Etichette.getEtichetta("Materno")
+            case PD: return Etichette.getEtichetta("Entrambi_riconoscimento_unico")
+            case PDMD: return Etichette.getEtichetta("Entrambi_riconoscimento_diverso")
         }
         return null
     }

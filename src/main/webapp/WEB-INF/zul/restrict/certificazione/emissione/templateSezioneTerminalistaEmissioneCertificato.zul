@@ -74,7 +74,7 @@
                     </cell>
                     <cell colspan="5">
                         <checkbox checked="@bind(vm.forceGenerazioneGte)"
-                                  disabled="@load(empty vm.tipoCertificato or not vm.tipoCertificato.isGenerazioneEsterna())"
+                                  disabled="@load(empty vm.tipoCertificato or not vm.tipoCertificato.isGenerazioneEsterna() or vm.tipoCertificato.tipoAttoEnum eq 'CIT')"
                                   onCheck="@command('onCheckForceGenerazioneGte')"/>
                     </cell>
                 </row>

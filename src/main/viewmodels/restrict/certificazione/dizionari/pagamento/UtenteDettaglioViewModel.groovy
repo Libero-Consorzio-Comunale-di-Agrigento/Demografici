@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.pagamento.nextstep.NextStepUtente
 import it.finmatica.de4gsdzk.pagamento.nextstep.NextStepUtenteService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -33,12 +32,12 @@ class UtenteDettaglioViewModel extends DizionarioDettaglioViewModel implements T
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Utente]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Utente")]
         eList.addAll(NextStepUtente.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Utente)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Utente"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -68,7 +67,7 @@ class UtenteDettaglioViewModel extends DizionarioDettaglioViewModel implements T
     void onSalvaRecord() {
         if (dettaglio) {
             NextStepUtente c = nextStepUtenteService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

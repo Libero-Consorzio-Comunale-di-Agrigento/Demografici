@@ -42,8 +42,8 @@ class BandboxTipoDocumentoAnagrafe extends CustomBandbox {
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 
 	void setTipoDocumentoAnagrafeFiltro(ETipoDocumentoAnagrafeFiltro filtro) {
@@ -61,7 +61,7 @@ class BandboxTipoDocumentoAnagrafe extends CustomBandbox {
 		Paginazione paginazione = new Paginazione(p?.getContent(), p?.getTotalElements())
 		listbox.setModel(new ListModelList( (paginazione?.lista?:[]) ) )
 		paging.setTotalSize( ( (int)(paginazione?.count?:0) ) )
-		label.value = getEtichetta(etichette, Etichette.Numero_record_trovati) + paging.totalSize
+		label.value = getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) + paging.totalSize
 	}
 
 }

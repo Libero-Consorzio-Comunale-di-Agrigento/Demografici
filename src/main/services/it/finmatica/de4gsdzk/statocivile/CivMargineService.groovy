@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.*
 import it.finmatica.de4gsdzk.statocivile.embed.EstremiAtto
@@ -14,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivMargineService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 	private final ArcParametroService arcParametroService
 	private final CivMargineRepository civMargineRepository
 
 	CivMargineService(CivMargineRepository civMargineRepository,
-					  ArcParametroService arcParametroService,
-					  StatoCivileService statoCivileService) {
+                      ArcParametroService arcParametroService,
+                      GsdService gsdService) {
 		this.civMargineRepository = civMargineRepository
 		this.arcParametroService = arcParametroService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivMargine getByUkAtto(String identificativoAtto) {
@@ -60,20 +61,20 @@ class CivMargineService {
 		}
 
 		if (emptyMandatoryFields){
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_margine)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_margine"))
 		}
 
 		/////////////////////// CONVENZIONI ///////////////////////////
 
 		if (sceltaConvenzioniMandatory) {
 			if (obj.sceltaConvenzioni == null) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_convenzioni_patrimoniali)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_convenzioni_patrimoniali"))
 			}
 			if ((obj.sceltaConvenzioni.intValue() == 2) && TestoUtils.isVuoto(obj.leggeConvenzioni)) {
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_convenzioni_patrimoniali)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_convenzioni_patrimoniali"))
 			}
 			if (TestoUtils.checkAcapo(obj?.leggeConvenzioni)) {
-				throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_carattere_a_capo_non_ammesso, "(Legge Convenzioni)")
+				throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_carattere_a_capo_non_ammesso"), "(Legge Convenzioni)")
 			}
 		}
 
@@ -93,7 +94,7 @@ class CivMargineService {
 			if ((obj.serieAttoNascita1 ?: "") != "") {
 				Boolean serie1Ok = TipoAttoUtils.isSerieOk(ETipoAtto.NAS, obj.serieAttoNascita1)
 				if (!(serie1Ok)) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, sezione1)
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), sezione1)
 				}
 			}
 
@@ -102,10 +103,10 @@ class CivMargineService {
 					Integer p1 = obj.parteAttoNascita1
 					Boolean p1Ok = TipoAttoUtils.isParteOk(ETipoAtto.NAS, p1)
 					if (!(p1Ok)) {
-						throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione1)
+						throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione1)
 					}
 				} catch (NumberFormatException nfe) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione1)
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione1)
 				}
 			}
 
@@ -118,18 +119,18 @@ class CivMargineService {
 		if (pubblicazioniMandatory){
 			String sezioneDatiPubblicazione = "'Dati Pubblicazione'"
 			if (obj.documentoPresentatoMatrimonio == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiPubblicazione)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiPubblicazione)
 			}
 			switch(obj.documentoPresentatoMatrimonio){
 				case EDocumentoMatrimonio.UNO:
 					if ( (obj.comuneAffissione1?.codice == null ) || (obj.comuneAffissione1?.codiceProvincia == null) || (obj.dataAffissioneDa1 == null) || (obj.dataAffissioneA1 == null) ){
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiPubblicazione)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiPubblicazione)
 					}
 					break
 				case EDocumentoMatrimonio.DUE:
 					if ( (obj.comuneAffissione1?.codice == null ) || (obj.comuneAffissione1?.codiceProvincia == null) || (obj.dataAffissioneDa1 == null) || (obj.dataAffissioneA1 == null) ||
 						 (obj.comuneAffissione2?.codice == null ) || (obj.comuneAffissione2?.codiceProvincia == null) ){
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneDatiPubblicazione)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneDatiPubblicazione)
 					}
 					break
 			}
@@ -142,7 +143,7 @@ class CivMargineService {
 		validaDati(obj, tipoAttoEnumSource, tipoMargineLateraleMandatory, sceltaConvenzioniMandatory, pubblicazioniMandatory)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		log.info("Lancio salvataggio su CIVMAR per id " + obj.id)
@@ -168,7 +169,7 @@ class CivMargineService {
         }
         String mDef
         try{
-            mDef = (statoCivileService.getValoreParametro(parametro.toString(), 4)?:"").trim()
+            mDef = (gsdService.getValoreParametro(parametro.toString(), 4)?:"").trim()
         } catch (De4gsdzkRuntimeException ex){
             throw new De4gsdzkRuntimeException("Impossibile recuperare il valore del parametro ${parametro.toString()}")
         }

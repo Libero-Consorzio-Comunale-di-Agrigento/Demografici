@@ -10,7 +10,11 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.zkoss.zk.ui.Component
 import org.zkoss.zk.ui.Executions
+import org.zkoss.zk.ui.event.CheckEvent
 import org.zkoss.zk.ui.select.Selectors
+import org.zkoss.zk.ui.select.annotation.Listen
+import org.zkoss.zk.ui.select.annotation.Wire
+import org.zkoss.zul.Checkbox
 import org.zkoss.zul.ListModelList
 
 import static it.finmatica.de4gsdzk.utils.EtichetteUtils.getEtichetta
@@ -19,6 +23,17 @@ class BandboxComuni extends CustomBandbox {
 
 	Date dataRiferimento
 	List<String> idNotIn
+    Boolean escludiSoppressi
+
+	@Wire
+	Checkbox chkEscludiSoppressi
+
+	void setEscludiSoppressi(Boolean value) {
+		escludiSoppressi = value
+		if (chkEscludiSoppressi != null) {
+			chkEscludiSoppressi.checked = (value == true)
+		}
+	}
 
 	BandboxComuni() {
 		super()
@@ -42,12 +57,13 @@ class BandboxComuni extends CustomBandbox {
 
 		List<Map> eList = ArcComuneBaseDomain.etichetteDomain
 		eList.addAll(etichetteBB)
-		eList.addAll([EtichetteMessaggi.Errore_Comune])
+		eList.addAll([Etichette.getEtichetta("Errore_Comune")])
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, EtichetteMessaggi.Errore_Comune)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Errore_Comune"))
+		chkEscludiSoppressi.label = getEtichetta(etichette, Etichette.getEtichetta("Escludi_Soppressi"))
 	}
 
 	void setDataRiferimento(Date d){
@@ -63,10 +79,17 @@ class BandboxComuni extends CustomBandbox {
 				}
 			}
 		}
+		chkEscludiSoppressi.visible = (d == null)
+	}
+
+	@Listen("onCheck = #chkEscludiSoppressi")
+	void onCheckEscludiSoppressi(CheckEvent e) {
+		escludiSoppressi = e.checked
+		loadData(getValue())
 	}
 
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
-		RicercaComune r = new RicercaComune(dataRiferimento, filtro?.toUpperCase(), searchEqual, idNotIn)
+		RicercaComune r = new RicercaComune(dataRiferimento, filtro?.toUpperCase(), searchEqual, idNotIn, escludiSoppressi)
 		PageRequest pr = new PageRequest(paging.getActivePage(), paging.getPageSize(), new Sort(SortUtils.descrizioneComuneAsc) )
 		Page p = Holders.getApplicationContext().getBean(ArcComuneBaseService.class).list(r, pr)
 		listbox.setModel(new ListModelList<ArcComuneBaseDomain>(p.getContent()))

@@ -29,6 +29,6 @@ class CivLuogoDecesso implements ILuogoEvento{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map<String, String>> etichetteDomain = [Etichette.Codice, Etichette.Nel, Etichette.Descrizione, Etichette.Ricevuto_da]
+    static final List<Map<String, String>> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Nel"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Ricevuto_da")]
 
 }

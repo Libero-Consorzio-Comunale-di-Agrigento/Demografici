@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.certificazione.emissione
 
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaMessaggio
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.certificazione.CerAnagrafeFiltro
 import it.finmatica.de4gsdzk.certificazione.embed.Beneficiario
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
@@ -11,7 +11,7 @@ import it.finmatica.de4gsdzk.utils.ESesso
 
 class BeneficiarioViewState {
     private Beneficiario beneficiario
-    private GsdAnagrafeBaseDomain anagrafe
+    private AnagrafeBaseDomain anagrafe
 
     private Boolean selected = Boolean.FALSE
     private List<CerAnagrafeFiltro> anagrafeFiltroList = []
@@ -35,7 +35,7 @@ class BeneficiarioViewState {
         }
     }
 
-    void setAnagrafe(GsdAnagrafeBaseDomain anagrafe) {
+    void setAnagrafe(AnagrafeBaseDomain anagrafe) {
         this.anagrafe = anagrafe
     }
 
@@ -160,7 +160,7 @@ class BeneficiarioViewState {
 
     /*** Anagrafe wrap ***/
 
-    GsdAnagrafeBaseDomain getAnagrafe() {
+    AnagrafeBaseDomain getAnagrafe() {
         return this.anagrafe
     }
 
@@ -176,7 +176,7 @@ class BeneficiarioViewState {
         return this.anagrafe?.archivio
     }
 
-    AnaNazionalita getNazionalita() {
+    AnaCittadinanza getNazionalita() {
         return this.anagrafe?.nazionalita
     }
 

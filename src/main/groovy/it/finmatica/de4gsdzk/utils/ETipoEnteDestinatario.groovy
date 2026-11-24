@@ -9,10 +9,10 @@ enum ETipoEnteDestinatario {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case ENTE: return Etichette.ENTE
-            case COMUNE: return Etichette.COMUNE
-            case CONSOLATO: return Etichette.CONSOLATO
-            case INDIVIDUO: return Etichette.INDIVIDUO
+            case ENTE: return Etichette.getEtichetta("ENTE")
+            case COMUNE: return Etichette.getEtichetta("COMUNE")
+            case CONSOLATO: return Etichette.getEtichetta("CONSOLATO")
+            case INDIVIDUO: return Etichette.getEtichetta("INDIVIDUO")
         }
         return null
     }

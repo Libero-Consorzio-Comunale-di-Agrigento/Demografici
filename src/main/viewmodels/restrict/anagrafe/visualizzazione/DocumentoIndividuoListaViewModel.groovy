@@ -20,15 +20,17 @@ import org.zkoss.zul.Window
 @VariableResolver(DelegatingVariableResolver.class)
 class DocumentoIndividuoListaViewModel extends AbstractDocumentoIndividuoListaViewModel {
 
+    boolean readOnly = false
+
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Documenti_Individuo, Etichette.Storico_tooltip, Etichette.Ordina_per]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Documenti_Individuo"), Etichette.getEtichetta("Storico_tooltip"), Etichette.getEtichetta("Ordina_per")]
 
         doInit(w, eList)
 
-        msgTitle = getEtichetta(Etichette.Documenti_Individuo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Documenti_Individuo"))
 
         formLabel = msgTitle?.toUpperCase()
     }

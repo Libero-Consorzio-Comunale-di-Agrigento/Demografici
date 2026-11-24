@@ -25,6 +25,18 @@ SELECT pub.*,
        f_provincia_stato_al(pub.cod_pro_mat,pub.cod_com_mat,'','S','',pub.data_pub) sigla_pro_mat,
 -- flag_com_in_sospeso
        f_CIV_flag_com_in_sospeso(3,pub.ufficio,pub.anno,pub.parte,pub.serie,pub.atto) flag_com_in_sospeso,
+-- ufficio_lista
+       pub.ufficio ufficio_lista,
+-- anno_lista
+       pub.anno anno_lista,
+-- parte_lista
+       pub.parte parte_lista,
+-- serie_lista
+       pub.serie serie_lista,
+-- atto_lista
+       pub.atto atto_lista,
+-- id_atto_ansc_lista
+       to_char(null) id_atto_ansc_lista,
 -- cognome_m_lista
        decode(pub.natura,'N','*** ANNULLATO',pub.cognome_m)	cognome_1_lista,
 -- nome_m_lista

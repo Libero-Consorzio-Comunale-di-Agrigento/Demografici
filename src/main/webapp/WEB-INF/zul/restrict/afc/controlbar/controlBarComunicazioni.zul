@@ -2,9 +2,8 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul"
-	xmlns:h="http://www.w3.org/1999/xhtml"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 
 	<hlayout sclass="navigazione" valign="middle">
 		<hlayout sclass="afc-control-bar" valign="middle">
@@ -37,7 +36,7 @@
 						   tooltiptext="@load(vm.etichette['protocolla_tooltip'])"
 						   onClick="@command('onProtocolla')"/>
 
-			<toolbarbutton image="/images/icon/action/22x22/customer_doc.png"
+			<toolbarbutton image="/images/de4gsdzk/22x22/doc_public.png"
 						   visible="@load(vm.sendAlboComunicazioneEnabled)"
 						   disabled="@load(not vm.sendAlboComunicazioneEnabled)"
 						   tooltiptext="@load(vm.etichette['invio_albo_tooltip'])"
@@ -46,6 +45,12 @@
 			<zk if="${vm.goToFascicoloEnabled}">
 				<toolbarbuttonGoToFascicolo/>
 			</zk>
+
+            <zk if="${vm.goToAllegatiEnabled}">
+                <toolbarbutton image="/images/icon/action/22x22/folder_edit.png"
+                               tooltiptext="@load(vm.etichette['allegati_tooltip'])"
+                               onClick="@command('onOpenAllegati')"/>
+            </zk>
 
 		</hlayout>
 	</hlayout>

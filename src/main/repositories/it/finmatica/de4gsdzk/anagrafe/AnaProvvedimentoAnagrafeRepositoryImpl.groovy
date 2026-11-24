@@ -22,6 +22,20 @@ class AnaProvvedimentoAnagrafeRepositoryImpl implements AnaProvvedimentoAnagrafe
         Root<AnaProvvedimentoAnagrafe> root = query.from(AnaProvvedimentoAnagrafe.class)
 
         root.fetch("utenteUpd", JoinType.LEFT)
+        root.fetch("dettaglioProvvedimento", JoinType.LEFT)
+        root.fetch("nazionalita", JoinType.LEFT)
+        root.fetch("nazionalitaPrecedente", JoinType.LEFT)
+        root.fetch("viaPrecedente", JoinType.LEFT)
+        root.fetch("titoloStudioPrecedente", JoinType.LEFT)
+        root.fetch("titoloStudio", JoinType.LEFT)
+        root.fetch("professionePrecedente", JoinType.LEFT)
+        root.fetch("professione", JoinType.LEFT)
+        root.fetch("attivitaProfessionalePrecedente", JoinType.LEFT)
+        root.fetch("attivitaProfessionale", JoinType.LEFT)
+        root.fetch("posizioneProfessionalePrecedente", JoinType.LEFT)
+        root.fetch("posizioneProfessionale", JoinType.LEFT)
+        root.fetch("rapportoParentelaPrecedente", JoinType.LEFT)
+        root.fetch("rapportoParentela", JoinType.LEFT)
 
         Predicate[] predicates = getPredicates(cb, root, anagrafe, includiPrivati)
         query
@@ -52,10 +66,19 @@ class AnaProvvedimentoAnagrafeRepositoryImpl implements AnaProvvedimentoAnagrafe
                 .select(cb.count(countRoot))
                 .where(cb.and(countPredicates))
 
-        List<AnaVariazioneAnagrafe> resultList = entityManager.createQuery(query)
+        List<AnaProvvedimentoAnagrafe> resultList = entityManager.createQuery(query)
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList()
+
+        if (!resultList.isEmpty()) {
+            entityManager.createQuery(
+                    "SELECT p FROM AnaProvvedimentoAnagrafe p LEFT JOIN FETCH p.indirizzo.via WHERE p IN :entities",
+                    AnaProvvedimentoAnagrafe.class)
+                    .setParameter("entities", resultList)
+                    .getResultList()
+        }
+
         Long count = entityManager.createQuery(countQuery).getSingleResult()
 
         return new PageImpl<>(resultList, pageable, count)
@@ -67,8 +90,6 @@ class AnaProvvedimentoAnagrafeRepositoryImpl implements AnaProvvedimentoAnagrafe
 
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class)
         Root<AnaProvvedimentoAnagrafe> countRoot = countQuery.from(AnaProvvedimentoAnagrafe.class)
-
-        countRoot.join("utenteUpd", JoinType.LEFT)
 
         Predicate[] countPredicates = getPredicates(cb, countRoot, anagrafe, includiPrivati)
         countQuery

@@ -34,7 +34,7 @@ class CivRichiamoFormulaServiceSpec extends AbstractServiceSpec<CivRichiamoFormu
         CivTestoFormulaService civTestoFormulaService = new CivTestoFormulaService(Mock(CivTestoFormulaRepository))
 
         service = new CivRichiamoFormulaService(
-                repo, Mock(GsdValidazioneTestoService), civTestoFormulaService, statoCivileService)
+                repo, Mock(GsdValidazioneTestoService), civTestoFormulaService, gsdService)
 
     }
 

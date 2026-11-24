@@ -17,10 +17,10 @@ enum ETipoConsensoRiconoscimento {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case EV: return Etichette.contestuale_evento
-            case AU: return Etichette.anteriormente_usc
-            case AA: return Etichette.anteriormente_pu
-            case SR: return Etichette.sentenza_dopo_rifiuto
+            case EV: return Etichette.getEtichetta("contestuale_evento")
+            case AU: return Etichette.getEtichetta("anteriormente_usc")
+            case AA: return Etichette.getEtichetta("anteriormente_pu")
+            case SR: return Etichette.getEtichetta("sentenza_dopo_rifiuto")
         }
         return null
     }

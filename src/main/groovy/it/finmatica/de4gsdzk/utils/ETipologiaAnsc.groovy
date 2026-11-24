@@ -20,11 +20,11 @@ enum ETipologiaAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NASCITA: return Etichette.Nascita
-            case MORTE: return Etichette.Morte
-            case MATRIMONIO: return Etichette.Matrimonio
-            case UNIONE_CIVILE: return Etichette.Unione_Civile
-            case CITTADINANZA: return Etichette.Cittadinanza
+            case NASCITA: return Etichette.getEtichetta("Nascita")
+            case MORTE: return Etichette.getEtichetta("Morte")
+            case MATRIMONIO: return Etichette.getEtichetta("Matrimonio")
+            case UNIONE_CIVILE: return Etichette.getEtichetta("Unione_Civile")
+            case CITTADINANZA: return Etichette.getEtichetta("Cittadinanza")
         }
         return null
     }

@@ -25,11 +25,11 @@ class CivComunicazioneEnte extends CivComunicazioneRelazioneBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ente,
-                                              Etichette.Sequenza,
-                                              Etichette.Comunicazione,
-                                              Etichette.Codice,
-                                              Etichette.Descrizione,
-                                              Etichette.Tipo_Atto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ente"),
+                                              Etichette.getEtichetta("Sequenza"),
+                                              Etichette.getEtichetta("Comunicazione"),
+                                              Etichette.getEtichetta("Codice"),
+                                              Etichette.getEtichetta("Descrizione"),
+                                              Etichette.getEtichetta("Tipo_Atto")]
 
 }

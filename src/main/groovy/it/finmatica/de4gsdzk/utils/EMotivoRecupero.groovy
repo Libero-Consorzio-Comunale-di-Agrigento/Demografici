@@ -17,11 +17,11 @@ enum EMotivoRecupero {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case M1: return Etichette.Indisponibilita
-            case M2: return Etichette.Atto_fcc
-            case M3: return Etichette.Cdu_non_gestito
-            case M4: return Etichette.Indisp_centrale
-            case MX: return Etichette.Altro
+            case M1: return Etichette.getEtichetta("Indisponibilita")
+            case M2: return Etichette.getEtichetta("Atto_fcc")
+            case M3: return Etichette.getEtichetta("Cdu_non_gestito")
+            case M4: return Etichette.getEtichetta("Indisp_centrale")
+            case MX: return Etichette.getEtichetta("Altro")
         }
         return null
     }

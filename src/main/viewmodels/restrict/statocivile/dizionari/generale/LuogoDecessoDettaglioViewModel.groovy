@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivLuogoDecesso
 import it.finmatica.de4gsdzk.statocivile.CivLuogoDecessoService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -27,12 +26,12 @@ class LuogoDecessoDettaglioViewModel extends DizionarioDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Luogo_decesso]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Luogo_decesso")]
         eList.addAll(CivLuogoDecesso.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Luogo_decesso)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Luogo_decesso"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -59,7 +58,7 @@ class LuogoDecessoDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivLuogoDecesso c = civLuogoDecessoService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

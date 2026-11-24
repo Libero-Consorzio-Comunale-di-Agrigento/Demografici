@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.GsdValidazioneTestoService
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivMinutaRepository
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.ValidationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -17,16 +17,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivMinutaService {
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     private final GsdValidazioneTestoService gsdValidazioneTestoService
 
 	private final CivMinutaRepository civMinutaRepository
 
-    CivMinutaService(CivMinutaRepository civMinutaRepository, StatoCivileService statoCivileService, GsdValidazioneTestoService gsdValidazioneTestoService) {
+    CivMinutaService(CivMinutaRepository civMinutaRepository, GsdService gsdService, GsdValidazioneTestoService gsdValidazioneTestoService) {
 
         this.civMinutaRepository = civMinutaRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.gsdValidazioneTestoService = gsdValidazioneTestoService
 	}
 
@@ -55,11 +55,11 @@ class CivMinutaService {
         if (tipoOperazione.isInsert()){
             long n = civMinutaRepository.countByTipoAttoAndCodice(obj.tipoAtto, obj.codice)
             if (n > 0) {
-                throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Minuta_Duplicata)
+                throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Minuta_Duplicata"))
             }
         }
 
-        gsdValidazioneTestoService.checkWrongVar(obj.testo.clob, statoCivileService.listVariabili(CivTestoMinuta.class, obj.tipoAtto))
+        gsdValidazioneTestoService.checkWrongVar(obj.testo.clob, gsdService.listVariabili(CivTestoMinuta.class, obj.tipoAtto))
     }
     
     CivMinuta save (ETipoOperazione tipoOperazione, CivMinuta obj) {
@@ -67,11 +67,11 @@ class CivMinutaService {
 
         if (obj.id == null) {
             // solo in caso di inserimento
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
         if (obj.testo.id == null) {
             // solo in caso di inserimento
-            obj.testo.id = statoCivileService.getIdFromSequence(obj.testo)
+            obj.testo.id = gsdService.getIdFromSequence(obj.testo)
         }
         obj.testo.codice = obj.codice
 

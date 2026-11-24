@@ -44,6 +44,6 @@ class ControlBarDettaglioAttributes extends ControlBarAttributes {
 	void setPrintRecordPlusEnabled(boolean printRecordPlusEnabled) {
 		super.printPlusEnabled = printRecordPlusEnabled
 	}
-	static final List<Map> etichetteCbDettaglioDesc = [Etichette.back_tooltip, Etichette.salva_tooltip, Etichette.print_tooltip, Etichette.elimina_tooltip]
+	static final List<Map> etichetteCbDettaglioDesc = [Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("salva_tooltip"), Etichette.getEtichetta("print_tooltip"), Etichette.getEtichetta("elimina_tooltip")]
 
 }

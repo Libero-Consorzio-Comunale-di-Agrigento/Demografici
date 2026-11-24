@@ -7,6 +7,7 @@ class EmissioneCertificatoViewState {
     CerTipoRichiedente tipoRichiedente
     BeneficiarioViewState beneficiarioState
     RichiedenteViewState richiedenteState
+    EnteRichiedenteViewState enteRichiedenteState
     List<CerCategoriaTipoCertificato> listaCategoriaTipoCertificato = [null]
     CerCategoriaTipoCertificato categoriaTipoCertificatoSelezionata
     CerTipoCertificato tipoCertificato

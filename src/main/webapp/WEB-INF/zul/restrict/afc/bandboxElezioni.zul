@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<bandpopup>
+
+		<hlayout sclass="navigazione" valign="middle" visible="false">
+			<hlayout sclass="afc-control-bar" valign="middle">
+
+				<paging sclass="afc-paging"/>
+
+				<hlayout sclass="campo-ricerca" visible="false">
+					<textbox width="180px"
+							 mold="default"
+							 disabled="true"
+							 style="border-width:0px;"/>
+					<image src="/images/de4gsdzk/10x10/cancelSimple.png"
+						   style="padding:5px;"
+						   sclass="toolbar-mini-button"/>
+				</hlayout>
+			</hlayout>
+		</hlayout>
+
+		<listbox width="350px" height="250px" multiple="false">
+			<listhead>
+				<customlistheader label="@load(self.bbParent.etichette['Data'])"/>
+				<customlistheader label="@load(self.bbParent.etichette['Anno'])"/>
+				<customlistheader label="@load(self.bbParent.etichette['Progressivo'])"/>
+			</listhead>
+			<template name="model">
+				<listitem>
+					<listcell label="${empty each.data? null:(c:formatDate(each.data, 'dd/MM/yyyy'))}"/>
+					<listcell label="${each.anno}"/>
+					<listcell label="${each.progressivo}"/>
+				</listitem>
+			</template>
+		</listbox>
+
+	</bandpopup>	
+	
+</zk>

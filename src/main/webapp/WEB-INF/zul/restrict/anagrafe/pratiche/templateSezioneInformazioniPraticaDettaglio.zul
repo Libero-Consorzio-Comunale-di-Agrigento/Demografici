@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Informazioni_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column />
+                <column width="150px"/>
+                <column />
+                <column width="150px"/>
+                <column />
+                <column width="150px"/>
+                <column width="150px"/>
+                <column width="150px"/>
+                <column width="150px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Anagrafe'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.getEtichettaEnum(vm.pratica.archivioAnagrafe))" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Tipo_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.getEtichettaEnum(vm.pratica.tipoPratica))" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Variazione_Pratica'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaVariazioni)" readonly="true" hflex="1" disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.selectedVariazione)" onSelect="@command('onSelectVariazione')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizioneTpr)" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Iniziativa'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox
+                                model="@load(vm.listaIniziative)" readonly="true" hflex="1" disabled="@load(vm.readOnly)"
+                                selectedItem="@bind(vm.pratica.iniziativa) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Numera'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaSiNo)"
+                                        selectedItem="@bind(vm.numeraPratica)" onCheck="@command('onSelectNumera')">
+                                <template name="model">
+                                    <radio label="@load(vm.etichette[each.name()])" value="@load(each)"
+                                           disabled="@load(vm.readOnly or (vm.pratica.id ne null and vm.pratica.numero gt 0) or vm.tipoPratica.id eq 'R')"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Anno_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <intbox value="@bind(vm.pratica.anno)" maxlength="4" readonly="@load(vm.readOnly or vm.pratica.id ne null)" hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Numero_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout visible="@load(vm.numeraPratica.id eq 'SI')">
+                            <intbox value="@bind(vm.pratica.numero)" hflex="1" width="70px"
+                                    readonly="@load(vm.readOnly or not vm.abilitaNumero)"/>
+                            <checkbox checked="@bind(vm.abilitaNumero)" tooltiptext="@load(vm.etichette['Abilita_Numero'])"
+                                      disabled="@load(vm.readOnly or (vm.pratica.id ne null and vm.pratica.numero gt 0))"/>
+                        </hlayout>
+                        <label value="@load(c:cat3( '(', vm.etichette['Provvisorio'], ')' ))"
+                               visible="@load(vm.numeraPratica.id eq 'NO')"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Data_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.pratica.data)" disabled="@load(vm.readOnly)" hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Data_Decorrenza'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.pratica.dataDecorrenza)" disabled="@load(vm.readOnly)" hflex="1"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.statocivile.CivLuogoMatrimonio
 import it.finmatica.de4gsdzk.statocivile.CivLuogoMatrimonioService
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -27,12 +26,12 @@ class LuogoMatrimonioDettaglioViewModel extends DizionarioDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Luogo_Matrimonio]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Luogo_Matrimonio"),]
         eList.addAll(CivLuogoMatrimonio.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Luogo_Matrimonio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Luogo_Matrimonio"),)
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -59,7 +58,7 @@ class LuogoMatrimonioDettaglioViewModel extends DizionarioDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivLuogoMatrimonio c = civLuogoMatrimonioService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

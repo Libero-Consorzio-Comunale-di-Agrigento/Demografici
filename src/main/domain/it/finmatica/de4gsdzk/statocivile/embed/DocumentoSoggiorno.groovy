@@ -24,9 +24,9 @@ class DocumentoSoggiorno {
 
     @Embedded
     @AttributeOverrides([
-            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_ENTE_DS")),
+            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_ENTE_DS", updatable = false, insertable = false)),
             @AttributeOverride(name = "descrizione", column = @Column(name = "DES_COM_ENTE_DS", updatable = false, insertable = false)),
-            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_ENTE_DS")),
+            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_ENTE_DS", updatable = false, insertable = false)),
             @AttributeOverride(name = "siglaProvincia", column = @Column(name = "SIGLA_PRO_ENTE_DS", updatable = false, insertable = false))
     ])
     private Comune comune
@@ -43,6 +43,6 @@ class DocumentoSoggiorno {
     }
 
 
-    static final List<Map> etichetteDomain = [Etichette.Numero, Etichette.Data_emissione, Etichette.Scadenza_Illimitata,
-                                              Etichette.Data_scadenza, Etichette.Comune]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Data_emissione"), Etichette.getEtichetta("Scadenza_Illimitata"),
+                                              Etichette.getEtichetta("Data_scadenza"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Illimitata")]
 }

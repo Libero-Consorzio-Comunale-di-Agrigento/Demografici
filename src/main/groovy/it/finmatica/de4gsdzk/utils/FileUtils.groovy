@@ -1,6 +1,8 @@
 package it.finmatica.de4gsdzk.utils
 
+
 import it.finmatica.de4gsdzk.GestioneTestiGsdModello
+import it.finmatica.reporter2.mailmerge.services.FinmaticaMailMerge
 import it.finmatica.reporter2.util.Zip
 import org.apache.commons.lang.StringUtils
 import org.apache.tika.Tika
@@ -45,7 +47,15 @@ class FileUtils {
                                                              ETipoImage.JPG.contentType,
                                                              ETipoImage.JPEG.contentType]
 
-    static String getMimeType(String extension){
+    static List<String> defaultAcceptableMimeTypesXImg = [ETipoImage.JPG.contentType, ETipoImage.JPEG.contentType,
+                                                          ETipoImage.BMP.contentType, ETipoImage.MSBMP.contentType,
+                                                          ETipoImage.PNG.contentType]
+
+    static List<String> defaultAcceptableMimeTypesXP12 = [ETipoFile.P12.contentType]
+
+    static List<String> defaultAcceptableMimeTypesXModelli = [ETipoFile.ODT.contentType, ETipoFile.DOC.contentType, ETipoFile.DOCX.contentType]
+
+    static String getMimeType(String extension) {
         for (ETipoFile tf : ETipoFile.values()) {
             if (tf.estensione.equalsIgnoreCase(extension)) {
                 return tf.contentType
@@ -54,52 +64,54 @@ class FileUtils {
         return null
     }
 
-    static Map<String, String> checkFile(byte[] allegatoDaControllare, String nomeAllegato, List<String> formatiAmmessi=null){
-        String contentTypeDetected = new Tika().detect(allegatoDaControllare, nomeAllegato)
-        List<String> acceptableMimeTypes = formatiAmmessi?:defaultAcceptableMimeTypes
+    static Map<String, String> checkFile(byte[] allegatoDaControllare, List<String> formatiAmmessi = null) {
+        // Rilevazione MIME type basata esclusivamente sull'intestazione (magic bytes) del file,
+        // senza considerare il nome del file, in conformità ai requisiti ISO 27001.
+        String contentTypeDetected = new Tika().detect(allegatoDaControllare)
+        List<String> acceptableMimeTypes = formatiAmmessi ?: defaultAcceptableMimeTypes
         if (acceptableMimeTypes.contains(contentTypeDetected)) {
             if (Zip.isZip(allegatoDaControllare)) {
-                try{
+                try {
                     Zip.checkMaliciousZip(new ByteArrayInputStream(allegatoDaControllare))
-                } catch(Exception ex){
-                    return EtichetteMessaggi.Errore_file
+                } catch (Exception ex) {
+                    return Etichette.getEtichetta("Errore_file")
                 }
             }
         } else {
-            return EtichetteMessaggi.Errore_file_formato
+            return Etichette.getEtichetta("Errore_file_formato")
         }
         return null
     }
 
-    static Map<String, String> checkNomeFile(String nomefile, char[] caratteriSpeciali=null){
+    static Map<String, String> checkNomeFile(String nomefile, char[] caratteriSpeciali = null) {
         if (nomefile.contains("'")) {
-            return EtichetteMessaggi.Errore_nome_file
+            return Etichette.getEtichetta("Errore_nome_file")
         }
-        if ( (nomefile != null) && (caratteriSpeciali != null) ) {
+        if ((nomefile != null) && (caratteriSpeciali != null)) {
             for (char ch : caratteriSpeciali) {
                 if (nomefile.contains(ch.toString())) {
-                    return EtichetteMessaggi.Errore_nome_file
+                    return Etichette.getEtichetta("Errore_nome_file")
                 }
             }
         }
         return null
     }
 
-    static String getCodiceModelloComunicazioneStandard(Integer idComunicazione){
+    static String getCodiceModelloComunicazioneStandard(Integer idComunicazione) {
         return StringUtils.leftPad(idComunicazione.toString(), 3, "0")
     }
 
-    static String getNomeModelloComunicazioneStandard(Integer idComunicazione){
+    static String getNomeModelloComunicazioneStandard(Integer idComunicazione) {
         String codice = getCodiceModelloComunicazioneStandard(idComunicazione)
         String nomeModelloStandard = GestioneTestiGsdModello.PREFISSO_MODELLI_STANDARD + codice
         return nomeModelloStandard
     }
 
-    static String getCodiceModelloComunicazioneAttoStandard(Integer tipoAtto, Integer idComunicazione){
+    static String getCodiceModelloComunicazioneAttoStandard(Integer tipoAtto, Integer idComunicazione) {
         return (tipoAtto.toString() + StringUtils.leftPad(idComunicazione.toString(), 2, "0"))
     }
 
-    static String getNomeModelloComunicazioneAttoStandard(Integer tipoAtto, Integer idComunicazione){
+    static String getNomeModelloComunicazioneAttoStandard(Integer tipoAtto, Integer idComunicazione) {
         String codice = getCodiceModelloComunicazioneAttoStandard(tipoAtto, idComunicazione)
         String nomeModelloStandard = GestioneTestiGsdModello.PREFISSO_MODELLI_STANDARD + codice
         return nomeModelloStandard
@@ -118,11 +130,7 @@ class FileUtils {
         return nomeModello.replace(GestioneTestiGsdModello.PREFISSO_MODELLI_TIPO_CERTIFICATO, '').replace(GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT, '')
     }
 
-    static boolean isPdf(String nomeAllegato){
-        return nomeAllegato.toLowerCase().endsWith("pdf")
-    }
-
-    static String getNomeFileSbustato(String nomeAllegato){
+    static String getNomeFileSbustato(String nomeAllegato) {
         return nomeAllegato.replaceAll(/(\.[pP]7[mM])$/, "")
     }
 
@@ -150,6 +158,48 @@ class FileUtils {
         return sanitized ?: 'unknown'
     }
 
-    static final List<Map> etichetteFileUtils = [EtichetteMessaggi.Errore_file, EtichetteMessaggi.Errore_file_formato, EtichetteMessaggi.Errore_nome_file]
+    static String getNomeModelloComunicazioneAnagrafeStandard(ETipoModello tipoModello, String codiceModello) {
+        if (tipoModello == ETipoModello.P) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_ADEMPIMENTI_ANA + codiceModello + GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT
+        } else if (tipoModello == ETipoModello.C) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_COMUNICAZIONI_ANA + codiceModello + GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT
+        } else if (tipoModello == ETipoModello.F) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_CDF_ANA + codiceModello + GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT
+        } else if (tipoModello == ETipoModello.E) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_ETICHETTE_ANA + codiceModello + GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT
+        }
+    }
+
+    static String getCodiceModelloComunicazioneAnagrafeStandard(ETipoModello tipoModello, String codiceModello) {
+        if (tipoModello == ETipoModello.P) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_ADEMPIMENTI_ANA + codiceModello
+        } else if (tipoModello == ETipoModello.C) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_COMUNICAZIONI_ANA + codiceModello
+        } else if (tipoModello == ETipoModello.F) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_CDF_ANA + codiceModello
+        } else if (tipoModello == ETipoModello.E) {
+            return GestioneTestiGsdModello.PREFISSO_MODELLI_ETICHETTE_ANA + codiceModello
+        }
+    }
+
+    static String getIdModelloAnagrafeFromNomeModello(String nomeModello) {
+        if (nomeModello.startsWith(GestioneTestiGsdModello.PREFISSO_MODELLI_ADEMPIMENTI_ANA)) {
+            return ETipoModello.P.id + nomeModello.replace(GestioneTestiGsdModello.PREFISSO_MODELLI_ADEMPIMENTI_ANA, '').replace(GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT, '')
+        } else if (nomeModello.startsWith(GestioneTestiGsdModello.PREFISSO_MODELLI_COMUNICAZIONI_ANA)) {
+            return ETipoModello.C.id + nomeModello.replace(GestioneTestiGsdModello.PREFISSO_MODELLI_COMUNICAZIONI_ANA, '').replace(GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT, '')
+        } else if (nomeModello.startsWith(GestioneTestiGsdModello.PREFISSO_MODELLI_CDF_ANA)) {
+            return ETipoModello.F.id + nomeModello.replace(GestioneTestiGsdModello.PREFISSO_MODELLI_CDF_ANA, '').replace(GestioneTestiGsdModello.SUFFISSO_MODELLI_DEFAULT, '')
+        }
+        return ""
+
+    }
+
+    static byte[] convertPdfToPdfA(InputStream inputStream) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        FinmaticaMailMerge.conversionAsposePdfA(inputStream, outputStream)
+        return outputStream.toByteArray()
+    }
+
+    static final List<Map> etichetteFileUtils = [Etichette.getEtichetta("Errore_file"), Etichette.getEtichetta("Errore_file_formato"), Etichette.getEtichetta("Errore_nome_file")]
 
 }

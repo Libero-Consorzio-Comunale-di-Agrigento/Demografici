@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoSoggettoPratica" macroURI="/restrict/anagrafe/pratiche/templateRowEstremiAttoSoggettoPratica.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Altri_Dati'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column/>
+                <column width="135px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="${arg.rettifica eq null}" value="@load(vm.etichette['Rapporto_Parentela'])"/>
+                    </cell>
+                    <cell>
+                        <combobox
+                                model="@load(vm.soggetto.sesso eq 'M' ? vm.rapportoParentelaMList : vm.rapportoParentelaFList)"
+                                hflex="1" disabled="@load(vm.readOnly)" onSelect="@command('onSelectRapportoParentela', mostraMessaggio=true)"
+                                selectedItem="@bind(vm.selectedRapportoParentela) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Rapporto_Parentela_Istat'])" if="${arg.rettifica eq null}"/>
+                    </cell>
+                    <cell>
+                        <textbox
+                                value="@load(c:cat3(vm.soggettoPratica.rapportoParentela.istRp, ' - ', vm.soggettoPratica.rapportoParentela.descrizione))"
+                                readonly="true"
+                                hflex="1" if="${arg.rettifica eq null}"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Titolo_Studio'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaTitoliStudio)"  hflex="1"
+                                  disabled="@load(vm.readOnly)" onSelect="@command('onSelectTitoloStudio')"
+                                  selectedItem="@bind(vm.soggetto.titoloStudio) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Titolo_Studio_Istat'])" if="${arg.rettifica eq null}"/>
+                    </cell>
+                    <cell >
+                        <combobox model="@load(vm.listaTitoliStudioIstat)"  hflex="1" if="${arg.rettifica eq null}"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggettoPratica.titoloStudioIstat) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Professione'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaProfessioni)"  hflex="1"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggetto.professione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Condizione_Non_Professionale_Istat'])" if="${arg.rettifica eq null}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaProfessioniIstat)"  hflex="1" if="${arg.rettifica eq null}"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggettoPratica.professioneIstat) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Attivita_Istat'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaAttivita)"  hflex="1"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggetto.attivita) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Posizione_Professionale'])" if="${arg.rettifica eq null}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaPosizioniProfessionali)"  hflex="1" if="${arg.rettifica eq null}"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggetto.posizioneProfessionale) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                </row>
+                <row if="${arg.rettifica ne null}">
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Posizione_Professionale'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaPosizioniProfessionali)"  hflex="1"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggetto.posizioneProfessionale) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell/>
+                    <cell/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

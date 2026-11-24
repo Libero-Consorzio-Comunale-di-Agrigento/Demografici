@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.GestioneCaratteriSpecialiViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            width="1200px" height="600px"
+            title="@load(vm.etichette['Caratteri_Speciali'])"
+            sizable="false" closable="false">
+
+
+        <vlayout vflex="1">
+
+            <div vflex="1" hflex="1" style="overflow:auto;">
+                <grid sclass="form">
+                    <rows>
+                        <row height="510px">
+                            <cell>
+                                <hlayout valign="middle" sclass="navigazione" height="40px">
+                                    <hlayout sclass="afc-control-bar" valign="middle">
+                                        <toolbarbutton image="/images/icon/action/22x22/add.png"
+                                                       tooltiptext="@load(vm.etichette['inserisci_campo_tooltip'])"
+                                                       onClick="@command('onInserisciCampo')"/>
+
+                                    </hlayout>
+                                </hlayout>
+                                <listbox model="@load(vm.listaCampiSpeciali)" vflex="1"
+                                         emptyMessage="@load(vm.etichette['Nessun_Campo_Inserito'])">
+                                    <listhead>
+                                        <listheader label="@load(vm.etichette['Campo'])"/>
+                                        <listheader label="@load(vm.etichette['Cognome'])"/>
+                                        <listheader label="@load(vm.etichette['Nome'])"/>
+                                        <listheader label="" width="60px"/>
+                                    </listhead>
+                                    <template name="model" var="item">
+                                        <listitem>
+                                            <listcell>
+                                                <combobox model="@load(vm.listaTipologiaCampi)" readonly="true" hflex="1" disabled="@load(item.id ne null)"
+                                                          onSelect="@command('onSelectTipo', campo=item)"
+                                                          selectedItem="@bind(item.campo) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')">
+                                                    <template name="model">
+                                                        <comboitem label="@load(each.descrizione)" value="@load(each.codice)"/>
+                                                    </template>
+                                                </combobox>
+                                            </listcell>
+                                            <listcell>
+                                                <textbox hflex="1" value="@bind(item.cognome)" style="text-transform:uppercase"/>
+                                            </listcell>
+                                            <listcell>
+                                                <textbox hflex="1" value="@bind(item.nome)" style="text-transform:uppercase"/>
+                                            </listcell>
+                                            <listcell>
+                                                <button image="/images/icon/action/22x22/delete.png"
+                                                        tooltiptext="@load(vm.etichette['elimina_campo_tooltip'])"
+                                                        onClick="@command('onEliminaCampo', campo=item)"/>
+                                            </listcell>
+                                        </listitem>
+                                    </template>
+                                </listbox>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </div>
+
+            <h:div sclass="barraPulsanti">
+                <h:div>
+                    <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                            image="/images/icon/action/16x16/save.png"/>
+                    <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                            image="/images/icon/action/16x16/close.png"/>
+                </h:div>
+            </h:div>
+
+        </vlayout>
+
+    </window>
+
+</zk>
+

@@ -1,20 +1,20 @@
 package restrict.anagrafe.visualizzazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
-import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnpAnagrafeService
 import it.finmatica.de4gsdzk.anpr.AnpAnagrafe
 import it.finmatica.de4gsdzk.utils.CustomEvents
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.Paginazione
+import it.finmatica.de4gsdzk.utils.SortUtils
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
 import org.zkoss.bind.annotation.ContextType
+import org.zkoss.bind.annotation.ExecutionArgParam
 import org.zkoss.bind.annotation.Init
-import org.zkoss.zk.ui.Executions
 import org.zkoss.zk.ui.event.Events
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
@@ -30,6 +30,8 @@ class FamigliaAnprListaViewModel extends AbstractListaViewModel implements Trait
     AnpAnagrafe dettaglio
     boolean showAnp = true
 
+    Date dataRiferimento
+
     @WireVariable
     private AnpAnagrafeService anpAnagrafeService
 
@@ -37,8 +39,10 @@ class FamigliaAnprListaViewModel extends AbstractListaViewModel implements Trait
     private GsdEtichettaService gsdEtichettaService
 
     @Init
-    init(@ContextParam(ContextType.COMPONENT) Window w) {
+    init(@ContextParam(ContextType.COMPONENT) Window w, @ExecutionArgParam("dataRiferimento") Date data) {
         self = w
+
+        dataRiferimento = data
 
         // Aggiungo etichette titolo
         List<Map<String, String>> eList = []
@@ -49,7 +53,7 @@ class FamigliaAnprListaViewModel extends AbstractListaViewModel implements Trait
         // Aggiungo etichette della lista
         eList.addAll(etichetteListaDefault)
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
@@ -76,8 +80,8 @@ class FamigliaAnprListaViewModel extends AbstractListaViewModel implements Trait
     }
 
     Paginazione eseguiQuery(Boolean usePaging) {
-        PageRequest pr = new PageRequest(0, Integer.MAX_VALUE)
-        List<AnpAnagrafe> list = anpAnagrafeService.listByFamigliaDiAnpAnagrafe(anprIndividuoCorrente, pr).content
+        PageRequest pr = new PageRequest(0, Integer.MAX_VALUE, new Sort(SortUtils.anagrafeSoggettoFamiliareAsc))
+        List<AnpAnagrafe> list = anpAnagrafeService.listByFamigliaDiAnpAnagrafe(anprIndividuoCorrente, dataRiferimento, pr).content
 
         return new Paginazione(list, list.size())
     }

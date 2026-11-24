@@ -15,7 +15,7 @@ class EstremiAnagrafeLabel extends CustomLabel {
         super()
         super.setMultiline(true)
 
-        List<Map> eList = [Etichette.Matricola, Etichette.Id_scheda_ANPR, Etichette.Id_unico_nazionale]
+        List<Map> eList = [Etichette.getEtichetta("Matricola"), Etichette.getEtichetta("Id_scheda_ANPR"), Etichette.getEtichetta("Id_unico_nazionale")]
 
         etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
     }

@@ -3,6 +3,7 @@ package it.finmatica.de4gsdzk.archivi
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,6 +19,10 @@ class ArcViaService {
 
     Page<ArcVia> listAllByDenominazione(String filtro, PageRequest p) {
         return arcViaRepository.findAllByDenominazioneLikeIgnoreCase(filtro ? SqlUtils.beginsAndEndsLike(filtro) : '%', p)
+    }
+
+    List<ArcVia> listAll() {
+        return arcViaRepository.findAll(new Sort(Sort.Direction.ASC, "id"))
     }
 
 

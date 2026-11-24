@@ -2,6 +2,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?link rel="stylesheet" type="text/css" href="/css/de4gsdzk.css" ?>
 <?xel-method prefix="c" name="westWidth" class="it.finmatica.de4gsdzk.utils.ConfigurazioneUtils" signature="String getWestWidth()"?>
+<?component name="templateMovimento" macroURI="/restrict/anagrafe/visualizzazione/templateMovimento.zul" inline="true"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,24 +23,7 @@
                 <estremiIndividuoFormLabel/>
             </hlayout>
             <orderByBlock/>
-            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)"
-                     nonselectableTags="" vflex="1"
-                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
-                <listhead>
-                    <listheader label="@load(vm.etichette['Data_Evento'])" hflex="1"/>
-                    <listheader label="@load(vm.etichette['Descrizione'])" hflex="2"/>
-                    <listheader label="@load(vm.etichette['Terminalista'])" hflex="1"/>
-                </listhead>
-                <template name="model" var="item">
-                    <listitem>
-                        <listcell sclass="testo-al-centro">
-                            <dateLabel value="@load(item.dataEvento)"/>
-                        </listcell>
-                        <listcell label="@load(item.descrizione)"/>
-                        <listcell label="@load(item.utenteUpd.nominativo)"/>
-                    </listitem>
-                </template>
-            </listbox>
+            <templateMovimento/>
         </vlayout>
     </window>
 

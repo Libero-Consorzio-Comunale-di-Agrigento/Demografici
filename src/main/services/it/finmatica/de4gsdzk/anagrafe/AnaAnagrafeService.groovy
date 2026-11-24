@@ -1,6 +1,8 @@
 package it.finmatica.de4gsdzk.anagrafe
 
 import it.finmatica.de4gsdzk.ISoggettoAnpr
+import it.finmatica.de4gsdzk.anagrafe.pratiche.AnaUrnaCineraria
+import it.finmatica.de4gsdzk.anagrafe.pratiche.AnaUrnaCinerariaRepository
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.ErroreRicercaArchivioSoggettoRuntimeException
@@ -24,12 +26,20 @@ class AnaAnagrafeService {
 
 	private final AnaAnagrafeRepository anaAnagrafeRepository
 
+	private final AnaDocumentoService anaDocumentoService
+
+	private final AnaUrnaCinerariaRepository anaUrnaCinerariaRepository
+
 	AnaAnagrafeService(ArcParametroService arcParametroService,
 					   ArcComuneBaseService arcComuneBaseService,
-					   AnaAnagrafeRepository anaAnagrafeRepository) {
+					   AnaAnagrafeRepository anaAnagrafeRepository,
+					   AnaDocumentoService anaDocumentoService,
+					   AnaUrnaCinerariaRepository anaUrnaCinerariaRepository) {
 		this.arcParametroService = arcParametroService
 		this.arcComuneBaseService = arcComuneBaseService
 		this.anaAnagrafeRepository = anaAnagrafeRepository
+		this.anaDocumentoService = anaDocumentoService
+		this.anaUrnaCinerariaRepository = anaUrnaCinerariaRepository
 	}
 
 	AnaAnagrafe get (Integer id, Map params = null){
@@ -55,7 +65,6 @@ class AnaAnagrafeService {
 	}
 
 	Page<AnaAnagrafe> listAllByRicercaIndividuo(RicercaIndividuo r, Pageable pageable) {
-		r.validaDati()
 
 		return anaAnagrafeRepository.findAllByRicercaIndividuo(
 				SqlUtils.endsLike(r.cognome)?.toUpperCase(),
@@ -71,9 +80,9 @@ class AnaAnagrafeService {
 	}
 
 	List<AnaAnagrafe> listAllRettificatiByRicercaIndividuo(RicercaIndividuo r) {
-		r.validaDati()
 
-		return anaAnagrafeRepository.findAllRettificatiByRicercaIndividuo(r)
+		List<Integer> matricole = anaAnagrafeRepository.findAllRettificatiByRicercaIndividuo(r)
+		return anaAnagrafeRepository.findAllByIdIn(matricole)
 	}
 
 	List<AnaAnagrafe> listXDatiAnagrafici(CivNascita obj){
@@ -87,7 +96,7 @@ class AnaAnagrafeService {
 		return anaAnagrafeRepository.listXDatiAnagraficiSuResidenti(cognome, nome, dataNascita, sesso)
 	}
 
-	String checkCoerenzaAnprAnagrafe(ISoggettoAnpr soggettoAnpr, AnaAnagrafe soggettoAnagrafe, String soggetto="SOGGETTO"){
+	String checkCoerenzaAnprAnagrafe(ISoggettoAnpr soggettoAnpr, AnaAnagrafe soggettoAnagrafe, String soggetto, Boolean statoCivile){
 		String anomalia = ""
 		String recuperoMsg = "\nVerranno recuperati i dati di provenienza ANPR\n"
 		if ( (soggettoAnpr.getMatricola() != null) && ( (soggettoAnagrafe?.cognome?.trim()?:"").toLowerCase() != (soggettoAnpr.cognome?.trim()?:"").toLowerCase() ) ) {
@@ -108,13 +117,13 @@ class AnaAnagrafeService {
 				( soggettoAnagrafe?.comuneNascita?.codiceProvincia != soggettoAnpr.codiceProvinciaNascita ) ||
 				( soggettoAnagrafe?.comuneNascita?.descrizione != soggettoAnpr.descrizioneComuneNascita ) ) ) {
 			anomalia += "- Risulta un'incongruenza fra il comune di nascita del " + soggetto + " in ANPR e quello dello stesso soggetto censito in anagrafe." + recuperoMsg
-			if ( (soggettoAnpr.codiceComuneNascita != null) && (soggettoAnpr.codiceProvinciaNascita != null) &&
+			if ( statoCivile && (soggettoAnpr.codiceComuneNascita != null) && (soggettoAnpr.codiceProvinciaNascita != null) &&
 				 (!(arcComuneBaseService.existsByCodiceComuneAndCodiceProvincia(soggettoAnpr.codiceComuneNascita, soggettoAnpr.codiceProvinciaNascita))) ){
 				anomalia += "\nIl comune con codice ${soggettoAnpr.codiceProvinciaNascita}-${soggettoAnpr.codiceComuneNascita} non risulta presente in archivio!\n\n"
 			}
 			// refs #71811
 			// Controllo che la denominazione non differisca a parità di codice comune e codice provincia
-			if ((soggettoAnagrafe?.comuneNascita?.codice != null) && (soggettoAnpr.codiceComuneNascita != null) &&
+			if (statoCivile &&  (soggettoAnagrafe?.comuneNascita?.codice != null) && (soggettoAnpr.codiceComuneNascita != null) &&
 				(soggettoAnagrafe?.comuneNascita?.codiceProvincia != null) && (soggettoAnpr.codiceProvinciaNascita != null) &&
 				(soggettoAnagrafe?.comuneNascita?.codice?.compareTo(soggettoAnpr.codiceComuneNascita) == 0) &&
 				(soggettoAnagrafe?.comuneNascita?.codiceProvincia?.compareTo(soggettoAnpr.codiceProvinciaNascita) == 0) ) {
@@ -129,14 +138,14 @@ class AnaAnagrafeService {
 				( soggettoAnagrafe?.comuneResidenza?.codiceProvincia != soggettoAnpr.codiceProvinciaResidenza ) ||
 				( soggettoAnagrafe?.comuneResidenza?.descrizione != soggettoAnpr.descrizioneComuneResidenza ) ) ) {
 			anomalia += "- Risulta un'incongruenza fra il comune di residenza del " + soggetto + " in ANPR e quello dello stesso soggetto censito in anagrafe." + recuperoMsg
-			if ( (soggettoAnpr.codiceComuneResidenza != null) && (soggettoAnpr.codiceProvinciaResidenza != null) &&
+			if ( statoCivile &&  (soggettoAnpr.codiceComuneResidenza != null) && (soggettoAnpr.codiceProvinciaResidenza != null) &&
 				 (!(arcComuneBaseService.existsByCodiceComuneAndCodiceProvincia(soggettoAnpr.codiceComuneResidenza, soggettoAnpr.codiceProvinciaResidenza))) ){
 				anomalia += "\nIl comune con codice ${soggettoAnpr.codiceProvinciaResidenza}-${soggettoAnpr.codiceComuneResidenza} non risulta presente in archivio!\n\n"
 			}
 			// refs #71811
 			// Controllo che la residenza sia valorizzata per tener conto degli emigrati o dei cancellati non deceduti che in anaana_v
 			// non hanno gli estremi di residenza; inoltre controllo che la denominazione non differisca a parità di codice comune e codice provincia
-			if ((soggettoAnagrafe?.comuneResidenza?.codice != null) && (soggettoAnpr.codiceComuneResidenza != null) &&
+			if (statoCivile &&  (soggettoAnagrafe?.comuneResidenza?.codice != null) && (soggettoAnpr.codiceComuneResidenza != null) &&
 				(soggettoAnagrafe?.comuneResidenza?.codiceProvincia != null) && (soggettoAnpr.codiceProvinciaResidenza != null) &&
 				(soggettoAnagrafe?.comuneResidenza?.codice?.compareTo(soggettoAnpr.codiceComuneResidenza) == 0) &&
 				(soggettoAnagrafe?.comuneResidenza?.codiceProvincia?.compareTo(soggettoAnpr.codiceProvinciaResidenza) == 0) ) {
@@ -157,4 +166,47 @@ class AnaAnagrafeService {
 	List<AnaFamiglia> listAllFamiglieById(Integer id) {
 		anaAnagrafeRepository.findAllFamiglieById(id)
 	}
+
+	AnaAnagrafe findByIdSoggetto(Integer id){
+		AnaAnagrafe ana = anaAnagrafeRepository.findByIdSoggetto(id)
+		return ana
+	}
+
+	List<AnaDocumento> getDocumentiCDF(AnaAnagrafe anagrafe) {
+		return anaDocumentoService.listDocumentiCDFByAnagrafe(anagrafe)
+	}
+
+	List<AnaDocumento> getDocumentiSoggetto(AnaAnagrafe anagrafe) {
+		return anaDocumentoService.listDocumentiSoggettoByAnagrafe(anagrafe)
+	}
+
+	List<AnaUrnaCineraria> getUrneCinerarie(AnaAnagrafe anagrafe) {
+		return anaUrnaCinerariaRepository.findByMatricola(anagrafe)
+	}
+
+	AnaAnagrafe findById(Integer id){
+		return anaAnagrafeRepository.findById(id)
+	}
+
+	AnaAnagrafe findByIdWithStato(Integer id){
+		return anaAnagrafeRepository.findByIdWithStato(id)
+	}
+
+	void saveOrUpdate(AnaAnagrafe anagrafe) {
+		anaAnagrafeRepository.save(anagrafe)
+	}
+
+	Boolean refreshFlagPatente(Integer id){
+		return anaAnagrafeRepository.refreshFlagPatente(id)
+	}
+
+	Boolean refreshFlagCC(Integer id){
+		return anaAnagrafeRepository.refreshFlagCC(id)
+	}
+
+    List<AnaAnagrafe> listAllFamigliariAttiviByFamiglia(AnaFamiglia famiglia) {
+        Sort sort = new Sort(SortUtils.anagrafeSoggettoFamiliareAsc)
+        boolean showCancellati = arcParametroService.isVisualizzazioneFamiliariCancellatiAttiva()
+        return anaAnagrafeRepository.findAllFamigliariAttiviByFamiglia(famiglia, sort)
+    }
 }

@@ -1,8 +1,6 @@
 package it.finmatica.de4gsdzk.statocivile
 
-import it.finmatica.de4gsdzk.statocivile.CivComunicazione
-import it.finmatica.de4gsdzk.statocivile.CivComunicazioneEnte
-import it.finmatica.de4gsdzk.statocivile.CivEnte
+
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -20,8 +18,7 @@ interface CivComunicazioneEnteRepository extends JpaRepository<CivComunicazioneE
               SELECT ce FROM CivComunicazioneEnte ce 
                 JOIN FETCH ce.comunicazione c JOIN FETCH ce.ente e 
                WHERE ce.tipoAtto = :tipoAtto 
-                 AND ce.comunicazione = :comunicazione 
-               ORDER BY ce.sequenza """,
+                 AND ce.comunicazione = :comunicazione""",
             countQuery = """SELECT count(ce) FROM CivComunicazioneEnte ce  
                               JOIN ce.comunicazione c JOIN ce.ente e 
                              WHERE ce.tipoAtto = :tipoAtto AND ce.comunicazione = :comunicazione  """ )
@@ -30,8 +27,7 @@ interface CivComunicazioneEnteRepository extends JpaRepository<CivComunicazioneE
     @Query(value = """
         SELECT ce FROM CivComunicazioneEnte ce 
           JOIN FETCH ce.comunicazione c JOIN FETCH ce.ente e 
-         WHERE ce.tipoAtto = :tipoAtto
-         ORDER BY c.id, ce.sequenza """,
+         WHERE ce.tipoAtto = :tipoAtto""",
             countQuery = """SELECT count(ce) FROM CivComunicazioneEnte ce  
                           JOIN ce.comunicazione c JOIN ce.ente e 
                          WHERE ce.tipoAtto = :tipoAtto """ )

@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset amonopoli:202502261540 runAlways:true stripComments:false
+--changeset amonopoli:202502261540_1 runAlways:true runOnChange:true stripComments:false
 create or replace view anafam_v
 AS
 --
@@ -12,7 +12,8 @@ select /*+ PUSH_SUBQ*/
        fam.*
 --
      , decode(fam.fascia, 1, 'RES', 2, 'RES', 3, 'AIR', 4, 'AIR', 6, 'NRE') anagrafe
-     , f_FAM_matricola_CF(fam.fascia, fam.cod_fam) matricola_CF
+     , decode(fam.tipo_fam,'',f_FAM_matricola_CF(fam.fascia, fam.cod_fam)) matricola_CF
+     , decode(fam.tipo_fam,1,f_FAM_esiste_CC(fam.fascia, fam.cod_fam)) flag_esiste_CC
 --
      , f_comune_al(fam.COD_PRO_AIRE,fam.COD_COM_AIRE,'') des_com_aire
      , f_provincia_stato_al(fam.COD_PRO_AIRE,fam.COD_COM_AIRE,'','S','','') sigla_pro_aire
@@ -33,6 +34,11 @@ select /*+ PUSH_SUBQ*/
          3, f_ANPR_id_scheda('','',3,fam.cod_fam,'',''),
          4, f_ANPR_id_scheda('','',3,fam.cod_fam,'',''),
          6, f_ANPR_id_scheda('','',6,fam.cod_fam,'','')) id_famiglia_anpr
+-- numero_componenti
+     , case
+            when fam.fascia in (1,3) then
+                 (select count(*) from anaana where fascia = fam.fascia and cod_fam = fam.cod_fam)
+       end numero_componenti
   from anafam fam
 /
 comment on table anafam_v is 'Anagrafe - Famiglie (view)'

@@ -288,7 +288,7 @@ insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDIN
 values (1354, 'Trascrizione di nascita: Trascrizione di provvedimento straniero adozione di minorenne o maggiorenne in casi particolari richiesta dall''autorita'' diplomatica o consolare', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ADO', null, 'Trascr', null, 0);
 
 insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
-values (1361, 'Trascrizione di nascita: Formazione dell''atto di nascita su autorizzazione tribunale in caso di omessa denuncia', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ODN', null, 'Trascr', null, 0);
+values (1361, 'Formazione atto di nascita su autorizzazione tribunale (art. 32 e art 95)', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'ODN', null, 'Trascr', null, 0);
 
 insert into anst03 (ID, DESCRIZIONE, DATAINIZIOVALIDITA, DATAFINEVALIDITA, ORDINAMENTO, TIPO_ATTO_ADS, PARTE_ADS, SERIE_ADS, SIGLA_CATEGORIA_ADS, FLAG_SERVIZIO, TIPO_ATTO_ANSC, TIPO_ANNOTAZIONE_ANSC, VERSION)
 values (1362, 'Trascrizione di nascita: Scelta del cognome del figlio maggiorenne il cui genitore ha cambiato o modificato il cognome su istanza di parte', '2022-01-01 00:00:00.0', '9999-12-31 00:00:00.0', null, 2, 2, 'B', 'CGE', null, 'Rico', null, 0);

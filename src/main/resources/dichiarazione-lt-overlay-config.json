@@ -1,0 +1,41 @@
+{
+    "headerOverlay": {
+        "page": 1,
+        "whiteRect": { "x": 20, "y": 720, "w": 555, "h": 122 },
+        "box": { "x": 290, "y": 762, "w": 270, "h": 68 },
+        "labelX": 296,
+        "fontSize": 9,
+        "lineSpacing": 14,
+        "fieldOffsetX": 125,
+        "fieldH": 12
+    },
+    "firmaFamigliaOverlay": {
+        "page": 4,
+        "rectY": 580,
+        "firmaY": 585,
+        "noteY": 568,
+        "leftRectX": 56,
+        "rightRectX": 298,
+        "rectW": 238,
+        "rectH": 30,
+        "firmaLeftX": 63,
+        "firmaRightX": 305,
+        "firmaFontSize": 8,
+        "firmaText": "Firma ______________________________ (1)",
+        "noteFontSize": 6.5,
+        "noteText": "(1) Firma di un componente della famiglia gi\u00e0 residente nel medesimo alloggio. Allegare fotocopia del documento di riconoscimento di tale componente.",
+        "resizeFields": ["tipo familiare"],
+        "resizeFieldHeight": 14
+    },
+    "personNumberOverlay": {
+        "topX": 56,
+        "topY": 783,
+        "bottomX": 56,
+        "bottomY": 396,
+        "font": "Times-Roman",
+        "fontSize": 10,
+        "rectW": 14,
+        "rectH": 11,
+        "rectDescent": 2
+    }
+}

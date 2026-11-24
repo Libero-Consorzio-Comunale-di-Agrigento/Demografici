@@ -7,7 +7,6 @@ import it.finmatica.de4gsdzk.certificazione.error.UtenteNonTerminalistaRuntimeEx
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
-import it.finmatica.de4gsdzk.certificazione.CerTerminalistaRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -47,7 +46,7 @@ class CerTerminalistaService {
 		if (arcParametroService.isListaFirmatariAttiva()) {
 			List<CerTerminalista> firmatariList = cerTerminalistaRepository.findAllByUtenteFirmaRemotaNotNullAndPwdFirmaRemotaNotNull(new Sort(SortUtils.cognomeNomeAsc))
 			if (firmatariList.empty) {
-				throw new FirmatariListRuntimeException(EtichetteMessaggi.Errore_Certificazioni_nessun_firmatario)
+				throw new FirmatariListRuntimeException(Etichette.getEtichetta("Errore_Certificazioni_nessun_firmatario"))
 			}
 			return firmatariList
 		}
@@ -55,7 +54,7 @@ class CerTerminalistaService {
 		String codiceUtente = utenteCustomService.loggedUserId
 		CerTerminalista terminalistaUtente = cerTerminalistaRepository.findByIdAndUtenteFirmaRemotaNotNullAndPwdFirmaRemotaNotNull(codiceUtente)
 		if (terminalistaUtente == null) {
-			throw new FirmatariListRuntimeException(EtichetteMessaggi.Errore_Certificazioni_utente_non_firmatario)
+			throw new FirmatariListRuntimeException(Etichette.getEtichetta("Errore_Certificazioni_utente_non_firmatario"))
 		}
 		return [terminalistaUtente]
 	}
@@ -86,7 +85,7 @@ class CerTerminalistaService {
 		if (tipoOperazione.isInsert()){
 			long n = cerTerminalistaRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Record_duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_duplicato"))
 			}
 		}
 	}

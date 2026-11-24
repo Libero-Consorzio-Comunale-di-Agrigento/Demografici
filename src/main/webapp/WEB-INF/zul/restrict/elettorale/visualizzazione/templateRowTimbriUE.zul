@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?component name=bandboxRevisioni extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxRevisioni?>
+<?component name=bandboxComponentiCommissione extends=bandbox class=it.finmatica.de4gsdzk.zkutils.BandboxComponentiCommissione?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Timbri_UE'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="30px"/>
+                <column width="200px"/>
+                <column/>
+                <column width="90px"/>
+                <column width="150px"/>
+                <column width="90px"/>
+                <column width="110px"/>
+            </columns>
+            <rows>
+                <row if="${arg.sez eq true and vm.specifiche.timbroUffcioComunaleAL ne null}" visible="@load(vm.specifiche.filtroCognome.id eq 'A')">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunaleALCheck)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="true" hflex="1" value="@bind(vm.specifiche.timbroUffcioComunaleAL.descrizione)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroUffcioComunaleALCheck)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroUffcioComunaleAL.testo)"  rows="3"/>
+                    </cell>
+                    <cell colspan="2"/>
+                    <cell colspan="2"/>
+                </row>
+                <row if="${arg.sez eq true and vm.specifiche.timbroUffcioComunaleMZ ne null}" visible="@load(vm.specifiche.filtroCognome.id eq 'M')">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunaleMZCheck)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="true" hflex="1" value="@bind(vm.specifiche.timbroUffcioComunaleMZ.descrizione)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroUffcioComunaleMZCheck)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroUffcioComunaleMZ.testo)"  rows="3"/>
+                    </cell>
+                    <cell colspan="2"/>
+                    <cell colspan="2"/>
+                </row>
+                <row  if="${arg.estratto ne true}">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale1Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale1Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriUffcioComunale1Lista)" readonly="true" hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale1)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriUffcioComunale1Lista)" readonly="true" hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale1)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroUffcioComunale1Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroUffcioComunale1.testo)"  rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.specifiche.timbroUffcioComunale1Check ? vm.specifiche.verbale : '')" hflex="1" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Data_Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(empty vm.specifiche.dataVerbale or not vm.specifiche.timbroUffcioComunale1Check? null:(c:formatDate(vm.specifiche.dataVerbale, 'dd/MM/yyyy')))"
+                                 hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+                <row if="${arg.estratto ne true}">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale2Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale2Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriUffcioComunale2Lista)" readonly="true" hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale2)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriUffcioComunale2Lista)" readonly="true" hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale2)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroUffcioComunale2Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroUffcioComunale2.testo)" rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.specifiche.timbroUffcioComunale2Check ? vm.specifiche.verbale : '')" hflex="1" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Data_Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(empty vm.specifiche.dataVerbale or not vm.specifiche.timbroUffcioComunale2Check? null:(c:formatDate(vm.specifiche.dataVerbale, 'dd/MM/yyyy')))"
+                                 hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale3Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroUffcioComunale3Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriUffcioComunale3Lista)" readonly="true"  hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale3)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriUffcioComunale3Lista)" readonly="true"  hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroUffcioComunale3)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroUffcioComunale3Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroUffcioComunale3.testo)"  rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxRevisioni
+                                    disabled="@bind(not vm.specifiche.timbroUffcioComunale3Check)"
+                                    value="@load(not vm.specifiche.timbroUffcioComunale3Check? null : vm.specifiche.revisione.verbale) @save(vm.specifiche.revisione.verbale)"
+                                    hflex="1" onSelect="@command('onSelectRevisione')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoSpecifiche')">
+                                <custom-attributes proprieta="revisione"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Data_Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(empty vm.specifiche.revisione.dataVerbale or not vm.specifiche.timbroUffcioComunale3Check? null:(c:formatDate(vm.specifiche.revisione.dataVerbale, 'dd/MM/yyyy')))"
+                                 hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Tipo_firma'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="90px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Tipo_firma'])"/>
+                    </cell>
+                    <cell>
+                        <radiogroup model="@load(vm.tipiFirmaList)"
+                                    selectedItem="@bind(vm.specifiche.tipoFirma) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px"/>
+                            </template>
+                        </radiogroup>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Firma'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComponentiCommissione
+                                    value="@load(vm.specifiche.tipoFirma.id eq 'CEC' ? '' : vm.specifiche.componente) @save(vm.specifiche.componente)"
+                                    disabled="@load(vm.specifiche.tipoFirma.id eq 'CEC')"
+                                    hflex="1"
+                                    onSelect="@command('onSelectComponente')"
+                                    onChangePreventDefault="@command('onChangeComponente', valore=self.value)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoSpecifiche')">
+                                <custom-attributes proprieta="componente"/>
+                            </button>
+                            <label value="@load(vm.etichette['In_Stampa'])" style="padding-left:10px"/>
+                            <checkbox checked="@bind(vm.specifiche.firmaInStampa)"/>
+                        </hlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+    </groupbox>
+
+</zk>

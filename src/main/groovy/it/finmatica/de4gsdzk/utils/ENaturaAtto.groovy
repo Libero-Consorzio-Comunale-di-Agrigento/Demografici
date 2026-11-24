@@ -21,13 +21,13 @@ enum ENaturaAtto {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case O: return Etichette.Originale
-            case T: return Etichette.Trascritto
-            case D: return Etichette.Diverso
-            case N: return Etichette.Annullato
-            case A: return Etichette.Acquisto
-            case P: return Etichette.Perdita
-            case V: return Etichette.Processo_Verbale
+            case O: return Etichette.getEtichetta("Originale")
+            case T: return Etichette.getEtichetta("Trascritto")
+            case D: return Etichette.getEtichetta("Diverso")
+            case N: return Etichette.getEtichetta("Annullato")
+            case A: return Etichette.getEtichetta("Acquisto")
+            case P: return Etichette.getEtichetta("Perdita")
+            case V: return Etichette.getEtichetta("Processo_Verbale")
         }
         return null
     }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.dizionari.comunicazioni.ParametroProtocolloListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <rows>
+                        <row>
+                            <cell align="right" width="120px">
+                                <label value="@load(vm.etichette['Funzione'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout hflex="1">
+                                    <radiogroup model="@load(vm.mapCodiciFase.keySet())" onCheck="@command('onSelectCodiceFase')"
+                                                selectedItem="@bind(vm.codiceFase)">
+                                        <template name="model">
+                                            <radio label="@load(vm.mapCodiciFase.get(each))" value="@load(each)" style="padding:20px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.dettaglio)" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <listheader label="@load(vm.etichette['Riferimento'])"/>
+                    <listheader label="@load(vm.etichette['Modello'])" width="180px"/>
+                    <listheader label="@load(vm.etichette['Tipo_Documento'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Modalita'])"/>
+                    <listheader label="@load(vm.etichette['Invio'])"/>
+                    <listheader label="@load(vm.etichette['Documentale'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Albo_Pretorio'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Classificazione'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Numero_Fascicolo'])" style="text-overflow: ellipsis"/>
+                    <listheader label="@load(vm.etichette['Anno_Fascicolo'])" style="text-overflow: ellipsis"/>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem onDoubleClick="@command('onModifica')">
+                        <listcell label="@load(item.descrizioneFaseAnagrafe)"/>
+                        <listcell label="@load(item.modello.descrizione)"/>
+                        <listcell label="@load(item.tipoDocumento)"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.modalita))"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.invioProtocollo))"/>
+                        <listcell sclass="testo-al-centro">
+                            <checkbox checked="@load(item.flagDocumentale)" disabled="true"/>
+                        </listcell>
+                        <listcell sclass="testo-al-centro">
+                            <checkbox checked="@load(item.flagAlboPretorio)" disabled="true"/>
+                        </listcell>
+                        <listcell label="@load(item.classificazione)"/>
+                        <listcell label="@load(item.numeroFascicolo)"/>
+                        <listcell label="@load(item.annoFascicolo)"/>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/edit.png"
+                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                    visible="@load(not empty item.id)"
+                                    onClick="@command('onModifica')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+
+    </window>
+
+</zk>

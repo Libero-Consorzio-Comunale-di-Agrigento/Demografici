@@ -2,7 +2,6 @@ package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CompetenzaService
-import it.finmatica.de4gsdzk.certificazione.CerCategoriaTipoCertificatoRepository
 import it.finmatica.de4gsdzk.utils.SortUtils
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -30,12 +29,13 @@ class CerCategoriaTipoCertificatoService {
 		return categoriaTipoCertificatoRepository.findAll(s)
 	}
 
-	List<CerCategoriaTipoCertificato> listAllByAnagrafeFiltroList(List<CerAnagrafeFiltro> anagrafeFiltroList) {
+	List<CerCategoriaTipoCertificato> listAllByAnagrafeFiltroList(List<CerAnagrafeFiltro> anagrafeFiltroList, boolean includiSoloStatoCivile = false) {
 		Set<ECompetenzaCertificazione> competenzaCertificazioneSet = competenzaService.getCompetenzeCertificazioneByRuoli()
 
 		Map params = [
 				anagrafeFiltroList         : anagrafeFiltroList,
 				competenzaCertificazioneSet: competenzaCertificazioneSet,
+				includiSoloStatoCivile         : includiSoloStatoCivile,
 				order                      : SortUtils.sequenzaAsc
 		]
 

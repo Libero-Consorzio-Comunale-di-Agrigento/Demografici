@@ -31,7 +31,10 @@ interface CivFascicoloAttoAllegatoRepository extends JpaRepository<CivFascicoloA
                        WHERE fas.id = :idFascicoloAtto AND c.allegatoComunicazione.id = :idComAlle """)
     CivFascicoloAttoAllegato findByIdFascicoloAttoAndIdComunicazioneAllegato(@Param("idFascicoloAtto") Long idFascicoloAtto, @Param("idComAlle") Long idComAlle)
 
-    @Query(value = """SELECT c FROM CivFascicoloAttoAllegato c INNER JOIN FETCH c.fascicoloAtto LEFT OUTER JOIN FETCH c.allegatoComunicazione
+    @Query(value = """SELECT c FROM CivFascicoloAttoAllegato c 
+                      INNER JOIN FETCH c.fascicoloAtto 
+                      INNER JOIN FETCH c.utenteIns 
+                      LEFT OUTER JOIN FETCH c.allegatoComunicazione
                        WHERE c.fascicoloAtto.id = :idFascicoloAtto 
                        ORDER BY c.lastUpdated DESC """)
     List<CivFascicoloAttoAllegato> findAllByIdFascicoloAttoOrderByDataModifica(@Param("idFascicoloAtto") Long idFascicoloAtto)

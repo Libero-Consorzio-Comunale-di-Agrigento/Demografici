@@ -2,14 +2,15 @@ package restrict.afc
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CompetenzaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.LogBaseDomain
 import it.finmatica.de4gsdzk.LogProjection
 import it.finmatica.de4gsdzk.statocivile.LogsService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
-import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.utils.ETipoLog
 import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.OrderBy
 import it.finmatica.de4gsdzk.utils.Paginazione
+import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -29,6 +30,9 @@ abstract class AbstractLogsListaViewModel extends DizionarioListaViewModel {
 
     ETipoLog tipoLog
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -39,7 +43,7 @@ abstract class AbstractLogsListaViewModel extends DizionarioListaViewModel {
     private CompetenzaService competenzaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     abstract List<ETipoLog> getListaTipiLog()
 
@@ -47,30 +51,38 @@ abstract class AbstractLogsListaViewModel extends DizionarioListaViewModel {
         searchEnabled = true
         addEnabled = false
         modifyEnabled = false
-        additionalSearchFilter = "dizionari/configurazione/logsListaSearch.zul"
+        additionalSearchFilter = "/restrict/logsListaSearch.zul"
 
         // TODO: mostra solo su utente tecnico
         if (competenzaService.isCivSuperUser() && competenzaService.isCerSuperUser()) {
             additionalListaToolbarbutton = "/restrict/afc/controlbar/toolbarbuttonCompilaOggettiDb.zul"
         }
 
-        eList.add(Etichette.Archivio)
+        eList.addAll([Etichette.getEtichetta("Archivio"), Etichette.getEtichetta("Log")])
         eList.addAll(LogBaseDomain.etichetteDomain)
 
-        eList.add(Etichette.compila_oggetti_db)
+        eList.add(Etichette.getEtichetta("compila_oggetti_db"))
+
+        eList.addAll([Etichette.getEtichetta("Data_crescente"), Etichette.getEtichetta("Data_decrescente")])
 
         // Aggiungo etichette tipolog
         eList.addAll(Arrays.asList(ETipoLog.values())*.etichettaDesc)
 
         doInitEtichette(eList)
 
-        msgTitle = "Log"
+        msgTitle = getEtichetta(Etichette.getEtichetta("Log"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
         tipoLog = null
+
+        //Ordinamento
+        listaOrder.addAll([ new OrderBy(getEtichetta(Etichette.getEtichetta("Data_decrescente")), [new Sort.Order(Sort.Direction.DESC, "dataOra"), new Sort.Order(Sort.Direction.DESC, "id")]),
+                            new OrderBy(getEtichetta(Etichette.getEtichetta("Data_crescente")), [new Sort.Order(Sort.Direction.ASC, "dataOra"), new Sort.Order(Sort.Direction.ASC, "id")])])
+
+        selectedOrder = listaOrder[0]
 
         listaTipiLog.sort { a, b ->
             Map<String, String> etichettaA = a.etichettaDesc
@@ -89,8 +101,7 @@ abstract class AbstractLogsListaViewModel extends DizionarioListaViewModel {
 
     @Override
     Paginazione<LogProjection> eseguiQuery(Boolean usePaging) {
-        PageRequest pr = new PageRequest(activePage, usePaging ? pageSize : Integer.MAX_VALUE,
-                new Sort(new Sort.Order(Sort.Direction.DESC, "dataOra"), new Sort.Order(Sort.Direction.DESC, "id")))
+        PageRequest pr = new PageRequest(activePage, usePaging ? pageSize : Integer.MAX_VALUE, new Sort(selectedOrder?.campi))
         Page<LogProjection> p = logsService.listAllByTipoLog(tipoLog, filtro, pr)
         return new Paginazione(p?.getContent() ?: [], p?.getTotalElements() ?: 0)
     }
@@ -114,14 +125,14 @@ abstract class AbstractLogsListaViewModel extends DizionarioListaViewModel {
     void showClob() {
         if (dettaglio) {
             LogBaseDomain log = logsService.get(tipoLog, dettaglio.id)
-            String message = log.clob ?: getEtichetta(Etichette.Nessun_dato_disponibile)
+            String message = log.infoVis ?: getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile"))
             Messagebox.show(message, msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         }
     }
 
     @Command
     void onCompilaOggettiDb() {
-        statoCivileService.compilaOggettiDb()
+        gsdService.compilaOggettiDb()
         Messagebox.show("Oggetti database compilati", msgTitle, Messagebox.OK, Messagebox.INFORMATION)
     }
 

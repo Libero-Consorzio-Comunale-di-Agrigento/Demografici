@@ -11970,6 +11970,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (7126, 1007, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886915, 1007, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886916, 1007, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (7127, 1007, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -88353,6 +88359,18 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (450242, 34395, 'estremiDocumento', 'MIT_estremiDocumento', 70);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (877684, 34395, 'nazioneEnte', 'MIT_nazioneEnte', 80);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (877685, 34395, 'nomeNazioneEnte', 'MIT_nomeNazioneEnte', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (877686, 34395, 'idAnagraficaConsolato', 'MIT_idAnagraficaConsolato', 80);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (877687, 34395, 'nomeAnagraficaConsolato', 'MIT_nomeAnagraficaConsolato', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (450247, 34396, 'dataTrascrizione', 'EST_dataTrascrizione', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -123705,6 +123723,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (462130, 35428, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886917, 35428, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886918, 35428, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (462132, 35428, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -124993,6 +125017,12 @@ values (462553, 35463, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (462554, 35463, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886919, 35463, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886920, 35463, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (462556, 35463, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -127914,6 +127944,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463520, 35545, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886921, 35545, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886922, 35545, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463522, 35545, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -128167,6 +128203,12 @@ values (463603, 35554, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463604, 35554, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886923, 35554, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886924, 35554, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463606, 35554, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -128433,6 +128475,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463691, 35563, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886925, 35563, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886926, 35563, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463693, 35563, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -128697,6 +128745,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463778, 35572, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886927, 35572, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886928, 35572, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463780, 35572, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -128959,6 +129013,12 @@ values (463864, 35581, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463865, 35581, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886929, 35581, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886930, 35581, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (463867, 35581, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -130359,6 +130419,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464325, 35620, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886931, 35620, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886932, 35620, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464327, 35620, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -131415,6 +131481,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464674, 35652, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886933, 35652, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886934, 35652, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464676, 35652, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -131674,6 +131746,12 @@ values (464759, 35660, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464760, 35660, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886935, 35660, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886936, 35660, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (464762, 35660, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -133341,6 +133419,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465309, 35709, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886937, 35709, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886938, 35709, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465311, 35709, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -133582,6 +133666,12 @@ values (465388, 35716, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465389, 35716, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886939, 35716, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886940, 35716, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465391, 35716, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -133827,6 +133917,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465469, 35723, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886941, 35723, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886942, 35723, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465471, 35723, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -134068,6 +134164,12 @@ values (465548, 35730, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465549, 35730, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886943, 35730, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886944, 35730, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465551, 35730, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -134313,6 +134415,12 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465629, 35737, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886945, 35737, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886946, 35737, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465631, 35737, 'tipologia', 'ATTCOL_tipologia', 100);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -134554,6 +134662,12 @@ values (465708, 35744, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465709, 35744, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886947, 35744, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886948, 35744, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465711, 35744, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -134800,6 +134914,12 @@ values (465789, 35752, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465790, 35752, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886949, 35752, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886950, 35752, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465792, 35752, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -135262,6 +135382,12 @@ values (465944, 35765, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465945, 35765, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886951, 35765, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886952, 35765, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (465947, 35765, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -135889,6 +136015,12 @@ values (624490, 35862, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (624491, 35862, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886953, 35862, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886954, 35862, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (624493, 35862, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -137847,6 +137979,9 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788032, 35979, 'serie', 'NAS_serie_2', 120);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887001, 35980, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788730, 35980, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
@@ -137871,7 +138006,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788734, 35980, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886955, 35980, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886956, 35980, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788736, 35980, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887002, 35981, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788853, 35981, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -137898,7 +138042,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788857, 35981, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886957, 35981, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886958, 35981, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788859, 35981, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887003, 35982, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788975, 35982, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -137925,7 +138078,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788979, 35982, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886959, 35982, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886960, 35982, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (788981, 35982, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887004, 35983, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789124, 35983, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -137952,7 +138114,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789128, 35983, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886961, 35983, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886962, 35983, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789130, 35983, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887005, 35984, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789525, 35984, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -137979,7 +138150,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789529, 35984, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886963, 35984, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886964, 35984, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789531, 35984, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887006, 35985, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789849, 35985, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138006,7 +138186,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789853, 35985, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886965, 35985, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886966, 35985, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789855, 35985, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887007, 35986, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789963, 35986, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138033,7 +138222,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789967, 35986, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886967, 35986, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886968, 35986, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (789969, 35986, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887008, 35988, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790063, 35988, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138060,7 +138258,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790067, 35988, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886969, 35988, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886970, 35988, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790069, 35988, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887009, 35989, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790171, 35989, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138087,7 +138294,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790175, 35989, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886971, 35989, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886972, 35989, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790177, 35989, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887010, 35990, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790270, 35990, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138114,7 +138330,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790274, 35990, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886973, 35990, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886974, 35990, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790276, 35990, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887011, 35991, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790369, 35991, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138141,7 +138366,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790373, 35991, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886975, 35991, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886976, 35991, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790375, 35991, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887012, 35992, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790468, 35992, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138168,7 +138402,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790472, 35992, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886977, 35992, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886978, 35992, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790474, 35992, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887013, 35993, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790681, 35993, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138195,7 +138438,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790685, 35993, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886979, 35993, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886980, 35993, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (790687, 35993, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887014, 35994, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791266, 35994, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138222,7 +138474,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791270, 35994, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886981, 35994, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886982, 35994, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791272, 35994, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887015, 35995, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791400, 35995, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138249,7 +138510,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791404, 35995, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886983, 35995, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886984, 35995, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791406, 35995, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887016, 35996, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791756, 35996, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138276,7 +138546,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791760, 35996, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886985, 35996, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886986, 35996, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791762, 35996, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887017, 35997, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791868, 35997, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138303,7 +138582,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791872, 35997, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886987, 35997, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886988, 35997, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (791874, 35997, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887018, 35998, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792219, 35998, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138330,7 +138618,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792223, 35998, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886989, 35998, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886990, 35998, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792225, 35998, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887019, 35999, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792315, 35999, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138357,7 +138654,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792319, 35999, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886991, 35999, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886992, 35999, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792321, 35999, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887020, 36000, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792402, 36000, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138384,7 +138690,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792406, 36000, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886993, 36000, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886994, 36000, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792408, 36000, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887021, 36001, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792493, 36001, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138411,7 +138726,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792497, 36001, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886995, 36001, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886996, 36001, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792499, 36001, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887022, 36002, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792625, 36002, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138438,7 +138762,16 @@ insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792629, 36002, 'annoAtto', 'ATTCOL_annoAtto', 90);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886997, 36002, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886998, 36002, 'serie', 'ATTCOL_serie', 92);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (792631, 36002, 'tipologia', 'ATTCOL_tipologia', 100);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887023, 36003, 'idAnsc', 'ATTCOL_idAttoAnsc', 10);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (793295, 36003, 'idComuneRegistrazione', 'ATTCOL_idComuneReg', 20);
@@ -138463,6 +138796,12 @@ values (793298, 36003, 'numeroatto', 'ATTCOL_numeroAtto', 80);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (793299, 36003, 'annoAtto', 'ATTCOL_annoAtto', 90);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (886999, 36003, 'parte', 'ATTCOL_parte', 91);
+
+insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
+values (887000, 36003, 'serie', 'ATTCOL_serie', 92);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (793301, 36003, 'tipologia', 'ATTCOL_tipologia', 100);
@@ -138526,3 +138865,9 @@ values (877666, 36293, 'hash', 'hashAllegato', 30);
 
 insert into ansjsn_campi (ID, ID_SEZIONE, CAMPO, CAMPO_DB, SEQUENZA)
 values (877667, 36293, 'flagAttConformita', null, 40);
+
+delete ansjsn_campi
+ where id_sezione in (select id From ansjsn_sezioni
+                       where sezione  = 'eventoModificato'
+                         and servizio = 'R013')
+   and campo = 'id';

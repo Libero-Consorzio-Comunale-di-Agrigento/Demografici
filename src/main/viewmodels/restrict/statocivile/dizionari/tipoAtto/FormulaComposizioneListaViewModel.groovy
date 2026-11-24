@@ -5,7 +5,10 @@ import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazione
 import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazioneService
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormula
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormulaService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.ETipoAnnotazione
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
+import it.finmatica.de4gsdzk.utils.TipoAttoUtils
 import org.springframework.data.domain.Page
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
@@ -36,9 +39,9 @@ class FormulaComposizioneListaViewModel extends FormulaListaParentViewModel {
 
         listaTipiAtto = TipoAttoUtils.listaTipiAttoDefault
 
-        doInit(w, [Etichette.Formule_Composizione, Etichette.Richiami, Etichette.Richiamo, Etichette.Progressivo])
+        doInit(w, [Etichette.getEtichetta("Formule_Composizione"), Etichette.getEtichetta("Richiami"), Etichette.getEtichetta("Richiamo"), Etichette.getEtichetta("Progressivo")])
 
-        msgTitle = getEtichetta(Etichette.Formule_Composizione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formule_Composizione"))
 
         formLabel = msgTitle?.toUpperCase()
     }
@@ -69,7 +72,7 @@ class FormulaComposizioneListaViewModel extends FormulaListaParentViewModel {
             }
             tot = (p?.getTotalElements()?:0)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
         return new Paginazione(l, tot)
     }
@@ -79,10 +82,10 @@ class FormulaComposizioneListaViewModel extends FormulaListaParentViewModel {
             if ( dettaglio.getFirst()?.tipoAtto?.intValue() == tipoAttoEnum?.valore) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.getFirst().id])
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

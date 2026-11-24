@@ -47,6 +47,6 @@ class CerCategoriaTipoCertificato extends GsdBaseDomain{
     /////////////////////////////// GENERALI////////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Competenza_On_Line]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Competenza_On_Line")]
 
 }

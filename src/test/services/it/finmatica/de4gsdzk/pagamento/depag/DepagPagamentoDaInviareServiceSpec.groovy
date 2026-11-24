@@ -31,7 +31,7 @@ class DepagPagamentoDaInviareServiceSpec extends WspaPagamentoDaInviareServiceSp
         DepagPagamentoDaInviareRepository depagPagamentoDaInviareRepository = Mock(DepagPagamentoDaInviareRepository)
         depagPagamentoDaInviareRepository.findAllByRicercaCertificato(_,_) >> resultPage
 
-        depagPagamentoDaInviareService = new DepagPagamentoDaInviareService(statoCivileService, utenteCustomService, depagPagamentoDaInviareRepository)
+        depagPagamentoDaInviareService = new DepagPagamentoDaInviareService(gsdService, utenteCustomService, depagPagamentoDaInviareRepository)
     }
 
     @Override

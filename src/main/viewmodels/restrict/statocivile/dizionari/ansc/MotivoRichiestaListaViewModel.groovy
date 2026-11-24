@@ -29,6 +29,9 @@ class MotivoRichiestaListaViewModel extends DizionarioListaViewModel{
     CivMotivoRichiesta dettaglio
     List<CivMotivoRichiesta> lista
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @WireVariable
     private CivMotivoRichiestaService civMotivoRichiestaService
 
@@ -44,22 +47,33 @@ class MotivoRichiestaListaViewModel extends DizionarioListaViewModel{
         addEnabled = false
 
 
-        List<Map> eList = [Etichette.Motivi_richiesta, Etichette.Funzione_non_abilitata, Etichette.Tipi_di_Atto]
+        List<Map> eList = [Etichette.getEtichetta("Motivi_richiesta"), Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Tipi_di_Atto")]
         eList.addAll(CivMotivoRichiesta.etichetteDomain)
         eList.addAll(ETipoRichiesta.values()*.getEtichettaDesc())
 
         listaTipiAtto = [ETipoAtto.NAS, ETipoAtto.CIT]
         eList.addAll(listaTipiAtto*.getEtichettaPluralDesc())
 
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
+
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Motivi_richiesta)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Motivi_richiesta"))
 
         resize()
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")), SortUtils.idAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), SortUtils.idDesc)])
+
+        selectedOrder = listaOrder[0]
 
     }
 
@@ -76,7 +90,7 @@ class MotivoRichiestaListaViewModel extends DizionarioListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging){
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.descrizioneAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
         Page<CivMotivoRichiesta> p = civMotivoRichiestaService.listAllByDescrizioneLike(filtro, pr, [tipoAttoEnum: tipoAttoEnum])
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
     }
@@ -95,7 +109,7 @@ class MotivoRichiestaListaViewModel extends DizionarioListaViewModel{
             if (userModifyEnabled){
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

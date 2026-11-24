@@ -39,5 +39,5 @@ abstract class AnscCasoUsoBaseDomain extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Descrizione")]
 }

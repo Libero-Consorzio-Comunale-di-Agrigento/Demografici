@@ -33,6 +33,7 @@ select mat.id
      , f_ANSC_ruolo_operatore(dpa.qualifica_utente) ruoloOperatore
      , f_ANSC_nome_operatore(mat.terminalista) operatoreNome
      , f_ANSC_cognome_operatore(mat.terminalista) operatoreCognome
+     , 'true' redattoNellaCasaComunale
      , to_char(null) tipoDichiarante
      , f_ANSC_ausilio_interprete(dpa.tipo_comparente) ausilioInterprete
      , f_ANSC_motivo_recupero(mat.motivo_recupero_ansc) motivoRecupero            -- (anst96)
@@ -100,8 +101,18 @@ select mat.id
 -- officiante
      , case when cta.sigla in ('TEP', 'TEA', 'UAC', 'UCO', 'UAL', 'AVV')  then '' else f_ANSC_officiante(dpa.tipo_atto, dpa.id_atto, '') end officiante
 -- officianteEvento
-     , case when cta.sigla in ('TEP', 'TEA', 'UAC', 'UCO', 'UAL', 'AVV')  then '' else decode(cta.sigla, 'CPD', f_ANSC_nome_officiante(dpa.ufficiale_utente, ''), f_ANSC_nome_officiante(COALESCE(dpa.ministro_art, dpa.ministro, dpa.ufficiale_prov, dpa.ufficiale_utente),'')) end OFF_nome
-     , case when cta.sigla in ('TEP', 'TEA', 'UAC', 'UCO', 'UAL', 'AVV')  then '' else decode(cta.sigla, 'CPD', f_ANSC_cognome_officiante(dpa.ufficiale_utente, ''), f_ANSC_cognome_officiante(COALESCE(dpa.ministro_art, dpa.ministro, dpa.ufficiale_prov, dpa.ufficiale_utente),'')) end OFF_cognome
+     , case
+          when cta.sigla in ('TEP', 'TEA', 'UAC', 'UCO', 'UAL', 'AVV')  then ''
+          else decode(cta.sigla,
+                 'CPD', f_ANSC_nome_officiante(dpa.ufficiale_utente, ''),
+                 f_ANSC_nome_officiante(COALESCE(replace(replace(dpa.ministro_art,'suddetto parroco',''),'SUDDETTO PARROCO',''), dpa.ministro, dpa.ufficiale_prov, dpa.ufficiale_utente),''))
+       end OFF_nome
+     , case
+          when cta.sigla in ('TEP', 'TEA', 'UAC', 'UCO', 'UAL', 'AVV')  then ''
+          else decode(cta.sigla,
+                 'CPD', f_ANSC_cognome_officiante(dpa.ufficiale_utente, ''),
+                        f_ANSC_cognome_officiante(COALESCE(replace(replace(dpa.ministro_art,'suddetto parroco',''),'SUDDETTO PARROCO',''), dpa.ministro, dpa.ufficiale_prov, dpa.ufficiale_utente),''))
+          end OFF_cognome
      , 'false' OFF_flagDichiarante
      , 'false' OFF_flagComparente
      , case when cta.sigla in ('O1', 'FCC', 'PDV', 'CPD') then 'true' else 'false' end OFF_flagFirmatario
@@ -546,6 +557,7 @@ select mat.id
      , decode(cta.flag_divorzio,'S', dpa.foro_avvocato_sposo) foroAvvocatoConiuge1
      , decode(cta.flag_divorzio,'S', f_ANSC_flag_comparente(dpa.tipo_comparente,'AA', 'AVV2')) presenzaAvvocatoConiuge2
      , decode(cta.flag_divorzio,'S', dpa.foro_avvocato_sposa) foroAvvocatoConiuge2
+     , decode(cta.flag_divorzio,'S', 'false') avvocatoUnico
      , decode(cta.flag_divorzio,'S', f_ANSC_tipo_accordo(dpa.tipo_divorzio,dpa.tipo_divorzio_altro,f_CIV_get_id_atto(4,dpa.accordo_ufficio,dpa.accordo_anno,dpa.accordo_parte,dpa.accordo_serie,dpa.accordo_atto))) SEP_tipoAccordo
   --
      , decode(cta.flag_divorzio,'S', decode(dpa.flag_giudizio_pendente,'S', 'true', 'false')) parteInGiudizioPendente
@@ -632,6 +644,7 @@ select mat.id
      , case when cta.sigla in ('AVV', 'AAL') then 'come da trascrizione contenuta nel corpo dell''atto'  else '' end NEG_testoTrascrizione
   -- accordo
      , case when cta.sigla in ('AVV', 'AAL') then to_char(dpa.d_accordo_data, 'yyyy-mm-dd') else '' end NEG_dataTrascrizione_ACC
+     , case when cta.sigla in ('AVV', 'AAL') then to_char(nvl(dpa.D_ACCORDO_DATA_STIPULA,dpa.d_accordo_data), 'yyyy-mm-dd') else '' end NEG_dataStipula_ACC
      , case when cta.sigla in ('AVV', 'AAL') then dpa.accordo_numero end NEG_estremiDocumento_ACC
      --, decode(cta.sigla, 'AVV', dpa.accordo_ente) NEG_nomeEnte_ACC -- campo dismesso per https://github.com/italia/ansc/issues/377
      , case when cta.sigla in ('AVV', 'AAL') then f_ANSC_id_provincia_al(dpa.accordo_cod_pro, dpa.accordo_cod_com, '') else '' end NEG_idProvinciaEnte_ACC

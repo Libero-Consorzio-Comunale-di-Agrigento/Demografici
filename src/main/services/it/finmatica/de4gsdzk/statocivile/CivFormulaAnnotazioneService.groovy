@@ -2,12 +2,12 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.GsdValidazioneTestoService
 import it.finmatica.de4gsdzk.ISoggettoAtto1
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.ErroreDatiAnnotazioneRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivFormulaAnnotazioneRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivFormulaAnnotazioneService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivNotaFormulaService civNotaFormulaService
 
@@ -31,12 +31,12 @@ class CivFormulaAnnotazioneService {
 
 	private final CivFormulaAnnotazioneRepository civFormulaAnnotazioneRepository
 
-	CivFormulaAnnotazioneService(CivFormulaAnnotazioneRepository civFormulaAnnotazioneRepository, StatoCivileService statoCivileService,
-								 CivNotaFormulaService civNotaFormulaService, CivTestoFormulaService civTestoFormulaService,
-								 ArcParametroService arcParametroService, GsdValidazioneTestoService gsdValidazioneTestoService){
+	CivFormulaAnnotazioneService(CivFormulaAnnotazioneRepository civFormulaAnnotazioneRepository, GsdService gsdService,
+                                 CivNotaFormulaService civNotaFormulaService, CivTestoFormulaService civTestoFormulaService,
+                                 ArcParametroService arcParametroService, GsdValidazioneTestoService gsdValidazioneTestoService){
 
 		this.civFormulaAnnotazioneRepository = civFormulaAnnotazioneRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civNotaFormulaService = civNotaFormulaService
 		this.civTestoFormulaService = civTestoFormulaService
 		this.arcParametroService = arcParametroService
@@ -108,7 +108,7 @@ class CivFormulaAnnotazioneService {
 		if (soloNoteDecode) {
 			return testo
 		} else {
-			return statoCivileService.decodificaTestoFormula(atto, testo, idFormula, null, null, null, null)
+			return gsdService.decodificaTestoFormula(atto, testo, idFormula, null, null, null, null)
 		}
 	}
 
@@ -121,7 +121,7 @@ class CivFormulaAnnotazioneService {
 			if (nf.testoVariabile){
 				String var = nf.testoVariabile
 				var = var.replaceAll("<", "").replaceAll(">", "")
-				String varDecodificata = (statoCivileService.decodificaVariabileFormula(atto, var)?:"[....]")
+				String varDecodificata = (gsdService.decodificaVariabileFormula(atto, var)?:"[....]")
 				testoDecodificato = testoDecodificato.replaceAll("#${nf.variabile.toString()}", varDecodificata)
 				continue
 			}
@@ -182,7 +182,7 @@ class CivFormulaAnnotazioneService {
 
 	private void validaDati(ETipoOperazione tipoOperazione, CivFormulaAnnotazione obj) {
 		if (isAnnotazioneBloccata(obj.id)){
-			throw new ErroreDatiAnnotazioneRuntimeException(EtichetteMessaggi.Errore_Operazione_non_consentita)
+			throw new ErroreDatiAnnotazioneRuntimeException(Etichette.getEtichetta("Errore_Operazione_non_consentita"))
 		}
 
 		ValidationUtils.validaDatiObbligatori(obj)
@@ -190,11 +190,11 @@ class CivFormulaAnnotazioneService {
 		if (tipoOperazione.isInsert()){
 			long n = civFormulaAnnotazioneRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Formula_Duplicata)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Formula_Duplicata"))
 			}
 		}
 
-		gsdValidazioneTestoService.checkWrongVar(obj.testo?.testoA4, statoCivileService.listVariabili(CivTestoFormula.class, obj.tipoAtto))
+		gsdValidazioneTestoService.checkWrongVar(obj.testo?.testoA4, gsdService.listVariabili(CivTestoFormula.class, obj.tipoAtto))
 	}
 
 	CivFormulaAnnotazione save(ETipoOperazione tipoOperazione, CivFormulaAnnotazione obj, List<CivNotaFormula> lnf=[]) {

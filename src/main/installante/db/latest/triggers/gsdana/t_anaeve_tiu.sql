@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset amonopoli:202503101300 runOnChange:true stripComments:false
+--changeset amonopoli:202503101300_2 runOnChange:true stripComments:false
 create or replace trigger ANAEVE_TIU
 before INSERT
     or UPDATE
@@ -13,22 +13,15 @@ declare
    found            boolean;
 begin
    begin  -- Check DATA Integrity on INSERT or UPDATE
+     :new.id                   := f_anaeve_nr(:new.id);
      :new.cod_fam_unique       := nvl(:new.cod_fam_unique,f_ANA_get_cod_fam_unique(:new.cod_mov,:new.cod_fam));
 
-     :new.civico_esterno := f_civico_esterno(:new.cod_via
-					     ,:new.num_civ
-					     ,:new.suffisso
-					     ,:new.scala
-					     ,:new.piano
-					     ,:new.interno
-					     ,:new.sub_interno);
-     :new.civico_interno := f_civico_interno(:new.cod_via
-					     ,:new.num_civ
-					     ,:new.suffisso
-					     ,:new.scala
-					     ,:new.piano
-					     ,:new.interno
-					     ,:new.sub_interno);
+     :new.civico_esterno := f_civico_esterno_ZK(:new.cod_via,
+                                                :new.num_civ,:new.suffisso,:new.scala,:new.piano,:new.interno,:new.sub_interno,
+                                                :new.progr_snc,:new.nui,:new.colore,:new.corte,:new.interno2,:new.sub_interno2,:new.secondario,:new.scala_esterna);
+     :new.civico_interno := f_civico_interno_ZK(:new.cod_via,
+                                                :new.num_civ,:new.suffisso,:new.scala,:new.piano,:new.interno,:new.sub_interno,
+                                                :new.progr_snc,:new.nui,:new.colore,:new.corte,:new.interno2,:new.sub_interno2,:new.secondario,:new.scala_esterna);
 
      if INSERTING then
         if :new.data_inizio is null and :new.d_data_inizio is not null then

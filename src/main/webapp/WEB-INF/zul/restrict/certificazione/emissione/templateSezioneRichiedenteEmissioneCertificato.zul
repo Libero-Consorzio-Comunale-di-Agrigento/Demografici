@@ -215,10 +215,14 @@
                             </grid>
                         </groupbox>
                     </cell>
-                    <cell width="42px">
-                        <button image="/images/icon/action/16x16/cancel.png"
-                                tooltiptext="@load(vm.etichette['Cancella'])"
-                                onClick="@command('onCancellaAnagrafica', tipoSoggetto='RICHIEDENTE_CERTIFICATO')"/>
+                    <cell hflex="min">
+                        <hlayout valign="middle" hflex="min">
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaAnagrafica', tipoSoggetto='RICHIEDENTE_CERTIFICATO')"/>
+                            <button image="/images/icon/action/16x16/info.png"
+                                    disabled="true" style="visibility:hidden;"/>
+                        </hlayout>
                     </cell>
                 </row>
             </rows>

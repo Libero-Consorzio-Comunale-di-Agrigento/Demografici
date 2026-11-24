@@ -31,7 +31,7 @@ class NascitaANSCListaViewModel extends AnscAttoListaParentViewModel {
 
         backFromListANSCEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_NATO_A, Etichette.SEZIONE_MADRE, Etichette.SEZIONE_PADRE]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_NATO_A"), Etichette.getEtichetta("SEZIONE_MADRE"), Etichette.getEtichetta("SEZIONE_PADRE")]
 
         doInitAllAtti(eList, pkAtto, tipoAttoEnum, casoUso, getAttoParams())
 

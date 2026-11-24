@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset amonopoli:202503050925 runAlways:true stripComments:false
+--changeset amonopoli:202503050925_1 runAlways:true runOnChange:true stripComments:false
 create or replace view anaeve_v
 AS
 select eve.*
@@ -15,8 +15,6 @@ select eve.*
      , f_provincia_stato_al(eve.COD_PRO_AIRE,eve.COD_COM_AIRE,'','S','','') sigla_pro_aire
      , f_comune_al(eve.COD_PRO_ISCR_AIRE,eve.COD_COM_ISCR_AIRE,'') des_com_iscr_aire
      , f_provincia_stato_al(eve.COD_PRO_ISCR_AIRE,eve.COD_COM_ISCR_AIRE,'','S','','') sigla_pro_iscr_aire
--- id
-     , rownum id
   from anaeve eve
 /
 comment on table anaeve_v is 'Anagrafe - Eventi (view)'

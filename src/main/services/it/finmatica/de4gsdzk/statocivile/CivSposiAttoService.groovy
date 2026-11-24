@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreLunghezzaCampiRuntimeException
@@ -15,17 +16,17 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivSposiAttoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final ArcParametroService arcParametroService
 
 	private final CivSposiAttoRepository civSposiAttoRepository
 
     CivSposiAttoService(CivSposiAttoRepository civSposiAttoRepository,
-						StatoCivileService statoCivileService, ArcParametroService arcParametroService) {
+                        GsdService gsdService, ArcParametroService arcParametroService) {
 
 		this.civSposiAttoRepository = civSposiAttoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.arcParametroService = arcParametroService
 	}
 
@@ -52,7 +53,7 @@ class CivSposiAttoService {
 			emptyMandatoryFields = TipoAttoUtils.isEstremiAttoEmpty(obj, tipoAttoEnumSource)
 		}
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 
 		String sezione1 = ( ( (tipoAttoEnumSource == ETipoAtto.UCI) || (tipoAttoEnumSource == ETipoAtto.PVU) )?"( Estremi Atto di nascita contraente 1 )":"( Estremi Atto di nascita sposo )" )
@@ -69,7 +70,7 @@ class CivSposiAttoService {
 		} else {
 			Boolean serie1Ok = TipoAttoUtils.isSerieOk(ETipoAtto.NAS, obj.serieAttoNascita1)
 			if (!(serie1Ok)) {
-				throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, sezione1)
+				throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), sezione1)
 			}
 
 			if ((obj.parteAttoNascita1String ?: "") != "") {
@@ -77,10 +78,10 @@ class CivSposiAttoService {
 					Integer p1 = obj.parteAttoNascita1
 					Boolean p1Ok = TipoAttoUtils.isParteOk(ETipoAtto.NAS, p1)
 					if (!(p1Ok)) {
-						throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione1)
+						throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione1)
 					}
 				} catch (NumberFormatException nfe) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione1)
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione1)
 				}
 			}
 
@@ -104,7 +105,7 @@ class CivSposiAttoService {
 		} else {
 			Boolean serie2Ok = TipoAttoUtils.isSerieOk(ETipoAtto.NAS, obj.serieAttoNascita2)
 			if (!(serie2Ok)) {
-				throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, sezione2)
+				throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), sezione2)
 			}
 
 			if ( (obj.parteAttoNascita2String?:"") != "") {
@@ -112,10 +113,10 @@ class CivSposiAttoService {
 					Integer p2 = obj.parteAttoNascita2
 					Boolean p2Ok = TipoAttoUtils.isParteOk(ETipoAtto.NAS, p2)
 					if (!(p2Ok)) {
-						throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione2)
+						throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione2)
 					}
 				} catch (NumberFormatException nfe) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezione2)
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezione2)
 				}
 			}
 
@@ -144,28 +145,28 @@ class CivSposiAttoService {
 				if ((tipoAttoEnumSource == ETipoAtto.MAT)) {
 					Boolean serieMOk = TipoAttoUtils.isSerieOk(ETipoAtto.MAT, obj.serieAttoMatrimonio)
 					if (!(serieMOk)) {
-						throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_serie, sezioneM)
+						throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_serie"), sezioneM)
 					}
 				}
 				try {
 					Integer pM = obj.parteAttoMatrimonio
 					Boolean pMOk = TipoAttoUtils.isParteOk(tipoAttoEnumSource, pM)
 					if (!(pMOk)) {
-						throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezioneM)
+						throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezioneM)
 					}
 				} catch (NumberFormatException nfe) {
-					throw new ErroreValoreParteSerieException(EtichetteMessaggi.Errore_parte, sezioneM)
+					throw new ErroreValoreParteSerieException(Etichette.getEtichetta("Errore_parte"), sezioneM)
 				}
 
 				if (estremiAttoMatUciMandatory && anscOn) {
 					if ((obj.codiceComuneAttoMatrimonio == null) || (obj.codiceProvinciaAttoMatrimonio == null)) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneM)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneM)
 					}
 					if (TestoUtils.isVuoto(obj.idAttoAnscMatrimonio) && ((obj.annoAttoMatrimonio == null) || (obj.attoAttoMatrimonio == null))) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneM)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneM)
 					}
 					if (obj.dataAttoMatrimonio == null) {
-						throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneM)
+						throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneM)
 					}
 				}
 			}
@@ -173,7 +174,7 @@ class CivSposiAttoService {
 			if (datiMatUciMandatory && anscOn) {
 				if ((obj.dataMatrimonio == null) || TestoUtils.isVuoto(obj.officiante) ||
 						(obj.comuneMatrimonio.codice == null) || (obj.comuneMatrimonio.codiceProvincia == null)) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneM)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneM)
 				}
 			}
 		}
@@ -186,7 +187,7 @@ class CivSposiAttoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su CIVSPO per id " + obj.id)
 		return  civSposiAttoRepository.save(obj)

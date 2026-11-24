@@ -39,10 +39,12 @@ class AnscGenerazioneCertificatoService implements IGenerazioneCertificatoServic
         this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
     }
 
-    AnscEndPointServizio getServizio() {
-        AnscEndPointServizio servizio = anscEndPointServizioService.getServizioCertificazioneGenerale()
+    AnscEndPointServizio getServizio(CerCertificatoEmesso certificato) {
+        Integer idTipoCertificato = certificato?.tipoCertificato?.tipoCertificatoAnsc
+        String flagEnte = (certificato?.tipoRichiedente?.isAttivaSezioneEnte()) ? 'S' : 'N'
+        AnscEndPointServizio servizio = anscEndPointServizioService.getServizioCertificazione(idTipoCertificato, flagEnte)
         if (!servizio) {
-            throw new AnscRuntimeException(EtichetteMessaggi.Compilare_servizio_ANSC)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Compilare_servizio_ANSC"))
         }
         return servizio
     }
@@ -56,10 +58,11 @@ class AnscGenerazioneCertificatoService implements IGenerazioneCertificatoServic
     void generateCertificato(IGenerazioneCertificatoParams p) {
         try {
             AnscGenerazioneCertificatoParams paramsAnsc = (AnscGenerazioneCertificatoParams) p
+            AnscEndPointServizio servizio = getServizio(paramsAnsc.certificato)
 
             AnscUtente ansUte = anscUtenteService.get(paramsAnsc.certificato.terminalista.id)
             if (!ansUte) {
-                throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_abilitazione_utente)
+                throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_abilitazione_utente"))
             }
 
             Boolean otpValido = Boolean.FALSE
@@ -83,6 +86,7 @@ class AnscGenerazioneCertificatoService implements IGenerazioneCertificatoServic
     }
 
     private void openOtp(AnscGenerazioneCertificatoParams paramsAnsc) {
+        AnscEndPointServizio servizio = getServizio(paramsAnsc.certificato)
         Window w = (Window) Executions.createComponents("/restrict/afc/anscOtp.zul", paramsAnsc.window, [servizio: servizio])
         w.addEventListener(CustomEvents.ON_SEND_ANSC_SERVICE, { event ->
             if (event.data.credenziali instanceof AnscCredenziali) {
@@ -104,6 +108,7 @@ class AnscGenerazioneCertificatoService implements IGenerazioneCertificatoServic
     }
 
     private CertificatoGenerato send(CerCertificatoEmesso certificatoEmesso, CivAttoBaseDomain atto, AnscCredenziali cre) {
+        AnscEndPointServizio servizio = getServizio(certificatoEmesso)
         AnscEndPointServizio servizioPrec = null
         ETipoArchivioAnsc taRif = ETipoArchivioAnsc.CER
         ETipoArchivioAnsc taRifComPrec = null

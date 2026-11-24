@@ -3,10 +3,10 @@ package it.finmatica.de4gsdzk.certificazione.error
 import it.finmatica.de4gsdzk.certificazione.CerCategoriaTipoCertificato
 import it.finmatica.de4gsdzk.certificazione.EDiritto
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 
 class CategoriaGiaAssociataADirittoRuntimeException extends De4gsdzkRuntimeException {
-    private static final Map<String, String> etichettaDefault = EtichetteMessaggi.Errore_Tariffa_diritto_associata_a_categoria
+    private static final Map<String, String> etichettaDefault = Etichette.getEtichetta("Errore_Tariffa_diritto_associata_a_categoria")
 
     CerCategoriaTipoCertificato categoria
     EDiritto diritto

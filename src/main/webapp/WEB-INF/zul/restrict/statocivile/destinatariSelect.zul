@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateDestinatariSelect" macroURI="/restrict/templateDestinatariSelect.zul" inline="true"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul"
 	xmlns:h="http://www.w3.org/1999/xhtml"
@@ -13,58 +14,7 @@
 			title="@load(vm.etichette['Seleziona'])"
 			sizable="false" closable="true">
 
-		<hlayout sclass="testo-al-centro" valign="middle" height="30px">
-			<radiogroup model="@load(vm.listaTipiEnte)" selectedItem="@bind(vm.tipoEnteDestinatario)" onCheck="@command('onRicarica')">
-				<template name="model">
-					<radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:30px"/>
-				</template>
-			</radiogroup>
-		</hlayout>
-
-		<grid sclass="form" height="35px">
-			<rows>
-				<row visible="@load(vm.tipoEnteDestinatario.isComune())">
-					<cell align="right">
-						<label value="@load(vm.etichette['Comune'])"/>
-					</cell>
-					<cell colspan="3">
-						<hlayout valign="middle" hflex="1">
-							<bandboxComuni hflex="1"
-										   value="@load(vm.comune.descrizioneComune)"
-										   idNotIn="@load(vm.idComuniDaEscludere)"
-										   onSelect="@command('onSelectComune', campoRiferimento='CC_DEST')"/>
-							<button image="/images/icon/action/16x16/cancel.png"
-									tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaComune', campoRiferimento='CC_DEST')"
-							/>
-						</hlayout>
-					</cell>
-				</row>
-
-				<row visible="@load(vm.tipoEnteDestinatario.isEnte())">
-					<cell align="right">
-						<label value="@load(vm.etichette['Ente'])"/>
-					</cell>
-					<cell colspan="3">
-						<combobox model="@load(vm.listaEnti)" readonly="true" hflex="1"
-								  selectedItem="@bind(vm.ente) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
-							<template name="model">
-								<comboitem label="@load(each.descrizione)" tooltiptext="@load(each.descrizione)" value="@load(each)"/>
-							</template>
-						</combobox>
-					</cell>
-				</row>
-			</rows>
-		</grid>
-
-		<space/>
-
-		<h:div sclass="barraPulsanti">
-			<h:div>
-				<button label="@load(vm.etichette['Seleziona'])"		onClick="@command('onSeleziona')" 	image="/images/icon/action/16x16/ok.png" />
-				<button label="@load(vm.etichette['Chiudi'])"			onClick="@command('onChiudi')" 		image="/images/icon/action/16x16/close.png"/>
-			</h:div>
-		</h:div>
-
+        <templateDestinatariSelect/>
 
 	</window>
 

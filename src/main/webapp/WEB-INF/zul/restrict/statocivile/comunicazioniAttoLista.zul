@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<?component name="templateComunicazioniAtto" macroURI="/restrict/statocivile/templateComunicazioniAtto.zul" inline="true"?>
+<?component name="templateComunicazioni" macroURI="/restrict/templateComunicazioni.zul" inline="true"?>
 
 <zk xmlns="http://www.zkoss.org/2005/zul"
 	xmlns:h="http://www.w3.org/1999/xhtml"
@@ -52,7 +52,7 @@
 
 			<totalSizeBlock/>
 
-			<templateComunicazioniAtto/>
+			<templateComunicazioni/>
 
 		</vlayout>
 	</window>

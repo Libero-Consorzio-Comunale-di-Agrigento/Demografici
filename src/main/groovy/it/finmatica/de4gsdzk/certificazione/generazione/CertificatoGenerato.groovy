@@ -33,10 +33,10 @@ class CertificatoGenerato {
                 tipoGenerazione = null
                 break
             case ETipoGenerazioneCertificato.ANSC:
-                tipoGenerazione = Etichette.ANSC.defaultValue
+                tipoGenerazione = Etichette.getEtichetta("ANSC").defaultValue
                 break
             case ETipoGenerazioneCertificato.ANPR:
-                tipoGenerazione = Etichette.ANPR.defaultValue
+                tipoGenerazione = Etichette.getEtichetta("ANPR").defaultValue
                 break
             default:
                 throw new RuntimeException("Tipo generazione certificato non previsto: ${tipoGenerazioneCertificato}")

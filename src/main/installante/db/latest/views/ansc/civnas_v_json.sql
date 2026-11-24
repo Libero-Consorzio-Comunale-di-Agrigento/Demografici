@@ -45,8 +45,8 @@ select nas.id
      , decode(nas.natura, 'D', 'false', 'true') flagEstrattoPerRiassunto
 -- intestatari
      , nas.cod_fiscale INT_codiceFiscale
-     , nvl(occ.cognome,nas.cognome) INT_cognome
-     , nvl(occ.nome,nas.nome) INT_nome
+     , f_ANSC_stringa_unicode('CIVNAS',nas.id,'COGNOME_1',nvl(occ.cognome,nas.cognome)) INT_cognome
+     , f_ANSC_stringa_unicode('CIVNAS',nas.id,'NOME_1',nvl(occ.nome,nas.nome)) INT_nome
 --     , lower(nas.sesso) INT_sesso
      , nas.sesso INT_sesso
      , decode(nas.sesso,'M','maschile','F','femminile','non conosciuto') INT_descrizioneSesso
@@ -174,8 +174,8 @@ select nas.id
      , f_ANSC_tipo_accertamento(2,nas.id_atto,dpa.tipo_accertamento) tipoAccertamento
      , f_ANSC_tipo_nascita_soggetto(nas.nato_morto) tipoNascitaSoggetto
 -- madre
-     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN nas.cognome_md END MAT_cognome
-     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN nas.nome_md END MAT_nome
+     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN f_ANSC_stringa_unicode('CIVNAS',nas.id,'COGNOME_MD',nas.cognome_md) END MAT_cognome
+     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN f_ANSC_stringa_unicode('CIVNAS',nas.id,'NOME_MD',nas.nome_md) END MAT_nome
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN decode(nas.cognome_md||nas.nome_md,'','','F') END MAT_sesso
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN decode(nas.cognome_md||nas.nome_md,'','','femminile') END MAT_descrizioneSesso
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN to_char(nas.d_data_nas_md,'yyyy-mm-dd') END MAT_dataNascita
@@ -209,8 +209,8 @@ select nas.id
      -- per CNA non dobbiamo richiedere il servizio R006 - Firma Dichiarante
      , CASE when cta.sigla in ('TEP', 'CNA','T2A') THEN 'false' ELSE f_ANSC_flag_firmatario(dpa.tipo_firmatario,'MD') END MAT_flagFirmatario
 -- padre
-     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN nas.cognome_pd END PAT_cognome
-     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN nas.nome_pd END PAT_nome
+     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN f_ANSC_stringa_unicode('CIVNAS',nas.id,'COGNOME_PD',nas.cognome_pd) END PAT_cognome
+     , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN f_ANSC_stringa_unicode('CIVNAS',nas.id,'NOME_PD',nas.nome_pd) END PAT_nome
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN decode(nas.cognome_pd||nas.nome_pd,'','',decode(m.id||'-'||nas.id_atto,'039010-NAS_2025_2B_254_U1','F','M')) END PAT_sesso
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN decode(nas.cognome_pd||nas.nome_pd,'','',decode(m.id||'-'||nas.id_atto,'039010-NAS_2025_2B_254_U1','femminile','maschile')) END PAT_descrizioneSesso
      , CASE when nas.flag_figlio_di_ignoti is null or cta.sigla = 'RIC' THEN to_char(nas.d_data_nas_pd,'yyyy-mm-dd') END PAT_dataNascita
@@ -365,7 +365,7 @@ select nas.id
                 decode(dpa.tipo_dichiarante,
                   'AL', f_ANSC_comprensione(dpa.comprensione_dic),
                   'PP', f_ANSC_comprensione(dpa.comprensione_dic),
-                  'PM', f_ANSC_comprensione(dpa.comprensione_dic)
+                  'PM', f_ANSC_comprensione(dpa.comprensione_dic) 
                 )
        ) DIC_tipoImpedimento
      , decode(cta.sigla,
@@ -386,7 +386,7 @@ select nas.id
                 decode(dpa.tipo_dichiarante,'PD','false','MD','false',f_ANSC_flag_firmatario(dpa.tipo_firmatario,dpa.tipo_dichiarante))
        ) DIC_flagFirmatario
      , f_ANSC_titolo_dichiarante(dpa.tipo_dichiarante) titoloDichiarante
-     , f_ANSC_tipo_procura(dpa.tipo_dichiarante) tipoProcura
+     , f_ANSC_tipo_procura(dpa.tipo_dichiarante) tipoProcura   
      , dpa.dati_procura datiEssenzialiProcura
 -- inteprete
      , sog_IT.cognome ITP_cognome
@@ -475,6 +475,7 @@ select nas.id
          'ODN', f_ANSC_comune_estero(dpa.ente_straniero_cod_pro,dpa.ente_straniero_cod_com,''),
                 f_ANSC_comune_estero(dpa.cod_pro_prov,dpa.cod_com_prov,'')) TRA_comuneEsteroEnte
      , decode(cta.sigla,
+         'CNA', to_char(nvl(dpa.d_data_atto_orig,dpa.d_data_atto_utente),'yyyy-mm-dd'),
          'ADO', to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd'),
          'ODN', to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd'),
          'O1A', to_char(null),
@@ -503,10 +504,10 @@ select nas.id
      , f_ANSC_stato_al(dpa.ente_straniero_cod_pro,dpa.ente_straniero_cod_com,'') EST_nomeNazioneEnte
      , f_ANSC_comune_estero(dpa.ente_straniero_cod_pro,dpa.ente_straniero_cod_com,'') EST_comuneEsteroEnte
      , to_char(null) EST_dataComunicazione
-     , case
-         when cta.sigla in ('TEP', 'TEA') then to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd')
-         when cta.sigla in ('O1A') then to_char(null)
-         else to_char(dpa.d_data_atto_utente,'yyyy-mm-dd')
+     , case 
+         when cta.sigla in ('TEP', 'TEA') then to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd') 
+         when cta.sigla in ('O1A') then to_char(null) 
+         else to_char(dpa.d_data_atto_utente,'yyyy-mm-dd') 
        end EST_dataTrascrizione
      , dpa.ente_straniero_tipo_atto EST_descrizione
      , dpa.ente_straniero_estremi_atto EST_estremiDocumento
@@ -540,6 +541,14 @@ select nas.id
          'ADO', f_ANSC_id_provincia_al(dpa.cod_pro_prov,dpa.cod_com_prov,'')) MIT_idProvinciaEnte
      , decode(cta.sigla,
          'ADO', f_ANSC_provincia_al(dpa.cod_pro_prov,dpa.cod_com_prov,'')) MIT_siglaProvinciaEnte
+     , decode(cta.sigla,
+         'ADO', f_ANSC_id_stato_al(dpa.cod_pro_prov,dpa.cod_com_prov,'')) MIT_nazioneEnte
+     , decode(cta.sigla,
+         'ADO', f_ANSC_stato_al(dpa.cod_pro_prov,dpa.cod_com_prov,'')) MIT_nomeNazioneEnte
+     , decode(cta.sigla,
+         'ADO', dpa.id_consolato_ansc_prov) MIT_idAnagraficaConsolato
+     , decode(cta.sigla,
+         'ADO', t97.descrizione) MIT_nomeAnagraficaConsolato
      , decode(cta.sigla,
          'ADO', to_char(dpa.d_data_nota_rif, 'yyyy-mm-dd')) MIT_dataTrascrizione
      , decode(cta.sigla,
@@ -768,13 +777,13 @@ select nas.id
    and t03.id                (+) = nas.id_usecase_ansc
    and t97.id                (+) = dpa.id_consolato_ansc_prov
    and sog_IT.id_atto        (+) = nas.id_atto
-   and sog_IT.tipo_soggetto  (+) = 'IT'	
+   and sog_IT.tipo_soggetto  (+) = 'IT'
    and sog_OS.id_atto        (+) = nas.id_atto
-   and sog_OS.tipo_soggetto  (+) = 'OS'	
+   and sog_OS.tipo_soggetto  (+) = 'OS'
    and sog_PP.id_atto        (+) = nas.id_atto
-   and sog_PP.tipo_soggetto  (+) = 'PP'	
+   and sog_PP.tipo_soggetto  (+) = 'PP'
    and sog_PM.id_atto        (+) = nas.id_atto
-   and sog_PM.tipo_soggetto  (+) = 'PM'	
+   and sog_PM.tipo_soggetto  (+) = 'PM'
    and dci_it.cod_ci         (+) = sog_IT.nazionalita
    and dci_os.cod_ci         (+) = sog_OS.nazionalita
    and dci_pp.cod_ci         (+) = sog_PP.nazionalita

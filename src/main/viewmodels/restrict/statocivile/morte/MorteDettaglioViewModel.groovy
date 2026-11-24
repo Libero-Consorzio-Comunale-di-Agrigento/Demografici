@@ -2,6 +2,7 @@ package restrict.statocivile.morte
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreAssenzaTipoSalvataggioAnnotazioneComuneClienteSuAttoNascita1RuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
@@ -24,7 +25,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivMorteService civMorteService
@@ -73,7 +74,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
         try {
             dettaglio = new CivMorte(anno: Calendar.getInstance().get(Calendar.YEAR), codiceRecord: new Integer(3),
                     certificabile: ETipoSiNo.NO, estremiDecessoNoti: ETipoSiNo.SI, morteViolenta: ETipoSiNo.NO)
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             anagrafe = new CivAnagrafe()
 
@@ -102,7 +103,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
                 datiProvenienza.comprensioneDichiarante = getDefaultComprensione()
             }
             if (dettaglio.isSecondaB()) {
-                datiProvenienza.documentoDecesso = getEtichetta(Etichette.Avviso_morte)
+                datiProvenienza.documentoDecesso = getEtichetta(Etichette.getEtichetta("Avviso_morte"))
             }
 
             caricaListaComparente()
@@ -121,7 +122,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
         listaAnnotazioniNascita = [null]
         // Le annotazioni sono da gestire solo per gli atti in inserimento e non per i consolidati/pregressi
         if (isCaricamentoFormuleAnnotazioneAbilitato()) {
-            List<String> l = statoCivileService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
+            List<String> l = gsdService.listFormuleAnnotazione(dettaglio.tipoAtto, [categoria: dettaglio.tipoAttoDomain?.categoriaDomain?.codice, tipoAttoAnnotazione: ETipoAtto.NAS.valore])
             if (l.size() > 0) {
                 listaAnnotazioniNascita.addAll(civFormulaAnnotazioneService.listAllByIdIn(l))
             }
@@ -190,7 +191,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
 
             } catch (Exception ex) {
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException) {
                     errorMsg = (getEtichetta(ex.getEtichetta()) ?: ex.getMessage())
                 }
@@ -201,7 +202,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
     }
 
     void numera() {
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null) {
             numeraAtto = null
         }
@@ -265,9 +266,9 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
         Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL]
         String[] buttonsLabel = [getEtichettaEnum(ETipoSalvataggioAnnotazioneComuneCliente.CREA_ATTO_E_SALVA_COMUNE_CLIENTE),
                                  getEtichettaEnum(ETipoSalvataggioAnnotazioneComuneCliente.NON_CREARE_ATTO_E_SALVA_ALTRO_COMUNE),
-                                 getEtichetta(Etichette.Annulla)]
+                                 getEtichetta(Etichette.getEtichetta("Annulla"))]
         HashMap params = [width: 500, sclass: 'redText'] as HashMap
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_annotazione_nascita_mancante), msgTitle, buttons, buttonsLabel, Messagebox.QUESTION, null, { event ->
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_annotazione_nascita_mancante")), msgTitle, buttons, buttonsLabel, Messagebox.QUESTION, null, { event ->
             if (event.name == Messagebox.ON_YES) {
                 action.call(ETipoSalvataggioAnnotazioneComuneCliente.CREA_ATTO_E_SALVA_COMUNE_CLIENTE)
             }
@@ -284,7 +285,7 @@ class MorteDettaglioViewModel extends MorteDettaglioParentViewModel {
         nd.put(CivTipoRegistro.ID_CREMAZIONE, numerazioneDocumentoCremazione)
         CivMorte c = civMorteService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, trasporto, nd, mapFormule, mapAnnotazioniDaAtto, Boolean.TRUE, gc, margineMandatory, listaSoggettiCollegati, tipoSalvataggioAnnotazioni, hasBeenStoricizzato)
         if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
         if (statoFrammenti == 1) {
             statoFrammenti = 2

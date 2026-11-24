@@ -19,11 +19,11 @@ enum EDiritto {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case SEGRETERIA: return Etichette.Diritti_segreteria
-            case STATO_CIVILE: return Etichette.Diritti_stato_civile
-            case CARTA_IDENTITA: return Etichette.Diritti_carta_identita
-            case RIMBORSO_STAMPATI: return Etichette.Rimborso_stampati
-            case BOLLO: return Etichette.Bollo
+            case SEGRETERIA: return Etichette.getEtichetta("Diritti_segreteria")
+            case STATO_CIVILE: return Etichette.getEtichetta("Diritti_stato_civile")
+            case CARTA_IDENTITA: return Etichette.getEtichetta("Diritti_carta_identita")
+            case RIMBORSO_STAMPATI: return Etichette.getEtichetta("Rimborso_stampati")
+            case BOLLO: return Etichette.getEtichetta("Bollo")
         }
         return null
     }

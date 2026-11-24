@@ -13,14 +13,16 @@
                                 <column width="60px"/>
                                 <column width="165px"/>
                                 <column width="60px"/>
+                                <column width="170px"/>
+                                <column width="90px"/>
                             </columns>
                             <rows>
                                 <row>
                                     <cell align="right">
-                                        <label value="@load(empty vm.famiglia.convivenza ? vm.etichette['Intestatario'] : vm.etichette['Denominazione'])"/>
+                                        <label value="@load(not vm.famiglia.convivenza ? vm.etichette['Intestatario'] : vm.etichette['Denominazione'])"/>
                                     </cell>
                                     <cell>
-                                        <customLabel value="@load(empty vm.famiglia.convivenza ? c:cat3(vm.famiglia.cognomeIntestatario, ' ', vm.famiglia.nomeIntestatario) : vm.famiglia.descrizioneConvivenza)" bold="true"/>
+                                        <customLabel value="@load(not vm.famiglia.convivenza ? c:cat3(vm.famiglia.cognomeIntestatario, ' ', vm.famiglia.nomeIntestatario) : vm.famiglia.descrizioneConvivenza)" bold="true"/>
                                     </cell>
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Codice_Famiglia'])"/>
@@ -34,9 +36,15 @@
                                     <cell align="right">
                                         <customLabel value="@load(vm.famiglia.progressivoEliminazione)" bold="true"/>
                                     </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Id_Anpr_Famiglia'])"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <customLabel value="@load(vm.famiglia.idFamigliaAnpr)" bold="true"/>
+                                    </cell>
                                 </row>
                                 <row>
-                                    <cell colspan="6">
+                                    <cell colspan="8">
                                         <groupboxIndirizzo label="@load(vm.etichette['Indirizzo'])"
                                                            value="@load(vm.famiglia.indirizzo)"/>
                                     </cell>

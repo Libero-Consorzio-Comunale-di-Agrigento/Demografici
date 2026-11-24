@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.elettorale.dizionari.datiGenerali.DatiGeneraliViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="@load(vm.wCenterHeight)"
+            sizable="false" closable="false">
+
+        <tabbox hflex="1" vflex="1">
+            <tabs>
+                <tab label="@load(vm.etichette['Timbri'])"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <include hflex="1" vflex="1" src="/restrict/elettorale/dizionari/datiGenerali/timbroLista.zul"/>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+
+    </window>
+
+</zk>

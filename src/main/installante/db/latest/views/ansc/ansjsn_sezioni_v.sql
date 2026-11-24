@@ -3,12 +3,14 @@
 create or replace view ansjsn_sezioni_v
 AS
 select jsn_s.*,
-       f_ANSC_flag_esiste_campo_jsn(jsn_s.id) flag_esiste_campo
+       f_ANSC_flag_esiste_campo_jsn(jsn_s.id) flag_esiste_campo,
+       nvl(jsn_s.servizio,'XXXX')||nvl(jsn_s.tipo_atto,0)||lpad(nvl(jsn_s.usecase,0),10,'0') id_lista
   from ansjsn_sezioni jsn_s
  where nvl(servizio,'XXXX') != 'R013'
 UNION
 select jsn_s.*,
-       f_ANSC_flag_esiste_campo_jsn(jsn_s.id) flag_esiste_campo
+       f_ANSC_flag_esiste_campo_jsn(jsn_s.id) flag_esiste_campo,
+       nvl(jsn_s.servizio,'XXXX')||nvl(jsn_s.tipo_atto,0)||lpad(nvl(jsn_s.usecase,0),10,'0') id_lista
   from ansjsn_sezioni jsn_s
  where nvl(servizio,'XXXX') = 'R013'
    and nvl(usecase,0) = 0
@@ -28,6 +30,7 @@ select jsn_s.ID
      , jsn_s.USECASES_ESCLUSI
      , jsn_s.USECASE                
      , f_ANSC_flag_esiste_campo_jsn(jsn_s.id) flag_esiste_campo
+     , nvl(jsn_s.servizio,'XXXX')||nvl(jsn_s.tipo_atto,0)||lpad(nvl(jsn_s.usecase,0),10,'0') id_lista
   from ansjsn_sezioni jsn_s
  where nvl(servizio,'XXXX') = 'R009_V'
    and sezione              != 'datiAnnotazione'

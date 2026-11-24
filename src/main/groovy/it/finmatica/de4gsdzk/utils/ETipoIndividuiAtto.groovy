@@ -14,9 +14,9 @@ enum ETipoIndividuiAtto {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case R: return Etichette.Residenti
-            case N: return Etichette.Non_Residenti
-            case T: return Etichette.Tutti
+            case R: return Etichette.getEtichetta("Residenti")
+            case N: return Etichette.getEtichetta("Non_Residenti")
+            case T: return Etichette.getEtichetta("Tutti")
         }
         return null
     }

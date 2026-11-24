@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.CompetenzaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import spock.lang.Specification
 
@@ -9,10 +10,10 @@ class CheckUfficialeStatoCivileSpec extends Specification {
 
     def setup() {
         CivTipoAttoService civTipoAttoService = Mock(CivTipoAttoService)
-        StatoCivileService statoCivileService = Mock(StatoCivileService)
+        GsdService gsdService = Mock(GsdService)
         CompetenzaService competenzaService = Mock(CompetenzaService)
         CivTipoComprensioneService civTipoComprensioneService = Mock(CivTipoComprensioneService)
-        civValidazioneAttoService = new CivValidazioneAttoService(civTipoAttoService, statoCivileService, competenzaService, civTipoComprensioneService)
+        civValidazioneAttoService = new CivValidazioneAttoService(civTipoAttoService, gsdService, competenzaService, civTipoComprensioneService)
     }
 
     def "non deve lanciare eccezione quando ufficiale è presente e obbligatorio per l'atto"() {

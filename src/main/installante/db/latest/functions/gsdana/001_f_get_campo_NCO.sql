@@ -17,7 +17,7 @@ w_return	varchar2(255);
 begin
   w_return := '';
 
-  begin
+  begin 
     select decode(w_campo,
              'FLAG_COABITANTE', nco.flag_coabitante,
              'COD_FAM', decode(nco.cod_fam,a_cod_fam,nco.cod_fam_rif,nco.cod_fam),

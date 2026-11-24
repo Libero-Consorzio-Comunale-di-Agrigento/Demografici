@@ -1,9 +1,10 @@
 package restrict.statocivile.unione.unione
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
@@ -43,7 +44,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
     Date dataRiferimentoComuneAttoMatrimonio
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivMatrimonioService civMatrimonioService
@@ -61,30 +62,30 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
 
         List<Map> eList = []
         eList.addAll(CivUnioneCivile.etichetteDomain)
-        eList.addAll([Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.Recupero_da_processo_verbale,
-                      Etichette.Impossibilitato,Etichette.Certificato_del, Etichette.Comune_Atto, Etichette.Impedimento_generico,
-                      Etichette.Dati_Certificato, Etichette.Documenti_presentati, Etichette.Dati_Tribunale, Etichette.Autorizzazione_tribunale_di,
-                      Etichette.Sentenza_n, Etichette.Estremi_Atto_Matrimonio, Etichette.Recupera_Estremi_Atto_Matrimonio,
-                      Etichette.Certificato_richiesta_costituzione_1, Etichette.Certificato_richiesta_costituzione_2,
-                      Etichette.Opposizione, Etichette.Opposizione_nessuna, Etichette.Opposizione_rigetto, Etichette.Opposizione_estinzione,
-                      Etichette.Scelta_legge_da_applicare, Etichette.Scelta_regime_separazione, Etichette.Annotazione])
+        eList.addAll([Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("Recupero_da_processo_verbale"),
+                      Etichette.getEtichetta("Impossibilitato"),Etichette.getEtichetta("Certificato_del"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Impedimento_generico"),
+                      Etichette.getEtichetta("Dati_Certificato"), Etichette.getEtichetta("Documenti_presentati"), Etichette.getEtichetta("Dati_Tribunale"), Etichette.getEtichetta("Autorizzazione_tribunale_di"),
+                      Etichette.getEtichetta("Sentenza_n"), Etichette.getEtichetta("Estremi_Atto_Matrimonio"), Etichette.getEtichetta("Recupera_Estremi_Atto_Matrimonio"),
+                      Etichette.getEtichetta("Certificato_richiesta_costituzione_1"), Etichette.getEtichetta("Certificato_richiesta_costituzione_2"),
+                      Etichette.getEtichetta("Opposizione"), Etichette.getEtichetta("Opposizione_nessuna"), Etichette.getEtichetta("Opposizione_rigetto"), Etichette.getEtichetta("Opposizione_estinzione"),
+                      Etichette.getEtichetta("Scelta_legge_da_applicare"), Etichette.getEtichetta("Scelta_regime_separazione"), Etichette.getEtichetta("Annotazione")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivTestimoniAtto.etichetteDomain)
         eList.addAll(CivDocumentoPubblicazione.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Contraenti, Etichette.Documenti, Etichette.Richiesta, Etichette.Testimoni,
-                      Etichette.Altri_Dati, Etichette.Impedimenti, Etichette.Scelta_Cognome,
-                      Etichette.Cambio_sesso, Etichette.Convenzioni_Patrimoniali, Etichette.Nella_casa_comunale, Etichette.Fuori_della_casa_comunale])
+        eList.addAll([Etichette.getEtichetta("Contraenti"), Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Richiesta"), Etichette.getEtichetta("Testimoni"),
+                      Etichette.getEtichetta("Altri_Dati"), Etichette.getEtichetta("Impedimenti"), Etichette.getEtichetta("Scelta_Cognome"),
+                      Etichette.getEtichetta("Cambio_sesso"), Etichette.getEtichetta("Convenzioni_Patrimoniali"), Etichette.getEtichetta("Nella_casa_comunale"), Etichette.getEtichetta("Fuori_della_casa_comunale")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_CONTRAENTI, Etichette.SEZIONE_DATI_UNIONE_CIVILE,
-                      Etichette.SEZIONE_ATTO_ORIGINALE, Etichette.SEZIONE_TESTIMONI, Etichette.SEZIONE_COMPOSIZIONE,
-                      Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_ANNOTAZIONI_DA_ATTO])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_CONTRAENTI"), Etichette.getEtichetta("SEZIONE_DATI_UNIONE_CIVILE"),
+                      Etichette.getEtichetta("SEZIONE_ATTO_ORIGINALE"), Etichette.getEtichetta("SEZIONE_TESTIMONI"), Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"),
+                      Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_DA_ATTO")])
 
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_obbligatori_contraenti, EtichetteMessaggi.Errore_carattere_a_capo_non_ammesso])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_obbligatori_contraenti"), Etichette.getEtichetta("Errore_carattere_a_capo_non_ammesso")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriUnioneCivile()
@@ -111,7 +112,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
 
         doInitAllAtti(eList)
 
-        msgTitle = getEtichetta(Etichette.Atto_Unione_Civile)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Unione_Civile"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.UCI)
 
         listaImpossibilitato = [null]
@@ -121,14 +122,14 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
 
         listaBoolean = [[label: getEtichettaEnum(ETipoSiNo.SI), value: Boolean.TRUE], [label:getEtichettaEnum(ETipoSiNo.NO), value: Boolean.FALSE]]
 
-        listaTipoLuogoCelebrazione = [[label: getEtichetta(Etichette.Nella_casa_comunale), value: Boolean.TRUE], [label:getEtichetta(Etichette.Fuori_della_casa_comunale), value: Boolean.FALSE]]
+        listaTipoLuogoCelebrazione = [[label: getEtichetta(Etichette.getEtichetta("Nella_casa_comunale")), value: Boolean.TRUE], [label:getEtichetta(Etichette.getEtichetta("Fuori_della_casa_comunale")), value: Boolean.FALSE]]
 
         listaComparente = []
 
         listaFirmatario = []
 
-        listaConvenzioni = [[label: getEtichetta(Etichette.Scelta_regime_separazione), value: new Integer(1)],
-                            [label: getEtichetta(Etichette.Scelta_legge_da_applicare), value: new Integer(2)]]
+        listaConvenzioni = [[label: getEtichetta(Etichette.getEtichetta("Scelta_regime_separazione")), value: new Integer(1)],
+                            [label: getEtichetta(Etichette.getEtichetta("Scelta_legge_da_applicare")), value: new Integer(2)]]
 
         resize()
 
@@ -218,7 +219,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleUnioneCivile(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleUnioneCivile(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -313,7 +314,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
     
     protected void setComuneUciAuto(){
         if ( dettaglio.isPartePrima()){
-            ArcComune comune = statoCivileService.checkComuneMatrimonioAuto()
+            ArcComune comune = gsdService.checkComuneMatrimonioAuto()
             if (comune) {
                 dettaglio.codiceComuneMatrimonio = comune.codiceComune
                 dettaglio.codiceProvinciaMatrimonio = comune.codiceProvincia
@@ -333,10 +334,10 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
         if ( dettaglio.dataNascita1 && dettaglio.cognome1?.trim() && dettaglio.nome1?.trim() &&
              dettaglio.dataNascita2 && dettaglio.cognome2?.trim() && dettaglio.nome2?.trim() ){
             if ( recuperaEstremiMatrimonioDaAttoDiMatrimonio() == 0 ){
-                Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori_contraenti), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori_contraenti")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -346,7 +347,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
             CivMatrimonio mat = civMatrimonioService.getXDatiAnagraficiSposi(dettaglio.cognome1, dettaglio.nome1, dettaglio.dataNascita1,
                     dettaglio.cognome2, dettaglio.nome2, dettaglio.dataNascita2)
             if (mat){
-                ArcComune comune = statoCivileService.getComuneCliente()
+                ArcComune comune = gsdService.getComuneCliente()
                 CivDatiProvenienzaAtto dpaMat = civMatrimonioService.getDatiProvenienzaByUkAtto(mat.idAtto)
                 if (arcParametroService.isNuovaGestioneAnnotazioniSuAttoAttiva()) {
                     DomainUtils.initEstremiAttoMatrimonioFromMatUciNuovaGestioneAnnotazioni(sposi, mat, comune, dpaMat, anscOn)
@@ -375,7 +376,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
             //se gli sposi sono italiani, scelta_conv è di default '1' e non è modificabile
             //la scelta dell'eventuale legge straniera è selezionabile se almeno uno dei due sposi non è italiano
             //se la nazionalità non è impostata assumere gli sposi stranieri
-            if ( (dettaglio.nazionalita1?.id == AnaNazionalita.ID_ITALIA) && (dettaglio.nazionalita2?.id == AnaNazionalita.ID_ITALIA) ){
+            if ( (dettaglio.nazionalita1?.codCi == AnaCittadinanza.ID_ITALIA) && (dettaglio.nazionalita2?.codCi == AnaCittadinanza.ID_ITALIA) ){
                 margine.sceltaConvenzioni = new Integer(1)
                 refreshUi()
             }
@@ -384,7 +385,7 @@ abstract class UnioneCivileDettaglioParentViewModel extends AttoSoggettiDettagli
 
     @Command void onChangeLeggeConvenzioni(){
         if (TestoUtils.checkAcapo(margine?.leggeConvenzioni)){
-            Messagebox.show(getEtichetta(Etichette.Legge_Convenzioni) + ":\n" + getEtichetta(EtichetteMessaggi.Errore_carattere_a_capo_non_ammesso), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Legge_Convenzioni")) + ":\n" + getEtichetta(Etichette.getEtichetta("Errore_carattere_a_capo_non_ammesso")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

@@ -7,7 +7,6 @@ import it.finmatica.de4gsdzk.statocivile.CivLuogoDecessoService
 import it.finmatica.de4gsdzk.utils.ETipoEvento
 import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.Sezione
-import it.finmatica.de4gsdzk.utils.SortUtils
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -42,7 +41,7 @@ class LuogoDecessoListaViewModel extends LuogoEventoListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging){
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.idAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
         Page<CivLuogoDecesso> p = civLuogoDecessoService.listAllByDescrizioneLike(SqlUtils.beginsAndEndsLike(filtro), pr)
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
     }

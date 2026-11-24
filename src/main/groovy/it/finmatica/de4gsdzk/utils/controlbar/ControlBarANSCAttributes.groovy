@@ -25,9 +25,9 @@ class ControlBarANSCAttributes extends ControlBarListaAttributes {
 	void setSaveANSCEnabled(boolean saveANSCEnabled) {
 		super.saveEnabled = saveANSCEnabled
 	}
-	static final List<Map> etichetteCbANSCDesc = [Etichette.back_tooltip, Etichette.salva_tooltip, Etichette.firmatari_tooltip,
-												  Etichette.fascicolo_tooltip, Etichette.invio_ansc_tooltip, Etichette.Inviato,
-												  Etichette.inserisci_allegato_tooltip, Etichette.elimina_tooltip,
-												  Etichette.scarica_allegato_tooltip, Etichette.scarica_allegato_ANSC_tooltip, Etichette.allegati_ansc_tooltip]
+	static final List<Map> etichetteCbANSCDesc = [Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("salva_tooltip"), Etichette.getEtichetta("firmatari_tooltip"),
+												  Etichette.getEtichetta("fascicolo_tooltip"), Etichette.getEtichetta("invio_ansc_tooltip"), Etichette.getEtichetta("Inviato"),
+												  Etichette.getEtichetta("inserisci_allegato_tooltip"), Etichette.getEtichetta("elimina_tooltip"),
+												  Etichette.getEtichetta("scarica_allegato_tooltip"), Etichette.getEtichetta("scarica_allegato_ANSC_tooltip"), Etichette.getEtichetta("allegati_ansc_tooltip")]
 
 }

@@ -74,9 +74,9 @@
 	</component>
 
 	<component>
-		<component-name>scanButton</component-name>
-		<component-class>it.finmatica.de4gsdzk.zkutils.ScanButton</component-class>
-		<extends>button</extends>
+		<component-name>ScanToolbarbutton</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.ScanToolbarbutton</component-class>
+		<extends>toolbarbutton</extends>
 	</component>
 
 	<component>
@@ -184,6 +184,12 @@
 	<component>
 		<component-name>bandboxEnteAnagrafe</component-name>
 		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxEnteAnagrafe</component-class>
+		<extends>bandbox</extends>
+	</component>
+
+	<component>
+		<component-name>bandboxEnteRichiedente</component-name>
+		<component-class>it.finmatica.de4gsdzk.zkutils.BandboxEnteRichiedente</component-class>
 		<extends>bandbox</extends>
 	</component>
 
@@ -299,6 +305,36 @@
 		<inline>true</inline>
 	</component>
 
+    <component>
+        <component-name>controlBarVisualizzazioneLocale</component-name>
+        <macro-uri>/restrict/afc/controlbar/controlBarVisualizzazioneLocale.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
+	<component>
+		<component-name>controlBarPratica</component-name>
+		<macro-uri>/restrict/afc/controlbar/controlBarPratica.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+
+    <component>
+        <component-name>controlBarPraticaFunzioniAggiuntive</component-name>
+        <macro-uri>/restrict/afc/controlbar/controlBarPraticaFunzioniAggiuntive.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
+    <component>
+        <component-name>controlBarVisualizzazioneLocale</component-name>
+        <macro-uri>/restrict/afc/controlbar/controlBarVisualizzazioneLocale.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
+    <component>
+        <component-name>controlBarVisualizzazioneANPR</component-name>
+        <macro-uri>/restrict/afc/controlbar/controlBarVisualizzazioneANPR.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
 	<component>
 		<component-name>totalSizeBlock</component-name>
 		<macro-uri>/restrict/afc/totalSizeBlock.zul</macro-uri>
@@ -314,12 +350,6 @@
 	<component>
 		<component-name>templateIdDomain</component-name>
 		<macro-uri>/restrict/afc/templateIdDomain.zul</macro-uri>
-		<inline>true</inline>
-	</component>
-
-	<component>
-		<component-name>templateLogoLista</component-name>
-		<macro-uri>/restrict/afc/templateLogoLista.zul</macro-uri>
 		<inline>true</inline>
 	</component>
 
@@ -651,5 +681,17 @@
 		<component-class>it.finmatica.de4gsdzk.zkutils.PasswordTextbox</component-class>
 		<extends>hlayout</extends>
 	</component>
+
+    <component>
+        <component-name>estremiPraticaFormLabel</component-name>
+        <macro-uri>/restrict/anagrafe/pratiche/estremiPraticaFormLabel.zul</macro-uri>
+        <inline>true</inline>
+    </component>
+
+    <component>
+        <component-name>estremiPraticaLabel</component-name>
+        <component-class>it.finmatica.de4gsdzk.zkutils.EstremiPraticaLabel</component-class>
+        <extends>customLabel</extends>
+    </component>
 
 </language-addon>

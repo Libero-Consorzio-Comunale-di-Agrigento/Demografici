@@ -21,10 +21,10 @@ enum ETipoRichiesta {
     // TODO: obsoletare in favore della descrizione su CivCategoriaTipoRichiesta
     Map getEtichettaDesc(){
         switch(this) {
-            case DIC: return Etichette.Dichiarazione
-            case TRA: return Etichette.Trascrizione
-            case ADO: return Etichette.Adozione
-            case REV: return Etichette.Revoca
+            case DIC: return Etichette.getEtichetta("Dichiarazione")
+            case TRA: return Etichette.getEtichetta("Trascrizione")
+            case ADO: return Etichette.getEtichetta("Adozione")
+            case REV: return Etichette.getEtichetta("Revoca")
         }
         return null
     }

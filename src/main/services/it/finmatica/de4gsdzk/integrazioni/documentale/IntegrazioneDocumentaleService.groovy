@@ -4,7 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdDocumentoEsternoBaseDomain
 import it.finmatica.de4gsdzk.errors.FileNonValidoRuntimeException
 import it.finmatica.de4gsdzk.errors.NoRecordFoundRuntimeException
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.smartdoc.api.DocumentaleRuntimeException
 import it.finmatica.smartdoc.api.DocumentaleService
 import it.finmatica.smartdoc.api.struct.Campo
@@ -39,7 +39,7 @@ class IntegrazioneDocumentaleService {
                         boolean useStaticUser = false,
                         boolean escludiControlloCompetenze = false) {
         if (!(fileDocumento.idFileEsterno > 0)) {
-            throw new NoRecordFoundRuntimeException(EtichetteMessaggi.Errore_recupero_file_documentale)
+            throw new NoRecordFoundRuntimeException(Etichette.getEtichetta("Errore_recupero_file_documentale"))
         }
 
         DocumentaleService service = useStaticUser ? documentaleServiceStaticUser : documentaleService
@@ -67,7 +67,7 @@ class IntegrazioneDocumentaleService {
 
         if (!(documento.idDocumentoEsterno > 0)) {
             log.warn("Non è possibile eliminare il file '${fileDocumento.nome}': il documento non è ancora stato salvato sul documentale.")
-            throw new FileNonValidoRuntimeException(EtichetteMessaggi.Errore_cancellazione_file_documentale)
+            throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Errore_cancellazione_file_documentale"))
         }
 
         File fileToDelete = new File(fileDocumento.nome)

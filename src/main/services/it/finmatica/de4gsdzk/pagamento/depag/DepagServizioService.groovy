@@ -4,8 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneErroreException
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneNessunElementoException
-import it.finmatica.de4gsdzk.pagamento.depag.DepagServizioRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.SortUtils
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
@@ -19,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class DepagServizioService {
     private final DepagServizioRepository depagServizioRepository
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     DepagServizioService(DepagServizioRepository depagServizioRepository,
-                         StatoCivileService statoCivileService) {
+                         GsdService gsdService) {
         this.depagServizioRepository = depagServizioRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     DepagServizio get(String id) {
@@ -34,7 +33,7 @@ class DepagServizioService {
     void sincronizza() {
         Integer ret
         try {
-            ret = statoCivileService.popolaServiziWspa()
+            ret = gsdService.popolaServiziWspa()
         } catch (De4gsdzkRuntimeException e) {
             log.error(e.message, e)
             throw new SincronizzazioneErroreException()

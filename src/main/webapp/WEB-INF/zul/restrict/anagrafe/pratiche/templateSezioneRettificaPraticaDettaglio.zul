@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Rettifica_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column />
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Tipo_Rettifica'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout>
+                            <radiogroup model="@load(vm.listaTipoRettifica)"
+                                        selectedItem="@bind(vm.dichiarazione.tipoRettifica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <radio label="@load(vm.getEtichettaEnum(each))" value="@load(each)" style="padding-left:10px" disabled="@bind(vm.pratica.id ne null)"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

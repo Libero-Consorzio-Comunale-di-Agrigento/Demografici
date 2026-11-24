@@ -14,7 +14,7 @@ class DepagPagamentoInviatoServiceSpec extends WspaPagamentoInviatoServiceSpec {
     DepagPagamentoInviatoService depagPagamentoInviatoService
 
     void setup() {
-        depagPagamentoInviatoService = new DepagPagamentoInviatoService(statoCivileService, utenteCustomService, wspaPagamentoInviatoRepository)
+        depagPagamentoInviatoService = new DepagPagamentoInviatoService(gsdService, utenteCustomService, wspaPagamentoInviatoRepository)
     }
 
     @Override
@@ -24,7 +24,7 @@ class DepagPagamentoInviatoServiceSpec extends WspaPagamentoInviatoServiceSpec {
 
     void 'Ottieni URL costruito'() {
         given:
-        statoCivileService.getUrlWspa(CHIAVE_SERVIZIO_ESTERNO) >> BASE_URL_SERVIZIO_ESTERNO + CHIAVE_SERVIZIO_ESTERNO
+        gsdService.getUrlWspa(CHIAVE_SERVIZIO_ESTERNO) >> BASE_URL_SERVIZIO_ESTERNO + CHIAVE_SERVIZIO_ESTERNO
         WspaPagamentoInviato wspaPagamentoInviato = new WspaPagamentoInviato(chiaveServizioEsterno: CHIAVE_SERVIZIO_ESTERNO)
 
         when:

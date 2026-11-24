@@ -38,6 +38,6 @@ class IndirizzoNonResidenteAnagrafe implements IIndirizzoNonResidente, IIndirizz
     @Column(name = "CAP_RES", nullable = true, insertable = false, updatable = false)
     String cap
 
-    static final List<Map> etichetteDomain = [Etichette.Via, Etichette.Comune]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via"), Etichette.getEtichetta("Comune")]
 
 }

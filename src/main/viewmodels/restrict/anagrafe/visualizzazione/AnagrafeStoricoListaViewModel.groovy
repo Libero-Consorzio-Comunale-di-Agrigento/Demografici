@@ -6,7 +6,10 @@ import it.finmatica.de4gsdzk.anagrafe.*
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoNonResidenteFamiglia
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteEsteroFamiglia
 import it.finmatica.de4gsdzk.statocivile.embed.indirizzo.famiglia.IndirizzoResidenteFamiglia
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.OrderBy
+import it.finmatica.de4gsdzk.utils.Paginazione
+import it.finmatica.de4gsdzk.utils.SortUtils
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.zkoss.bind.annotation.Command
@@ -44,7 +47,7 @@ class AnagrafeStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Storico, Etichette.Anagrafe, Etichette.Situazione_al, Etichette.Ordina_per]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Storico"), Etichette.getEtichetta("Anagrafe"), Etichette.getEtichetta("Situazione_al"),Etichette.getEtichetta("Ordina_per")]
 
         // Aggiungo etichette entità
         eList.addAll(AnaAnagrafe.etichetteDomain)
@@ -58,18 +61,18 @@ class AnagrafeStoricoListaViewModel extends AbstractMasterDetailSituazioneStoric
         // Aggiungo etichette della lista
         eList.addAll(etichetteListaDefault)
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
         eList.addAll([])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = "${getEtichetta(Etichette.Storico)} ${getEtichetta(Etichette.Anagrafe)}"
+        msgTitle = "${getEtichetta(Etichette.getEtichetta("Storico"))} ${getEtichetta(Etichette.getEtichetta("Anagrafe"))}"
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento), SortUtils.dataAnaEventoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento")), SortUtils.dataAnaEventoAsc))
         selectedOrder = listaOrder[0]
 
         totalSizeLabel = ""

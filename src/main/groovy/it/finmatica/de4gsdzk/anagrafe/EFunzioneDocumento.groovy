@@ -8,8 +8,8 @@ enum EFunzioneDocumento {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case DOWNLOAD: return Etichette.scarica_allegati_tooltip
-            case ADD_ALLEGATO: return Etichette.inserisci_allegato_tooltip
+            case DOWNLOAD: return Etichette.getEtichetta("scarica_allegati_tooltip")
+            case ADD_ALLEGATO: return Etichette.getEtichetta("inserisci_allegato_tooltip")
         }
         return null
     }

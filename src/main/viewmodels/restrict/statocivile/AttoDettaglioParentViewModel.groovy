@@ -2,8 +2,8 @@ package restrict.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.*
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalitaService
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanzaService
 import it.finmatica.de4gsdzk.ansc.AnscCasoUsoBaseDomain
 import it.finmatica.de4gsdzk.ansc.AnscCasoUsoService
 import it.finmatica.de4gsdzk.ansc.AnscConsolato
@@ -46,7 +46,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     final List<ETipoSiNo> listaSiNo = [ETipoSiNo.SI, ETipoSiNo.NO]
     List<ESesso> listaSesso = []
-    List<AnaNazionalita> listaNazionalita = []
+    List<AnaCittadinanza> listaNazionalita = []
     List<CivTipoComprensione> listaTipiComprensione = []
     final List<ETipoPresentazioneDocumentiAnsc> listaPresentazioneDocumenti = [null] + Arrays.asList(ETipoPresentazioneDocumentiAnsc.values())
     final List<ETipoRichiestaTrascrizione> listaTipoRichiestaTrascrizione = [null] + Arrays.asList(ETipoRichiestaTrascrizione.values())
@@ -105,7 +105,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     ControlBarAttoAttributes cbAtto = new ControlBarAttoAttributes()
 
     @WireVariable
-    private AnaNazionalitaService anaNazionalitaService
+    private AnaCittadinanzaService anaCittadinanzaService
 
     @WireVariable
     private CivTestoLiberoService civTestoLiberoService
@@ -114,7 +114,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     private CivTipoAttoService civTipoAttoService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivFormulaTestoLiberoService civFormulaTestoLiberoService
@@ -186,8 +186,8 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         // Aggiungo etichette tipo luogo nascita
         eList.addAll(ETipoLuogoNascita.values()*.getEtichettaDesc())
 
-        eList.addAll([Etichette.Dichiarante, Etichette.Comparente, Etichette.Firmatario,
-                      Etichette.Dati_Dichiarazione, Etichette.Presentazione_documenti, Etichette.Comune_Ente])
+        eList.addAll([Etichette.getEtichetta("Dichiarante"), Etichette.getEtichetta("Comparente"), Etichette.getEtichetta("Firmatario"),
+                      Etichette.getEtichetta("Dati_Dichiarazione"), Etichette.getEtichetta("Presentazione_documenti"), Etichette.getEtichetta("Comune_Ente")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
@@ -195,10 +195,12 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         anscOn = Boolean.FALSE
         ricercaSoggettoInANPROn = Boolean.TRUE
         margineOn = Boolean.TRUE
+        caratteriSpecialiEnabled = Boolean.FALSE
         List<ArcParametro> lParams = arcParametroService.listAllByIdIn([ArcParametro.ANSC,
                                                                         ArcParametro.CIV_ANPR,
                                                                         ArcParametro.ATTI_MAR,
-                                                                        ArcParametro.ISTATEL])
+                                                                        ArcParametro.ISTATEL,
+                                                                        ArcParametro.UNICODE])
         for (ArcParametro p: lParams){
             switch(p.id) {
                 case ArcParametro.ANSC:
@@ -212,6 +214,9 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
                     break
                 case ArcParametro.ISTATEL:
                     istatOn = (p?.valore?.trim()?.toUpperCase() == ETipoSN.S.name())
+                    break
+                case ArcParametro.UNICODE:
+                    caratteriSpecialiEnabled = (p?.valore?.trim()?.toUpperCase() == ETipoSN.S.name())
                     break
             }
         }
@@ -231,7 +236,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     @Override
     @Command
     void onBackFromRecord() {
-        askModificheInSospeso(getEtichetta(Etichette.Chiusura), {
+        askModificheInSospeso(getEtichetta(Etichette.getEtichetta("Chiusura")), {
             Events.postEvent(CustomEvents.ON_BACK_FROM_RECORD, self, [:])
             onChiudi()
         })
@@ -246,7 +251,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     @Command void onChangeNumeroAtto(){
         if (tipoOperazione.isInsert()) {
-            String s = statoCivileService.checkEstremiAtto(atto)
+            String s = gsdService.checkEstremiAtto(atto)
             if ((s?.trim() ?: "") != "") {
                 Messagebox.show(s, msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
@@ -255,7 +260,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     Boolean isUpdatable(){
         if (tipoOperazione.isUpdate()){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             onChiudi()
             return Boolean.FALSE
         }
@@ -263,8 +268,8 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     }
 
     void caricaListaFirmatarioTrascr(){
-        listaFirmatarioTrascr = [[label:getEtichetta(Etichette.SI), value: "RT"],
-                                 [label:getEtichetta(Etichette.NO), value: "NE"]]
+        listaFirmatarioTrascr = [[label:getEtichetta(Etichette.getEtichetta("SI")), value: "RT"],
+                                 [label:getEtichetta(Etichette.getEtichetta("NO")), value: "NE"]]
     }
 
     void resetFirmatarioToNE() {
@@ -273,7 +278,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     void caricaListaNazionalita(){
         listaNazionalita = [null]
-        List<AnaNazionalita> l = anaNazionalitaService.listAll()
+        List<AnaCittadinanza> l = anaCittadinanzaService.listAll()
         if (l.size()>0){
             listaNazionalita.addAll(l)
         }
@@ -299,7 +304,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     }
 
     void caricaListaUffici(){
-        listaUffici = statoCivileService.listUffici(Boolean.TRUE)
+        listaUffici = gsdService.listUffici(Boolean.TRUE)
     }
 
     Boolean isMargineMandatory(){
@@ -319,7 +324,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     }
 
     protected String calcolaCf(String cognome, String nome, ESesso sesso, Date dataNascita, Integer codiceProvinciaNascita, Integer codiceComuneNascita) {
-        return statoCivileService.calcolaCf(cognome, nome, sesso, dataNascita, codiceProvinciaNascita, codiceComuneNascita)
+        return gsdService.calcolaCf(cognome, nome, sesso, dataNascita, codiceProvinciaNascita, codiceComuneNascita)
     }
 
     @Command void onSelectComune(@ContextParam(ContextType.TRIGGER_EVENT) Event event, @BindingParam("campoRiferimento") String campoRiferimento){
@@ -610,12 +615,12 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
         ReportExportResult ret = stampaAttoService.downloadReportAtto(getAtto(), null, margine, null, null, null, etichette, options)
         if  (ret.errorCode == 0){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.CIA_fascicolata), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("CIA_fascicolata")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         } else
         if  (ret.errorCode == 2){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_no_tipo_documento_fascicolazione_CIA), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_no_tipo_documento_fascicolazione_CIA")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_fascicolazione_CIA), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_fascicolazione_CIA")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -625,7 +630,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         if (wPreviewANSCOpen || tipoOperazione.isInsert() || (!anscEnabled)){
             return
         }
-        askModificheInSospeso(getEtichetta(Etichette.ANSC), { goToNextAnscPage() })
+        askModificheInSospeso(getEtichetta(Etichette.getEtichetta("ANSC")), { goToNextAnscPage() })
     }
 
     void goToNextAnscPage() {
@@ -666,7 +671,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         }
 
         // TODO: move inserimento firmatari to salvataggio atto
-        statoCivileService.inserisciFirmatari(atto.tipoAtto, atto.idAtto)
+        gsdService.inserisciFirmatari(atto.tipoAtto, atto.idAtto)
 
         if (!civFirmatarioAttoService.existsFirmatarioNonValido(atto.idAtto)) {
             return true
@@ -689,7 +694,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             return
         }
 
-        askModificheInSospeso(getEtichetta(Etichette.Comunicazioni), { apriPreviewComunicazioni(priorita) })
+        askModificheInSospeso(getEtichetta(Etichette.getEtichetta("Comunicazioni")), { apriPreviewComunicazioni(priorita) })
     }
 
     void apriPreviewComunicazioni(Boolean priorita){
@@ -723,7 +728,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             return
         }
 
-        askModificheInSospeso(getEtichetta(Etichette.Fascicolo), { apriPreviewFascicolo() })
+        askModificheInSospeso(getEtichetta(Etichette.getEtichetta("Fascicolo")), { apriPreviewFascicolo() })
     }
 
     void apriPreviewFascicolo(){
@@ -757,7 +762,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             return
         }
 
-        askModificheInSospeso(getEtichetta(Etichette.Annotazioni), { apriPreviewAnnotazioni() })
+        askModificheInSospeso(getEtichetta(Etichette.getEtichetta("Annotazioni")), { apriPreviewAnnotazioni() })
     }
 
     void apriPreviewAnnotazioni(){
@@ -798,8 +803,8 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         Boolean testoEsistente = (civTestoLiberoService.getByUkAtto(getAtto().idAtto) != null)
         if (testoEsistente){
             Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
-            String[] buttonsLabel = [getEtichetta(Etichette.Apri), getEtichetta(Etichette.Rigenera), getEtichetta(Etichette.Annulla)] as String[]
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Aggiornamento_Testo), msgTitle, buttons, buttonsLabel , Messagebox.QUESTION, null,
+            String[] buttonsLabel = [getEtichetta(Etichette.getEtichetta("Apri")), getEtichetta(Etichette.getEtichetta("Rigenera")), getEtichetta(Etichette.getEtichetta("Annulla"))] as String[]
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Aggiornamento_Testo")), msgTitle, buttons, buttonsLabel , Messagebox.QUESTION, null,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         switch (e.getName()) {
@@ -950,24 +955,24 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     @Command void onSelectNatura() {
         Boolean tipoOk = civTipoAttoService.checkTipoAttoAndParteAndSerieAndNatura(getAtto(), getAtto().tipoAttoDomain?.categoriaDomain)
         if (!tipoOk){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_natura_vs_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_natura_vs_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     @Command void onSelectNumera(){
         if (tipoOperazione.isUpdate() && ( !( getAtto().isProvvisorio() ) ) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             onChiudi()
         } else {
             if (getAtto().isCodRec0()){
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
                 onChiudi()
                 return
             }
             if (tipoOperazione.isInsert()){
                 numera()
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Numerazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Numerazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                         new org.zkoss.zk.ui.event.EventListener(){
                             void onEvent(Event e){
                                 if (Messagebox.ON_OK.equals(e.getName())){
@@ -1086,7 +1091,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     @Command void onEliminaRecord() {
         if (userModifyEnabled) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_OK.equals(e.getName())) {
@@ -1100,7 +1105,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     }
 
     void annullaAtto(){
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Annullamento_Atto), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Annullamento_Atto")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_OK.equals(e.getName())){
@@ -1113,7 +1118,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
     }
 
     void bloccaAtto(){
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Blocco_Atto), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Blocco_Atto")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_OK.equals(e.getName())){
@@ -1127,8 +1132,8 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     void selezionaConsolidamentoAtto(EGestioneConsolidamento gcConsolidamento, EGestioneConsolidamento gcBlocco){
         Messagebox.Button[] buttons = [Messagebox.Button.YES, Messagebox.Button.NO, Messagebox.Button.CANCEL] as Messagebox.Button[]
-        String[] buttonsLabel = [getEtichetta(Etichette.Consolida), getEtichetta(Etichette.Blocca), getEtichetta(Etichette.Annulla)] as String[]
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Chiusura_Atto), msgTitle, buttons, buttonsLabel , Messagebox.QUESTION, null,
+        String[] buttonsLabel = [getEtichetta(Etichette.getEtichetta("Consolida")), getEtichetta(Etichette.getEtichetta("Blocca")), getEtichetta(Etichette.getEtichetta("Annulla"))] as String[]
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Chiusura_Atto")), msgTitle, buttons, buttonsLabel , Messagebox.QUESTION, null,
                 new org.zkoss.zk.ui.event.EventListener(){
                     void onEvent(Event e){
                         if (Messagebox.ON_YES.equals(e.getName())){
@@ -1151,7 +1156,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             if (anscOn){
                 Messagebox.show("Attenzione! Sono presenti nuove comunicazioni automatiche da elaborare", msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Comunicazioni_Atto), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Comunicazioni_Atto")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                         new org.zkoss.zk.ui.event.EventListener() {
                             void onEvent(Event e) {
                                 if (Messagebox.ON_YES.equals(e.getName())) {
@@ -1341,7 +1346,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         if ((getAtto().tipoAttoEnum == ETipoAtto.UCI) &&
             (tipoFormula == ETipoFormulaAnnotazioneDaAtto.MAT) &&
             ((CivUnioneCivile) getAtto()).isUnioneCivileConiugi() ){
-            s = getEtichetta(Etichette.Annotazione_su_atto_matrimonio)
+            s = getEtichetta(Etichette.getEtichetta("Annotazione_su_atto_matrimonio"))
         }
         return s
     }
@@ -1413,7 +1418,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             }
             // Se selezionata da popup o se da impostare come default perché unica con default a 'S'
             if (popupSetting || (formule?.size() == 1)) {
-                statoCivileService.aggiornaFormulaFrammento(formule, getAtto(), f)
+                gsdService.aggiornaFormulaFrammento(formule, getAtto(), f)
             }
             mapFormule[chiave] = f
             if (salva) {
@@ -1437,10 +1442,10 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             if ( sa.getDataNascita1() && sa.getCognome1()?.trim() && sa.getNome1()?.trim() && sa.getSesso1() ){
                 int retVal = recuperaEstremiAttoNascitaSoggetto1DaAttoDiNascita()
                 if ( retVal == 0 ){
-                    Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
                 if ( retVal == -1 ){
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Estremi_Atto_Parziali), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Estremi_Atto_Parziali")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
             } else {
                 Map<String, String> ec = FormUtils.getAttoCustomLabels(getAtto().tipoAttoEnum, etichette)
@@ -1455,7 +1460,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         if ( (d.getAttoAttoNascita1() == null) && ( d.getParteAttoNascita1() == null ) && (d.getAnnoAttoNascita1() == null) && ( (d.getDescrizioneComuneAttoNascita1()?:"") == "") ){
             CivNascita nascita = civNascitaService.getXDatiAnagraficiSoggetto1(getAtto())
             if (nascita){
-                ArcComune comune = statoCivileService.getComuneCliente()
+                ArcComune comune = gsdService.getComuneCliente()
                 if (arcParametroService.isNuovaGestioneAnnotazioniSuAttoAttiva()) {
                     DomainUtils.initEstremiAttoNascita1FromAttoNascitaNuovaGestioneAnnotazioni(d, nascita, comune)
                 } else {
@@ -1501,10 +1506,10 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
             if ( sa.getDataNascita2() && sa.getCognome2()?.trim() && sa.getNome2()?.trim() && sa.getSesso2() ){
                 int retVal = recuperaEstremiAttoNascitaSoggetto2DaAttoDiNascita()
                 if ( retVal == 0 ){
-                    Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
                 if ( retVal == -1 ){
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Estremi_Atto_Parziali), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Estremi_Atto_Parziali")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
             } else {
                 Map<String, String> ec = FormUtils.getAttoCustomLabels(getAtto().tipoAttoEnum, etichette)
@@ -1519,7 +1524,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         if ( (d.getAttoAttoNascita2() == null) && ( d.getParteAttoNascita2() == null ) && (d.getAnnoAttoNascita2() == null) && ( (d.getDescrizioneComuneAttoNascita2()?:"") == "") ){
             CivNascita nascita = civNascitaService.getXDatiAnagraficiSoggetto2(getAtto())
             if (nascita){
-                ArcComune comune = statoCivileService.getComuneCliente()
+                ArcComune comune = gsdService.getComuneCliente()
                 if (arcParametroService.isNuovaGestioneAnnotazioniSuAttoAttiva()) {
                     DomainUtils.initEstremiAttoNascita2FromAttoNascitaNuovaGestioneAnnotazioni(d, nascita, comune)
                 } else {
@@ -1579,7 +1584,7 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
 
     private void askModificheInSospeso(String title, Closure onSuccess) {
         if (hasStateHashChanged()) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifiche_In_Sospeso), title, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), title, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                     new EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_YES.equals(e.getName())) {
@@ -1597,53 +1602,68 @@ abstract class AttoDettaglioParentViewModel extends AbstractDettaglioViewModel {
         if (tipoOperazione.isUpdate() && getAtto().isCodRec0() && hasAttoStateHashChanged()) {
             Messagebox.show("Vuoi storicizzare la versione precedente?", msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                     { Event e ->
-                        if (Messagebox.ON_YES == e.getName()) {
-                            storicizzaAtto(getAtto().id)
-                            operation.execute(true)
-                        } else {
-                            operation.execute(false)
+                        try {
+                            if (Messagebox.ON_YES == e.getName()) {
+                                storicizzaAtto(getAtto().id)
+                                operation.execute(true)
+                            } else {
+                                operation.execute(false)
+                            }
+                        } catch (Exception ex) {
+                            // Chiude la messagebox corrente prima di rilanciare l'eccezione
+                            e.getTarget().detach()
+                            throw ex
                         }
+
                     })
         } else {
             operation.execute(false)
         }
     }
 
+    @Command
+    void onOpenCaratteriSpeciali() {
+        Window w = (Window) Executions.createComponents("/restrict/gestioneCaratteriSpeciali.zul", self, [gruppo: EGruppo.CIV, dettaglio: dettaglio])
+        w.doModal()
+    }
+
+    abstract GsdBaseDomain getDettaglio()
+
     abstract void storicizzaAtto(Long pkAtto)
 
     ////////////////////////////////////////// GENERALI /////////////////////////////////////
 
-    static List<Map> etichetteAttoDettaglioDefault = [Etichette.ATTO_ANNULLATO, Etichette.ATTO_BLOCCATO, Etichette.ATTO_IN_INSERIMENTO,
-                                                      Etichette.ATTO_PREGRESSO_IN_INSERIMENTO, Etichette.ATTO_CONSOLIDATO, Etichette.Provvisorio,
-                                                      Etichette.Consolida, Etichette.Blocca, Etichette.Annulla, Etichette.Cancella, Etichette.Fascicolo,
-                                                      Etichette.Chiudi_atto, Etichette.Blocca_atto, Etichette.Preview, Etichette.ANSC,
-                                                      Etichette.Numera, Etichette.Imprecisati, Etichette.Giorno, Etichette.Mese, Etichette.Nel,
-                                                      Etichette.Testata, Etichette.Testata_Trascrizione, Etichette.Chiusura, Etichette.Testo_Libero, Etichette.Testo_Libero_placeholder, Etichette.Firma,
-                                                      Etichette.Seleziona_Formula, Etichette.Aggiorna_Formula, Etichette.Aggiorna_Formule,
-                                                      Etichette.Nessun_record_trovato, Etichette.Minuscole, Etichette.Seleziona, Etichette.Annotazioni, Etichette.Comunicazioni,
-                                                      Etichette.Attiva_Composizione, Etichette.Accedi_Composizione, Etichette.Apri, Etichette.Rigenera,
-                                                      Etichette.Dati_Redazione, Etichette.Data, Etichette.Riepilogo_Atto, Etichette.Margine,
-                                                      Etichette.Calcolo_Codice_Fiscale, Etichette.Non_Validato,
-                                                      Etichette.Estremi_Atto_Nascita, Etichette.Estremi_Atto_Nascita_Sposo, Etichette.Estremi_Atto_Nascita_Sposa,
-                                                      Etichette.Estremi_Atto_Nascita_Contraente_1, Etichette.Estremi_Atto_Nascita_Contraente_2, Etichette.Recupera_Estremi_Atto_Nascita,
-                                                      Etichette.Annotazione_su_atto_nascita_sposo, Etichette.Annotazione_su_atto_nascita_sposa,
-                                                      Etichette.Annotazione_su_atto_nascita_intestatario, Etichette.Annotazione_su_atto_nascita_deceduto,
-                                                      Etichette.Annotazione_su_atto_nascita_contraente_1, Etichette.Annotazione_su_atto_nascita_contraente_2,
-                                                      Etichette.Annotazione_su_atto_matrimonio, Etichette.Annotazione_su_atto_unione_civile,
-                                                      EtichetteMessaggi.Ask_Comunicazioni_Atto, EtichetteMessaggi.Ask_Cancellazione_Record, EtichetteMessaggi.Ask_Aggiornamento_Testo,
-                                                      EtichetteMessaggi.Ask_Blocco_Atto, EtichetteMessaggi.Ask_Chiusura_Atto, EtichetteMessaggi.Ask_Annullamento_Atto,
-                                                      EtichetteMessaggi.Ask_Numerazione_Record, EtichetteMessaggi.Ask_Collegamento_Anagrafe, EtichetteMessaggi.Ask_Nuova_Ricerca_Anagrafe,
-                                                      EtichetteMessaggi.Warn_Estremi_Atto_Parziali, EtichetteMessaggi.Warn_Aggiornamento_Formule, EtichetteMessaggi.CIA_fascicolata,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_atto, EtichetteMessaggi.Compilare_campi_cf,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_nato, EtichetteMessaggi.Compilare_campi_obbligatori_sposo, EtichetteMessaggi.Compilare_campi_obbligatori_sposa,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_deceduto_a, EtichetteMessaggi.Compilare_campi_obbligatori_intestatario,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_contraente_1, EtichetteMessaggi.Compilare_campi_obbligatori_contraente_2,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_sposo, EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_sposa,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_deceduto_a, EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_intestatario,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_contraente_1, EtichetteMessaggi.Compilare_campi_obbligatori_atto_nascita_contraente_2,
-                                                      EtichetteMessaggi.Compilare_campi_obbligatori_atto_unione_civile, EtichetteMessaggi.Compilare_campi_obbligatori_atto_matrimonio,
-                                                      EtichetteMessaggi.Errore_natura_vs_tipo_atto, EtichetteMessaggi.Errore_caricamento_formule, EtichetteMessaggi.Errore_Competenze_Ufficio_Utente,
-                                                      EtichetteMessaggi.Errore_apertura_record, EtichetteMessaggi.Errore_testo_atto, EtichetteMessaggi.Errore_Operazione_non_consentita,
-                                                      EtichetteMessaggi.Errore_no_tipo_documento_fascicolazione_CIA, EtichetteMessaggi.Errore_fascicolazione_CIA]
+    static List<Map> etichetteAttoDettaglioDefault = [Etichette.getEtichetta("ATTO_ANNULLATO"), Etichette.getEtichetta("ATTO_BLOCCATO"), Etichette.getEtichetta("ATTO_IN_INSERIMENTO"),
+                                                      Etichette.getEtichetta("ATTO_PREGRESSO_IN_INSERIMENTO"), Etichette.getEtichetta("ATTO_CONSOLIDATO"), Etichette.getEtichetta("Provvisorio"),
+                                                      Etichette.getEtichetta("Consolida"), Etichette.getEtichetta("Blocca"), Etichette.getEtichetta("Annulla"), Etichette.getEtichetta("Cancella"), Etichette.getEtichetta("Fascicolo"),
+                                                      Etichette.getEtichetta("Chiudi_atto"), Etichette.getEtichetta("Blocca_atto"), Etichette.getEtichetta("Preview"), Etichette.getEtichetta("ANSC"),
+                                                      Etichette.getEtichetta("Numera"), Etichette.getEtichetta("Imprecisati"), Etichette.getEtichetta("Giorno"), Etichette.getEtichetta("Mese"), Etichette.getEtichetta("Nel"),
+                                                      Etichette.getEtichetta("Testata"), Etichette.getEtichetta("Testata_Trascrizione"), Etichette.getEtichetta("Chiusura"), Etichette.getEtichetta("Testo_Libero"), Etichette.getEtichetta("Testo_Libero_placeholder"), Etichette.getEtichetta("Firma"),
+                                                      Etichette.getEtichetta("Seleziona_Formula"), Etichette.getEtichetta("Aggiorna_Formula"), Etichette.getEtichetta("Aggiorna_Formule"),
+                                                      Etichette.getEtichetta("Nessun_record_trovato"), Etichette.getEtichetta("Minuscole"), Etichette.getEtichetta("Seleziona"), Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("Comunicazioni"),
+                                                      Etichette.getEtichetta("Attiva_Composizione"), Etichette.getEtichetta("Accedi_Composizione"), Etichette.getEtichetta("Apri"), Etichette.getEtichetta("Rigenera"),
+                                                      Etichette.getEtichetta("Dati_Redazione"), Etichette.getEtichetta("Data"), Etichette.getEtichetta("Riepilogo_Atto"), Etichette.getEtichetta("Margine"),
+                                                      Etichette.getEtichetta("Calcolo_Codice_Fiscale"), Etichette.getEtichetta("Non_Validato"),
+                                                      Etichette.getEtichetta("Estremi_Atto_Nascita"), Etichette.getEtichetta("Estremi_Atto_Nascita_Sposo"), Etichette.getEtichetta("Estremi_Atto_Nascita_Sposa"),
+                                                      Etichette.getEtichetta("Estremi_Atto_Nascita_Contraente_1"), Etichette.getEtichetta("Estremi_Atto_Nascita_Contraente_2"), Etichette.getEtichetta("Recupera_Estremi_Atto_Nascita"),
+                                                      Etichette.getEtichetta("Annotazione_su_atto_nascita_sposo"), Etichette.getEtichetta("Annotazione_su_atto_nascita_sposa"),
+                                                      Etichette.getEtichetta("Annotazione_su_atto_nascita_intestatario"), Etichette.getEtichetta("Annotazione_su_atto_nascita_deceduto"),
+                                                      Etichette.getEtichetta("Annotazione_su_atto_nascita_contraente_1"), Etichette.getEtichetta("Annotazione_su_atto_nascita_contraente_2"),
+                                                      Etichette.getEtichetta("Annotazione_su_atto_matrimonio"), Etichette.getEtichetta("Annotazione_su_atto_unione_civile"),
+                                                      Etichette.getEtichetta("Ask_Comunicazioni_Atto"), Etichette.getEtichetta("Ask_Cancellazione_Record"), Etichette.getEtichetta("Ask_Aggiornamento_Testo"),
+                                                      Etichette.getEtichetta("Ask_Blocco_Atto"), Etichette.getEtichetta("Ask_Chiusura_Atto"), Etichette.getEtichetta("Ask_Annullamento_Atto"),
+                                                      Etichette.getEtichetta("Ask_Numerazione_Record"), Etichette.getEtichetta("Ask_Collegamento_Anagrafe"), Etichette.getEtichetta("Ask_Nuova_Ricerca_Anagrafe"),
+                                                      Etichette.getEtichetta("Warn_Estremi_Atto_Parziali"), Etichette.getEtichetta("Warn_Aggiornamento_Formule"), Etichette.getEtichetta("CIA_fascicolata"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_atto"), Etichette.getEtichetta("Compilare_campi_cf"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_nato"), Etichette.getEtichetta("Compilare_campi_obbligatori_sposo"), Etichette.getEtichetta("Compilare_campi_obbligatori_sposa"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_deceduto_a"), Etichette.getEtichetta("Compilare_campi_obbligatori_intestatario"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_contraente_1"), Etichette.getEtichetta("Compilare_campi_obbligatori_contraente_2"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposo"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_sposa"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_deceduto_a"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_intestatario"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_1"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_nascita_contraente_2"),
+                                                      Etichette.getEtichetta("Compilare_campi_obbligatori_atto_unione_civile"), Etichette.getEtichetta("Compilare_campi_obbligatori_atto_matrimonio"),
+                                                      Etichette.getEtichetta("Errore_natura_vs_tipo_atto"), Etichette.getEtichetta("Errore_caricamento_formule"), Etichette.getEtichetta("Errore_Competenze_Ufficio_Utente"),
+                                                      Etichette.getEtichetta("Errore_apertura_record"), Etichette.getEtichetta("Errore_testo_atto"), Etichette.getEtichetta("Errore_Operazione_non_consentita"),
+                                                      Etichette.getEtichetta("Errore_no_tipo_documento_fascicolazione_CIA"), Etichette.getEtichetta("Errore_fascicolazione_CIA")]
 
 }

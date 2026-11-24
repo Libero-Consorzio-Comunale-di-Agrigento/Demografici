@@ -5,7 +5,9 @@ import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.pagamento.depag.DepagPagamentoRemoto
 import it.finmatica.de4gsdzk.pagamento.depag.DepagPagamentoRemotoService
 import it.finmatica.de4gsdzk.pagamento.error.VerificaPagamentoRuntimeException
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.MessaggioUtils
+import it.finmatica.de4gsdzk.utils.TestoUtils
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
@@ -41,15 +43,16 @@ class PagamentoRemotoRicercaViewModel extends AbstractDettaglioViewModel impleme
         self = w
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Ricerca_pagamento, Etichette.Pagamento, Etichette.Ricerca_Iuv, Etichette.IP_pagamento, Etichette.SV_singolo_versamento]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Ricerca_pagamento"), Etichette.getEtichetta("Pagamento"), Etichette.getEtichetta("Ricerca_Iuv"), 
+                                           Etichette.getEtichetta("IP_pagamento"), Etichette.getEtichetta("SV_singolo_versamento")]
 
-        eList.addAll([EtichetteMessaggi.Info_Verifica_pagamento_successo, EtichetteMessaggi.Errore_Verifica_pagamento])
+        eList.addAll([Etichette.getEtichetta("Info_Verifica_pagamento_successo"), Etichette.getEtichetta("Errore_Verifica_pagamento")])
 
         eList.addAll(DepagPagamentoRemoto.etichetteDomain)
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Ricerca_pagamento)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Ricerca_pagamento"))
 
         formLabel = msgTitle?.toUpperCase()
 

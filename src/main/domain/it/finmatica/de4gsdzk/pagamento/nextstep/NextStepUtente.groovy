@@ -28,5 +28,5 @@ class NextStepUtente extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice_Utente, Etichette.Nominativo, Etichette.Identificativo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice_Utente"), Etichette.getEtichetta("Nominativo"), Etichette.getEtichetta("Identificativo")]
 }

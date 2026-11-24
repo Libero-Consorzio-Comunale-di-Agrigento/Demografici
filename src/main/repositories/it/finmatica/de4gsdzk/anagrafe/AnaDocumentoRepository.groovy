@@ -18,6 +18,7 @@ interface AnaDocumentoRepository extends JpaRepository<AnaDocumento, Long>, AnaD
                   JOIN FETCH d.tipoDocumento
                   LEFT JOIN FETCH d.allegati
                   LEFT JOIN FETCH d.ente
+                  LEFT JOIN FETCH d.categoria
                 WHERE d.id = :id""")
     AnaDocumento findById(@Param("id") Long id)
 
@@ -36,4 +37,5 @@ interface AnaDocumentoRepository extends JpaRepository<AnaDocumento, Long>, AnaD
                 WHERE d.anagrafe = :anagrafe AND d.tipoDocumento = :tipoDocumento""")
     void incrementProgressivoByAnagrafeAndTipoDocumento(@Param("anagrafe") AnaAnagrafe anagrafe,
                                                         @Param("tipoDocumento") AnaTipoDocumento tipoDocumento)
+
 }

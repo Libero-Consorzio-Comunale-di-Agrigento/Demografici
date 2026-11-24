@@ -3,6 +3,7 @@ package restrict.statocivile.annotazioni
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
@@ -49,7 +50,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
     ETipoOperazione tipoOperazione
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private ArcParametroService arcParametroService
@@ -79,12 +80,12 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
         addAnnotazioneEnabled = false
         modifyAnnotazioneEnabled = false
 
-        List<Map> eList = [Etichette.Annotazioni, Etichette.Generata_da, Etichette.Generata_su, Etichette.Cognome_Nome,
-                           Etichette.Atto_non_in_Archivio, Etichette.Effettua_Ricerca,Etichette.Atto_altro_comune,
-                           Etichette.SEZIONE_ANNOTAZIONE_ATTO, Etichette.SEZIONE_ANNOTAZIONI_ATTO, Etichette.SEZIONE_ESTREMI_ATTO]
+        List<Map> eList = [Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("Generata_da"), Etichette.getEtichetta("Generata_su"), Etichette.getEtichetta("Cognome_Nome"),
+                           Etichette.getEtichetta("Atto_non_in_Archivio"), Etichette.getEtichetta("Effettua_Ricerca"),Etichette.getEtichetta("Atto_altro_comune"),
+                           Etichette.getEtichetta("SEZIONE_ANNOTAZIONE_ATTO"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_ESTREMI_ATTO")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Inserimento_Annotazione_Su_Atto, EtichetteMessaggi.Ask_Cancellazione_Annotazione,
-                      EtichetteMessaggi.Errore_Operazione_non_consentita, EtichetteMessaggi.Errore_apertura_record])
+        eList.addAll([Etichette.getEtichetta("Ask_Inserimento_Annotazione_Su_Atto"), Etichette.getEtichetta("Ask_Cancellazione_Annotazione"),
+                      Etichette.getEtichetta("Errore_Operazione_non_consentita"), Etichette.getEtichetta("Errore_apertura_record")])
         eList.addAll(AbstractListaViewModel.etichetteListaDefault)
         eList.addAll(etichetteDettaglioDefault)
         // Aggiungo etichette delle Annotazioni
@@ -112,17 +113,17 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        listaUffici = statoCivileService.listUffici()
+        listaUffici = gsdService.listUffici()
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
 
         this.soggettoAnnotazione = soggettoAnnotazione
 
         tipoOrdinamentoDefaultValue = ETipoOrdinamentoAnnotazione.Nuovo_Ordinamento
 
-        formLabel = getEtichetta(Etichette.SEZIONE_ANNOTAZIONI_ATTO)
+        formLabel = getEtichetta(Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"))
 
-        labelAttoAltroComune = String.format(getEtichetta(Etichette.Atto_altro_comune), getEtichettaEnum(soggettoAnnotazione.getTipoAttoAnnotazioneEnum()))
+        labelAttoAltroComune = String.format(getEtichetta(Etichette.getEtichetta("Atto_altro_comune")), getEtichettaEnum(soggettoAnnotazione.getTipoAttoAnnotazioneEnum()))
 
         if (soggettoAnnotazione.id != null){
             caricaDettaglio(soggettoAnnotazione.annotazioneDomainId)
@@ -140,7 +141,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
                 nominativoAtto = atto.getNominativoEstremiAtto(dettaglio.tipoFormula, dettaglio.tipoAttoAnnotazione)
             } catch (EmptyResultDataAccessException e){
                 log.error(e.getMessage())
-                Messagebox.show(getEtichetta(Etichette.Atto_non_in_Archivio), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
         } else {
             onChiudi()
@@ -187,7 +188,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
             }
 
             if (found){
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Inserimento_Annotazione_Su_Atto), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Inserimento_Annotazione_Su_Atto")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                         new EventListener(){
                             void onEvent(Event e){
                                 if (Messagebox.ON_YES.equals(e.getName())){
@@ -200,7 +201,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
                 salvaAnnotazione()
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -217,7 +218,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
                 }
             }
             CivAnnotazioneAtto aa = civAnnotazioneAttoService.save(tipoOperazione, dettaglio, atto)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(aa.id)
         }
     }
@@ -225,7 +226,7 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
     @Command void onPreviewComunicazioni(){
         if (atto.id != null) {
             if (!(wPreviewComunicazioniOpen)){
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifiche_In_Sospeso), getEtichetta(Etichette.comunicazioni_tooltip), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), getEtichetta(Etichette.getEtichetta("comunicazioni_tooltip")), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                         new EventListener(){
                             void onEvent(Event e){
                                 if (Messagebox.ON_YES.equals(e.getName())){
@@ -262,14 +263,14 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
 
     @Command void onSelectUfficio(){
         if (tipoOperazione.isUpdate()){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             onChiudi()
         }
     }
 
     @Command void onSelectAnno(){
         if (tipoOperazione.isUpdate()){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_Operazione_non_consentita), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_Operazione_non_consentita")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             onChiudi()
         }
     }
@@ -280,14 +281,14 @@ class RegistrazioneAnnotazioniDettaglioViewModel extends AbstractDettaglioViewMo
             nominativoAtto = civAttoService.getAttoFromAnnotazione(soggettoAnnotazione.tipoAttoRif, atto.ufficio, atto.anno, atto.atto, atto.parte, atto.serie)?.getNominativoEstremiAtto(soggettoAnnotazione.tipoFormula, soggettoAnnotazione.tipoAttoAnnotazione)
         } catch (Exception e){
             log.error(e.getMessage())
-            Messagebox.show(getEtichetta(Etichette.Atto_non_in_Archivio), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio")), msgTitle, Messagebox.OK, Messagebox.ERROR)
         }
         refreshUi()
     }
 
     @Command void onEliminaRecord() {
         if (dettaglio) {
-            Messagebox.show(dettaglio.formulaDfa.descrizioneEstesa + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Annotazione), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(dettaglio.formulaDfa.descrizioneEstesa + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Annotazione")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_OK.equals(e.getName())) {

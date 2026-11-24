@@ -34,14 +34,14 @@ class PubblicazioneListaViewModel extends AttoListaParentViewModel{
 
         ricercaAtto = new RicercaAtto(ETipoAtto.PUB)
 
-        List<Map<String, String>> eList = [Etichette.Verbali_Pubblicazione, Etichette.Generalita_Sposo_decrescente, Etichette.Generalita_Sposo_crescente,
-                                           Etichette.Generalita_Sposa_decrescente, Etichette.Generalita_Sposa_crescente]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Verbali_Pubblicazione"), Etichette.getEtichetta("Generalita_Sposo_decrescente"), Etichette.getEtichetta("Generalita_Sposo_crescente"),
+                                           Etichette.getEtichetta("Generalita_Sposa_decrescente"), Etichette.getEtichetta("Generalita_Sposa_crescente")]
 
         eList.addAll(CivPubblicazione.etichetteDomain)
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.Verbali_Pubblicazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Verbali_Pubblicazione"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -49,14 +49,14 @@ class PubblicazioneListaViewModel extends AttoListaParentViewModel{
 
         onCaricaTipiAttoByCategoria()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),        SortUtils.estremiAttoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),          SortUtils.estremiAttoAsc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposo_decrescente),    SortUtils.cognomeNomeConiuge1Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposo_crescente),      SortUtils.cognomeNomeConiuge1Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposa_decrescente),    SortUtils.cognomeNomeConiuge2Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Sposa_crescente),      SortUtils.cognomeNomeConiuge2Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_decrescente),         SortUtils.dataEventoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_crescente),           SortUtils.dataEventoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),        SortUtils.estremiAttoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),          SortUtils.estremiAttoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposo_decrescente")),    SortUtils.cognomeNomeConiuge1Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposo_crescente")),      SortUtils.cognomeNomeConiuge1Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposa_decrescente")),    SortUtils.cognomeNomeConiuge2Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Sposa_crescente")),      SortUtils.cognomeNomeConiuge2Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_decrescente")),         SortUtils.dataEventoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_crescente")),           SortUtils.dataEventoAsc ))
 
         //Default: estremi atto discendente
         selectedOrder = listaOrder[0]

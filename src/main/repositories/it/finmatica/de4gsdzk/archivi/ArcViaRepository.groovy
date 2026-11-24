@@ -3,6 +3,7 @@ package it.finmatica.de4gsdzk.archivi
 import groovy.transform.CompileStatic
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -16,5 +17,9 @@ interface ArcViaRepository extends JpaRepository<ArcVia, String> {
                 WHERE UPPER(o.denominazione) like UPPER(:filtro)
                   OR UPPER(o.denominazioneRicerca) like UPPER(:filtro)""")
     Page<ArcVia> findAllByDenominazioneLikeIgnoreCase(@Param("filtro") String filtro, Pageable pageable)
+
+    List<ArcVia> findAll(Sort sort)
+
+    ArcVia findById(Long id)
 
 }

@@ -8,11 +8,11 @@ select cit.id
      , cit.atto
 -- evento
      , f_ANSC_valore_inp('ID_VERSION',1,10,'9','') idVersion
-     , '5' idTipoEvento		-- (anst01) 1 - NASCITA / 2 - MORTE / 3 - MATRIMONIO / 4 - UNIONE CIVILE / 5 - CITTADINANZA 
+     , '5' idTipoEvento		-- (anst01) 1 - NASCITA / 2 - MORTE / 3 - MATRIMONIO / 4 - UNIONE CIVILE / 5 - CITTADINANZA
      , f_ANSC_id_tipo_contenuto(t03.tipo_atto_ansc,cit.natura,cit.tipo_richiesta) idTipoContenuto	-- (anst02) 1 - ATTO / 2 - ANNOTAZIONE / 3 - TRASCRIZIONE / 4 - ANNOTAZIONE AUTO
      , f_ANSC_dati_prodotti(dpa.presentazione_documenti) datiProdotti
-     , cit.id_usecase_ansc idUseCase		-- (anst03) 
-     , t03.descrizione  descrizioneCasoUso	-- (anst03) 
+     , cit.id_usecase_ansc idUseCase		-- (anst03)
+     , t03.descrizione  descrizioneCasoUso	-- (anst03)
      , decode(f_ANSC_flag_firmato('CIT', cit.id, 'USC'), 'S', 'FIRMATO DA USC', 'CONFERMATO') stato   -- (anpt02) BOZZA / CONFERMATO / ANNULLATO / FIRMATO DAL DICHIARANTE / FIRMATO DA USC
      , 'FIRMATO DA USC' stato_firmatoUSC   -- (anpt02) BOZZA / CONFERMATO / ANNULLATO / FIRMATO DAL DICHIARANTE / FIRMATO DA USC
      , to_char(dpa.d_data_atto_utente,'yyyy-mm-dd') dataFormazione
@@ -39,20 +39,23 @@ select cit.id
 -- datiEventoCittadinanza
      , decode(cit.nazionalita,'APO','true','false') intestatarioApolide
      , dpa.autorita_prov_email indirizzoPostaAutorita
-     , decode(cta.sigla, 
-         'GIU', to_char(dpa.d_sentenza_data,'yyyy-mm-dd'), 
+     , decode(cta.sigla,
+         'GIU', to_char(dpa.d_sentenza_data,'yyyy-mm-dd'),
          'DAQ', to_char(dpa.d_sentenza_data,'yyyy-mm-dd')) dataDecretoConferimento
-     , decode(cta.sigla,  
-         'GIU', to_char(dpa.d_sentenza_data_notifica,'yyyy-mm-dd'),  
-         'DAQ', to_char(dpa.d_sentenza_data_notifica,'yyyy-mm-dd')) dataNotificaDelDecreto 
-     , decode(cta.sigla, 
-         'GIU', dpa.sentenza_numero, 
-         'DAQ', dpa.sentenza_numero) estremiDecretoConferimento 
-     , decode(cta.sigla, 
+     , decode(cta.sigla,
+         'GIU', to_char(dpa.d_sentenza_data_notifica,'yyyy-mm-dd'),
+         'DAQ', to_char(dpa.d_sentenza_data_notifica,'yyyy-mm-dd')) dataNotificaDelDecreto
+     , decode(cta.sigla,
+         'GIU', dpa.sentenza_numero,
+         'DAQ', dpa.sentenza_numero) estremiDecretoConferimento
+     , decode(cta.sigla,
          'DAQ', decode(dmc.flag_annotazione, 'S', dpa.testo_riassunto, 'dichiarazione riportata integralmente nel testo dell''atto') ) riassuntoDichiarazione
-     , decode(dmc.flag_residenza, 'S', dpa.dati_residenza) infoResidenzaBiennale 
+     , decode(dmc.flag_residenza, 'S', dpa.dati_residenza) infoResidenzaBiennale
      , decode(dmc.flag_estremi_giuramento, 'S', to_char(cit.d_data_cit,'yyyy-mm-dd')) dataGiuramento
-     , decode(dmc.flag_estremi_giuramento, 'S', decode(dpa.giuramento_atto||dpa.giuramento_anno,'',to_char(null),dpa.giuramento_atto||'/'||dpa.giuramento_anno)) estremiGiuramento
+     , decode(dmc.flag_estremi_giuramento, 'S',
+         decode(dpa.giuramento_id_atto_ansc,'',
+           decode(dpa.giuramento_atto||dpa.giuramento_anno,'',to_char(null),dpa.giuramento_atto||'/'||dpa.giuramento_anno),
+           dpa.giuramento_id_atto_ansc)) estremiGiuramento
      , '1' tipoEventoCittadinanza
      , decode(cta.sigla, 'GIU', f_ANSC_officiante_CIT(dpa.qualifica_utente)) officiante
 -- ufficialeStatoCivile
@@ -149,7 +152,7 @@ select cit.id
      , CASE WHEN dmc.flag_autorita = 'S' AND dmc.flag_consolato IS NULL and dmc.flag_accertamento is null THEN f_ANSC_comune_estero(dpa.cod_pro_prov,dpa.cod_com_prov,'')
             ELSE f_ANSC_comune_estero(dpa.ente_straniero_cod_pro,dpa.ente_straniero_cod_com,'') END EST_comuneEsteroEnte
      , to_char(null) EST_dataComunicazione
-     , CASE WHEN dmc.FLAG_ENTE_ESTERO ='S' and dmc.flag_accertamento is null THEN to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd') 
+     , CASE WHEN dmc.FLAG_ENTE_ESTERO ='S' and dmc.flag_accertamento is null THEN to_char(dpa.d_ente_straniero_data_atto,'yyyy-mm-dd')
             ELSE to_char(null) END EST_dataTrascrizione
      , CASE WHEN dmc.flag_autorita = 'S' AND dmc.flag_consolato IS NULL and dmc.flag_accertamento is null THEN dpa.nota_rif||decode(dpa.anno_nota_rif, '', '', '/')||dpa.anno_nota_rif
             ELSE dpa.ente_straniero_estremi_atto END EST_estremiDocumento
@@ -212,8 +215,8 @@ select cit.id
      , to_char(null) motivoPerditaCittadinanza
 -- intestatari
      , cit.cod_fiscale INT_codiceFiscale
-     , nvl(occ.cognome,cit.cognome) INT_cognome
-     , nvl(occ.nome,cit.nome) INT_nome
+     , f_ANSC_stringa_unicode('CIVCIT',cit.id,'COGNOME_1',nvl(occ.cognome,cit.cognome)) INT_cognome
+     , f_ANSC_stringa_unicode('CIVCIT',cit.id,'NOME_1',nvl(occ.nome,cit.nome)) INT_nome
      , cit.sesso INT_sesso
      , decode(cit.sesso,'M','maschile','F','femminile','non conosciuto') INT_descrizioneSesso
      , to_char(cit.d_data_nas,'yyyy-mm-dd') INT_dataNascita
@@ -281,8 +284,8 @@ select cit.id
      , decode(cit.tipo_riconoscimento, 'MD', to_char(dpa.d_riconoscimento_pre_data_1, 'yyyy-mm-dd')) RIC_MAT_dataformazione
      , decode(cit.tipo_riconoscimento, 'MD', 'Nascita') RIC_MAT_tipologia
 -- madre
-     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then sog_MD.cognome end MAT_cognome
-     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then sog_MD.nome end MAT_nome
+     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then f_ANSC_stringa_unicode('CIVCIT',cit.id,'COGNOME_MD',sog_MD.cognome) end MAT_cognome
+     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then f_ANSC_stringa_unicode('CIVCIT',cit.id,'NOME_MD',sog_MD.nome) end MAT_nome
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then sog_MD.sesso end MAT_sesso
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then 'femminile' end MAT_descrizioneSesso
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','MD','SM') then to_char(sog_MD.d_data_nas,'yyyy-mm-dd') end MAT_dataNascita
@@ -311,8 +314,8 @@ select cit.id
      , f_ANSC_flag_comparente(dpa.tipo_comparente,'MD') MAT_flagComparente
      , f_ANSC_flag_firmatario(dpa.tipo_firmatario,'MD') MAT_flagFirmatario
 -- padre
-     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then sog_PD.cognome end PAT_cognome
-     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then sog_PD.nome end PAT_nome
+     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then f_ANSC_stringa_unicode('CIVCIT',cit.id,'COGNOME_PD',sog_PD.cognome) end PAT_cognome
+     , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then f_ANSC_stringa_unicode('CIVCIT',cit.id,'NOME_PD',sog_PD.nome) end PAT_nome
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then sog_PD.sesso end PAT_sesso
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then 'maschile' end PAT_descrizioneSesso
      , case when nvl(cit.tipo_riconoscimento,'XX') in ('XX','PD','SP') then to_char(sog_PD.d_data_nas,'yyyy-mm-dd') end PAT_dataNascita
@@ -425,6 +428,8 @@ select cit.id
      , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas||mar.atto_nas, '', to_char(null), '1')) ATTCOL_idTipoContenuto
      , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas, '', mar.atto_nas, f_CIV_get_estremi_id_atto_ansc(mar.id_atto_ansc_nas,'NUMERO_COMUNALE'))) ATTCOL_numeroAtto
      , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas, '', mar.anno_nas, f_CIV_get_estremi_id_atto_ansc(mar.id_atto_ansc_nas,'ANNO'))) ATTCOL_annoAtto
+     , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas, '', mar.parte_nas)) ATTCOL_parte
+     , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas, '', mar.serie_nas)) ATTCOL_serie
      , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas||mar.atto_nas, '', to_char(null), to_char(mar.d_data_atto_nas,'yyyy-mm-dd'))) ATTCOL_dataFormazione
      , decode(cta.sigla, 'DAQ', decode(mar.id_atto_ansc_nas||mar.atto_nas, '', to_char(null), '1')) ATTCOL_tipologia
 -- composizioneCompleta

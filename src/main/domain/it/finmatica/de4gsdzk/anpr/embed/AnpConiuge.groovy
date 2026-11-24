@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.anpr.embed
 
-
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.anagrafe.IConiuge
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.ESesso
@@ -11,8 +11,14 @@ import javax.persistence.*
 @Embeddable
 class AnpConiuge implements IConiuge {
 
-    @Column(name = "MATRICOLA_CN", nullable = true)
-    Integer idAnagrafe
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MATRICOLA_CN", nullable = true)
+    AnaAnagrafe anagrafe
+
+    @Override
+    Integer getIdAnagrafe() {
+        return anagrafe?.id
+    }
 
     @Column(name = "COGNOME_CN", nullable = true)
     String cognome
@@ -70,5 +76,5 @@ class AnpConiuge implements IConiuge {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NAZIONALITA_CN", nullable = true)
-    AnaNazionalita nazionalita
+    AnaCittadinanza nazionalita
 }

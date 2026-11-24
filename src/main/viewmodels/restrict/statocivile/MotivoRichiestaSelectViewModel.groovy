@@ -45,13 +45,13 @@ abstract class MotivoRichiestaSelectViewModel extends AbstractSelectViewModel {
         this.categoria = categoria
         this.tipoRichiesta = tipoRichiesta
 
-        List<Map<String, String>> eList = [Etichette.Tutti, Etichette.Ricorrenti, Etichette.Altro]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Tutti"), Etichette.getEtichetta("Ricorrenti"), Etichette.getEtichetta("Altro")]
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Motivo_richiesta)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Motivo_richiesta"))
 
         totalSizeLabel = ""
 
@@ -91,7 +91,7 @@ abstract class MotivoRichiestaSelectViewModel extends AbstractSelectViewModel {
             Events.postEvent(CustomEvents.ON_SELECT_RECORD, self, dettaglio)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

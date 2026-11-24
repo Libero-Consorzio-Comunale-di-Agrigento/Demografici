@@ -13,8 +13,8 @@ enum ETipoDocumentoFineOpposizione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case DE: return Etichette.decreto_rigetto
-            case PR: return Etichette.provvedimento_estinzione
+            case DE: return Etichette.getEtichetta("decreto_rigetto")
+            case PR: return Etichette.getEtichetta("provvedimento_estinzione")
         }
         return null
     }

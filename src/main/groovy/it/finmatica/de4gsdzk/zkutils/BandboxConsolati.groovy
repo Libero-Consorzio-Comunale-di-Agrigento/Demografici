@@ -43,15 +43,15 @@ class BandboxConsolati extends CustomBandbox {
 			c.bbParent = this
 		}
 
-		List<Map> eList = [Etichette.Descrizione]
+		List<Map> eList = [Etichette.getEtichetta("Descrizione")]
 		eList.addAll(etichetteBB)
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
 		paging.setPageSize(Paginazione.pageSize)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 	
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -65,7 +65,7 @@ class BandboxConsolati extends CustomBandbox {
 
 		listbox.setModel(new ListModelList<AnscConsolato>(p.getContent()))
 		paging.setTotalSize((int)p.getTotalElements())
-		label.value = (getEtichetta(etichette, Etichette.Numero_record_trovati)?:"") + paging.totalSize
+		label.value = (getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati"))?:"") + paging.totalSize
 	}
 
 	@Listen("onClick = toolbarbutton")

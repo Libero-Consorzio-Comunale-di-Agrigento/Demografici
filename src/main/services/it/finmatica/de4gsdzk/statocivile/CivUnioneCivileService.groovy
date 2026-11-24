@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoCertificabileService
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivUnioneCivileService implements IAttoCertificabileService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivDatiProvenienzaAttoService civDatiProvenienzaAttoService
 
@@ -55,18 +56,18 @@ class CivUnioneCivileService implements IAttoCertificabileService {
 
 	private final CivUnioneCivileRepository civUnioneCivileRepository
 
-	CivUnioneCivileService(CivUnioneCivileRepository civUnioneCivileRepository, StatoCivileService statoCivileService,
-						   CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
-						   CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
-						   CivComunicazioneAttoService civComunicazioneAttoService, CivSposiAttoService civSposiAttoService,
-						   CivTestimoniAttoService civTestimoniAttoService, CivDocumentoPubblicazioneService civDocumentoPubblicazioneService,
-						   CivAnnotazioneAttoService civAnnotazioneAttoService, ArcComuneBaseService arcComuneBaseService,
-						   CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
-						   CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
-						   CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
+	CivUnioneCivileService(CivUnioneCivileRepository civUnioneCivileRepository, GsdService gsdService,
+                           CivDatiProvenienzaAttoService civDatiProvenienzaAttoService, CivFormulaTestoLiberoService civFormulaTestoLiberoService,
+                           CivAnagrafeService civAnagrafeService, CivMargineService civMargineService, CivTipoAttoService civTipoAttoService,
+                           CivComunicazioneAttoService civComunicazioneAttoService, CivSposiAttoService civSposiAttoService,
+                           CivTestimoniAttoService civTestimoniAttoService, CivDocumentoPubblicazioneService civDocumentoPubblicazioneService,
+                           CivAnnotazioneAttoService civAnnotazioneAttoService, ArcComuneBaseService arcComuneBaseService,
+                           CivAnnotazioneTestoLiberoService civAnnotazioneTestoLiberoService,
+                           CivSoggettoCollegatoService civSoggettoCollegatoService, ArcParametroService arcParametroService,
+                           CivValidazioneAttoService civValidazioneAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService) {
 
 		this.civUnioneCivileRepository = civUnioneCivileRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civDatiProvenienzaAttoService = civDatiProvenienzaAttoService
 		this.civFormulaTestoLiberoService = civFormulaTestoLiberoService
 		this.civAnagrafeService = civAnagrafeService
@@ -223,7 +224,7 @@ class CivUnioneCivileService implements IAttoCertificabileService {
 			if (obj.isImpedimentoGenericoVisibile()) {
 				String sezioneAltriDati = "'Redazione - Altri Dati'"
 				if (datiProvenienza.impedimentoGenericoUci == null) {
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_sezione, sezioneAltriDati)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_sezione"), sezioneAltriDati)
 				}
 			}
 
@@ -263,7 +264,7 @@ class CivUnioneCivileService implements IAttoCertificabileService {
 		log.info("Lancio salvataggio dello storico su CIVUCI per id " + obj.id)
 
 		CivUnioneCivile newest = DomainUtils.copyAtto(obj) as CivUnioneCivile
-		newest.id = statoCivileService.getIdFromSequence(newest) // genero una nuova pk
+		newest.id = gsdService.getIdFromSequence(newest) // genero una nuova pk
 		newest.setCodRec1()
 
 		civUnioneCivileRepository.save(newest)
@@ -462,12 +463,13 @@ class CivUnioneCivileService implements IAttoCertificabileService {
 
 		if (tipoOperazione.isInsert()){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		// Se è stato storicizzato l'atto devo incrementare la versione prima di salvarlo
 		if (isRettificato) {
 			obj.versioneRettifica = obj.versioneRettifica + 1
+            obj.dataVersioneRettifica = new Date()
 		}
 
 		log.info("Lancio salvataggio (${tipoOperazione.name()}) su CIVUCI per id " + obj.id)
@@ -525,7 +527,7 @@ class CivUnioneCivileService implements IAttoCertificabileService {
 
 		if (obj.id != null) {
 			if (isInviatoAnsc(obj.id)){
-				throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_cancellazione_entita)
+				throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_cancellazione_entita"))
 			}
 			// refs #70786
 			// Per il fascicolo NON è stata gestita la cascade delete da trigger, sicché cancello da java

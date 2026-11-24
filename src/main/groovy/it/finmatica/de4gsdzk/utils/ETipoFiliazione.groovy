@@ -14,9 +14,9 @@ enum ETipoFiliazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case L: return Etichette.Nel_Matrimonio
-            case C: return Etichette.Fuori_Matrimonio
-            case S: return Etichette.Senza_Riconoscimento
+            case L: return Etichette.getEtichetta("Nel_Matrimonio")
+            case C: return Etichette.getEtichetta("Fuori_Matrimonio")
+            case S: return Etichette.getEtichetta("Senza_Riconoscimento")
         }
         return null
     }

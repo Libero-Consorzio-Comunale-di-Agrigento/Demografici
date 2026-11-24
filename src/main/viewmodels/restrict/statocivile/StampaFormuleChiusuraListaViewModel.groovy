@@ -2,9 +2,13 @@ package restrict.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.JasperReportService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.*
+import it.finmatica.de4gsdzk.statocivile.CivAttoService
+import it.finmatica.de4gsdzk.statocivile.CivFormulaChiusura
+import it.finmatica.de4gsdzk.statocivile.CivFormulaChiusuraService
+import it.finmatica.de4gsdzk.statocivile.CivTipoAtto
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarStampaAttributes
 import net.sf.jasperreports.engine.JREmptyDataSource
@@ -45,7 +49,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
     ControlBarStampaAttributes cbStampa = new ControlBarStampaAttributes()
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivFormulaChiusuraService civFormulaChiusuraService
@@ -65,11 +69,11 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
 
         this.tipoAttoEnum = tipoAttoEnum
 
-        List<Map<String, String>> eList = [Etichette.Formule_Chiusura, Etichette.Margine, Etichette.Etichetta, Etichette.Foglio_Atto, Etichette.Numero,
-                                           Etichette.Atto, Etichette.Numero_Atti, Etichette.Dal, Etichette.Al, Etichette.Del,
-                                           Etichette.Autorita_Giudiziaria, Etichette.Ordinanza_del, Etichette.In_data, Etichette.restituzione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Formule_Chiusura"), Etichette.getEtichetta("Margine"), Etichette.getEtichetta("Etichetta"), Etichette.getEtichetta("Foglio_Atto"), Etichette.getEtichetta("Numero"),
+                                           Etichette.getEtichetta("Atto"), Etichette.getEtichetta("Numero_Atti"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"), Etichette.getEtichetta("Del"),
+                                           Etichette.getEtichetta("Autorita_Giudiziaria"), Etichette.getEtichetta("Ordinanza_del"), Etichette.getEtichetta("In_data"), Etichette.getEtichetta("restituzione")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_obbligatori, EtichetteMessaggi.Compilare_formula, EtichetteMessaggi.Errore_funzionalita_export])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_obbligatori"), Etichette.getEtichetta("Compilare_formula"), Etichette.getEtichetta("Errore_funzionalita_export")])
         eList.addAll(RicercaAtto.etichetteRicercaDesc)
         eList.addAll(RicercaAttoStampa.etichetteRicercaStampaDesc)
 
@@ -86,7 +90,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
 
         msgTitle = getEtichetta(tipoAttoEnum.etichettaPluralDesc)
 
-        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.Formule_Chiusura)?.toUpperCase() + ")"
+        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.getEtichetta("Formule_Chiusura"))?.toUpperCase() + ")"
 
         listaParte = [null] + [new Integer(1), new Integer(2)]
         switch (tipoAttoEnum) {
@@ -116,8 +120,8 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
         caricaListaUffici()
 
         stampaList = []
-        stampaList.add([codice: "ATTO", descrizione: getEtichetta(Etichette.Foglio_Atto)])
-        stampaList.add([codice: "ETICHETTA", descrizione: getEtichetta(Etichette.Etichetta)])
+        stampaList.add([codice: "ATTO", descrizione: getEtichetta(Etichette.getEtichetta("Foglio_Atto"))])
+        stampaList.add([codice: "ETICHETTA", descrizione: getEtichetta(Etichette.getEtichetta("Etichetta"))])
 
         richiesta = new RichiestaFormulaChiusura("", "", null, null, null)
 
@@ -129,7 +133,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
     }
 
     protected void caricaListaUffici(){
-        listaUffici = [null] + statoCivileService.listUffici()
+        listaUffici = [null] + gsdService.listUffici()
     }
 
     @Override
@@ -160,7 +164,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
             Map customMandatoryParams = getCustomMandatoryParams()
             p = civAttoService.search(tipoAttoEnum, getParams(usePaging), customMandatoryParams)
             if ( (p?.getContent()?:[]).isEmpty() ) {
-                Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             }
         } catch (CampoMandatoryRuntimeException ex) {
             resetRicerca()
@@ -215,7 +219,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
     String getTestoFormula(){
         String testo
         try{
-            testo = statoCivileService.decodificaTestoFormulaChiusura(formulaSelezionata?.id, tipoAttoEnum.valore,
+            testo = gsdService.decodificaTestoFormulaChiusura(formulaSelezionata?.id, tipoAttoEnum.valore,
                     ((RicercaAttoStampa) ricerca).annoDa, ((RicercaAttoStampa) ricerca).parte, ((RicercaAttoStampa) ricerca).serie,
                     formulaChiusuraAtti, richiesta )
         } catch (CampoMandatoryRuntimeException ex) {
@@ -228,7 +232,7 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
     void esporta(ETipoFile tipo) {
 
         if ( ((tipoAttoEnum == ETipoAtto.PVU) || (tipoAttoEnum == ETipoAtto.PUB)) && (tipo == ETipoFile.PDF) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_funzionalita_export), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_funzionalita_export")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
 
@@ -236,21 +240,21 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
         if (testo) {
             StringBuilder b = new StringBuilder(getEtichetta(tipoAttoEnum.etichettaPluralDesc))
             b.append("_")
-            b.append(getEtichetta(Etichette.Formule_Chiusura))
-            String labelAnno = getNomeFileXAnno(getEtichetta(Etichette.Anno), ((RicercaAttoStampa) ricerca).annoDa, ((RicercaAttoStampa) ricerca).annoDa)
+            b.append(getEtichetta(Etichette.getEtichetta("Formule_Chiusura")))
+            String labelAnno = getNomeFileXAnno(getEtichetta(Etichette.getEtichetta("Anno")), ((RicercaAttoStampa) ricerca).annoDa, ((RicercaAttoStampa) ricerca).annoDa)
             b.append(labelAnno)
 
             String tipoAttoLabel = getEtichetta(tipoAttoEnum.etichettaPluralDesc).toUpperCase()
             StringBuilder d = new StringBuilder(tipoAttoLabel)
             if (tipoAttoEnum.hasParte() && (((RicercaAttoStampa) ricerca).parte != null)) {
                 d.append(" - ")
-                d.append(getEtichetta(Etichette.Parte).toUpperCase())
+                d.append(getEtichetta(Etichette.getEtichetta("Parte")).toUpperCase())
                 d.append(TestoUtils.spazio)
                 d.append(TestoUtils.getParteRomana(((RicercaAttoStampa) ricerca).parte.intValue()))
             }
             if (tipoAttoEnum.hasSerie() && ((((RicercaAttoStampa) ricerca).serie ?: "") != "")) {
                 d.append(" - ")
-                d.append(getEtichetta(Etichette.Serie).toUpperCase())
+                d.append(getEtichetta(Etichette.getEtichetta("Serie")).toUpperCase())
                 d.append(TestoUtils.spazio)
                 d.append(((RicercaAttoStampa) ricerca).serie)
             }
@@ -269,8 +273,8 @@ class StampaFormuleChiusuraListaViewModel extends AbstractStampaAttiListaViewMod
 
                     CODICE_TIPO_ATTO: getTipoAttoEnum().name(),
                     ESTREMI_ATTO    : d.toString(),
-                    LABEL_COGNOME   : getEtichetta(Etichette.Cognome),
-                    LABEL_NOME      : getEtichetta(Etichette.Nome),
+                    LABEL_COGNOME   : getEtichetta(Etichette.getEtichetta("Cognome")),
+                    LABEL_NOME      : getEtichetta(Etichette.getEtichetta("Nome")),
                     LABEL_SESSO     : ""
             ]
 

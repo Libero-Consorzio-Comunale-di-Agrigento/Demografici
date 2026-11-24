@@ -235,9 +235,15 @@ begin
 -- V9.3   del 02/05/2024   AM     .NA00: nuovi campi in ANPNA0 (residenza / nazionalita)
 -- V9.3.1 del 29/05/2024   AM     .5001: tipoMutazione '5' per aggiornamento PT e CC
 -- V9.3.2 del 04/12/2024   AM     .6001: docRiconoscimento (nuovi campi da cercem)
+-- V9.3.4 del 22/10/2025   AM     .3002: idUnicoAnpr recuperato da ANPCIU_PAR
+-- V9.3.5 del 01/12/2025   AM     .NA00: nuovi campi in ANPNA0 (evento/trascrizione)
+-- V9.3.6 del 11/12/2025   AM     .NA00: nuovi campi in ANPNA0 (evento/separazione/accordoSeparazione)
+-- V9.3.7 del 21/01/2026   AM     .5010: tipoMutazione '4' solo per archivio_rif 'PSE'
+-- V9.4.0 del 29/05/2026   AM     .f_xml_indirizzo_esteso: gestione nuovi campi per civico esterno / civico interno
+-- V9.4.1 del 06/07/2026   AM     .5010: elettorale - fix fine tag "datiControllo"
 --
 
-  w_versione := 'V9.3.1 del 29/05/2024';
+  w_versione := 'V9.4.1 del 06/07/2026';
 
   return w_versione;
 end;
@@ -336,7 +342,7 @@ begin
       into w_count_dco
       from eledco dco, eledte dte
      where dco.tipo_elezione   = dte.cod_te
-       and dte.rif_tessera_ele = 6        
+       and dte.rif_tessera_ele = 6
     ;
   exception
     when others then
@@ -539,7 +545,7 @@ begin
              and id_scheda_anpr   = a_id_soggetto_anpr
              and rownum = 1
           ;
-        exception 
+        exception
           when others then
                w_matricola := '';
         end;
@@ -652,7 +658,7 @@ begin
         begin
           select id_scheda_anpr
             into w_idFam_ANPR
-            from anpads 
+            from anpads
            where fascia_ads       = 3
              and cod_fam_ads      = a_cod_fam_aire
              and tipo_scheda_anpr = 'Famiglia AIRE'
@@ -665,7 +671,7 @@ begin
         begin
           select id_scheda_anpr
             into w_idFam_ANPR
-            from anpads 
+            from anpads
            where matricola_ads    = a_matricola
              and tipo_scheda_anpr = 'Famiglia ANPR'
           ;
@@ -968,7 +974,7 @@ begin
        and session_id = userenv('sessionID')
     ;
   exception
-    when others then 
+    when others then
          w_errore := 'errore upd_allegati - 1 ('||sqlerrm||')';
          raise errore;
   end;
@@ -981,7 +987,7 @@ begin
        and session_id = userenv('sessionID')
     ;
   exception
-    when others then 
+    when others then
          w_errore := 'errore upd_allegati - 2 ('||sqlerrm||')';
          raise errore;
   end;
@@ -1116,7 +1122,7 @@ begin
      ANPR_pkg.ins_log(w_servizio_log, w_operazione_log, 'xml_richiesta_t not null');
      w_request_clob := w_xml_richiesta_t;
      goto esegui_request;
-  end if;  
+  end if;
 
   if w_servizio in ('1001','1002') then
      w_request_clob := ANPR_pkg.ws_1000_iscrizione_apr(w_servizio,a_id_operazione,a_tipo_operazione,a_anno_rif,a_numero_rif);
@@ -1171,7 +1177,7 @@ begin
      w_request_clob := ANPR_pkg.ws_7001_scarico_tabelle(w_servizio,a_id_operazione,a_tipo_operazione,a_numero_rif,a_archivio_rif);
 
   elsif w_codDestinatario = 'ANPR01' and w_servizio in ('3005','3007','N010','N014','N015','N017','N030','N031','NRIS') then
-     if w_servizio = '3005' then 
+     if w_servizio = '3005' then
         w_chiave := a_numero_rif;
      else
         w_chiave := a_matricola;
@@ -1183,7 +1189,7 @@ begin
 
   elsif w_codDestinatario != 'ANPR01' and w_servizio in ('3005','3007','N010','N014','N015','N017','N030','N031','NRIS','NA00','NA01','NA02','NA03','NA04','NA05') then
      w_chiave := a_numero_rif;
-     if w_servizio = '3005' then 
+     if w_servizio = '3005' then
         w_servizio := '7002';
         w_request_clob := ANPR_pkg.ws_7002_download_file(w_servizio,a_id_operazione,a_tipo_operazione,w_chiave,a_archivio_rif);
      else
@@ -1243,13 +1249,13 @@ begin
      if w_esito_ANPR = 'XXXX' then
         w_flag_errore := 'S';
      end if;
-        
+
   elsif w_servizio in ('7001','7002') then
 --     ANPR_pkg.ctr_risposta_ok(w_servizio,a_id_operazione,w_response_clob,w_id_ANPR,w_esito_ANPR,w_flag_anomalia,w_chiave);
      ANPR_pkg_4000.ctr_risposta_multipla(w_servizio,a_id_operazione,a_tipo_operazione,w_response_clob,w_id_ANPR,w_esito_ANPR,w_flag_anomalia,a_numero_rif,a_archivio_rif);
 
   elsif w_codDestinatario = 'ANPR01' and w_servizio in ('3005','3007','N010','N014','N015','N017','N030','N031','NRIS') then
-     if w_servizio = '3005' then 
+     if w_servizio = '3005' then
         w_chiave := a_numero_rif;
      else
         w_chiave := a_matricola;
@@ -1257,7 +1263,7 @@ begin
      ANPR_pkg.ctr_risposta_ok(w_servizio,a_id_operazione,w_response_clob,w_id_ANPR,w_esito_ANPR,w_flag_anomalia,w_chiave);
 
   elsif w_codDestinatario != 'ANPR01' and w_servizio in ('3005','3007','N010','N014','N015','N017','N030','N031','NRIS','NA00','NA01','NA02','NA03','NA04','NA05') then
-     if w_servizio = '3005' then 
+     if w_servizio = '3005' then
         w_chiave := a_numero_rif;
      else
         w_chiave := a_matricola;
@@ -1342,7 +1348,7 @@ errore			exception;
 
 begin
   if a_servizio = '6001' and nvl(w_ora_31167,'N') = 'S' then	-- Porto Azzurro
-     if a_campo_clob like '%Risposta6001OK%certificatoPdf%' then	
+     if a_campo_clob like '%Risposta6001OK%certificatoPdf%' then
         goto fine;
      end if;
   elsif a_servizio = 'P002' and nvl(w_ora_31167,'N') = 'S' then	-- Valeggio
@@ -2215,7 +2221,7 @@ select extractValue(value(rowdata),w_root||'/elettore') ELE_elettore
 --
       , extractValue(value(rowdata),w_root||'/listaAggiuntaUE/ueelettoreparlamento') ELAE_ueelettoreparlamento
   -- listaAggiuntaUEParlamento
-    -- comune 
+    -- comune
       , extractValue(value(rowdata),w_root||'/listaAggiuntaUE/listaAggiuntaUEParlamento/comune/nomeComune') ELAE_nomeComune
       , extractValue(value(rowdata),w_root||'/listaAggiuntaUE/listaAggiuntaUEParlamento/comune/codiceIstat') ELAE_codiceIstat
       , extractValue(value(rowdata),w_root||'/listaAggiuntaUE/listaAggiuntaUEParlamento/comune/siglaProvinciaIstat') ELAE_siglaProvinciaIstat
@@ -2227,7 +2233,7 @@ select extractValue(value(rowdata),w_root||'/elettore') ELE_elettore
       , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/comregelettorevalledaosta') ELAV_comregelettorevalledaosta
   -- listaBolTreVal
     -- comune
-      , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/listaBolTreVal/comune/nomeComune') ELABTV_nomeComune	
+      , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/listaBolTreVal/comune/nomeComune') ELABTV_nomeComune
       , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/listaBolTreVal/comune/codiceIstat') ELABTV_codiceIstat
       , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/listaBolTreVal/comune/siglaProvinciaIstat') ELABTV_siglaProvinciaIstat
       , extractValue(value(rowdata),w_root||'/listaAggiuntaComReg/listaBolTreVal/comune/descrizioneLocalita') ELABTV_descrizioneLocalita
@@ -2253,7 +2259,7 @@ select extractValue(value(rowdata),w_root||'/elettore') ELE_elettore
       , extractValue(value(rowdata),w_root||'/sezione/sezioneelettoraledenom') SEZ_sezioneelettoraledenom
   -- sezioneelettoraleind
       , extractValue(value(rowdata),w_root||'/sezione/sezioneelettoraleind/cap') SEZIND_cap
-     -- comune	
+     -- comune
       , extractValue(value(rowdata),w_root||'/sezione/sezioneelettoraleind/comune/nomeComune') SEZIND_nomeComune
       , extractValue(value(rowdata),w_root||'/sezione/sezioneelettoraleind/comune/codiceIstat') SEZIND_codiceIstat
       , extractValue(value(rowdata),w_root||'/sezione/sezioneelettoraleind/comune/siglaProvinciaIstat') SEZIND_siglaProvinciaIstat
@@ -3072,7 +3078,7 @@ w_step := 1.3;
                   decode(rec.ANPUCI_numeroAtto,'',rec.ANSUCI_trascritto,rec.ANPUCI_trascritto),
                   rec.ATTUCI_trascritto)
                ,decode(rec.ATTUCI_numeroAtto,'',decode(rec.ANPUCI_numeroAtto,'',rec.ANSUCI_numeroComunale))
-               ,decode(rec.ATTUCI_numeroAtto,'',decode(rec.ANPUCI_numeroAtto,'',rec.ANSUCI_idANSC))                  
+               ,decode(rec.ATTUCI_numeroAtto,'',decode(rec.ANPUCI_numeroAtto,'',rec.ANSUCI_idANSC))
 -- scioglimentoUnione
                ,rec.SCI_motivoScioglimento,rec.SCI_dataSentenza,rec.SCI_numeroSentenza
                ,rec.SCI_tipoTribunaleSentenza,rec.SCI_autoritaSentenza,rec.SCI_dataValiditaSentenza,rec.SCI_dataEvento
@@ -3129,7 +3135,7 @@ w_step := 1.3;
                ,rec.CDFSTI_professionista
                ,rec.CDFSTI_nomeComuneReg,rec.CDFSTI_codiceIstatReg,rec.CDFSTI_siglaProvinciaIstatReg
                ,rec.CDFSTI_stato
-               ,rec.CDFRIS_motivoRisoluzione,rec.CDFRIS_data 
+               ,rec.CDFRIS_motivoRisoluzione,rec.CDFRIS_data
                ,rec.CDFRIS_dataNotifica,rec.CDFRIS_dataDocumento,rec.CDFRIS_protocollo
                ,rec.CDFRIS_nomeComune,rec.CDFRIS_codiceIstat,rec.CDFRIS_siglaProvinciaIstat
                ,rec.CDFRIS_professionista
@@ -3205,7 +3211,7 @@ w_step := 1.3;
       if rec.idANPR is not null then
             ANPR_pkg.upd_anpads_id_unico(w_servizio_log,to_number(a_chiave),rec.idSoggettoAnpr,rec.idANPR);
       end if;
-      
+
       if rec.liste is not null then
 --         ANPR_pkg.ins_log(w_servizio_log, w_operazione_log, 'liste', rec.liste);
 w_step := 2;
@@ -3230,20 +3236,20 @@ w_step := 5;
                      (ID_OPERAZIONE, ELE_ELETTORE, ELE_NOMECOMUNE, ELE_CODICEISTAT, ELE_SIGLAPROVINCIAISTAT, ELE_DESCRIZIONELOCALITA, ELE_SEZIONEELETTORALENUM,
                       ELAC_UEELETTORECOMUNALI, ELAC_NOMECOMUNE, ELAC_CODICEISTAT, ELAC_SIGLAPROVINCIAISTAT, ELAC_DESCRIZIONELOCALITA, ELAC_SEZIONEELETTORALENUM,
                       ELAE_UEELETTOREPARLAMENTO, ELAE_NOMECOMUNE, ELAE_CODICEISTAT, ELAE_SIGLAPROVINCIAISTAT, ELAE_DESCRIZIONELOCALITA, ELAE_SEZIONEELETTORALENUM,
-                      ELAB_COMREGELETTOREBOLZANO, ELAT_COMREGELETTORETRENTO, ELAV_COMREGELETTOREVALLEDAOSTA, 
-                      ELABTV_NOMECOMUNE, ELABTV_CODICEISTAT, ELABTV_SIGLAPROVINCIAISTAT, ELABTV_DESCRIZIONELOCALITA, 
+                      ELAB_COMREGELETTOREBOLZANO, ELAT_COMREGELETTORETRENTO, ELAV_COMREGELETTOREVALLEDAOSTA,
+                      ELABTV_NOMECOMUNE, ELABTV_CODICEISTAT, ELABTV_SIGLAPROVINCIAISTAT, ELABTV_DESCRIZIONELOCALITA,
                       ELABTV_SEZIONEELETTORALENUM,
-                      ELE_REFERENDUMNAZIONALI, ELE_ELEZIONIMEMBRIUE, ELE_SENATOREPUBBLICA, ELE_CIRCOSCRSENATOREPUBBLICA, ELE_CAMERADEPUTATI, 
+                      ELE_REFERENDUMNAZIONALI, ELE_ELEZIONIMEMBRIUE, ELE_SENATOREPUBBLICA, ELE_CIRCOSCRSENATOREPUBBLICA, ELE_CAMERADEPUTATI,
                       ELE_CIRCOSCRCAMERADEPUTATI, ELE_REGIONALI, ELE_COMUNALI, ELE_CIRCOSCRIZIONALI,
                       SEZ_NOMECOMUNE, SEZ_CODICEISTAT, SEZ_SIGLAPROVINCIAISTAT, SEZ_DESCRIZIONELOCALITA, SEZ_SEZIONEELETTORALENUM, SEZ_SEZIONEELETTORALEDENOM,
                       SEZIND_CAP, SEZIND_NOMECOMUNE, SEZIND_CODICEISTAT, SEZIND_SIGLAPROVINCIAISTAT, SEZIND_DESCRIZIONELOCALITA, SEZIND_FRAZIONE,
                       SEZIND_CODSPECIE, SEZIND_SPECIE, SEZIND_SPECIEFONTE, SEZIND_CODTOPONIMO, SEZIND_DENOMINAZIONETOPONIMO, SEZIND_TOPONIMOFONTE,
                       SEZIND_CODICECIVICO, SEZIND_CIVICOFONTE, SEZIND_NUMERO, SEZIND_METRICO, SEZIND_PROGSNC, SEZIND_LETTERA, SEZIND_ESPONENTE1, SEZIND_COLORE,
-                      SEZIND_CORTE, SEZIND_SCALA, SEZIND_INTERNO1, SEZIND_ESPINTERNO1, SEZIND_INTERNO2, SEZIND_ESPINTERNO2, 
+                      SEZIND_CORTE, SEZIND_SCALA, SEZIND_INTERNO1, SEZIND_ESPINTERNO1, SEZIND_INTERNO2, SEZIND_ESPINTERNO2,
                       SEZIND_SCALAESTERNA, SEZIND_SECONDARIO, SEZIND_PIANO, SEZIND_NUI, SEZIND_ISOLATO,
                       ELE_CIRCOSCRELEZIONIMEMBRIUE, ELE_COLLEGIOCAMERADEPUTATI, ELE_CIRCOSCRREGIONALI, ELE_CIRCOSRIZIONEELEZCIRCOSC,
                       ELE_COLLEGIOSENATOREPUBBLICA, ELE_TIPOCONSULTAZIONE, ELE_DATACANCELLAZIONELISTA)
-              values (a_id_operazione, 
+              values (a_id_operazione,
                       rec_ele.ELE_ELETTORE, rec_ele.ELE_NOMECOMUNE, rec_ele.ELE_CODICEISTAT, rec_ele.ELE_SIGLAPROVINCIAISTAT, rec_ele.ELE_DESCRIZIONELOCALITA, rec_ele.ELE_SEZIONEELETTORALENUM,
                       rec_ele.ELAC_UEELETTORECOMUNALI, rec_ele.ELAC_NOMECOMUNE, rec_ele.ELAC_CODICEISTAT, rec_ele.ELAC_SIGLAPROVINCIAISTAT, rec_ele.ELAC_DESCRIZIONELOCALITA, rec_ele.ELAC_SEZIONEELETTORALENUM,
                       rec_ele.ELAE_UEELETTOREPARLAMENTO, rec_ele.ELAE_NOMECOMUNE, rec_ele.ELAE_CODICEISTAT, rec_ele.ELAE_SIGLAPROVINCIAISTAT, rec_ele.ELAE_DESCRIZIONELOCALITA, rec_ele.ELAE_SEZIONEELETTORALENUM,
@@ -3252,14 +3258,14 @@ w_step := 5;
                       rec_ele.ELABTV_SEZIONEELETTORALENUM,
                       rec_ele.ELE_REFERENDUMNAZIONALI, rec_ele.ELE_ELEZIONIMEMBRIUE, rec_ele.ELE_SENATOREPUBBLICA, rec_ele.ELE_CIRCOSCRSENATOREPUBBLICA,
                       rec_ele.ELE_CAMERADEPUTATI, rec_ele.ELE_CIRCOSCRCAMERADEPUTATI, rec_ele.ELE_REGIONALI, rec_ele.ELE_COMUNALI, rec_ele.ELE_CIRCOSCRIZIONALI,
-                      rec_ele.SEZ_NOMECOMUNE, rec_ele.SEZ_CODICEISTAT, rec_ele.SEZ_SIGLAPROVINCIAISTAT, rec_ele.SEZ_DESCRIZIONELOCALITA, 
+                      rec_ele.SEZ_NOMECOMUNE, rec_ele.SEZ_CODICEISTAT, rec_ele.SEZ_SIGLAPROVINCIAISTAT, rec_ele.SEZ_DESCRIZIONELOCALITA,
                       rec_ele.SEZ_SEZIONEELETTORALENUM, rec_ele.SEZ_SEZIONEELETTORALEDENOM,
                       rec_ele.SEZIND_CAP, rec_ele.SEZIND_NOMECOMUNE, rec_ele.SEZIND_CODICEISTAT, rec_ele.SEZIND_SIGLAPROVINCIAISTAT, rec_ele.SEZIND_DESCRIZIONELOCALITA, rec_ele.SEZIND_FRAZIONE,
-                      rec_ele.SEZIND_CODSPECIE, rec_ele.SEZIND_SPECIE, rec_ele.SEZIND_SPECIEFONTE, 
+                      rec_ele.SEZIND_CODSPECIE, rec_ele.SEZIND_SPECIE, rec_ele.SEZIND_SPECIEFONTE,
                       rec_ele.SEZIND_CODTOPONIMO, rec_ele.SEZIND_DENOMINAZIONETOPONIMO, rec_ele.SEZIND_TOPONIMOFONTE,
-                      rec_ele.SEZIND_CODICECIVICO, rec_ele.SEZIND_CIVICOFONTE, rec_ele.SEZIND_NUMERO, 
+                      rec_ele.SEZIND_CODICECIVICO, rec_ele.SEZIND_CIVICOFONTE, rec_ele.SEZIND_NUMERO,
                       rec_ele.SEZIND_METRICO, rec_ele.SEZIND_PROGSNC, rec_ele.SEZIND_LETTERA, rec_ele.SEZIND_ESPONENTE1, rec_ele.SEZIND_COLORE,
-                      rec_ele.SEZIND_CORTE, rec_ele.SEZIND_SCALA, rec_ele.SEZIND_INTERNO1, rec_ele.SEZIND_ESPINTERNO1, rec_ele.SEZIND_INTERNO2, rec_ele.SEZIND_ESPINTERNO2, 
+                      rec_ele.SEZIND_CORTE, rec_ele.SEZIND_SCALA, rec_ele.SEZIND_INTERNO1, rec_ele.SEZIND_ESPINTERNO1, rec_ele.SEZIND_INTERNO2, rec_ele.SEZIND_ESPINTERNO2,
                       rec_ele.SEZIND_SCALAESTERNA, rec_ele.SEZIND_SECONDARIO, rec_ele.SEZIND_PIANO, rec_ele.SEZIND_NUI, rec_ele.SEZIND_ISOLATO,
                       rec_ele.ELE_CIRCOSCRELEZIONIMEMBRIUE, rec_ele.ELE_COLLEGIOCAMERADEPUTATI, rec_ele.ELE_CIRCOSCRREGIONALI, rec_ele.ELE_CIRCOSRIZIONEELEZCIRCOSC,
                       rec_ele.ELE_COLLEGIOSENATOREPUBBLICA, rec_ele.ELE_TIPOCONSULTAZIONE, rec_ele.ELE_DATACANCELLAZIONELISTA)
@@ -3343,7 +3349,7 @@ w_step := 5;
   for rec in sel_richiesta('datiRichiesta') loop
       w_id_richiesta_ANPR := rec.idOperazioneANPR;
       begin
-        select archivio_rif 
+        select archivio_rif
           into w_archivio_rif
           from anpeps
          where id_richiesta_anpr = w_id_richiesta_anpr
@@ -3625,8 +3631,8 @@ w_step := 15;
       w_id_soggetto         := rec.idSchedaSoggetto;
       w_id_soggetto_ANPR    := rec.idSchedaSoggettoANPR;
       w_id_unico_ANPR       := rec.idANPR;
-      if translate(rec.idFamigliaConvivenza,'0123456789','9999999999') 
-           in ('9','99','999','9999','99999','999999','9999999','99999999','999999999','9999999999') 
+      if translate(rec.idFamigliaConvivenza,'0123456789','9999999999')
+           in ('9','99','999','9999','99999','999999','9999999','99999999','999999999','9999999999')
       then
          w_id_famiglia         := rec.idFamigliaConvivenza;
       else
@@ -4061,7 +4067,10 @@ w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_tag(w_servizio_log,'residenza',
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoIndirizzo,'tipoIndirizzo');
 
       if w_tipoIndirizzo not in ('5','6') then
-w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+--w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano
+                                                                                ,rec.flag_metrico,rec.progr_snc,rec.flag_lettera,rec.flag_esponente,rec.flag_nui,rec.nui,rec.colore
+                                                                                ,rec.corte,rec.interno2,rec.sub_interno2,rec.secondario,rec.scala_esterna);
 
       elsif w_tipoIndirizzo in ('5','6') then
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_localitaEstera(w_servizio_log,rec.via_aire,rec.zipcode,rec.cod_pro_aire,rec.cod_com_aire,rec.provincia_contea,'','','');
@@ -4303,7 +4312,7 @@ w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_listaLeva(w_servizio_log,rec.ma
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_listaElettorale(w_servizio_log,rec.matricola);
 
 << censimento >>
-w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens);
+w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens,w_data_decorrenza);
 
 << autoveicoli >>
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_autoveicoli(w_servizio_log,rec.matricola);
@@ -4424,7 +4433,10 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_idFamConvComune(w_servizio_log,rec.fasc
       w_dataDecorrenzaResidenza := f_ANPR_data(rec.data_istituzione);
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'residenzaConvivneza','I');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoIndirizzo,'tipoIndirizzo');
-w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+--w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano
+                                                                        ,rec.flag_metrico,rec.progr_snc,rec.flag_lettera,rec.flag_esponente,rec.flag_nui,rec.nui,rec.colore
+                                                                        ,rec.corte,rec.interno2,rec.sub_interno2,rec.secondario,rec.scala_esterna);
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,rec.presso,'presso','S');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_dataDecorrenzaResidenza,'dataDecorrenzaResidenza','S');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'residenzaConvivneza','F');
@@ -4456,7 +4468,7 @@ exception
        return w_xml_clob;
 end ws_1010_iscrizione_FAM;
 
-function ws_1014_procedimento         
+function ws_1014_procedimento
 (a_servizio 		IN	varchar2
 ,a_id_operazione  	IN	number
 ,a_tipo_operazione  	IN	varchar2
@@ -4470,7 +4482,7 @@ return clob
 is
 
 cursor sel_mov is
-select * 
+select *
   from anamov
  where anno_progr   = a_anno_rif
    and numero_progr = a_numero_rif
@@ -4522,7 +4534,7 @@ w_xml_clob := w_xml_clob||'<tnsd:Richiesta'||a_servizio||' '||
       w_data_decorrenza_ws := f_ANPR_data_decorrenza_ws(a_id_operazione);
       w_data_decorrenza    := nvl(w_data_decorrenza_ws,rec.data_eve);
       w_data_definizione   := rec.data_reg;
-      
+
       w_anagrafe           := f_ANPR_anagrafe_ciu(rec.cod_mov,rec.cod_eve);
       w_tipo_evento        := f_ANPR_tipo_evento_ciu(rec.cod_mov,rec.cod_eve);
       w_protocollo         := f_ANPR_protocollo(rec.pratica,rec.anno_pratica,w_anagrafe,w_tipo_evento);
@@ -4695,6 +4707,7 @@ select fam.fascia
      , min(fam.data_istituzione) data_istituzione
      , min(fam.matricola_intestatario) matricola_intestatario
      , min(fam.data_intestatario) data_intestatario
+--
      , min(fam.cod_via) cod_via
      , min(fam.num_civ) num_civ
      , min(fam.suffisso) suffisso
@@ -4702,6 +4715,19 @@ select fam.fascia
      , min(fam.sub_interno) sub_interno
      , min(fam.scala) scala
      , min(fam.piano) piano
+     , min(fam.flag_metrico) flag_metrico
+     , min(fam.progr_snc) progr_snc
+     , min(fam.flag_lettera) flag_lettera
+     , min(fam.flag_esponente) flag_esponente
+     , min(fam.flag_nui) flag_nui
+     , min(fam.nui) nui
+     , min(fam.colore) colore
+     , min(fam.corte) corte
+     , min(fam.interno2) interno2
+     , min(fam.sub_interno2) sub_interno2
+     , min(fam.secondario) secondario
+     , min(fam.scala_esterna) scala_esterna
+--
      , min(fam.presso) presso
      , min(fam.via_aire) via_aire
      , min(fam.zipcode) zipcode
@@ -4711,8 +4737,8 @@ select fam.fascia
      , min(com.cod_consolato) cod_consolato
      , min(com.tipo_consolato) tipo_consolato
      , min(nvl(com.cod_territorio,com.cod_provincia)) cod_stato
-     , min(ana.data_inizio_res) min_data_inizio_res 
-     , max(ana.data_inizio_res) max_data_inizio_res 
+     , min(ana.data_inizio_res) min_data_inizio_res
+     , max(ana.data_inizio_res) max_data_inizio_res
   from arccom com
      , anaana ana
      , anafam fam
@@ -4800,7 +4826,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_testataRichiesta(a_servizio,a_id_operaz
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_idFamConvComune(w_servizio_log,rec.fascia,rec.cod_fam,rec.tipo_fam,rec.tipo_convivenza,rec.matricola_intestatario,rec.data_intestatario,a_id_operazione);
 
      if a_archivio_rif = 'FAM' and a_tipo_operazione in ('C','R') then
-        goto datiDelProcedimento;  
+        goto datiDelProcedimento;
      end if;
 
      begin
@@ -4855,7 +4881,10 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'residenzaFamigliaCo
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoIndirizzo,'tipoIndirizzo');
 
       if rec.fascia = 1 then
-w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+--w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano
+                                                                        ,rec.flag_metrico,rec.progr_snc,rec.flag_lettera,rec.flag_esponente,rec.flag_nui,rec.nui,rec.colore
+                                                                        ,rec.corte,rec.interno2,rec.sub_interno2,rec.secondario,rec.scala_esterna);
       elsif rec.fascia = 3 then
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_localitaEstera(w_servizio_log,rec.via_aire,rec.zipcode,rec.cod_pro_aire,rec.cod_com_aire,rec.provincia_contea,rec.cod_consolato,rec.tipo_consolato,rec.cod_stato);
       end if;
@@ -4870,7 +4899,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'datiDelProcedimento
 
 << datiControllo >>
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'datiControllo','I');
-      if a_archivio_rif = 'FAM' and a_tipo_operazione in ('C','R') then 
+      if a_archivio_rif = 'FAM' and a_tipo_operazione in ('C','R') then
 -- w_tipoMutazione = '3': dati generali famiglia / convivenza
          w_tipoMutazione := '3';
 
@@ -5340,7 +5369,10 @@ w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_tag(w_servizio_log,'maternita',
       if rec.cod_via_prec is not null then
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_tag(w_servizio_log,'ultimaResidenzaIt','I');
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_elemento(w_servizio_log,'1','tipoIndirizzo');
-w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via_prec,rec.num_civ_prec,rec.suffisso_prec,rec.interno_prec,rec.sub_interno_prec,rec.scala_prec,rec.piano_prec);
+--w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via_prec,rec.num_civ_prec,rec.suffisso_prec,rec.interno_prec,rec.sub_interno_prec,rec.scala_prec,rec.piano_prec);
+w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via_prec,rec.num_civ_prec,rec.suffisso_prec,rec.interno_prec,rec.sub_interno_prec,rec.scala_prec,rec.piano_prec
+                                                                                ,rec.flag_metrico_prec,rec.progr_snc_prec,rec.flag_lettera_prec,rec.flag_esponente_prec,rec.flag_nui_prec,rec.nui_prec,rec.colore_prec
+                                                                                ,rec.corte_prec,rec.interno2_prec,rec.sub_interno2_prec,rec.secondario_prec,rec.scala_esterna_prec);
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_tag(w_servizio_log,'ultimaResidenzaIt','F');
       end if;
 
@@ -5920,7 +5952,7 @@ select distinct dce.anagrafe
      , mov.DATA_EVE, mov.COD_PRO_EVE, mov.COD_COM_EVE, mov.ANNO_PRATICA, mov.PRATICA, mov.NUCLEO_PARTENZA, mov.NUCLEO_ARRIVO
      , mov.COGNOME_NOME_PREC, mov.STATO_CIVILE_PREC, mov.SESSO_PREC
      , mov.COD_FAM_PREC, mov.RAPPORTO_PAR_PREC
-     , mov.COD_VIA_PREC, mov.NUM_CIV_PREC, mov.SUFFISSO_PREC, mov.INTERNO_PREC 
+     , mov.COD_VIA_PREC, mov.NUM_CIV_PREC, mov.SUFFISSO_PREC, mov.INTERNO_PREC
      , mov.DATA_NAS_PREC, mov.COD_FISCALE_PREC
      , mov.COGNOME_NOME, mov.STATO_CIVILE, mov.SESSO, mov.NAZIONALITA, mov.PATERNITA, mov.MATERNITA
      , mov.TITOLO_STUDIO, mov.COD_PROF, mov.ATTIVITA_PROF, mov.POSIZIONE_PROF
@@ -5958,6 +5990,11 @@ select distinct dce.anagrafe
      , mov.DATA_INIZIO_NAZ
      , mov.ATTO_NAS_DIGITALE, mov.ATTO_NAS_TR_DIGITALE, mov.ATTO_MAT_DIGITALE, mov.ATTO_MAT_TR_DIGITALE
      , mov.ATTO_DIV_DIGITALE, mov.ATTO_VED_DIGITALE, mov.ATTO_MOR_DIGITALE, mov.ATTO_MOR_TR_DIGITALE
+--
+     , mov.FLAG_METRICO_PREC, mov.PROGR_SNC_PREC, mov.FLAG_LETTERA_PREC, mov.FLAG_ESPONENTE_PREC, mov.FLAG_NUI_PREC, mov.NUI_PREC, mov.COLORE_PREC
+     , mov.CORTE_PREC, mov.INTERNO2_PREC, mov.SUB_INTERNO2_PREC, mov.SECONDARIO_PREC, mov.SCALA_ESTERNA_PREC
+     , mov.FLAG_METRICO, mov.PROGR_SNC, mov.FLAG_LETTERA, mov.FLAG_ESPONENTE, mov.FLAG_NUI, mov.NUI, mov.COLORE
+     , mov.CORTE, mov.INTERNO2, mov.SUB_INTERNO2, mov.SECONDARIO, mov.SCALA_ESTERNA
 -- dati soggetto
      , decode(mov.cod_mov,1,1,10,1,11,1,97,1,3) fascia
      , decode(mov.cod_mov,12,'S',13,'S',98,'S') soggettoAIRE
@@ -6010,7 +6047,7 @@ select distinct to_char(null) anagrafe
      , to_number(null) ANNO_PRATICA, to_number(null) PRATICA, to_number(null) NUCLEO_PARTENZA, to_number(null) NUCLEO_ARRIVO
      , to_char(null) COGNOME_NOME_PREC, to_char(null) STATO_CIVILE_PREC, to_char(null) SESSO_PREC
      , to_number(null) COD_FAM_PREC, to_char(null) RAPPORTO_PAR_PREC
-     , to_number(null) COD_VIA_PREC, to_number(null) NUM_CIV_PREC, to_char(null) SUFFISSO_PREC, to_number(null) INTERNO_PREC 
+     , to_number(null) COD_VIA_PREC, to_number(null) NUM_CIV_PREC, to_char(null) SUFFISSO_PREC, to_number(null) INTERNO_PREC
      , to_number(null) DATA_NAS_PREC, to_char(null) COD_FISCALE_PREC
      , ana.COGNOME_NOME, ana.STATO_CIVILE, ana.SESSO, ana.NAZIONALITA, ana.PATERNITA, ana.MATERNITA
      , ana.TITOLO_STUDIO, ana.COD_PROF, ana.ATTIVITA_PROF, ana.POSIZIONE_PROF
@@ -6049,6 +6086,11 @@ select distinct to_char(null) anagrafe
      , ana.DATA_INIZIO_NAZ
      , ana.ATTO_NAS_DIGITALE, ana.ATTO_NAS_TR_DIGITALE, ana.ATTO_MAT_DIGITALE, ana.ATTO_MAT_TR_DIGITALE
      , ana.ATTO_DIV_DIGITALE, ana.ATTO_VED_DIGITALE, ana.ATTO_MOR_DIGITALE, ana.ATTO_MOR_TR_DIGITALE
+--
+     , to_char(null) FLAG_METRICO_PREC, to_char(null) PROGR_SNC_PREC, to_char(null) FLAG_LETTERA_PREC, to_char(null) FLAG_ESPONENTE_PREC, to_char(null) FLAG_NUI_PREC, to_char(null) NUI_PREC, to_char(null) COLORE_PREC
+     , to_char(null) CORTE_PREC, to_number(null) INTERNO2_PREC, to_char(null) SUB_INTERNO2_PREC, to_char(null) SECONDARIO_PREC, to_char(null) SCALA_ESTERNA_PREC
+     , to_char(null) FLAG_METRICO, to_char(null) PROGR_SNC, to_char(null) FLAG_LETTERA, to_char(null) FLAG_ESPONENTE, to_char(null) FLAG_NUI, to_char(null) NUI, to_char(null) COLORE
+     , to_char(null) CORTE, to_number(null) INTERNO2, to_char(null) SUB_INTERNO2, to_char(null) SECONDARIO, to_char(null) SCALA_ESTERNA
 -- dati soggetto
      , ana.fascia
      , decode(ana.fascia,3,'S') soggettoAIRE
@@ -6123,7 +6165,7 @@ select
   from anaana ana
      , anamov mov
  where ana.matricola         = mov.matricola
-   and nvl(f_ANPR_id_scheda(mov.matricola,'','','','','Famiglia ANPR'),0) = 
+   and nvl(f_ANPR_id_scheda(mov.matricola,'','','','','Famiglia ANPR'),0) =
          nvl(f_ANPR_id_scheda(p_matricola,'','','','','Famiglia ANPR'),0)
    and nvl(mov.pratica,0)      = nvl(p_pratica,0)
    and nvl(mov.anno_pratica,0) = nvl(p_anno_pratica,0)
@@ -6499,7 +6541,10 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'residenzaFamiglia',
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoIndirizzo,'tipoIndirizzo');
 
       if w_tipoIndirizzo not in ('4','6') then
-w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+--w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano
+                                                                        ,rec.flag_metrico,rec.progr_snc,rec.flag_lettera,rec.flag_esponente,rec.flag_nui,rec.nui,rec.colore
+                                                                        ,rec.corte,rec.interno2,rec.sub_interno2,rec.secondario,rec.scala_esterna);
       elsif w_tipoIndirizzo in ('4','6') then
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_localitaEstera(w_servizio_log,rec.via_aire,rec.zipcode,rec.cod_pro_aire,rec.cod_com_aire,rec.provincia_contea,'','','');
       end if;
@@ -6677,7 +6722,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'matrimonio','F');
       end if;
 
 << vedovanza >>
---      if rec.stato_civile in ('VE') and 
+--      if rec.stato_civile in ('VE') and
 --         ((rec.cod_mov in (97,98) and rec.matricola_cn is null)
 --          or rec.cod_mov not in (97,98))
 --      then
@@ -6716,11 +6761,11 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'separazioneAnnullam
                 , sen.data_atto_tr
                 , sen.cod_pro_atto_tr
                 , sen.cod_com_atto_tr
-                , sen.anno_atto_tr 
-                , sen.ufficio_atto_tr 
-                , sen.parte_atto_tr 
-                , sen.serie_atto_tr 
-                , sen.atto_tr 
+                , sen.anno_atto_tr
+                , sen.ufficio_atto_tr
+                , sen.parte_atto_tr
+                , sen.serie_atto_tr
+                , sen.atto_tr
              into w_data_div
                 , w_data_atto_div
                 , w_cod_pro_atto_div
@@ -6741,7 +6786,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'separazioneAnnullam
                 w_data_div         := '';
                 w_data_atto_div    := '';
                 w_cod_pro_atto_div := '';
-                w_cod_com_atto_div := ''; 
+                w_cod_com_atto_div := '';
                 w_anno_atto_div    := '';
                 w_ufficio_div      := '';
                 w_parte_div        := '';
@@ -6865,7 +6910,7 @@ null;
 --w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'liste','F');
 
 << censimento >>
-w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens);
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens,w_data_decorrenza);
 
 << altriDati >>
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_altriDati(w_servizio_log,rec.cod_prof,rec.sesso,rec.posizione_prof,rec.titolo_studio);
@@ -6890,7 +6935,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'datiControllo','I')
 -- 3=motivo famiglia/specie convivenza
 -- 4=residenza scheda
 -- 5=Residenza scheda con patente e autoveicoli - 29/05/2024 (AM)
--- 6=Ripristino residenza ante subentro - 29/05/2024 (AM) 
+-- 6=Ripristino residenza ante subentro - 29/05/2024 (AM)
 -- 7=Revisione onomastica stradale e dei numeri civici - 29/05/2024 (AM)
 -- 8=Rettifica indirizzo post accertamento - 29/05/2024 (AM)
 -- 9=Rettifica/Integrazione indirizzo - 29/05/2024 (AM)
@@ -7713,7 +7758,7 @@ select tipo_mutazione
 ;
 
 cursor sel_sez (w_sezione_par number) is
-select dse.sezione, 
+select dse.sezione,
        dlr.descrizione luogo_riunione, dlr.indirizzo,
 -- 1 - parlamento europeo
        dco_1.collegio collegio_1, dco_1.descrizione des_collegio_1,
@@ -7859,7 +7904,7 @@ select dce.data_elezioni, dce.codice_anpr
    and dce.progr_elezioni = s2.progr_elezioni
    and s2.stato           = 'E'
    and s2.matricola       = w_matricola
-order by 1 desc 
+order by 1 desc
 ;
 
 w_xml_clob		clob;
@@ -7886,11 +7931,11 @@ w_xml_clob := w_xml_clob||'<tnsd:Richiesta'||a_servizio||' '||
                           'xmlns:tnsd="http://sogei.it/ANPR/5000mutazione" '||
                           'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'||chr(10);
 
-  if a_servizio = '5008' then 
+  if a_servizio = '5008' then
      goto mutazioneElettore;
-  elsif a_servizio = '5010' then 
+  elsif a_servizio = '5010' then
      goto mutazioneLista;
-  elsif a_servizio = '5011' then 
+  elsif a_servizio = '5011' then
      goto mutazioneSezione;
   end if;
 
@@ -7962,7 +8007,7 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'listaGenerale','F')
             w_elezioniMembriUe		:= 'S';
             w_senatoRepubblica		:= 'S';
             w_cameraDeputati		:= 'S';
-            w_regionali			:= 'S'; 
+            w_regionali			:= 'S';
             w_comunali			:= 'S';
             w_circoscrizionali		:= w_flag_circoscrizionali;
          end if;
@@ -8127,14 +8172,14 @@ w_step := 0.28;
             w_tipoConsultazione      := '';
             w_dataCancellazioneLista := '';
          else
-            begin 
-              select 1 into w_ctr_elezioni 
+            begin
+              select 1 into w_ctr_elezioni
                 from eledce
                where data_elezioni > nvl(rec.data_verbale,rec.data_revisione)
                  and rownum = 1
               ;
             exception
-              when others then 
+              when others then
                    w_ctr_elezioni := 0;
             end;
 --ANPR_pkg.ins_log(w_servizio_log, w_operazione_log, 'data_verbale: '||rec.data_verbale||' - w_ctr_elezioni: '||w_ctr_elezioni);
@@ -8175,9 +8220,9 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'certificabilita','F
 
 -- PRIMOCARICAMENTO|SEMESTRALE|DINAMICA|STRAORDINARIA
 w_step := 0.33;
-      if a_archivio_rif like '%_CAR' then      
+      if a_archivio_rif like '%_CAR' then
          w_tipoRevisione := 'PRIMOCARICAMENTO';
-      elsif a_archivio_rif = 'PSE' then      
+      elsif a_archivio_rif = 'PSE' then
          w_tipoRevisione := 'ALTRA';
       elsif rec.revisione is not null and rec.revisione = 'SE' then
          w_tipoRevisione := 'SEMESTRALE';
@@ -8209,8 +8254,11 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoMutazione
       end if;
 
 w_step := 0.35;
-      w_tipoMutazione := '04';
+      if w_archivio_rif = 'PSE' then
+         w_tipoMutazione := '04';
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoMutazione,'tipoMutazione','S');
+      end if;
+
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'datiControllo','F');
 
 --      ANPR_pkg.ins_log(w_servizio_log, w_operazione_log, w_note_log, w_xml_clob);
@@ -10698,7 +10746,13 @@ w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'ricercaElenchiRichi
         goto schedaFamiglia;
      else
         if w_id_scheda_anpr is not null then
-           w_idSchedaSoggettoANPR := w_id_scheda_anpr;
+           if translate(w_id_scheda_anpr,'0123456789','9999999999') in ('99999','999999','9999999','99999999','999999999','9999999999') then
+              w_idSchedaSoggettoANPR := w_id_scheda_anpr;
+              w_idUnicoANPR          := '';
+           else
+              w_idSchedaSoggettoANPR := '';
+              w_idUnicoANPR          := w_id_scheda_anpr;
+           end if;
         end if;
         goto schedaIndividuale;
      end if;
@@ -11939,6 +11993,18 @@ select
      , fam.sub_interno
      , fam.scala
      , fam.piano
+     , fam.flag_metrico
+     , fam.progr_snc
+     , fam.flag_lettera
+     , fam.flag_esponente
+     , fam.flag_nui
+     , fam.nui
+     , fam.colore
+     , fam.corte
+     , fam.interno2
+     , fam.sub_interno2
+     , fam.secondario
+     , fam.scala_esterna
      , fam.via_aire
      , fam.cod_pro_aire
      , fam.cod_com_aire
@@ -12259,7 +12325,11 @@ w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_tag(w_servizio_log,'residenza',
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_elemento(w_servizio_log,w_tipoIndirizzo,'tipoIndirizzo');
 
       if w_tipoIndirizzo not in ('5','6') then
-w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+--w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano);
+w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_indirizzo_esteso(w_servizio_log,rec.cod_via,rec.num_civ,rec.suffisso,rec.interno,rec.sub_interno,rec.scala,rec.piano
+                                                                                ,rec.flag_metrico,rec.progr_snc,rec.flag_lettera,rec.flag_esponente,rec.flag_nui,rec.nui,rec.colore
+                                                                                ,rec.corte,rec.interno2,rec.sub_interno2,rec.secondario,rec.scala_esterna);
+
 
       elsif w_tipoIndirizzo in ('5','6') then
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_localitaEstera(w_servizio_log,rec.via_aire,rec.zipcode,rec.cod_pro_aire,rec.cod_com_aire,rec.provincia_contea,'','','');
@@ -12402,7 +12472,7 @@ w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_listaElettorale(w_servizio_log,
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_listaLeva(w_servizio_log,rec.matricola);
 
 << censimento >>
-w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens);
+w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_censimento(w_servizio_log,rec.anno_cens,rec.sezione_cens,rec.foglio_cens,rec.questionario_cens,'');
 
 << autoveicoli >>
 w_xml_clob_sog := w_xml_clob_sog||ANPR_pkg.f_xml_autoveicoli(w_servizio_log,rec.matricola);
@@ -13682,6 +13752,239 @@ exception
        return w_xml_clob;
 end f_xml_indirizzo;
 
+function f_xml_indirizzo_esteso
+(a_servizio		varchar2
+,a_cod_via		number
+,a_num_civ		number
+,a_suffisso		varchar2
+,a_interno		number
+,a_sub_interno		varchar2
+,a_scala		varchar2
+,a_piano		varchar2
+,a_flag_metrico 	varchar2
+,a_progr_snc 		varchar2
+,a_flag_lettera 	varchar2
+,a_flag_esponente 	varchar2
+,a_flag_nui 		varchar2
+,a_nui 			varchar2
+,a_colore 		varchar2
+,a_corte 		varchar2
+,a_interno2 		number
+,a_sub_interno2 	varchar2
+,a_secondario 		varchar2
+,a_scala_esterna 	varchar2 
+,a_tag 			varchar2 	default null
+)
+
+return clob
+
+is
+
+w_tag_indirizzo		varchar2(255);
+
+w_des_cod_via		varchar2(255);
+
+w_cap			varchar2(255);
+w_nomeComune		varchar2(255);
+w_codiceIstat		varchar2(255);
+w_siglaProIstat		varchar2(255);
+w_frazione		varchar2(255);
+w_codSpecie		varchar2(255); -- alternativo a w_specie
+w_specie		varchar2(255);
+w_specieFonte		varchar2(255);
+w_codToponimo           varchar2(255); -- alternativo a w_toponimo
+w_toponimo              varchar2(255);
+w_toponimoFonte         varchar2(255);
+w_codiceCivico		varchar2(255);
+w_civicoFonte		varchar2(255);
+w_numero		number;
+w_lettera		varchar2(255);
+w_interno1		number;
+w_espInterno1		varchar2(255);
+w_scala			varchar2(255);
+w_scalaEsterna		varchar2(255);
+w_piano			varchar2(255);
+
+w_nui			varchar2(255);
+
+w_flag_metrico 		varchar2(255) := upper(a_flag_metrico);
+w_flag_lettera 		varchar2(255) := upper(a_flag_lettera);
+w_flag_esponente 	varchar2(255) := upper(a_flag_esponente);
+w_flag_nui 		varchar2(255) := upper(a_flag_nui);
+
+w_metrico		varchar2(255);
+w_progSNC		varchar2(255);
+w_esponente1		varchar2(255);
+w_colore		varchar2(255);
+w_corte			varchar2(255);
+w_interno2		varchar2(255);
+w_espInterno2		varchar2(255);
+w_secondario		varchar2(255);
+w_isolato		varchar2(255);
+
+
+w_xml_clob		clob;
+
+w_servizio_log		varchar2(255) := a_servizio;
+w_operazione_log	varchar2(255) := 'xml_indirizzo';
+w_errore		varchar2(255);
+errore			exception;
+
+begin
+
+  begin
+    select denom_uff, specie_area, toponimo
+      into w_des_cod_via, w_specie, w_toponimo
+      from arcvie
+     where cod_via = a_cod_via
+    ;
+  exception
+    when others then
+         null;
+  end;
+
+  w_cap           := f_cap(a_cod_via,a_num_civ,a_suffisso);
+  w_nomeComune    := f_ANPR_luogo(w_cod_pro_cliente,w_cod_com_cliente,to_char(sysdate,'j'),2,1);
+  w_codiceIstat   := f_ANPR_luogo(w_cod_pro_cliente,w_cod_com_cliente,to_char(sysdate,'j'),2,2);
+  w_siglaProIstat := f_ANPR_luogo(w_cod_pro_cliente,w_cod_com_cliente,to_char(sysdate,'j'),2,3);
+
+  if w_specie is null then
+     w_specie        := f_specie_area(w_des_cod_via);
+  end if;
+
+  if w_toponimo is null then
+     w_toponimo      := f_toponimo(w_des_cod_via);
+  end if;
+
+  w_toponimo      := rtrim(f_ANPR_stringa(w_toponimo));
+
+  if nvl(w_flag_metrico,'N') = 'S' then
+     w_numero        := '';
+     w_metrico       := a_num_civ;
+  else
+     w_numero        := a_num_civ;
+     w_metrico       := '';
+  end if;
+
+  if nvl(w_flag_lettera,'N')||nvl(w_flag_esponente,'N') in ('NN','SN') then
+     w_lettera       := f_ANPR_stringa(a_suffisso,'/.');
+     w_esponente1    := '';
+  elsif nvl(w_flag_lettera,'N')||nvl(w_flag_esponente,'N') = 'NS' then
+     w_lettera       := '';
+     w_esponente1    := f_ANPR_stringa(a_suffisso,'/.');
+  end if;
+
+  if a_interno is not null and a_nui is null then
+     if nvl(w_flag_nui,'N') = 'S' or nvl(f_ANPR_valore_inp('INTERNONUI',1,1,'X','S'),'N') = 'S' then
+        w_interno1    := '';
+        w_espInterno1 := '';
+        w_nui         := a_interno||f_ANPR_stringa(a_sub_interno);
+     else
+        w_interno1    := a_interno;
+        w_espInterno1 := f_ANPR_stringa(a_sub_interno);
+        w_nui         := '';
+     end if;
+
+  else
+        w_interno1    := a_interno;
+        w_espInterno1 := f_ANPR_stringa(a_sub_interno);
+        w_nui         := f_ANPR_stringa(a_nui);
+  end if;
+
+  if a_scala is not null and a_scala_esterna is null then
+     if nvl(f_valore_inp('GSTR_SCALA',1,1,'X','S'),'N') = 'S' then
+        w_scala        := '';
+        w_scalaEsterna := f_ANPR_stringa(a_scala,'/.');
+     else
+        w_scala        := f_ANPR_stringa(a_scala,'/.');
+        w_scalaEsterna := '';
+     end if;
+  else
+     w_scala        := f_ANPR_stringa(a_scala,'/.');
+     w_scalaEsterna := f_ANPR_stringa(a_scala_esterna,'/.');
+  end if;
+
+  w_piano          := f_ANPR_stringa(a_piano,'/.');
+
+  w_frazione       := f_ANPR_frazione(a_cod_via,a_num_civ,a_suffisso);
+
+  w_progSNC        := f_ANPR_stringa(a_progr_snc,'/.');
+  w_colore         := f_ANPR_stringa(a_colore,'/.');
+  w_corte          := f_ANPR_stringa(a_corte,'/.');
+  w_interno2       := f_ANPR_stringa(a_interno2,'/.');
+  w_espInterno2    := f_ANPR_stringa(a_sub_interno2,'/.');
+  w_secondario     := f_ANPR_stringa(a_secondario,'/.');
+  w_isolato        := '';
+
+  w_tag_indirizzo  := nvl(a_tag,'indirizzo');
+w_xml_clob := ANPR_pkg.f_xml_tag(w_servizio_log,w_tag_indirizzo,'I');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_cap,'cap');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_luogoEvento(w_servizio_log,w_cod_pro_cliente,w_cod_com_cliente,to_char(sysdate,'j'),'comune','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_frazione,'frazione','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'toponimo','I');
+
+  if w_codSpecie is not null then
+     w_specieFonte := 1;
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_codSpecie,'codSpecie');
+  else
+     w_specieFonte := 2;
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_specie,'specie','S');
+  end if;
+
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_specieFonte,'specieFonte');
+
+  if w_codToponimo is not null then
+     w_toponimoFonte := 1;
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_codToponimo,'codToponimo');
+  else
+     w_toponimoFonte := 2;
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_toponimo,'denominazioneToponimo');
+  end if;
+
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_toponimoFonte,'toponimoFonte');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'toponimo','F');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'numeroCivico','I');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_codiceCivico,'codiceCivico','S');
+
+  if w_codiceCivico is not null then
+     w_civicoFonte := 1;
+  else
+     w_civicoFonte := 2;
+  end if;
+
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_civicoFonte,'civicoFonte');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_numero,'numero');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_metrico,'metrico','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_progSNC,'progSNC','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_lettera,'lettera','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_esponente1,'esponente1','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_colore,'colore','S');
+
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'civicoInterno','I');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_corte,'corte','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_scala,'scala','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_interno1,'interno1','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_espInterno1,'espInterno1','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_interno2,'interno2','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_espInterno2,'espInterno2','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_scalaEsterna,'scalaEsterna','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_secondario,'secondario','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_piano,'piano','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_nui,'nui','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_isolato,'isolato','S');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'civicoInterno','F');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'numeroCivico','F');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,w_tag_indirizzo,'F');
+
+  return w_xml_clob;
+
+exception
+  when others then
+       w_errore := 'errore ('||SQLERRM||')';
+       ANPR_pkg.ins_log(w_servizio_log, w_operazione_log, w_errore, w_xml_clob);
+       return w_xml_clob;
+end f_xml_indirizzo_esteso;
+
 function f_xml_localitaEstera
 (a_servizio		varchar2
 ,a_via_aire		varchar2
@@ -14506,6 +14809,7 @@ function f_xml_censimento
 ,a_sezione_cens		number
 ,a_foglio_cens		number
 ,a_questionario_cens	number
+,a_data_decorrenza	number
 )
 
 return clob
@@ -14515,6 +14819,9 @@ is
 w_annoCensimento	varchar2(255) := a_anno_cens;
 w_sezioneCensimento 	varchar2(255) := a_sezione_cens;
 w_foglioCensimento	varchar2(255) := nvl(a_foglio_cens,a_questionario_cens);
+
+w_dataRegolazioneCens	varchar2(255);
+w_motivoRegolazioneCens	varchar2(255);
 
 w_xml_clob		clob;
 
@@ -14530,6 +14837,14 @@ w_xml_clob := ANPR_pkg.f_xml_tag(w_servizio_log,'censimento','I');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_annoCensimento,'annoCensimento');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_sezioneCensimento,'sezioneCensimento');
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_foglioCensimento,'foglioCensimento');
+
+     if a_servizio in ('1002','5008') and a_sezione_cens = 0 and a_foglio_cens = 0 then
+        w_dataRegolazioneCens   := f_ANPR_data(a_data_decorrenza);
+        w_motivoRegolazioneCens := '1';
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_dataRegolazioneCens,'dataRegolazioneCensimento');
+w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_elemento(w_servizio_log,w_motivoRegolazioneCens,'motivoRegolazioneCensimento');
+     end if;
+
 w_xml_clob := w_xml_clob||ANPR_pkg.f_xml_tag(w_servizio_log,'censimento','F');
   end if;
 
@@ -16024,6 +16339,16 @@ select extractValue(value(rowdata),w_root||'/testata/idNotifica',w_extract_str_1
      , extractValue(value(rowdata),w_root||'/evento/separazione/provvedimento/comuneEnte/siglaProvinciaIstat',w_extract_str_10) SEP_siglaProvinciaIstat_PRO
      , extractValue(value(rowdata),w_root||'/evento/separazione/provvedimento/dataTrascrizione',w_extract_str_10) SEP_dataTrascrizione_PRO
      , extractValue(value(rowdata),w_root||'/evento/separazione/provvedimento/estremiDocumento',w_extract_str_10) SEP_estremiDocumento_PRO
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/idAnsc',w_extract_str_10) SEP_idAnsc_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/comuneRegistrazione/nomeComune',w_extract_str_10) SEP_nomeComune_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/comuneRegistrazione/codiceIstat',w_extract_str_10) SEP_codiceIstat_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/comuneRegistrazione/siglaProvinciaIstat',w_extract_str_10) SEP_siglaProvinciaIstat_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/anno',w_extract_str_10) SEP_anno_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/numeroComunale',w_extract_str_10) SEP_numeroComunale_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/idTipoContenuto',w_extract_str_10) SEP_idTipoContenuto_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/numeroAtto',w_extract_str_10) SEP_numeroAtto_ACCSEP
+     , extractValue(value(rowdata),w_root||'/evento/separazione/accordoSeparazione/tipologia',w_extract_str_10) SEP_tipologia_ACCSEP
+--
      , extractValue(value(rowdata),w_root||'/evento/atto/scioglimentoUnione/motivoScioglimento',w_extract_str_10) SCI_motivoScioglimento
      , extractValue(value(rowdata),w_root||'/evento/atto/scioglimentoUnione/datiEvento/dataEvento',w_extract_str_10) SCI_dataEvento
      , extractValue(value(rowdata),w_root||'/evento/atto/scioglimentoUnione/datiEvento/luogoEvento/luogoEccezionale',w_extract_str_10) SCI_luogoEccezionale
@@ -16037,6 +16362,20 @@ select extractValue(value(rowdata),w_root||'/testata/idNotifica',w_extract_str_1
      , extractValue(value(rowdata),w_root||'/evento/atto/cittadinanza/intestatarioApolide',w_extract_str_10) CIT_intestatarioApolide
      , extractValue(value(rowdata),w_root||'/evento/atto/cittadinanza/dataAcquisizioneCittadinanza',w_extract_str_10) CIT_dataAcquisizione
      , extractValue(value(rowdata),w_root||'/evento/atto/cittadinanza/dataRegistrazioneDecreto',w_extract_str_10) CIT_dataRegistrazioneDecreto
+--
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/tipoModifica',w_extract_str_10) TRA_tipoModifica
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/dataComunicazione',w_extract_str_10) TRA_dataComunicazione
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/nomeEnte',w_extract_str_10) TRA_nomeEnte
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/dataTrascrizione',w_extract_str_10) TRA_dataTrascrizione
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/estremiDocumento',w_extract_str_10) TRA_estremiDocumento
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/comune/nomeComune',w_extract_str_10) TRA_nomeComune
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/comune/codiceIstat',w_extract_str_10) TRA_codiceIstat
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/comune/siglaProvinciaIstat',w_extract_str_10) TRA_siglaProvinciaIstat
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/descrizioneLocalita',w_extract_str_10) TRA_descrizioneLocalita
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/descrizioneStato',w_extract_str_10) TRA_descrizioneStato
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/ente/localitaEnte/codiceStato',w_extract_str_10) TRA_codiceStato
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/dataPubblicazioneSentenza',w_extract_str_10) TRA_dataPubblicazioneSentenza
+     , extractValue(value(rowdata),w_root||'/evento/trascrizione/dataDecorrenzaSentenza',w_extract_str_10) TRA_dataDecorrenzaSentenza
   from table(XMLSequence(w_xml)) rowdata
 ;
 
@@ -16442,7 +16781,16 @@ begin
                   NAZ_DESCRIZIONESTATO_2, NAZ_CODICESTATO_2, 
                   NAZ_DESCRIZIONESTATO_PD, NAZ_CODICESTATO_PD, 
                   NAZ_DESCRIZIONESTATO_MD, NAZ_CODICESTATO_MD,
-                  NAZ_DESCRIZIONESTATO_CN, NAZ_CODICESTATO_CN
+                  NAZ_DESCRIZIONESTATO_CN, NAZ_CODICESTATO_CN,
+                  TRA_TIPOMODIFICA, 
+                  TRA_DATACOMUNICAZIONE, TRA_NOMEENTE, TRA_DATATRASCRIZIONE, TRA_ESTREMIDOCUMENTO,
+                  TRA_NOMECOMUNE, TRA_CODICEISTAT, TRA_SIGLAPROVINCIAISTAT,
+                  TRA_DESCRIZIONELOCALITA, TRA_DESCRIZIONESTATO, TRA_CODICESTATO,
+                  TRA_DATAPUBBLICAZIONESENTENZA, TRA_DATADECORRENZASENTENZA,
+                  SEP_IDANSC_ACCSEP, 
+                  SEP_NOMECOMUNE_ACCSEP, SEP_CODICEISTAT_ACCSEP, SEP_SIGLAPROVINCIAISTAT_ACCSEP,
+                  SEP_ANNO_ACCSEP, SEP_NUMEROCOMUNALE_ACCSEP, 
+                  SEP_IDTIPOCONTENUTO_ACCSEP, SEP_NUMEROATTO_ACCSEP, SEP_TIPOLOGIA_ACCSEP
                 )
            select rec.IDNOTIFICA, 
                   rec.IDTIPOCONTENUTO, rec.IDTIPOEVENTO, rec.CODMITTENTE, rec.IDTIPONOTIFICA, rec.DATAVALIDITA, rec.IDUSECASE, rec.DESCRIZIONEUSECASE,
@@ -16519,7 +16867,16 @@ begin
                   w_NAZ_DESCRIZIONESTATO_2, w_NAZ_CODICESTATO_2, 
                   rec.NAZ_DESCRIZIONESTATO_PD, rec.NAZ_CODICESTATO_PD, 
                   rec.NAZ_DESCRIZIONESTATO_MD, rec.NAZ_CODICESTATO_MD,
-                  rec.NAZ_DESCRIZIONESTATO_CN, rec.NAZ_CODICESTATO_CN
+                  rec.NAZ_DESCRIZIONESTATO_CN, rec.NAZ_CODICESTATO_CN,
+                  rec.TRA_TIPOMODIFICA, 
+                  rec.TRA_DATACOMUNICAZIONE, rec.TRA_NOMEENTE, rec.TRA_DATATRASCRIZIONE, rec.TRA_ESTREMIDOCUMENTO,
+                  rec.TRA_NOMECOMUNE, rec.TRA_CODICEISTAT, rec.TRA_SIGLAPROVINCIAISTAT,
+                  rec.TRA_DESCRIZIONELOCALITA, rec.TRA_DESCRIZIONESTATO, rec.TRA_CODICESTATO,
+                  rec.TRA_DATAPUBBLICAZIONESENTENZA, rec.TRA_DATADECORRENZASENTENZA,
+                  rec.SEP_IDANSC_ACCSEP, 
+                  rec.SEP_NOMECOMUNE_ACCSEP, rec.SEP_CODICEISTAT_ACCSEP, rec.SEP_SIGLAPROVINCIAISTAT_ACCSEP,
+                  rec.SEP_ANNO_ACCSEP, rec.SEP_NUMEROCOMUNALE_ACCSEP, 
+                  rec.SEP_IDTIPOCONTENUTO_ACCSEP, rec.SEP_NUMEROATTO_ACCSEP, rec.SEP_TIPOLOGIA_ACCSEP
              from dual
             where not exists (select 'x' from anpna0 b
                                where b.idAnsc = rec.idAnsc )

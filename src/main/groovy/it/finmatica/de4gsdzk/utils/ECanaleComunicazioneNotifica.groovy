@@ -16,8 +16,8 @@ enum ECanaleComunicazioneNotifica {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PEC: return Etichette.PEC
-            case DGT: return Etichette.DIGITALE
+            case PEC: return Etichette.getEtichetta("PEC")
+            case DGT: return Etichette.getEtichetta("DIGITALE")
         }
         return null
     }

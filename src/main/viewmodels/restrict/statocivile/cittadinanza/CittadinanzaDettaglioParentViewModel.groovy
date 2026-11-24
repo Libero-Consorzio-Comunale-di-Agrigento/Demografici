@@ -1,6 +1,7 @@
 package restrict.statocivile.cittadinanza
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeBaseDomain
@@ -48,7 +49,7 @@ abstract class CittadinanzaDettaglioParentViewModel extends AttoSoggettiDettagli
     List<ETipoTrasmissioneCittadinanza> listaTipoTrasmissioneCittadinanza = []
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivCittadinanzaService civCittadinanzaService
@@ -63,25 +64,25 @@ abstract class CittadinanzaDettaglioParentViewModel extends AttoSoggettiDettagli
 
         List<Map> eList = []
         eList.addAll(CivCittadinanza.etichetteDomain)
-        eList.addAll([Etichette.Imprecisato, Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.Motivo_richiesta,
-                      Etichette.Recupero_da_giuramento, Etichette.Recupero_da_richiesta,
-                      Etichette.Altri_Dati, Etichette.Cambio_cognome_nome, Etichette.Vecchio_cognome,
-                      Etichette.Indirizzo_posta_autorita, Etichette.Generalita_ascendente, Etichette.Generalita_intestatario_vecchie,
-                      Etichette.Estremi_Atto_Riconoscimento_Materno, Etichette.Estremi_Atto_Riconoscimento_Paterno,
-                      Etichette.Estremi_Collegato, Etichette.Estremi_Atto_collegato,
-                      Etichette.Decreto_Attestazione, Etichette.Dati_Decreto_Attestazione,
-                      Etichette.Genitore_cittadinanza, Etichette.Comune_Atto, Etichette.Annotazione])
+        eList.addAll([Etichette.getEtichetta("Imprecisato"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("Motivo_richiesta"),
+                      Etichette.getEtichetta("Recupero_da_giuramento"), Etichette.getEtichetta("Recupero_da_richiesta"),
+                      Etichette.getEtichetta("Altri_Dati"), Etichette.getEtichetta("Cambio_cognome_nome"), Etichette.getEtichetta("Vecchio_cognome"),
+                      Etichette.getEtichetta("Indirizzo_posta_autorita"), Etichette.getEtichetta("Generalita_ascendente"), Etichette.getEtichetta("Generalita_intestatario_vecchie"),
+                      Etichette.getEtichetta("Estremi_Atto_Riconoscimento_Materno"), Etichette.getEtichetta("Estremi_Atto_Riconoscimento_Paterno"),
+                      Etichette.getEtichetta("Estremi_Collegato"), Etichette.getEtichetta("Estremi_Atto_collegato"),
+                      Etichette.getEtichetta("Decreto_Attestazione"), Etichette.getEtichetta("Dati_Decreto_Attestazione"),
+                      Etichette.getEtichetta("Genitore_cittadinanza"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Annotazione")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivMargine.etichetteDomain)
         eList.addAll(CivMotivoRichiesta.etichetteDomain)
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_DATI_INTESTATARIO, Etichette.SEZIONE_DATI_ATTO,
-                      Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_ANNOTAZIONI_DA_ATTO])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_DATI_INTESTATARIO"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"),
+                      Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_DA_ATTO")])
 
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Gestione_Minorenni])
+        eList.addAll([Etichette.getEtichetta("Ask_Gestione_Minorenni")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriCittadinanza()
@@ -119,7 +120,7 @@ abstract class CittadinanzaDettaglioParentViewModel extends AttoSoggettiDettagli
 
         doInitAllAtti(eList, false)
 
-        msgTitle = getEtichetta(Etichette.Atto_Cittadinanza)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Cittadinanza"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.CIT)
 
         caricaListaDichiarante()
@@ -296,7 +297,7 @@ abstract class CittadinanzaDettaglioParentViewModel extends AttoSoggettiDettagli
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleCittadinanza(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleCittadinanza(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }

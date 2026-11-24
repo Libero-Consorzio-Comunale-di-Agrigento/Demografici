@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.IstBaseDomain
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.Etichette
@@ -119,7 +119,7 @@ class IstMd4Bis extends IstBaseDomain {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_PAT", nullable = true)
-    AnaNazionalita nazionalitaPadre
+    AnaCittadinanza nazionalitaPadre
 
     @Column(name = "GRADO_ISTRUZIONE_PAT", nullable = true)
     Integer gradoIstruzionePadre
@@ -157,7 +157,7 @@ class IstMd4Bis extends IstBaseDomain {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_MAT", nullable = true)
-    AnaNazionalita nazionalitaMadre
+    AnaCittadinanza nazionalitaMadre
 
     @Embedded
     @AttributeOverrides([
@@ -200,12 +200,12 @@ class IstMd4Bis extends IstBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Data_morte, Etichette.Filiazione, Etichette.Luogo_decesso, Etichette.Luogo_Parto, Etichette.Presentazione,
-                                              Etichette.Numero_ordine_scheda,
-                                              Etichette.Se_fino_ad_un_giorno, Etichette.Se_fino_ad_un_mese, Etichette.Se_fino_ad_un_anno,
-                                              Etichette.Durata_gestazione, Etichette.Eta_compiuta, Etichette.Genere_parto,
-                                              Etichette.Peso_nascita, Etichette.Tipo_parto, Etichette.Consanguineita_genitori,
-                                              Etichette.Numero_nascite_precedenti, Etichette.Numero_nati_vivi_precedenti,
-                                              Etichette.Numero_nati_morti_precedenti, Etichette.Numero_aborti_precedenti,
-                                              Etichette.Mortalita_infantile, Etichette.Morti_nel_primo_anno ]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Data_morte"), Etichette.getEtichetta("Filiazione"), Etichette.getEtichetta("Luogo_decesso"), Etichette.getEtichetta("Luogo_Parto"), Etichette.getEtichetta("Presentazione"),
+                                              Etichette.getEtichetta("Numero_ordine_scheda"),
+                                              Etichette.getEtichetta("Se_fino_ad_un_giorno"), Etichette.getEtichetta("Se_fino_ad_un_mese"), Etichette.getEtichetta("Se_fino_ad_un_anno"),
+                                              Etichette.getEtichetta("Durata_gestazione"), Etichette.getEtichetta("Eta_compiuta"), Etichette.getEtichetta("Genere_parto"),
+                                              Etichette.getEtichetta("Peso_nascita"), Etichette.getEtichetta("Tipo_parto"), Etichette.getEtichetta("Consanguineita_genitori"),
+                                              Etichette.getEtichetta("Numero_nascite_precedenti"), Etichette.getEtichetta("Numero_nati_vivi_precedenti"),
+                                              Etichette.getEtichetta("Numero_nati_morti_precedenti"), Etichette.getEtichetta("Numero_aborti_precedenti"),
+                                              Etichette.getEtichetta("Mortalita_infantile"), Etichette.getEtichetta("Morti_nel_primo_anno") ]
 }

@@ -14,8 +14,8 @@ enum ETempisticaAssunzionePubblicoImpiego {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case AO: return Etichette.Assunto
-            case AA: return Etichette.Assumera
+            case AO: return Etichette.getEtichetta("Assunto")
+            case AA: return Etichette.getEtichetta("Assumera")
         }
         return null
     }

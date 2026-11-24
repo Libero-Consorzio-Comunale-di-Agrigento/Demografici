@@ -2,8 +2,7 @@ package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmessoRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -25,7 +24,7 @@ class CerCertificatoEmessoStampaService {
 
     Page<CerCertificatoEmesso> listAllByRicercaCertificatoStampa(RicercaCertificatoStampa r, PageRequest p) {
         if (r.dataEmissioneDal == null || r.dataEmissioneAl == null) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_estrazione_certificati)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_estrazione_certificati"))
         }
         return cerCertificatoEmessoRepository.findAllByRicercaCertificatoStampa(r, p)
     }

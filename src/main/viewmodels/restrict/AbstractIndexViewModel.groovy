@@ -5,7 +5,10 @@ import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.HomeModuloService
 import it.finmatica.de4gsdzk.archivi.ArcComuneBaseService
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.EModulo
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Sezione
+import it.finmatica.de4gsdzk.utils.UriUtils
 import it.finmatica.de4gsdzk.utils.requestforwarding.RequestForwardingParams
 import it.finmatica.de4gsdzk.utils.requestforwarding.RequestForwardingStore
 import org.springframework.security.core.context.SecurityContextHolder
@@ -79,7 +82,7 @@ abstract class AbstractIndexViewModel {
     }
 
     void doInit(List<Map<String, String>> eList=[]) {
-        eList.addAll([Etichette.Apri_home])
+        eList.addAll([Etichette.getEtichetta("Apri_home")])
         eList.addAll(EModulo.values()*.etichettaDesc)
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
@@ -104,8 +107,8 @@ abstract class AbstractIndexViewModel {
 
         moduli =  []
 
-        moduliTop = [EModulo.CERTIFICAZIONE, EModulo.ANAGRAFE, EModulo.STATO_CIVILE]
-        moduliBot = [EModulo.ELETTORALE, EModulo.LEVA_MILITARE, EModulo.ARCHIVI, smartStats]
+        moduliTop = [EModulo.CERTIFICAZIONE, EModulo.ANAGRAFE, EModulo.STATO_CIVILE, EModulo.ELETTORALE]
+        moduliBot = [EModulo.LEVA_MILITARE, EModulo.ARCHIVI, EModulo.TOPONOMASTICA, smartStats]
 
         moduli.addAll(moduliTop)
         moduli.addAll(moduliBot)
@@ -163,7 +166,7 @@ abstract class AbstractIndexViewModel {
             selectedSubSezione = subSezioni[0]
         }
         if (lastSelectedSubSezione && selectedSubSezione && (lastSelectedSubSezione.uri == selectedSubSezione.uri)) {
-            inner.setSrc(null)
+            inner?.setSrc(null)
         }
         BindUtils.postNotifyChange(null, null, this, "selectedSezione")
         BindUtils.postNotifyChange(null, null, this, "selectedSubSezione")

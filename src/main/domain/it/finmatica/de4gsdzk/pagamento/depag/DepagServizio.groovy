@@ -33,5 +33,5 @@ class DepagServizio extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Servizio_Depag, Etichette.Tassonomia]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Servizio_Depag"), Etichette.getEtichetta("Tassonomia")]
 }

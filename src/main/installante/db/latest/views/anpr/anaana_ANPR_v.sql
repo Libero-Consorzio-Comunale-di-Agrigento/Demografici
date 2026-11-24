@@ -74,20 +74,30 @@ create or replace view anaana_ANPR_v
 --
      , D_DATA_MAT, DES_COM_MAT, SIGLA_PRO_MAT, DES_COM_ATTO_MAT, SIGLA_PRO_ATTO_MAT
      , D_DATA_VED, DES_COM_VED, SIGLA_PRO_VED, DES_COM_ATTO_VED, SIGLA_PRO_ATTO_VED
-     , D_DATA_DIV, DES_COM_DIV, SIGLA_PRO_DIV, DES_COM_ATTO_DIV, SIGLA_PRO_ATTO_DIV
+     , D_DATA_DIV, DES_COM_DIV, SIGLA_PRO_DIV, DES_COM_ATTO_DIV, SIGLA_PRO_ATTO_DIV, D_DATA_DIV_GIU, D_DATA_DIV_ANN
      , D_DATA_MOR, DES_COM_MOR, SIGLA_PRO_MOR, DES_COM_ATTO_MOR, SIGLA_PRO_ATTO_MOR
      , NOTE
      , MATRICOLA_AIRE
      , ANNO_CENS, SEZIONE_CENS, FOGLIO_CENS, COD_EDIFICIO_CENS, QUESTIONARIO_CENS
      , VAL_ESPATRIO, DATA_VAL_ESPATRIO
      , ID_DOCUMENTO_GDM
+-- 
+-- 05/08/2025 (AM): f_TPR_enable_soggetto
+     , flag_TPR_enable_RES_I, flag_TPR_enable_RES_E, flag_TPR_enable_RES_C, flag_TPR_enable_RES_R
+     , flag_TPR_enable_AIR_I, flag_TPR_enable_AIR_E, flag_TPR_enable_AIR_C, flag_TPR_enable_AIR_R
+-- 
+-- 18/12/2025 (AM): x visualizzazione zk
+     , TRA_COGNOME, TRA_NOME, TRA_DENOMINAZIONETOPONIMO, TRA_DENOMINAZIONECOMUNE
+     , SOGGETTOCERTIFICABILE, des_SOGGETTOCERTIFICABILE
+     , ELE_CERTIFICABILITA, des_ELE_CERTIFICABILITA
+     , ELE_MOTIVOCANCELLAZIONE, des_ELE_MOTIVOCANCELLAZIONE, ELE_NOTECANCELLAZIONE
      )
 AS
 select rec.ID_OPERAZIONE
 -- MATRICOLA
      , rec.w_matricola
 -- COGNOME_NOME
-     , rec.COGNOME||'/'||rec.NOME
+     , rec.COGNOME||'/'||rec.NOME         
 -- FASCIA
      , rec.w_fascia
 -- STATO
@@ -98,22 +108,22 @@ select rec.ID_OPERAZIONE
      , f_ADS_sospensione(rec.SOGGETTOCERTIFICABILE)
 -- COD_FAM
      , rec.id_operazione
--- RAPPORTO_PAR
+-- RAPPORTO_PAR           
      , f_ADS_rapporto_par(rec.FAM_CODICELEGAME,rec.SESSO)
--- SEQUENZA_PAR
+-- SEQUENZA_PAR           
      , rec.FAM_CODICELEGAME
--- DATA_INIZIO_FAM
+-- DATA_INIZIO_FAM        
      , f_ADS_data(rec.FAM_DATADECORRENZA)
--- D_DATA_INIZIO_FAM
+-- D_DATA_INIZIO_FAM        
      , to_date(f_ADS_data(rec.FAM_DATADECORRENZA),'j')
--- DATA_INIZIO_RES
+-- DATA_INIZIO_RES        
      , f_ADS_data(rec.RES_DATADECORRENZARESIDENZA)
--- D_DATA_INIZIO_RES
+-- D_DATA_INIZIO_RES        
      , to_date(f_ADS_data(rec.RES_DATADECORRENZARESIDENZA),'j')
 -- STATO_CIVILE
      , rec.w_stato_civile
 -- SESSO
-     , rec.SESSO
+     , rec.SESSO                                  
 -- NAZIONALITA
      , f_ADS_nazionalita(rec.CIT_CODICESTATO)
 -- DATA_INIZIO_NAZ
@@ -121,12 +131,12 @@ select rec.ID_OPERAZIONE
 -- D_DATA_INIZIO_NAZ
      , to_date(f_ADS_data(rec.CIT_DATAVALIDITA),'j')
 -- PATERNITA
-     , decode(rec.COGNOME_PD,'','',rec.COGNOME_PD||'/')||rec.NOME_PD
+     , decode(rec.COGNOME_PD,'','',rec.COGNOME_PD||'/')||rec.NOME_PD                                
 -- MATRICOLA_PD
      , rec.w_matricola_PD
 -- MATERNITA
-     , decode(rec.COGNOME_MD,'','',rec.COGNOME_MD||'/')||rec.NOME_MD
--- MATRICOLA_MD
+     , decode(rec.COGNOME_MD,'','',rec.COGNOME_MD||'/')||rec.NOME_MD                                
+-- MATRICOLA_MD 
      , rec.w_matricola_MD
 -- TITOLO_STUDIO
      , f_ADS_titolo_studio(rec.TITOLOSTUDIO)
@@ -191,7 +201,7 @@ select rec.ID_OPERAZIONE
 -- MATRICOLA_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            rec.w_matricola_CN
+                            rec.w_matricola_CN 
                        when rec.w_stato_civile in ('UC','VU','GU') then
                             rec.w_matricola_UC
        end
@@ -426,27 +436,27 @@ select rec.ID_OPERAZIONE
 -- DES_COM_NAS
      , nvl(rec.NAS_DESCRIZIONELOCALITA,rec.NAS_NOMECOMUNE)
 -- SIGLA_PRO_NAS
-     , nvl(rec.NAS_DESCRIZIONESTATO,rec.NAS_SIGLAPROVINCIAISTAT)
--- DES_COM_ATTO_NAS
-     , rec.ATTNAS_NOMECOMUNE
+     , nvl(rec.NAS_DESCRIZIONESTATO,rec.NAS_SIGLAPROVINCIAISTAT) 
+-- DES_COM_ATTO_NAS                 
+     , rec.ATTNAS_NOMECOMUNE 
 -- SIGLA_PRO_ATTO_NAS
-     , rec.ATTNAS_SIGLAPROVINCIAISTAT
+     , rec.ATTNAS_SIGLAPROVINCIAISTAT 
 -- DES_STATO_CIVILE
-     , f_get_descrizione_DSC(rec.w_stato_civile,rec.sesso,'','','')
+     , f_get_descrizione_DSC(rec.w_stato_civile,rec.sesso,'','','') 
 -- DES_NAZIONALITA
-     , f_get_descrizione_DCI(f_ADS_nazionalita(rec.CIT_CODICESTATO),'')
+     , f_get_descrizione_DCI(f_ADS_nazionalita(rec.CIT_CODICESTATO),'') 
 -- DES_COD_PROF
      , to_char(null)
--- DES_RAPPORTO_PAR
+-- DES_RAPPORTO_PAR           
      , f_get_descrizione_DRP(f_ADS_rapporto_par(rec.FAM_CODICELEGAME,rec.SESSO), rec.SESSO)
 -- COD_PRO_RES
-     , substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3)
+     , substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3) 
 -- COD_COM_RES
-     , substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3)
+     , substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3) 
 -- DES_COM_RES
-     , nvl(rec.RES_DESCRIZIONELOCALITA,rec.RES_NOMECOMUNE)
+     , nvl(rec.RES_DESCRIZIONELOCALITA,rec.RES_NOMECOMUNE) 
 -- SIGLA_PRO_RES
-     , nvl(rec.RES_DESCRIZIONESTATO,rec.RES_SIGLAPROVINCIAISTAT)
+     , nvl(rec.RES_DESCRIZIONESTATO,rec.RES_SIGLAPROVINCIAISTAT) 
 -- INDIRIZZO_RES
      , nvl(
          decode(rec.RES_TOPONIMOESTERO,'','',rec.RES_TOPONIMOESTERO||
@@ -454,9 +464,23 @@ select rec.ID_OPERAZIONE
            decode(rec.RES_LETTERA,'','','/'||rec.RES_LETTERA)
          ),
          rec.RES_SPECIE||' '||rec.RES_DENOMINAZIONETOPONIMO||
-           decode(rec.RES_NUMERO,'','',', '||rec.RES_NUMERO)||
-           decode(rec.RES_LETTERA,'','','/'||rec.RES_LETTERA)
-       )
+--           decode(rec.RES_NUMERO,'','',', '||rec.RES_NUMERO)||
+--           decode(rec.RES_LETTERA,'','','/'||rec.RES_LETTERA)
+           f_civico_esterno_zk(-1,
+                               decode(translate(rec.RES_NUMERO,'0123456789','9999999999'),'9',rec.RES_NUMERO,'99',rec.RES_NUMERO,'999',rec.RES_NUMERO,'9999',rec.RES_NUMERO,'99999',rec.RES_NUMERO,'999999',rec.RES_NUMERO),
+                               nvl(rec.RES_LETTERA,rec.RES_ESPONENTE1),rec.RES_SCALA,rec.RES_PIANO,
+                               decode(translate(rec.RES_INTERNO1,'0123456789','9999999999'),'9',rec.RES_INTERNO1,'99',rec.RES_INTERNO1,'999',rec.RES_INTERNO1,'9999',rec.RES_INTERNO1,'99999',rec.RES_INTERNO1,'999999',rec.RES_INTERNO1),
+                               rec.RES_ESPINTERNO1,
+                               rec.RES_PROGSNC,rec.RES_NUI,rec.RES_COLORE,rec.RES_CORTE,rec.RES_INTERNO2,rec.RES_ESPINTERNO2,
+                               rec.RES_SECONDARIO,rec.RES_SCALAESTERNA)||
+           f_civico_interno_zk(-1,
+                               decode(translate(rec.RES_NUMERO,'0123456789','9999999999'),'9',rec.RES_NUMERO,'99',rec.RES_NUMERO,'999',rec.RES_NUMERO,'9999',rec.RES_NUMERO,'99999',rec.RES_NUMERO,'999999',rec.RES_NUMERO),
+                               nvl(rec.RES_LETTERA,rec.RES_ESPONENTE1),rec.RES_SCALA,rec.RES_PIANO,
+                               decode(translate(rec.RES_INTERNO1,'0123456789','9999999999'),'9',rec.RES_INTERNO1,'99',rec.RES_INTERNO1,'999',rec.RES_INTERNO1,'9999',rec.RES_INTERNO1,'99999',rec.RES_INTERNO1,'999999',rec.RES_INTERNO1),
+                               rec.RES_ESPINTERNO1,
+                               rec.RES_PROGSNC,rec.RES_NUI,rec.RES_COLORE,rec.RES_CORTE,rec.RES_INTERNO2,rec.RES_ESPINTERNO2,
+                               rec.RES_SECONDARIO,rec.RES_SCALAESTERNA)
+      ) 
 -- CAP_RES
      , nvl(rec.RES_CAPESTERO,rec.RES_CAP)
 -- PROVINCIA_CONTEA_AIR
@@ -469,14 +493,14 @@ select rec.ID_OPERAZIONE
      , rec.RES_DESCRIZIONECONSOLATO
 -- FLAG_SENZA_FISSA_DIMORA
      , decode(rec.SENZAFISSADIMORA,'S','S')
--- DES_STATO_ANA
+-- DES_STATO_ANA          
      , decode(rec.w_fascia,
          1, f_get_campo_DCE('RES','I',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso),
          2, f_get_campo_DCE('RES','C',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso),
          3, f_get_campo_DCE('AIR','I',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso),
          4, f_get_campo_DCE('AIR','C',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso),
          5, f_get_campo_DCE('RES','',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso),
-         6, f_get_campo_DCE('NRE','',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso))
+         6, f_get_campo_DCE('NRE','',rec.w_fascia,rec.w_stato,'','DESCRIZIONE_'||rec.sesso)) 
 --
 -- TIPO_DI
      , decode(rec.DI_CARTACEAELETTRONICA,'0','CI','1','CE')
@@ -518,7 +542,7 @@ select rec.ID_OPERAZIONE
 -- COD_COM_ENTE_DS
      , substr(rec.DS_CODICEISTAT,4,3)
 -- DES_COM_ENTE_DS
-     , rec.DS_NOMECOMUNE
+     , nvl(rec.DS_NOMECOMUNE, rec.DS_QUESTURARILASCIOSOGGIORNO)
 -- SIGLA_PRO_ENTE_DS
      , rec.DS_SIGLAPROVINCIAISTAT
 -- FLAG_SCADENZA_ILLIMITATA_DS
@@ -555,59 +579,59 @@ select rec.ID_OPERAZIONE
 -- COD_PRO_NAS_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            substr(lpad(rec.w_codice_comune_NAS_cn,6,'0'),1,3)
+                            substr(lpad(rec.w_codice_comune_NAS_cn,6,'0'),1,3) 
                        when rec.w_stato_civile in ('UC','VU','GU') then
-                            substr(lpad(rec.w_codice_comune_NAS_uc,6,'0'),1,3)
+                            substr(lpad(rec.w_codice_comune_NAS_uc,6,'0'),1,3) 
        end
 -- COD_COM_NAS_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            substr(lpad(rec.w_codice_comune_NAS_cn,6,'0'),4,3)
+                            substr(lpad(rec.w_codice_comune_NAS_cn,6,'0'),4,3) 
                        when rec.w_stato_civile in ('UC','VU','GU') then
-                            substr(lpad(rec.w_codice_comune_NAS_uc,6,'0'),4,3)
+                            substr(lpad(rec.w_codice_comune_NAS_uc,6,'0'),4,3) 
        end
 -- DES_COM_NAS_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            nvl(rec.NAS_DESCRIZIONELOCALITA_CN,rec.NAS_NOMECOMUNE_CN)
+                            nvl(rec.NAS_DESCRIZIONELOCALITA_CN,rec.NAS_NOMECOMUNE_CN) 
                        when rec.w_stato_civile in ('UC','VU','GU') then
-                            nvl(rec.NAS_DESCRIZIONELOCALITA_UC,rec.NAS_NOMECOMUNE_UC)
+                            nvl(rec.NAS_DESCRIZIONELOCALITA_UC,rec.NAS_NOMECOMUNE_UC) 
        end
--- SIGLA_PRO_NAS_CN
+-- SIGLA_PRO_NAS_CN       
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            nvl(rec.NAS_DESCRIZIONESTATO_CN,rec.NAS_SIGLAPROVINCIAISTAT_CN)
+                            nvl(rec.NAS_DESCRIZIONESTATO_CN,rec.NAS_SIGLAPROVINCIAISTAT_CN) 
                        when rec.w_stato_civile in ('UC','VU','GU') then
-                            nvl(rec.NAS_DESCRIZIONESTATO_UC,rec.NAS_SIGLAPROVINCIAISTAT_UC)
+                            nvl(rec.NAS_DESCRIZIONESTATO_UC,rec.NAS_SIGLAPROVINCIAISTAT_UC) 
        end
 -- DES_STATO_CIVILE_CN
-     , to_char(null)
+     , to_char(null) 
 -- NAZIONALITA_CN
      , f_ADS_nazionalita(rec.CIT_CODICESTATO_CN_2)
--- DES_NAZIONALITA_CN
-     , f_get_descrizione_DCI(f_ADS_nazionalita(rec.CIT_CODICESTATO_CN_2),'')
+-- DES_NAZIONALITA_CN     
+     , f_get_descrizione_DCI(f_ADS_nazionalita(rec.CIT_CODICESTATO_CN_2),'') 
 -- COD_PRO_RES_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            substr(lpad(rec.w_codice_comune_RES_cn,6,'0'),1,3)
+                            substr(lpad(rec.w_codice_comune_RES_cn,6,'0'),1,3) 
        end
 -- COD_COM_RES_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            substr(lpad(rec.w_codice_comune_RES_cn,6,'0'),4,3)
+                            substr(lpad(rec.w_codice_comune_RES_cn,6,'0'),4,3) 
        end
 -- DES_COM_RES_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            nvl(rec.RES_DESCRIZIONELOCALITA_CN,rec.RES_NOMECOMUNE_CN)
+                            nvl(rec.RES_DESCRIZIONELOCALITA_CN,rec.RES_NOMECOMUNE_CN) 
        end
 -- SIGLA_PRO_RES_CN
      , case
                        when rec.w_stato_civile in ('CN','VE','DV','GC','NC') then
-                            nvl(rec.RES_DESCRIZIONESTATO_CN,rec.RES_SIGLAPROVINCIAISTAT_CN)
+                            nvl(rec.RES_DESCRIZIONESTATO_CN,rec.RES_SIGLAPROVINCIAISTAT_CN) 
        end
 -- DES_STATO_ANA_CN
-     , to_char(null)
+     , to_char(null) 
 -- COGNOME_PD
      , rec.cognome_pd
 -- NOME_PD
@@ -623,7 +647,7 @@ select rec.ID_OPERAZIONE
 -- TIPO_SCHEDA_ANPR
      , rec.FAM_tipoScheda
 -- ID
-     , rec.id_operazione||rec.idSoggettoANPR
+     , substr(rec.id_operazione,5)||substr(rec.idSoggettoANPR,1,12)
 -- ATTO_NAS_DIGITALE
      , decode(rec.ATTNAS_TRASCRITTO,'S','',rec.ATTNAS_IDANSC)
 -- ATTO_NAS_TR_DIGITALE
@@ -711,6 +735,9 @@ select rec.ID_OPERAZIONE
                        when w_stato_civile in ('DV','GC','NC') then rec.ATTDIV_SIGLAPROVINCIAISTAT
                        when w_stato_civile in ('GU')           then rec.ATTSCI_SIGLAPROVINCIAISTAT
        end
+-- D_DATA_DIV_GIU, D_DATA_DIV_ANN
+     , to_date(null) 
+     , to_date(null) 
 -- D_DATA_MOR, DES_COM_MOR, SIGLA_PRO_MOR, DES_COM_ATTO_MOR, SIGLA_PRO_ATTO_MOR
      , to_date(f_ADS_data(rec.MOR_DATAEVENTO),'j')
      , nvl(rec.MOR_DESCRIZIONELOCALITA,rec.MOR_NOMECOMUNE)
@@ -737,6 +764,29 @@ select rec.ID_OPERAZIONE
      , to_number(null)
 -- ID_DOCUMENTO_GDM
      , to_number(null)
+--
+     , f_TPR_enable_soggetto('RES','I',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_RES_I
+     , f_TPR_enable_soggetto('RES','E',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_RES_E
+     , f_TPR_enable_soggetto('RES','C',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_RES_C
+     , f_TPR_enable_soggetto('RES','R',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_RES_R
+     , f_TPR_enable_soggetto('AIR','I',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_AIR_I
+     , f_TPR_enable_soggetto('AIR','E',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_AIR_E
+     , f_TPR_enable_soggetto('AIR','C',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_AIR_C
+     , f_TPR_enable_soggetto('AIR','R',rec.w_fascia, rec.w_stato, substr(lpad(rec.w_codice_comune_RES,6,'0'),1,3), substr(lpad(rec.w_codice_comune_RES,6,'0'),4,3), 'ANP') flag_TPR_enable_AIR_R
+--
+     , rec.TRA_COGNOME
+     , rec.TRA_NOME
+     , rec.TRA_DENOMINAZIONETOPONIMO
+     , rec.TRA_DENOMINAZIONECOMUNE
+--
+     , rec.SOGGETTOCERTIFICABILE
+     , t42.descrizione des_SOGGETTOCERTIFICABILE
+--
+     , rec.ELE_CERTIFICABILITA
+     , e01.descrizione des_ELE_CERTIFICABILITA
+     , rec.ELE_MOTIVOCANCELLAZIONE
+     , e02.descrizione des_ELE_MOTIVOCANCELLAZIONE
+     , rec.ELE_NOTECANCELLAZIONE
   from (select f_ADS_matricola(rec.idsoggettoanpr,rec.codfiscale,rec.cognome,rec.nome,rec.sesso,rec.datanascita) w_matricola
              , f_ADS_fascia(rec.SOGGETTOAIRE,rec.ISC_DATAISCRIZIONE,rec.CAN_DATADECORRENZA) w_fascia
              , decode(rec.MOR_DATAEVENTO,'','',50) w_stato
@@ -807,10 +857,19 @@ select rec.ID_OPERAZIONE
          where rec_cn.id_operazione  (+) = ai_cn.id_operazione
            and rec_cn.idSoggettoANPR (+) = ai_cn.idSoggettoANPR
            and ai_cn.idSoggettoANPR  (+) = ai.idSoggettoANPR_CN
-           and ai.id_operazione      (+) = rec.id_operazione) rec
+           and ai.id_operazione      (+) = rec.id_operazione
+           and rec.idAnpr                is not null) rec
+     , anpe01 e01
+     , anpe02 e02
+     , anpt42 t42
      , anpana anp
- where rec.id_operazione  = anp.id_operazione
+ where e01.codice (+) = rec.ELE_certificabilita
+   and e02.codice (+) = rec.ELE_motivoCancellazione
+   and t42.codice (+) = rec.soggettoCertificabile
+   and rec.id_operazione  = anp.id_operazione
    and rec.idSoggettoANPR = anp.idSoggettoANPR
+   and anp.idAnpr         is not null
 /
 comment on table anaana_ANPR_v is 'ANPR - Dati Angrafe nel formato ADS (view)'
 /
+

@@ -19,7 +19,7 @@ class CivComunicazioneFormulaServiceSpec extends AbstractServiceSpec<CivComunica
         }
 
         service = new CivComunicazioneFormulaService(
-                repo, statoCivileService, Mock(CivComunicazioneAttoService)
+                repo, gsdService, Mock(CivComunicazioneAttoService)
         )
 
         p1 = Mock(Page)

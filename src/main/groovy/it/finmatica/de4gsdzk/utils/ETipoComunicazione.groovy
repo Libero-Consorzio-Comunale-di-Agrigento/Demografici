@@ -13,8 +13,8 @@ enum ETipoComunicazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case A: return Etichette.Atto
-            case N: return Etichette.Annotazione
+            case A: return Etichette.getEtichetta("Atto")
+            case N: return Etichette.getEtichetta("Annotazione")
         }
         return null
     }

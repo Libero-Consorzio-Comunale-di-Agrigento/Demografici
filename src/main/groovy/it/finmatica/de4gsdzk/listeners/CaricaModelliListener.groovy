@@ -71,6 +71,20 @@ class CaricaModelliListener {
                 }
             }
 
+            // Modelli Comunicazione Anagrafe
+            if (!(caricaModelliService.modelliComunicazioneAnagrafeLoaded())) {
+                String pathBase = "/WEB-INF/modelli/comunicazioni_ana"
+                File dir = new File(servletContext.getRealPath(pathBase + (subDir ?: subDirDefault)))
+                File[] files = dir.listFiles()
+                if (files?.length > 0) {
+                    caricaModelliService.caricaModelliComunicazioneAnagrafe(files)
+                } else {
+                    File dirDefault = new File(servletContext.getRealPath(pathBase + subDirDefault))
+                    File[] filesDefault = dirDefault.listFiles()
+                    caricaModelliService.caricaModelliComunicazioneAnagrafe(filesDefault)
+                }
+            }
+
             // Loghi
             String pathBaseLoghi = "/WEB-INF/loghi"
             File dirLoghi = new File(servletContext.getRealPath(pathBaseLoghi + (subDir?:subDirDefault)) )

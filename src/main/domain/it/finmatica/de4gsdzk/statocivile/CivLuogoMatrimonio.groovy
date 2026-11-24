@@ -36,7 +36,7 @@ class CivLuogoMatrimonio implements ILuogoEvento{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map<String, String>> etichetteDomain = [Etichette.Codice, Etichette.Nel, Etichette.Descrizione,
-                                                              Etichette.Celebrante, Etichette.Qualifica, Etichette.Ministro]
+    static final List<Map<String, String>> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Nel"), Etichette.getEtichetta("Descrizione"),
+                                                              Etichette.getEtichetta("Celebrante"), Etichette.getEtichetta("Qualifica"), Etichette.getEtichetta("Ministro")]
 
 }

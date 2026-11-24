@@ -402,6 +402,7 @@ abstract class AttoSoggettiDettaglioParentViewModel extends AttoDettaglioParentV
                 break
         }
         if (params){
+            params.put("statoCivile", true)
             Window w = (Window) Executions.createComponents(FormUtils.getUriAnagrafeSelect(ricercaSoggettoInANPROn), self, params)
             w.addEventListener(CustomEvents.ON_SELECT_RECORD, { event ->
                 if (event.data instanceof AnaAnagrafeBaseDomain){
@@ -730,7 +731,7 @@ abstract class AttoSoggettiDettaglioParentViewModel extends AttoDettaglioParentV
             }
             if (params && params.anagrafe && anag){
                 String datiSoggetto = "(${anag.cognome} ${anag.nome} - ${anag.sesso.name()} - ${anag.dataNascita.format('dd/MM/yyyy')} - matr. ${anag.matricola})?"
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Collegamento_Anagrafe)+"\n "+datiSoggetto, msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Collegamento_Anagrafe"))+"\n "+datiSoggetto, msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event ev) {
                             if (Messagebox.ON_YES.equals(ev.getName())) {
@@ -743,7 +744,7 @@ abstract class AttoSoggettiDettaglioParentViewModel extends AttoDettaglioParentV
                                 if (params.anagrafe == "2"){
                                     anagrafe.anagrafe2 = null
                                 }
-                                Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Nuova_Ricerca_Anagrafe), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                                Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Nuova_Ricerca_Anagrafe")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                                         new org.zkoss.zk.ui.event.EventListener() {
                                             void onEvent(Event ev2) {
                                                 if (Messagebox.ON_YES.equals(ev2.getName())) {
@@ -785,8 +786,8 @@ abstract class AttoSoggettiDettaglioParentViewModel extends AttoDettaglioParentV
                 }
                 break
         }
-        if ( (cf?:StatoCivileService.ERRORE_CAMPI_CF) == StatoCivileService.ERRORE_CAMPI_CF ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_cf), getEtichetta(Etichette.Calcolo_Codice_Fiscale), Messagebox.OK, Messagebox.EXCLAMATION)
+        if ( (cf?:GsdService.ERRORE_CAMPI_CF) == GsdService.ERRORE_CAMPI_CF ){
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_cf")), getEtichetta(Etichette.getEtichetta("Calcolo_Codice_Fiscale")), Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             switch (ts) {
                 case ETipoSoggetto.SOGGETTO_1: // NAS - CIT - DEC - PUBB - DIV - MAT - UCI - PVU - SCIO

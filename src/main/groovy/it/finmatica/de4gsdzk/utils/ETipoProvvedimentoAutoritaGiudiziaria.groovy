@@ -15,9 +15,9 @@ enum ETipoProvvedimentoAutoritaGiudiziaria {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NO: return Etichette.nulla_osta_procuratore
-            case AP: return Etichette.autorizzazione_procuratore
-            case PT: return Etichette.provvedimento_tribunale
+            case NO: return Etichette.getEtichetta("nulla_osta_procuratore")
+            case AP: return Etichette.getEtichetta("autorizzazione_procuratore")
+            case PT: return Etichette.getEtichetta("provvedimento_tribunale")
         }
         return null
     }

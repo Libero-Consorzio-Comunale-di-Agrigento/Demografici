@@ -9,7 +9,8 @@ enum ETipoLog {
     ANSC("ANSC"),
     Gestione_Testi("GTE"),
     Wspa("WSPA"),
-    Gsd("GSD")
+    Gsd("GSD"),
+    Ws_min_int("WS_MININT")
 
     final String id
 
@@ -19,14 +20,15 @@ enum ETipoLog {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case Doc_Area: return Etichette.Doc_Area
-            case Firma_Remota: return Etichette.Firma_Remota
-            case Istat: return Etichette.Istat
-            case ANPR: return Etichette.ANPR
-            case ANSC: return Etichette.ANSC
-            case Gestione_Testi: return Etichette.Gestione_Testi
-            case Wspa: return Etichette.Pagamenti
-            case Gsd: return Etichette.Applicativo
+            case Doc_Area: return Etichette.getEtichetta("Doc_Area")
+            case Firma_Remota: return Etichette.getEtichetta("Firma_Remota")
+            case Istat: return Etichette.getEtichetta("Istat")
+            case ANPR: return Etichette.getEtichetta("ANPR")
+            case ANSC: return Etichette.getEtichetta("ANSC")
+            case Gestione_Testi: return Etichette.getEtichetta("Gestione_Testi")
+            case Wspa: return Etichette.getEtichetta("Pagamenti")
+            case Gsd: return Etichette.getEtichetta("Applicativo")
+            case Ws_min_int: return Etichette.getEtichetta("Web_Service_Ministero_Interno")
         }
         return null
     }

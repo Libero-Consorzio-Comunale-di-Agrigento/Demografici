@@ -18,10 +18,14 @@
 
             <hlayout sclass="navigazione" valign="middle">
                 <controlBar value="@load(vm.controlBarAttributes)">
-                    <toolbarbutton image="/images/icon/action/22x22/user_home.png"
+                    <toolbarbutton image="/images/de4gsdzk/22x22/doc_users.png"
                                    tooltiptext="@load(vm.etichette['Storico_famiglia_tooltip'])"
+                                   disabled="@bind(vm.individuoCorrente.famiglia eq null)"
                                    onClick="@command('onOpenStorico')"/>
-                    <toolbarbuttonAllegati/>
+                    <toolbarbutton image="/images/icon/action/22x22/folder_edit.png"
+                                   tooltiptext="@load(vm.etichette['allegati_tooltip'])"
+                                   disabled="@bind(vm.individuoCorrente.famiglia eq null)"
+                                   onClick="@command('onOpenAllegati')"/>
                 </controlBar>
 
                 <label value="@load(vm.formLabel)" sclass="formTitle"/>
@@ -44,12 +48,16 @@
                       visible="@load(not empty vm.anprIndividuoCorrente)"
                       style="background-color: #EDEFF5;">
                     <caption sclass="mainCaption">
-                        <hlayout valign="middle">
+                        <hlayout valign="middle" hflex="1">
                             <image src="/images/de4gsdzk/18x18/anpr.png"/>
                             <label value="Componenti ANPR" sclass="captionLabel"/>
+                            <space hflex="1"/>
+                            <label value="@load(c:cat3(vm.etichette['Situazione_al'], ' ',empty vm.dataRiferimento ? '' : (c:formatDate(vm.dataRiferimento, 'dd/MM/yyyy'))))"
+                                   sclass="redText"  style="font-weight: bold"
+                                   visible="@load(not empty vm.dataRiferimento)"/>
                         </hlayout>
                     </caption>
-                    <include vflex="1" src="/restrict/anagrafe/visualizzazione/famigliaAnprLista.zul"/>
+                    <include vflex="1" src="/restrict/anagrafe/visualizzazione/famigliaAnprLista.zul" dataRiferimento="${vm.dataRiferimento}"/>
                 </east>
 
             </borderlayout>

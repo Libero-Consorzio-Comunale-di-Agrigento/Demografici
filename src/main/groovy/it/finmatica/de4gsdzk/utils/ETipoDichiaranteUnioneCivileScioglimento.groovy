@@ -28,28 +28,28 @@ enum ETipoDichiaranteUnioneCivileScioglimento {
     Map getEtichettaDesc(){
         switch(this) {
             // unioni civili
-            case C1: return Etichette.Contraente_1
-            case C2: return Etichette.Contraente_2
-            case C1C2: return Etichette.Contraente_1_Contraente_2
-            case C1IT: return Etichette.Contraente_1_e_Interprete
-            case C2IT: return Etichette.Contraente_2_e_Interprete
-            case C1C2IT: return Etichette.Contraente_1_Contraente_2_e_Interprete
-            case IT: return Etichette.Interprete
-            case NE: return Etichette.Nessuno
-            case CI: return Etichette.Contraente_1_Contraente_2 // per retrocompatibilità
+            case C1: return Etichette.getEtichetta("Contraente_1")
+            case C2: return Etichette.getEtichetta("Contraente_2")
+            case C1C2: return Etichette.getEtichetta("Contraente_1_Contraente_2")
+            case C1IT: return Etichette.getEtichetta("Contraente_1_e_Interprete")
+            case C2IT: return Etichette.getEtichetta("Contraente_2_e_Interprete")
+            case C1C2IT: return Etichette.getEtichetta("Contraente_1_Contraente_2_e_Interprete")
+            case IT: return Etichette.getEtichetta("Interprete")
+            case NE: return Etichette.getEtichetta("Nessuno")
+            case CI: return Etichette.getEtichetta("Contraente_1_Contraente_2") // per retrocompatibilità
             // scioglimenti
-            case C1A2: return Etichette.Contraente_1_e_Avvocato_Contraente_2
-            case C1A1: return Etichette.Contraente_1_e_Avvocato_Contraente_1
-            case C2A1: return Etichette.Contraente_2_e_Avvocato_Contraente_1
-            case C2A2: return Etichette.Contraente_2_e_Avvocato_Contraente_2
-            case A1: return Etichette.Avvocato_Contraente_1
-            case A2: return Etichette.Avvocato_Contraente_2
-            case A1A2: return Etichette.Avvocati_Contraenti
-            case C1C2A1: return Etichette.Contraente_1_Contraente_2_Avvocato_Contraente_1
-            case C1C2A2: return Etichette.Contraente_1_Contraente_2_Avvocato_Contraente_2
-            case C1A1A2: return Etichette.Contraente_1_e_Avvocati
-            case C2A2A1: return Etichette.Contraente_2_e_Avvocati
-            case C1C2A1A2: return Etichette.Contraenti_e_Avvocati
+            case C1A2: return Etichette.getEtichetta("Contraente_1_e_Avvocato_Contraente_2")
+            case C1A1: return Etichette.getEtichetta("Contraente_1_e_Avvocato_Contraente_1")
+            case C2A1: return Etichette.getEtichetta("Contraente_2_e_Avvocato_Contraente_1")
+            case C2A2: return Etichette.getEtichetta("Contraente_2_e_Avvocato_Contraente_2")
+            case A1: return Etichette.getEtichetta("Avvocato_Contraente_1")
+            case A2: return Etichette.getEtichetta("Avvocato_Contraente_2")
+            case A1A2: return Etichette.getEtichetta("Avvocati_Contraenti")
+            case C1C2A1: return Etichette.getEtichetta("Contraente_1_Contraente_2_Avvocato_Contraente_1")
+            case C1C2A2: return Etichette.getEtichetta("Contraente_1_Contraente_2_Avvocato_Contraente_2")
+            case C1A1A2: return Etichette.getEtichetta("Contraente_1_e_Avvocati")
+            case C2A2A1: return Etichette.getEtichetta("Contraente_2_e_Avvocati")
+            case C1C2A1A2: return Etichette.getEtichetta("Contraenti_e_Avvocati")
         }
         return null
     }

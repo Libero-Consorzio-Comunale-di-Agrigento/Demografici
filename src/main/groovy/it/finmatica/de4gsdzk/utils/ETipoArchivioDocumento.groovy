@@ -12,7 +12,7 @@ enum ETipoArchivioDocumento {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case DAT: return Etichette.Dichiarazione_Anticipata_di_Trattamento
+            case DAT: return Etichette.getEtichetta("Dichiarazione_Anticipata_di_Trattamento")
         }
         return null
     }

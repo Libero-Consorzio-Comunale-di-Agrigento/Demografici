@@ -47,9 +47,9 @@ class UnioneCivileListaViewModel extends AttoListaParentViewModel{
 
         ricercaAtto = new RicercaAtto(ETipoAtto.UCI)
 
-        List<Map> eList = [Etichette.Atti_Unione_Civile, Etichette.Data_Evento,
-                           Etichette.Generalita_Contraente_1_decrescente, Etichette.Generalita_Contraente_1_crescente,
-                           Etichette.Generalita_Contraente_2_decrescente, Etichette.Generalita_Contraente_2_crescente]
+        List<Map> eList = [Etichette.getEtichetta("Atti_Unione_Civile"), Etichette.getEtichetta("Data_Evento"),
+                           Etichette.getEtichetta("Generalita_Contraente_1_decrescente"), Etichette.getEtichetta("Generalita_Contraente_1_crescente"),
+                           Etichette.getEtichetta("Generalita_Contraente_2_decrescente"), Etichette.getEtichetta("Generalita_Contraente_2_crescente")]
 
         eList.addAll(CivUnioneCivile.etichetteDomain)
 
@@ -59,7 +59,7 @@ class UnioneCivileListaViewModel extends AttoListaParentViewModel{
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.Atti_Unione_Civile)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atti_Unione_Civile"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -67,14 +67,14 @@ class UnioneCivileListaViewModel extends AttoListaParentViewModel{
 
         onCaricaTipiAttoByCategoria()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),                        SortUtils.estremiAttoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),                          SortUtils.estremiAttoAsc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Contraente_1_decrescente),             SortUtils.cognomeNomeConiuge1Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Contraente_1_crescente),               SortUtils.cognomeNomeConiuge1Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Contraente_2_decrescente),             SortUtils.cognomeNomeConiuge2Desc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_Contraente_2_crescente),               SortUtils.cognomeNomeConiuge2Asc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_decrescente),                         SortUtils.dataEventoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_crescente),                           SortUtils.dataEventoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),                        SortUtils.estremiAttoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),                          SortUtils.estremiAttoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Contraente_1_decrescente")),             SortUtils.cognomeNomeConiuge1Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Contraente_1_crescente")),               SortUtils.cognomeNomeConiuge1Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Contraente_2_decrescente")),             SortUtils.cognomeNomeConiuge2Desc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_Contraente_2_crescente")),               SortUtils.cognomeNomeConiuge2Asc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_decrescente")),                         SortUtils.dataEventoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_crescente")),                           SortUtils.dataEventoAsc ))
 
         //Default: estremi atto discendente
         selectedOrder = listaOrder[0]
@@ -153,7 +153,7 @@ class UnioneCivileListaViewModel extends AttoListaParentViewModel{
                 Map params = [tipoAttoDomain: ta]
                 apriDettaglio(uriDettaglioDivorzio, params)
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

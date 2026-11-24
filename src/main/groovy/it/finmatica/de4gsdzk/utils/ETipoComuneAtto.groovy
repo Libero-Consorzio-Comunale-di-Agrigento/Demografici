@@ -136,6 +136,37 @@ enum ETipoComuneAtto {
     CP_ANN,         // "Comune provenienza annotazione"
 
     // CERTIFICAZIONE - BENEFICIARIO
-    CN_BEN          // "Comune nascita beneficiario"
+    CN_BEN,          // "Comune nascita beneficiario"
+    CE_RIC,          // "Comune ente richiedente"
+
+    //PRATICHE
+    PROV,            // "Comune di provenienza"
+    ISC_AIRE,        // "Comune di iscrizione AIRE"
+    LOC,            // "Comune di residenza proprietario locazione"
+    LOC_SEDE,     // "Comune contratto locazione"
+    COM,             // "Comune di residenza proprietario comodato"
+    COM_SEDE,      // "Comune contratto comodato"
+    SOGG_NAS,        // "Comune di nascita Soggetto"
+    SOGG_ATTO_NAS,  // "Comune atto di nascita del soggetto"
+    SOGG_DATA_NAS,  // "Comune atto di nascita del soggetto"
+    SOGG_MAT,        // "Comune di matrimonio Soggetto"
+    SOGG_ATTO_MAT,  // "Comune atto di matrimonio Soggetto"
+    SOGG_VED,       // "Comune di vedovanza Soggetto"
+    SOGG_ATTO_VED,  // "Comune atto di vedovanza Soggetto"
+    SOGG_DIV,       // "Comune di divorzio Soggetto"
+    SOGG_ATTO_DIV,  // "Comune atto di divorzio Soggetto"
+    CONV_I,          // "Comune inizio della Convivenza di fatto"
+    SOGG_ATTO_CONV_I, // "Comune atto di inizio Convivenza di fatto"
+    CONV_F,          // "Comune fine della Convivenza di fatto"
+    SOGG_ATTO_CONV_F, // "Comune atto di fine Convivenza di fatto"
+    DOC_ENTE,         // "Comune ente dove è stato emesso l'atto"
+    REC,              // "Comune di abitazione Recapiti"
+    ENTE,              // "Comune dell'ente per dizionario"
+
+    URNA_NAS,              // "Comune nascita defunto"
+    URNA_MOR,              // "Comune morte defunto"
+    URNA_ATTO_MOR,             // "Comune atto morte defunto"
+
+    PROVVEDIMENTO              // "Comune ente provvedimento"
 
 }

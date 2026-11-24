@@ -109,6 +109,10 @@ function  f_xml_atto_anpr              (a_servizio varchar2,a_cod_pro_atto numbe
 function  f_xml_cittadinanza           (a_servizio varchar2,a_nazionalita varchar2,a_data_inizio_naz number,a_flag_altra_cit varchar2 default NULL) return clob;
 function  f_xml_altriDati              (a_servizio varchar2,a_cod_prof number,a_sesso varchar2,a_posizione_prof number,a_titolo_studio varchar2) return clob;
 function  f_xml_indirizzo              (a_servizio varchar2,a_cod_via number,a_num_civ number,a_suffisso varchar2,a_interno number,a_sub_interno varchar2,a_scala varchar2,a_piano varchar2,a_tag varchar2 default null) return clob;
+function  f_xml_indirizzo_esteso       (a_servizio varchar2,a_cod_via number,a_num_civ number,a_suffisso varchar2,a_interno number,a_sub_interno varchar2,a_scala varchar2,a_piano varchar2
+                                                           ,a_flag_metrico varchar2,a_progr_snc varchar2,a_flag_lettera varchar2,a_flag_esponente varchar2,a_flag_nui varchar2,a_nui varchar2,a_colore varchar2
+                                                           ,a_corte varchar2,a_interno2 number,a_sub_interno2 varchar2,a_secondario varchar2,a_scala_esterna varchar2 
+                                                           ,a_tag varchar2 default null) return clob;
 function  f_xml_localitaEstera         (a_servizio varchar2,a_via_aire varchar2,a_zipcode varchar2,a_cod_pro_aire number,a_cod_com_aire number,a_provincia_contea varchar2,a_cod_consolato number,a_tipo_consolato number,a_stato number) return clob;
 function  f_xml_idFamConvComune        (a_servizio varchar2,a_fascia number,a_cod_fam number,a_tipo_fam number,a_tipo_conv number,a_matricola_CC number,a_data_CC number,a_id_operazione number default NULL) return clob;
 function  f_xml_divorzio               (a_servizio varchar2,a_matricola number,a_data_div number,a_data_div_ann number,a_stato_civile varchar2 default NULL) return clob;
@@ -116,7 +120,7 @@ function  f_xml_cartaIdentita          (a_servizio varchar2,a_matricola number,a
 function  f_xml_permessoSoggiorno      (a_servizio varchar2,a_matricola number,a_id_anadoc number default NULL) return clob;
 function  f_xml_listaElettorale        (a_servizio varchar2,a_matricola number) return clob;
 function  f_xml_listaLeva              (a_servizio varchar2,a_matricola number) return clob;
-function  f_xml_censimento             (a_servizio varchar2,a_anno_cens number,a_sezione_cens number,a_foglio_cens number,a_questionario_cens number) return clob;
+function  f_xml_censimento             (a_servizio varchar2,a_anno_cens number,a_sezione_cens number,a_foglio_cens number,a_questionario_cens number,a_data_decorrenza number) return clob;
 function  f_xml_autoveicoli            (a_servizio varchar2,a_matricola number) return clob;
 function  f_xml_legame                 (a_servizio varchar2,a_tipo_fam number,a_fascia number,a_cod_fam number,a_rapporto_par varchar2,a_sesso varchar2,a_data_inizio_fam number,a_progr_componente number,a_matricola number) return clob;
 function  f_xml_datiDelProcedimento    (a_servizio varchar2,a_pratica number,a_anno_pratica number,a_data_reg number,a_anagrafe varchar2 default NULL,a_tipo_evento varchar2 default NULL) return clob;

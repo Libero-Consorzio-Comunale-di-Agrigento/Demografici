@@ -51,10 +51,22 @@ class AnscController {
             log.info("jOld non gestito")
         }
 
-        ETipoArchivioAnsc tac = ETipoArchivioAnsc.valueOf(taRifCom)
+        ETipoArchivioAnsc tac
+        try {
+            tac = ETipoArchivioAnsc.valueOf(taRifCom)
+        } catch (IllegalArgumentException e) {
+            log.warn("Valore non valido per tipoArchivioComunicazione: ${taRifCom}")
+            return ResponseEntity.badRequest().build()
+        }
+
         ETipoArchivioAnsc tacPrec = null
         if ( (taRifComPrec?:"") != ""){
-            tacPrec = ETipoArchivioAnsc.valueOf(taRifComPrec)
+            try {
+                tacPrec = ETipoArchivioAnsc.valueOf(taRifComPrec)
+            } catch (IllegalArgumentException e) {
+                log.warn("Valore non valido per tipoArchivioComunicazionePrec: ${taRifComPrec}")
+                return ResponseEntity.badRequest().build()
+            }
         }
 
         AnscEndPointServizio epServizio = anscEndPointServizioService.get(idServizio)
@@ -67,7 +79,13 @@ class AnscController {
             idRifPrecs = [idRifPrec]
         }
 
-        ETipoAtto tipoAttoEnum = ETipoAtto.valueOf(tipoAtto)
+        ETipoAtto tipoAttoEnum
+        try {
+            tipoAttoEnum = ETipoAtto.valueOf(tipoAtto)
+        } catch (IllegalArgumentException e) {
+            log.warn("Valore non valido per tipoAtto: ${tipoAtto}")
+            return ResponseEntity.badRequest().build()
+        }
         CivAttoBaseDomain atto = civAttoService.getAtto(tipoAttoEnum, pkAtto)
         CivDatiProvenienzaAtto datiProvenienza = civDatiProvenienzaAttoService.getByUkAtto(atto.idAtto)
         String tipoDocumentoCdu = AnscUtils.getTipoDocumentoCdu(atto, datiProvenienza)

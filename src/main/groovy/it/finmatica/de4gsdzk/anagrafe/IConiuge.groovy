@@ -18,5 +18,5 @@ interface IConiuge {
 
     Comune getComuneResidenza()
 
-    AnaNazionalita getNazionalita()
+    AnaCittadinanza getNazionalita()
 }

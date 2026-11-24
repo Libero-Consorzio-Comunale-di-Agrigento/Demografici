@@ -29,7 +29,7 @@ begin
  	end if;
      else
         begin
-          select a.descrizione
+          select nvl(a.descrizione_al1,a.descrizione)
 	    into w_descrizione
 	    from arccom a
 	   where a.cod_provincia = a_cod_provincia

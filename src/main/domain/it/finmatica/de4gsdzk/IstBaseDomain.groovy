@@ -42,16 +42,16 @@ abstract class IstBaseDomain extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Anno, Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie,
-                                              Etichette.Cognome, Etichette.Nome, Etichette.Sesso, Etichette.Data_Nascita, Etichette.Anni, Etichette.Codice_Fiscale,
-                                              Etichette.Luogo_Nascita, Etichette.Luogo_Residenza, Etichette.Cittadinanza, Etichette.Progressivo,
-                                              Etichette.Stato_Civile, Etichette.Data_Matrimonio, Etichette.Data_Unione_Civile, Etichette.Rito,
-                                              Etichette.Tipo_Accordo, Etichette.Comune_Matrimonio, Etichette.Comune_Unione_Civile, Etichette.Dal, Etichette.Nazionalita,
-                                              Etichette.Regime_patrimoniale, Etichette.Regime_comunione, Etichette.Regime_separazione,
-                                              Etichette.Completo, Etichette.Grado_Istruzione, Etichette.Titolo_Studio,
-                                              Etichette.Posizione_professione, Etichette.Condizione_professionale,
-                                              Etichette.Condizione_non_professionale, Etichette.Ramo_attivita_economica,
-                                              Etichette.Stato_Civile_Pre_Unione, Etichette.Luogo_Residenza_Post_Matrimonio,
-                                              Etichette.Stato_Civile_Pre_Matrimonio, Etichette.Data_cessazione_matrimonio_precedente]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"),
+                                              Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Data_Nascita"), Etichette.getEtichetta("Anni"),Etichette.getEtichetta("Codice_Fiscale"),
+                                               Etichette.getEtichetta("Luogo_Nascita"),  Etichette.getEtichetta("Luogo_Residenza"),  Etichette.getEtichetta("Cittadinanza"), Etichette.getEtichetta("Progressivo"),
+                                              Etichette.getEtichetta("Stato_Civile"), Etichette.getEtichetta("Data_Matrimonio"), Etichette.getEtichetta("Data_Unione_Civile"),  Etichette.getEtichetta("Rito"),
+                                               Etichette.getEtichetta("Tipo_Accordo"), Etichette.getEtichetta("Comune_Matrimonio"), Etichette.getEtichetta("Comune_Unione_Civile"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Nazionalita"),
+                                               Etichette.getEtichetta("Regime_patrimoniale"),  Etichette.getEtichetta("Regime_comunione"),  Etichette.getEtichetta("Regime_separazione"),
+                                               Etichette.getEtichetta("Completo"),  Etichette.getEtichetta("Grado_Istruzione"),  Etichette.getEtichetta("Titolo_Studio"),
+                                               Etichette.getEtichetta("Posizione_professione"),  Etichette.getEtichetta("Condizione_professionale"),
+                                               Etichette.getEtichetta("Condizione_non_professionale"),  Etichette.getEtichetta("Ramo_attivita_economica"),
+                                               Etichette.getEtichetta("Stato_Civile_Pre_Unione"),  Etichette.getEtichetta("Luogo_Residenza_Post_Matrimonio"),
+                                               Etichette.getEtichetta("Stato_Civile_Pre_Matrimonio"),  Etichette.getEtichetta("Data_cessazione_matrimonio_precedente")]
 
 }

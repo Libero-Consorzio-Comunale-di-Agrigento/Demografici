@@ -411,10 +411,10 @@ class CivTrasportoESeppellimento {
         return String.format("CIVDTS(id=%d)", id)
     }
 
-    static final List<Map> etichetteDomain = [Etichette.Cimitero, Etichette.Data_Richiesta, Etichette.Data_Trasporto, Etichette.Ore, Etichette.Minuti, Etichette.Ditta,
-                                              Etichette.Comune_destinazione, Etichette.Indirizzo_destinazione, Etichette.Registro_Aut_Trasporto,
-                                              Etichette.Registro_Aut_Seppellimento, Etichette.Registro_Aut_Cremazione, Etichette.Comune_cremazione,
-                                              Etichette.Indirizzo_destinazione_ceneri, Etichette.Numero_Protocollo_Anno, Etichette.In_data, Etichette.Cognome_Richiedente,
-                                              Etichette.Nome_Richiedente, Etichette.Cognome_Incaricato, Etichette.Nome_Incaricato]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cimitero"), Etichette.getEtichetta("Data_Richiesta"), Etichette.getEtichetta("Data_Trasporto"), Etichette.getEtichetta("Ore"), Etichette.getEtichetta("Minuti"), Etichette.getEtichetta("Ditta"),
+                                              Etichette.getEtichetta("Comune_destinazione"), Etichette.getEtichetta("Indirizzo_destinazione"), Etichette.getEtichetta("Registro_Aut_Trasporto"),
+                                              Etichette.getEtichetta("Registro_Aut_Seppellimento"), Etichette.getEtichetta("Registro_Aut_Cremazione"), Etichette.getEtichetta("Comune_cremazione"),
+                                              Etichette.getEtichetta("Indirizzo_destinazione_ceneri"), Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("In_data"), Etichette.getEtichetta("Cognome_Richiedente"),
+                                              Etichette.getEtichetta("Nome_Richiedente"), Etichette.getEtichetta("Cognome_Incaricato"), Etichette.getEtichetta("Nome_Incaricato")]
 
 }

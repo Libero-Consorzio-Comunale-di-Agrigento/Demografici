@@ -49,10 +49,10 @@ class RegistrazioneAnnotazioniPerComuneListaViewModel extends RegistrazioneAnnot
 
         tipoAttoEnum = ETipoAtto.NAS
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),        SortUtils.getEstremiAttoDesc()))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),          SortUtils.getEstremiAttoAsc() ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_decrescente),          SortUtils.cognomeNomeDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),            SortUtils.cognomeNomeAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),        SortUtils.getEstremiAttoDesc()))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),          SortUtils.getEstremiAttoAsc() ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_decrescente")),          SortUtils.cognomeNomeDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),            SortUtils.cognomeNomeAsc ))
 
         //Default: estremi atto desc
         selectedOrder = listaOrder[0]
@@ -66,7 +66,7 @@ class RegistrazioneAnnotazioniPerComuneListaViewModel extends RegistrazioneAnnot
         updateTotalSize(p.count)
 
         if ( (totalSize == 0) && (tipoAttoEnum != null) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Inserimento_Annotazione), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Inserimento_Annotazione")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener(){
                         void onEvent(Event e){
                             if (Messagebox.ON_YES.equals(e.getName())){
@@ -84,7 +84,7 @@ class RegistrazioneAnnotazioniPerComuneListaViewModel extends RegistrazioneAnnot
         Page<CivSoggettoAnnotazione> p = null
 
         if (tipoAttoEnum == null){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             Map params = [ activePage:(usePaging?activePage:null), pageSize: (usePaging?pageSize:null),
                            ufficio: ricercaAtto.ufficio, anno: ricercaAtto.anno, parte: ricercaAtto.parte, serie: ricercaAtto.serie,
@@ -113,7 +113,7 @@ class RegistrazioneAnnotazioniPerComuneListaViewModel extends RegistrazioneAnnot
             Map params = [soggettoAnnotazione: new CivSoggettoAnnotazione(tipoAttoRif: tipoAtto, tipoAttoAnnotazione: tipoAtto, tipoComune: 1)]
             apriDettaglio(getUriDettaglio(), params)
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -123,10 +123,10 @@ class RegistrazioneAnnotazioniPerComuneListaViewModel extends RegistrazioneAnnot
                 CivAttoBaseDomain atto = civAttoService.getAttoFromAnnotazione(dettaglio.getTipoAtto(), dettaglio.ufficio, dettaglio.anno, dettaglio.atto, dettaglio.parte, dettaglio.serie)
                 apriPreviewAnnotazioni(atto)
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

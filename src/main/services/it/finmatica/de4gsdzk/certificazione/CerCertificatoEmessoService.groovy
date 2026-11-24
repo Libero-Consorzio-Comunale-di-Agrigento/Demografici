@@ -2,19 +2,17 @@ package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.GsdFirmaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.certificazione.error.CertificatoAnnullatoException
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
 import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
-import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmessoRepository
-import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazioneService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.utils.DataUtils
 import it.finmatica.de4gsdzk.utils.DomainUtils
 import it.finmatica.de4gsdzk.utils.MetadatiGdmUtils
-import it.finmatica.gestionetesti.GestioneTestiService
 import it.finmatica.smartdoc.api.struct.Campo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -30,7 +28,7 @@ class CerCertificatoEmessoService {
 
 	private final UtenteCustomService utenteCustomService
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CerIndividuoCertificatoService cerIndividuoCertificatoService
 
@@ -42,29 +40,25 @@ class CerCertificatoEmessoService {
 
 	private final GestioneTestiModelloRelazioneService gestioneTestiModelloRelazioneService
 
-	private final GestioneTestiService gestioneTestiService
-
 	private final GsdFirmaService gsdFirmaService
 
 	CerCertificatoEmessoService(CerCertificatoEmessoRepository cerCertificatoEmessoRepository,
-								UtenteCustomService utenteCustomService,
-								StatoCivileService statoCivileService,
-								CerIndividuoCertificatoService cerIndividuoCertificatoService,
-								CerTerminalistaService cerTerminalistaService,
-								CerFondoCassaTerminalistaService cerFondoCassaTerminalistaService,
-								IntegrazioneDocumentaleService integrazioneDocumentaleService,
-								GestioneTestiModelloRelazioneService gestioneTestiModelloRelazioneService,
-								GestioneTestiService gestioneTestiService,
-								GsdFirmaService gsdFirmaService) {
+                                UtenteCustomService utenteCustomService,
+                                GsdService gsdService,
+                                CerIndividuoCertificatoService cerIndividuoCertificatoService,
+                                CerTerminalistaService cerTerminalistaService,
+                                CerFondoCassaTerminalistaService cerFondoCassaTerminalistaService,
+                                IntegrazioneDocumentaleService integrazioneDocumentaleService,
+                                GestioneTestiModelloRelazioneService gestioneTestiModelloRelazioneService,
+                                GsdFirmaService gsdFirmaService) {
 		this.cerCertificatoEmessoRepository = cerCertificatoEmessoRepository
 		this.utenteCustomService = utenteCustomService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.cerTerminalistaService = cerTerminalistaService
 		this.cerIndividuoCertificatoService = cerIndividuoCertificatoService
 		this.cerFondoCassaTerminalistaService = cerFondoCassaTerminalistaService
 		this.integrazioneDocumentaleService = integrazioneDocumentaleService
 		this.gestioneTestiModelloRelazioneService = gestioneTestiModelloRelazioneService
-		this.gestioneTestiService = gestioneTestiService
 		this.gsdFirmaService = gsdFirmaService
 	}
 
@@ -85,8 +79,8 @@ class CerCertificatoEmessoService {
 
 	CerCertificatoEmesso saveNew(CerCertificatoEmesso obj, Integer matricola, CivAttoBaseDomain atto) {
 		// Creo sempre un nuovo certificato emesso
-		obj.id = statoCivileService.getIdFromSequence(obj)
-		obj.progressivoEmissione = statoCivileService.getProgressivoCertificato(obj.annoEmissione)
+		obj.id = gsdService.getIdFromSequence(obj)
+		obj.progressivoEmissione = gsdService.getProgressivoCertificato(obj.annoEmissione)
 
 		save(obj)
 
@@ -129,7 +123,7 @@ class CerCertificatoEmessoService {
 
 	void saveAllegatoDocumentale(CerCertificatoEmesso obj, byte[] bytes) {
 		List<Campo> metadati = MetadatiGdmUtils.listMetadatiCertificazione(obj, obj.idEmissione)
-		integrazioneDocumentaleService.addFileToDocumentale(obj, obj, new ByteArrayInputStream(bytes), metadati, EModelloGdm.CertificatiEmessi)
+		integrazioneDocumentaleService.addFileToDocumentale(obj, obj, new ByteArrayInputStream(bytes), metadati, true, EModelloGdm.CertificatiEmessi)
 
 		cerCertificatoEmessoRepository.save(obj)
 	}

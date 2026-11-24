@@ -295,7 +295,7 @@ class AnscCasoUsoServiceNascitaSpec extends IntegrationSpec {
         nascita.flagFiglioDiIgnoti = flagFiglioDiIgnoti
 
         CivDatiProvenienzaAtto datiProvenienza = new CivDatiProvenienzaAtto()
-        datiProvenienza.dataAtto = DataUtils.fromStringToDate("01/01/2025")
+        datiProvenienza.dataAtto = DataUtils.getDataCorrente()
         datiProvenienza.tipoDichiarante = tipoDichiarante
         datiProvenienza.tipoComparente = tipoComparente
 

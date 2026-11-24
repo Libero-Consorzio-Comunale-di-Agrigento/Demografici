@@ -6,6 +6,7 @@ select log.*
      , '['||log.modulo_rif||'] '||
          decode(log.note, '', '', log.note||' ')||
          '('||log.id_rif||')' note_vis
+     , log.campo_clob info_vis
   from gte_log log
 /
 comment on table GTE_LOG is 'Gestione Testi - Tabella di Log (view)'

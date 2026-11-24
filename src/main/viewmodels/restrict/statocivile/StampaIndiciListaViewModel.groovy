@@ -1,10 +1,8 @@
 package restrict.statocivile
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.CivAttoBaseDomain
-import it.finmatica.de4gsdzk.ExportService
-import it.finmatica.de4gsdzk.ISoggettoAtto1
-import it.finmatica.de4gsdzk.ISoggettoAtto2
+import it.finmatica.de4gsdzk.*
+import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.export.ExportField
 import it.finmatica.de4gsdzk.export.ExportObject
@@ -16,6 +14,7 @@ import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 
@@ -45,17 +44,22 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
     List<OrderBy> listaOrder = []
     OrderBy selectedOrder
 
+    Boolean titoloVuoto
+
     @Delegate
     ControlBarStampaAttributes cbStampa = new ControlBarStampaAttributes()
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivAttoService civAttoService
 
     @WireVariable
     private ExportService exportService
+
+    @WireVariable
+    private ArcParametroService arcParametroService
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window window, @ExecutionArgParam("tipoAttoEnum") ETipoAtto tipoAttoEnum, @ExecutionArgParam("tipoIndiceEnum") ETipoIndice tipoIndiceEnum) {
 
@@ -70,12 +74,12 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
         this.tipoAttoEnum = tipoAttoEnum
         this.tipoIndiceEnum = tipoIndiceEnum
 
-        List<Map<String, String>> eList = [Etichette.CONSOLIDATO, Etichette.IN_INSERIMENTO, Etichette.Generalita_crescente,
-                                           Etichette.Stato, Etichette.Dal, Etichette.Al,
-                                           Etichette.Margine, Etichette.Estremi_Atto, Etichette.Tutti_gli_uffici,
-                                           Etichette.Tipo, Etichette.Numero, Etichette.Atto]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("CONSOLIDATO"), Etichette.getEtichetta("IN_INSERIMENTO"), Etichette.getEtichetta("Generalita_crescente"),
+                                           Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"),
+                                           Etichette.getEtichetta("Margine"), Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Tutti_gli_uffici"),
+                                           Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Atto")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_funzionalita_export, EtichetteMessaggi.Compilare_campi_obbligatori])
+        eList.addAll([Etichette.getEtichetta("Errore_funzionalita_export"), Etichette.getEtichetta("Compilare_campi_obbligatori")])
         eList.addAll(RicercaAttoStampa.etichetteRicercaStampaDesc)
         eList.addAll(CivNascita.etichetteDomain)
         eList.addAll(CivMorte.etichetteDomain)
@@ -117,17 +121,19 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
 
         formLabel = msgTitle?.toUpperCase() + " (" + getEtichettaEnum(tipoIndiceEnum)?.toUpperCase() + ")"
 
-        listaUffici = statoCivileService.listUffici()
+        listaUffici = gsdService.listUffici()
         ricerca = new RicercaAttoStampa(tipoAttoEnum, EStatoAtto.CONSOLIDATO, Boolean.TRUE, anscOn)
         if (listaUffici.size() == 1){
             ricerca.ufficio = listaUffici[0]
         }
         listaUffici.add(0, null)
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),    SortUtils.cognomeNome1ListaAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),    SortUtils.cognomeNome2ListaAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),    SortUtils.cognomeNome1ListaAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),    SortUtils.cognomeNome2ListaAsc))
 
         selectedOrder = listaOrder[0]
+
+        titoloVuoto = arcParametroService.titoloIndiciVuoto(tipoIndiceEnum)
     }
 
     @Override
@@ -171,19 +177,19 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
     void esporta(ETipoFile tipo) {
 
         if ( ((tipoAttoEnum == ETipoAtto.PVU) || (tipoAttoEnum == ETipoAtto.PUB)) && (tipo == ETipoFile.PDF) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_funzionalita_export), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_funzionalita_export")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
 
         if ( (tipo == ETipoFile.PDF) && (tipoMargineLateraleSelezionato == null) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_obbligatori), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_obbligatori")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
 
         // Popolo la lista nella form
         onRicarica()
         if ( (lista == null) || (lista.isEmpty()) ){
-            Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             return
         }
 
@@ -241,46 +247,46 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
 
         List<ExportField> exportFields = []
 
-        exportFields.add(new ExportField("cognome1Lista", getEtichetta(Etichette.Cognome), STRING_FORMAT))
-        exportFields.add(new ExportField("nome1Lista", getEtichetta(Etichette.Nome), STRING_FORMAT))
+        exportFields.add(new ExportField("cognome1Lista", getEtichetta(Etichette.getEtichetta("Cognome")), STRING_FORMAT))
+        exportFields.add(new ExportField("nome1Lista", getEtichetta(Etichette.getEtichetta("Nome")), STRING_FORMAT))
 
         if (tipoAttoEnum.isDoppioSoggetto()|| tipo == ETipoFile.PDF) {
-            exportFields.add(new ExportField("cognome2Lista", getEtichetta(Etichette.Cognome)))
-            exportFields.add(new ExportField("nome2Lista", getEtichetta(Etichette.Nome)))
+            exportFields.add(new ExportField("cognome2Lista", getEtichetta(Etichette.getEtichetta("Cognome"))))
+            exportFields.add(new ExportField("nome2Lista", getEtichetta(Etichette.getEtichetta("Nome"))))
         }
 
         if (tipo == ETipoFile.CSV) {
-            exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), STRING_FORMAT, calcolaValoreExportStringFromInteger))
-            exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero), STRING_FORMAT, calcolaValoreExportStringFromInteger))
+            exportFields.add(new ExportField("anno", getEtichetta(Etichette.getEtichetta("Anno")), STRING_FORMAT, calcolaValoreExportStringFromInteger))
+            exportFields.add(new ExportField("atto", getEtichetta(Etichette.getEtichetta("Numero")), STRING_FORMAT, calcolaValoreExportStringFromInteger))
         } else {
-            exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), INTEGER_FORMAT))
-            exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero), INTEGER_FORMAT))
+            exportFields.add(new ExportField("anno", getEtichetta(Etichette.getEtichetta("Anno")), INTEGER_FORMAT))
+            exportFields.add(new ExportField("atto", getEtichetta(Etichette.getEtichetta("Numero")), INTEGER_FORMAT))
         }
 
         if (ricercaAttoStampa.hasParte() || tipo == ETipoFile.PDF) {
-            exportFields.add(new ExportField("parteRomana", tipo == ETipoFile.PDF ? "P." : getEtichetta(Etichette.Parte)))
+            exportFields.add(new ExportField("parteRomana", tipo == ETipoFile.PDF ? "P." : getEtichetta(Etichette.getEtichetta("Parte"))))
         }
         if (ricercaAttoStampa.hasSerie() || tipo == ETipoFile.PDF) {
-            exportFields.add(new ExportField("serie", tipo == ETipoFile.PDF ? "S." : getEtichetta(Etichette.Serie)))
+            exportFields.add(new ExportField("serie", tipo == ETipoFile.PDF ? "S." : getEtichetta(Etichette.getEtichetta("Serie"))))
         }
 
-        exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), INTEGER_FORMAT))
+        exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), INTEGER_FORMAT))
 
         if (tipo == ETipoFile.PDF) {
-            exportFields.add(new ExportField("idAtto", getEtichetta(Etichette.Estremi_Atto)))
+            exportFields.add(new ExportField("idAtto", getEtichetta(Etichette.getEtichetta("seleziona_salva_tooltip"))))
         }
 
         StringBuilder b = new StringBuilder(getEtichetta(tipoAttoEnum.etichettaPluralDesc))
         b.append("_")
         b.append(getEtichettaEnum(tipoIndiceEnum))
-        String labelAnno = getNomeFileXAnno(getEtichetta(Etichette.Anno), ricercaAttoStampa.annoDa, ((tipoIndiceEnum== ETipoIndice.A)?ricercaAttoStampa.annoDa:ricercaAttoStampa.annoA))
+        String labelAnno = getNomeFileXAnno(getEtichetta(Etichette.getEtichetta("Anno")), ricercaAttoStampa.annoDa, ((tipoIndiceEnum== ETipoIndice.A)?ricercaAttoStampa.annoDa:ricercaAttoStampa.annoA))
         b.append(labelAnno)
 
         Map reportParams = [
             CORNICE_VISIBILE: corniceOn,
             TIPO_ATTO: tipoAttoEnum.getId(),
-            TITOLO: getEtichettaEnum(tipoIndiceEnum),
-            ATTO: getEtichetta(Etichette.Atto)
+            TITOLO: titoloVuoto ?  "" : getEtichettaEnum(tipoIndiceEnum),
+            ATTO: getEtichetta(Etichette.getEtichetta("Atto"))
         ]
 
         Map reportOptions = [:]
@@ -293,7 +299,8 @@ class StampaIndiciListaViewModel extends AbstractStampaAttiListaViewModel {
         if (tipo == ETipoFile.PDF) {
             customMandatoryParams.put("margine", tipoMargineLateraleSelezionato)
         }
-        exportService.export(tipo, eo, b.toString(), customMandatoryParams)
+        InputStream exportStream = exportService.export(tipo, eo, customMandatoryParams)
+        Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename(b.toString(), tipo))
     }
 
     boolean isAnnuale() { tipoIndiceEnum == ETipoIndice.A }

@@ -23,6 +23,6 @@ class CivTipoRegistro {
     @Column(name = "DESCRIZIONE")
     String descrizione
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione")]
 
 }

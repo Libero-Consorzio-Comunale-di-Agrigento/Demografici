@@ -21,16 +21,16 @@ enum EGenereAnnotazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case RET: return Etichette.Annotazione_rettifica_modifica
-            case REA: return Etichette.Annotazione_rettifica_annullamento
-            case EMA: return Etichette.Annotazione_errore_materiale
-            case COM: return Etichette.Annotazione_comuni_generica
-            case AMM: return Etichette.Annotazione_amministrazioni_generica
-            case AMD: return Etichette.Annotazione_amministrazioni_divorzio
-            case AMX: return Etichette.Annotazione_amministrazioni_separazione
-            case AMS: return Etichette.Annotazione_amministrazioni_scioglimento
-            case AMA: return Etichette.Annotazione_amministrazioni_annullamento
-            case AUT: return Etichette.Annotazione_auto
+            case RET: return Etichette.getEtichetta("Annotazione_rettifica_modifica")
+            case REA: return Etichette.getEtichetta("Annotazione_rettifica_annullamento")
+            case EMA: return Etichette.getEtichetta("Annotazione_errore_materiale")
+            case COM: return Etichette.getEtichetta("Annotazione_comuni_generica")
+            case AMM: return Etichette.getEtichetta("Annotazione_amministrazioni_generica")
+            case AMD: return Etichette.getEtichetta("Annotazione_amministrazioni_divorzio")
+            case AMX: return Etichette.getEtichetta("Annotazione_amministrazioni_separazione")
+            case AMS: return Etichette.getEtichetta("Annotazione_amministrazioni_scioglimento")
+            case AMA: return Etichette.getEtichetta("Annotazione_amministrazioni_annullamento")
+            case AUT: return Etichette.getEtichetta("Annotazione_auto")
         }
         return null
     }

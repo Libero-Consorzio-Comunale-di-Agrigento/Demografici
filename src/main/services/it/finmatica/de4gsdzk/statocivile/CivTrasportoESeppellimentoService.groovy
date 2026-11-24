@@ -1,13 +1,13 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreOrarioRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreProtocollazioneRuntimeException
 import it.finmatica.de4gsdzk.errors.NumeroProtocolloException
-import it.finmatica.de4gsdzk.statocivile.CivTrasportoESeppellimentoRepository
 import it.finmatica.de4gsdzk.utils.ETipoSiNo
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.OrarioUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,19 +17,19 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivTrasportoESeppellimentoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivNumerazioneDocumentiUscitaService civNumerazioneDocumentiUscitaService
 
 	private final CivTrasportoESeppellimentoRepository civTrasportoESeppellimentoRepository
 
     CivTrasportoESeppellimentoService(CivTrasportoESeppellimentoRepository civTrasportoESeppellimentoRepository,
-									  CivNumerazioneDocumentiUscitaService civNumerazioneDocumentiUscitaService,
-									  StatoCivileService statoCivileService) {
+                                      CivNumerazioneDocumentiUscitaService civNumerazioneDocumentiUscitaService,
+                                      GsdService gsdService) {
 
 		this.civTrasportoESeppellimentoRepository = civTrasportoESeppellimentoRepository
 		this.civNumerazioneDocumentiUscitaService = civNumerazioneDocumentiUscitaService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivTrasportoESeppellimento get(Long id) {
@@ -71,29 +71,29 @@ class CivTrasportoESeppellimentoService {
 	private void validaDati(CivTrasportoESeppellimento obj, Boolean ignoreProtocolliDiversi) {
 		String sezioneTrasporto = "( Dati Trasporto )"
 		if ( !(OrarioUtils.isOraValida(obj.oraTrasporto)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_ora, sezioneTrasporto)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_ora"), sezioneTrasporto)
 		}
 
 		if ( !(OrarioUtils.isMinutoValido(obj.minutoTrasporto)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_minuti, sezioneTrasporto)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_minuti"), sezioneTrasporto)
 		}
 
 		String sezioneOnoranze = "( Estremi Onoranze Funebri )"
 		if ( !(OrarioUtils.isOraValida(obj.oraOnoranze)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_ora, sezioneOnoranze)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_ora"), sezioneOnoranze)
 		}
 
 		if ( !(OrarioUtils.isMinutoValido(obj.minutoOnoranze)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_minuti, sezioneOnoranze)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_minuti"), sezioneOnoranze)
 		}
 
 		String sezioneCremazione = "( Dati Cremazione )"
 		if ( !(OrarioUtils.isOraValida(obj.oraCremazione)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_ora, sezioneCremazione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_ora"), sezioneCremazione)
 		}
 
 		if ( !(OrarioUtils.isMinutoValido(obj.minutoCremazione)) ){
-			throw new ErroreOrarioRuntimeException(EtichetteMessaggi.Errore_valore_minuti, sezioneCremazione)
+			throw new ErroreOrarioRuntimeException(Etichette.getEtichetta("Errore_valore_minuti"), sezioneCremazione)
 		}
 
 		//-------------------- Controllo Numeri Protocollo -------------------
@@ -102,21 +102,21 @@ class CivTrasportoESeppellimentoService {
 			if ( sameRegistroAnnoProtocollo(obj.registroTrasporto, obj.registroCremazione, obj.annoProtocolloTrasporto, obj.annoProtocolloCremazione) ){
 				if ( 	(obj.numeroProtocolloTrasporto != null) && (obj.numeroProtocolloCremazione != null) &&
 						(obj.numeroProtocolloTrasporto.compareTo(obj.numeroProtocolloCremazione) != 0)){
-					throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_TC)
+					throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_TC"))
 				}
 			}
 			// Trasporto e Seppellimento
 			if ( sameRegistroAnnoProtocollo(obj.registroTrasporto, obj.registroSeppellimento, obj.annoProtocolloTrasporto, obj.annoProtocolloSeppellimento) ){
 				if ( 	(obj.numeroProtocolloTrasporto != null) && (obj.numeroProtocolloSeppellimento != null) &&
 						(obj.numeroProtocolloTrasporto.compareTo(obj.numeroProtocolloSeppellimento) != 0)){
-					throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_TS)
+					throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_TS"))
 				}
 			}
 			// Seppellimento e Cremazione
 			if ( sameRegistroAnnoProtocollo(obj.registroCremazione, obj.registroSeppellimento, obj.annoProtocolloCremazione, obj.annoProtocolloSeppellimento) ){
 				if ( 	(obj.numeroProtocolloCremazione != null) && (obj.numeroProtocolloSeppellimento != null) &&
 						(obj.numeroProtocolloCremazione.compareTo(obj.numeroProtocolloSeppellimento) != 0)){
-					throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_CS)
+					throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_CS"))
 				}
 			}
         }
@@ -156,7 +156,7 @@ class CivTrasportoESeppellimentoService {
 		Boolean emptyMandatoryFields = ( (obj.ufficio == null) || (obj.anno == null) || (obj.atto == null) || (obj.parte == null) )
 
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_trasporto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_trasporto"))
 		}
 	}
 
@@ -177,7 +177,7 @@ class CivTrasportoESeppellimentoService {
 
 			if (obj.id == null) {
 				// solo in caso di inserimento
-				obj.id = statoCivileService.getIdFromSequence(obj)
+				obj.id = gsdService.getIdFromSequence(obj)
 			}
 
 			List<CivNumerazioneDocumentiUscita> nduToSave = []
@@ -194,13 +194,13 @@ class CivTrasportoESeppellimentoService {
 							break
 						}
 						if ((!(ignoreProtocolliDiversi)) && (sameRegistroProtocollo(ndu[CivTipoRegistro.ID_TRASPORTO]?.registro, ndu[CivTipoRegistro.ID_CREMAZIONE]?.registro))) {
-							throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_TC)
+							throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_TC"))
 						}
 						if ((!(ignoreProtocolliDiversi)) && (sameRegistroProtocollo(ndu[CivTipoRegistro.ID_TRASPORTO]?.registro, ndu[CivTipoRegistro.ID_SEPPELLIMENTO]?.registro))) {
-							throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_TS)
+							throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_TS"))
 						}
 						if ((!(ignoreProtocolliDiversi)) && (sameRegistroProtocollo(ndu[CivTipoRegistro.ID_CREMAZIONE]?.registro, ndu[CivTipoRegistro.ID_SEPPELLIMENTO]?.registro))) {
-							throw new ErroreProtocollazioneRuntimeException(EtichetteMessaggi.Errore_Protocollo_CS)
+							throw new ErroreProtocollazioneRuntimeException(Etichette.getEtichetta("Errore_Protocollo_CS"))
 						}
 					}
 				}

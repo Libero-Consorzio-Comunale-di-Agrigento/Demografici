@@ -13,10 +13,12 @@ import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
 import org.zkoss.bind.annotation.ContextType
 import org.zkoss.bind.annotation.Init
+import org.zkoss.zk.ui.Executions
 import org.zkoss.zk.ui.event.UploadEvent
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.TraitGestioneTestiModello
@@ -49,18 +51,18 @@ class FormulaAnnotazioneListaViewModel extends FormulaListaParentViewModel imple
 
         listaTipiAtto = [ETipoAtto.NAS, ETipoAtto.MAT, ETipoAtto.UCI, ETipoAtto.MOR, ETipoAtto.CIT]
 
-        List<Map<String, String>> eList = [Etichette.Formule_Annotazione]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Formule_Annotazione")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_modello_etichetta_non_trovato, EtichetteMessaggi.Salvataggio_Completato])
+        eList.addAll([Etichette.getEtichetta("Errore_modello_etichetta_non_trovato"), Etichette.getEtichetta("Salvataggio_Completato")])
 
         // Aggiungo etichette modello
         eList.addAll(etichetteGteModelloDefault)
 
         doInit(w, eList)
 
-        etichetteCustom = ["scarica_allegato_tooltip": getEtichetta(Etichette.scarica_modello_tooltip), "inserisci_allegato_tooltip": getEtichetta(Etichette.inserisci_modello_tooltip)]
+        etichetteCustom = ["scarica_allegato_tooltip": getEtichetta(Etichette.getEtichetta("scarica_modello_tooltip")), "inserisci_allegato_tooltip": getEtichetta(Etichette.getEtichetta("inserisci_modello_tooltip"))]
 
-        msgTitle = getEtichetta(Etichette.Formule_Annotazione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Formule_Annotazione"))
 
         formLabel = msgTitle?.toUpperCase()
     }
@@ -88,7 +90,7 @@ class FormulaAnnotazioneListaViewModel extends FormulaListaParentViewModel imple
 
             p = civFormulaAnnotazioneService.list(params)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_tipo_atto), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_tipo_atto")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
 
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
@@ -103,10 +105,10 @@ class FormulaAnnotazioneListaViewModel extends FormulaListaParentViewModel imple
                     apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
                 }
             } else {
-                Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_apertura_record), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_apertura_record")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -115,7 +117,7 @@ class FormulaAnnotazioneListaViewModel extends FormulaListaParentViewModel imple
         if (m){
             downloadModello(m)
         } else {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_modello_etichetta_non_trovato), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_modello_etichetta_non_trovato")), msgTitle, Messagebox.OK, Messagebox.ERROR)
         }
     }
 
@@ -127,11 +129,12 @@ class FormulaAnnotazioneListaViewModel extends FormulaListaParentViewModel imple
         }
         uploadModello(event, g)
         gestioneTestiGsdModelloService.save(g)
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
     }
 
     @Command void onDownloadOrigineDati() {
-        gestioneTestiGsdModelloService.downloadFromServer("/WEB-INF/originedati/etichette")
+        byte[] zip = gestioneTestiGsdModelloService.generateZipFromServer("/WEB-INF/originedati/civ")
+        Filedownload.save(zip, ETipoFile.ZIP.contentType, "Civ.zip")
     }
 
 }

@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 
     <button label="@load(vm.etichette['Ricerca_in_Anagrafe'])"
-            image="/images/icon/action/16x16/search.png"
+            image="/images/icon/action/22x22/search.png"
             onClick="@command('onRicerca')"
             hflex="1"/>
 </zk>

@@ -24,10 +24,10 @@ class ProcessoVerbaleD3UDettaglioViewModel extends IstatDettaglioParentViewModel
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.Estremi_Atto, Etichette.SEZIONE_MODELLO_D3U, Etichette.SEZIONE_DATI_UNIONE_CIVILE,
-                           Etichette.SEZIONE_CONTRAENTE_1, Etichette.SEZIONE_CONTRAENTE_2]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("SEZIONE_MODELLO_D3U"), Etichette.getEtichetta("SEZIONE_DATI_UNIONE_CIVILE"),
+                           Etichette.getEtichetta("SEZIONE_CONTRAENTE_1"), Etichette.getEtichetta("SEZIONE_CONTRAENTE_2")]
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D3U, Etichette.SEZIONE_MODELLO_D3U)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D3U, Etichette.getEtichetta("SEZIONE_MODELLO_D3U"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita1', tipo: JoinType.LEFT], [campo:'nazionalita2', tipo: JoinType.LEFT]]])

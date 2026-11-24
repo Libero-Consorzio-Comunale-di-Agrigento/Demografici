@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.certificazione.CerTerminalista
 import it.finmatica.de4gsdzk.certificazione.CerTerminalistaService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -32,12 +31,12 @@ class TerminalistaDettaglioViewModel extends DizionarioDettaglioViewModel implem
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Terminalista]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Terminalista")]
         eList.addAll(CerTerminalista.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Terminalista)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Terminalista"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -66,7 +65,7 @@ class TerminalistaDettaglioViewModel extends DizionarioDettaglioViewModel implem
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CerTerminalista c = cerTerminalistaService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

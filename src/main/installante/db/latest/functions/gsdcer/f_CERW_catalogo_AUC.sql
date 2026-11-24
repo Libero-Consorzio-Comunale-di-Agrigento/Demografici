@@ -26,11 +26,12 @@ begin
       w_progr_auc	:= w_progr_auc + 1;
 
       w_dati_auc	:= rec.COGNOME_NOME_MOR||' '||rec.SESSO_MOR||chr(10)||
-			   'Dati di Nascita'||chr(9)||':'||chr(9)||rec.DATA_NAS_MOR||' '||rec.COMUNE_NASCITA_MOR||chr(10)||
-			   'Dati di Morte'||chr(9)||':'||chr(9)||rec.DATA_MOR||' '||rec.COMUNE_MOR||chr(10)||
+			   chr(9)||rec.DATA_NAS_MOR||' '||rec.COMUNE_NASCITA_MOR||chr(10)||
+			   chr(9)||rec.DATA_MOR||' '||rec.COMUNE_MOR||chr(10)||
 			   chr(9)||chr(9)||rec.ATTO_MOR_EDIT||chr(9)||rec.COMUNE_ATTO_MOR||chr(10)||
-			   'Data Cremazione'||chr(9)||':'||chr(9)||rec.DATA_CREMAZIONE||chr(10)||
-			   'Data Affidamento'||chr(9)||':'||chr(9)||rec.DATA_AFFIDAMENTO||chr(10)||
+			   chr(9)||rec.DATA_CREMAZIONE||chr(10)||
+			   chr(9)||rec.DATI_AFFIDAMENTO||chr(10)||
+			   chr(9)||rec.DATI_REGISTRO||chr(10)||
 			   rec.NOTE;
 
       if w_progr_auc = 1 then

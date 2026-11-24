@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneTestoLiberoRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.ETipoFormulaAnnotazioneDaAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,15 +14,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivAnnotazioneTestoLiberoService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivAnnotazioneTestoLiberoRepository civAnnotazioneTestoLiberoRepository
 
     CivAnnotazioneTestoLiberoService(CivAnnotazioneTestoLiberoRepository civAnnotazioneTestoLiberoRepository,
-									 StatoCivileService statoCivileService) {
+                                     GsdService gsdService) {
 
 		this.civAnnotazioneTestoLiberoRepository = civAnnotazioneTestoLiberoRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	List<CivAnnotazioneTestoLibero> listAllByUkAttoAndTipoAttoAndTipoFormulaIn(String identificativoAtto, ETipoAtto tipoAttoEnum, List<ETipoFormulaAnnotazioneDaAtto> ltf) {
@@ -46,7 +46,7 @@ class CivAnnotazioneTestoLiberoService {
 				break
 		}
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_atto)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_atto"))
 		}
 	}
 
@@ -56,7 +56,7 @@ class CivAnnotazioneTestoLiberoService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		log.info("Lancio salvataggio su CIVTLI_ANNOTAZIONI per id " + obj.id)

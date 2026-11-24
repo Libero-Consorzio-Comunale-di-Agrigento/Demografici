@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
-import it.finmatica.de4gsdzk.statocivile.CivArchivioComunicazione
+import it.finmatica.de4gsdzk.IArchivioComunicazioneRepository
 import it.finmatica.de4gsdzk.utils.EStatoInvioAlbo
 import it.finmatica.de4gsdzk.utils.EStatoProtocollazione
 import org.springframework.data.domain.Page
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 
 @CompileStatic
 @Repository
-interface CivArchivioComunicazioneRepository extends JpaRepository<CivArchivioComunicazione, Long>, CivArchivioComunicazioneCustomRepository {
+interface CivArchivioComunicazioneRepository extends JpaRepository<CivArchivioComunicazione, Long>, CivArchivioComunicazioneCustomRepository, IArchivioComunicazioneRepository {
 
     @Query("""SELECT c FROM CivArchivioComunicazione c JOIN FETCH c.comunicazione WHERE c.id = :id """)
     CivArchivioComunicazione findById(@Param("id") Long id)

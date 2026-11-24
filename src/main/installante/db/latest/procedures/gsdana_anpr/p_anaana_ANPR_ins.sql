@@ -106,6 +106,10 @@ w_espatrio_DI	         varchar2(255);
 w_tipo_DS	         varchar2(255);
 w_ente_DS                varchar2(255);
 
+w_tipo_sentenza_SEN      number;
+w_tipo_provvedimento_SEN number;
+w_ente_provvedimento_SEN number;
+
 w_note_ana               varchar2(4000);
 w_des_comune_ANPR        varchar2(255);
 
@@ -138,7 +142,7 @@ begin
      w_fascia  := 6;
      if nvl(a_filtro,'AIS') = 'NRE' then
         w_stato   := 80;
-     elsif nvl(a_filtro,'AIS') = 'ANP' then 
+     elsif nvl(a_filtro,'AIS') = 'ANP' then
         w_stato   := 81;
      end if;
      begin
@@ -176,7 +180,7 @@ begin
                w_cod_pro_RES    := substr(lpad(w_codice_comune_RES,6,'0'),1,3);
                w_cod_com_RES    := substr(lpad(w_codice_comune_RES,6,'0'),4,3);
             end if;
-            
+
             if nvl(rec.soggettoaire,'N') = 'S' then
                begin
                  select rec.res_toponimoEstero||decode(rec.res_capEstero,'','',' - '||rec.res_capEstero)
@@ -257,21 +261,21 @@ begin
          end if;
 
          w_data_rif             := rec.VED_DATAEVENTO;
-         w_codice_comune_VED    := f_ADS_codice_comune(rec.VED_CODICEISTAT,rec.VED_NOMECOMUNE,rec.VED_SIGLAPROVINCIAISTAT,rec.VED_CODICESTATO,rec.VED_DESCRIZIONELOCALITA,w_data_rif);                         
+         w_codice_comune_VED    := f_ADS_codice_comune(rec.VED_CODICEISTAT,rec.VED_NOMECOMUNE,rec.VED_SIGLAPROVINCIAISTAT,rec.VED_CODICESTATO,rec.VED_DESCRIZIONELOCALITA,w_data_rif);
          if w_codice_comune_VED is not null then
             w_cod_pro_VED    := substr(lpad(w_codice_comune_VED,6,'0'),1,3);
             w_cod_com_VED    := substr(lpad(w_codice_comune_VED,6,'0'),4,3);
          end if;
 
          w_data_rif             := nvl(rec.ATTVED_DATAFORMAZIONEATTO,rec.VED_DATAEVENTO);
-         w_codice_comune_ATTVED := f_ADS_codice_comune(rec.ATTVED_CODICEISTAT,rec.ATTVED_NOMECOMUNE,rec.ATTVED_SIGLAPROVINCIAISTAT,'','',w_data_rif);         
+         w_codice_comune_ATTVED := f_ADS_codice_comune(rec.ATTVED_CODICEISTAT,rec.ATTVED_NOMECOMUNE,rec.ATTVED_SIGLAPROVINCIAISTAT,'','',w_data_rif);
          if w_codice_comune_ATTVED is not null then
             w_cod_pro_ATTVED := substr(lpad(w_codice_comune_ATTVED,6,'0'),1,3);
             w_cod_com_ATTVED := substr(lpad(w_codice_comune_ATTVED,6,'0'),4,3);
          end if;
 
          w_data_rif             := rec.ATTDIV_DATAFORMAZIONEATTO;
-         w_codice_comune_ATTDIV := f_ADS_codice_comune(rec.ATTDIV_CODICEISTAT,rec.ATTDIV_NOMECOMUNE,rec.ATTDIV_SIGLAPROVINCIAISTAT,'','',w_data_rif);              
+         w_codice_comune_ATTDIV := f_ADS_codice_comune(rec.ATTDIV_CODICEISTAT,rec.ATTDIV_NOMECOMUNE,rec.ATTDIV_SIGLAPROVINCIAISTAT,'','',w_data_rif);
          if w_codice_comune_ATTDIV is not null then
             w_cod_pro_ATTDIV := substr(lpad(w_codice_comune_ATTDIV,6,'0'),1,3);
             w_cod_com_ATTDIV := substr(lpad(w_codice_comune_ATTDIV,6,'0'),4,3);
@@ -299,7 +303,7 @@ begin
          end if;
 
          w_data_rif             := nvl(rec.ATTSCI_DATAFORMAZIONEATTO,rec.SCI_DATAEVENTO);
-         w_codice_comune_ATTSCI := f_ADS_codice_comune(rec.ATTSCI_CODICEISTAT,rec.ATTSCI_NOMECOMUNE,rec.ATTSCI_SIGLAPROVINCIAISTAT,'','',w_data_rif);         
+         w_codice_comune_ATTSCI := f_ADS_codice_comune(rec.ATTSCI_CODICEISTAT,rec.ATTSCI_NOMECOMUNE,rec.ATTSCI_SIGLAPROVINCIAISTAT,'','',w_data_rif);
          if w_codice_comune_ATTSCI is not null then
             w_cod_pro_ATTSCI := substr(lpad(w_codice_comune_ATTSCI,6,'0'),1,3);
             w_cod_com_ATTSCI := substr(lpad(w_codice_comune_ATTSCI,6,'0'),4,3);
@@ -338,13 +342,18 @@ begin
             begin
               select decode(rec.soggettoAire,'S','AIRE di ','')||c.descrizione||' - '||c.sigla_provincia
                 into w_des_comune_ANPR
-                from arccom c 
+                from arccom c
                where cod_provincia = substr(lpad(rec.idSoggettoComuneIstat,6,'0'),1,3)
                  AND cod_comune    = substr(lpad(rec.idSoggettoComuneIstat,6,'0'),4,3)
               ;
-            exception 
+            exception
               when others then
-                   w_des_comune_ANPR := sqlerrm;
+--                   w_des_comune_ANPR := sqlerrm;
+                   if rec.idSoggettoComuneIstat is not null then
+                      w_des_comune_ANPR := 'ComuneIstat: '||rec.idSoggettoComuneIstat;
+                   else
+                      w_des_comune_ANPR := '';
+                   end if;
             end;
             if w_des_comune_ANPR is not null then
                w_note_ana := w_note_ana||' ('||w_des_comune_ANPR||')';
@@ -352,32 +361,32 @@ begin
          end if;
 
          begin
-           select 
+           select
 -- PARTE_NAS -- PARTE_MAT -- PARTE_UCI -- PARTE_VED -- PARTE_SCI -- PARTE_DIV
-                  decode(rec.ATTNAS_PARTE, '', '', 'I', 1, 'II', 2, 
+                  decode(rec.ATTNAS_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTNAS_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTNAS_PARTE,1,1)))
-                , decode(rec.ATTMAT_PARTE, '', '', 'I', 1, 'II', 2, 
+                , decode(rec.ATTMAT_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTMAT_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTMAT_PARTE,1,1)))
-                , decode(rec.ATTUCI_PARTE, '', '', 'I', 1, 'II', 2, 
+                , decode(rec.ATTUCI_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTUCI_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTUCI_PARTE,1,1)))
-                , decode(rec.ATTVED_PARTE, '', '', 'I', 1, 'II', 2, 
+                , decode(rec.ATTVED_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTVED_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTVED_PARTE,1,1)))
-                , decode(rec.ATTSCI_PARTE, '', '', 'I', 1, 'II', 2, 
+                , decode(rec.ATTSCI_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTSCI_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTSCI_PARTE,1,1)))
-                , decode(rec.ATTDIV_PARTE, '', '', 'I', 1, 'II', 2, 
+                , decode(rec.ATTDIV_PARTE, '', '', 'I', 1, 'II', 2,
                     decode(translate(substr(rec.ATTDIV_PARTE,1,1),'1234567890','9999999999'),'9',substr(rec.ATTDIV_PARTE,1,1)))
 -- UFFICIO_NAS -- UFFICIO_MAT -- UFFICIO_UCI -- UFFICIO_VED -- UFFICIO_SCI -- UFFICIO_DIV
-                , decode(translate(substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'), 
+                , decode(translate(substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,2))
                 , decode(translate(substr(rec.ATTMAT_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTMAT_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTMAT_UFFICIOMUNICIPIO,1,2))
-                , decode(translate(substr(rec.ATTUCI_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'), 
+                , decode(translate(substr(rec.ATTUCI_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTUCI_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTUCI_UFFICIOMUNICIPIO,1,2))
-                , decode(translate(substr(rec.ATTVED_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'), 
+                , decode(translate(substr(rec.ATTVED_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTVED_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTVED_UFFICIOMUNICIPIO,1,2))
-                , decode(translate(substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'), 
+                , decode(translate(substr(rec.ATTNAS_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTSCI_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTSCI_UFFICIOMUNICIPIO,1,2))
-                , decode(translate(substr(rec.ATTDIV_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'), 
+                , decode(translate(substr(rec.ATTDIV_UFFICIOMUNICIPIO,1,2),'1234567890','9999999999'),
                     '9', substr(rec.ATTDIV_UFFICIOMUNICIPIO,1,1), '99', substr(rec.ATTDIV_UFFICIOMUNICIPIO,1,2))
              into w_parte_nas
                 , w_parte_mat
@@ -395,58 +404,70 @@ begin
            ;
 
 
-           select 
+           select
 -- ANNO_ATTO_NAS -- ATTO_NAS -- PARTE_NAS -- SERIE_NAS -- UFFICIO_NAS
                   decode(rec.ATTNAS_TRASCRITTO,'S','',rec.ATTNAS_ANNO)
                 , decode(rec.ATTNAS_TRASCRITTO,'S','',
-                    decode(rec.ATTNAS_IDANSC,'',substr(ltrim(rec.ATTNAS_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTNAS_IDANSC,'',
+                      substr(ltrim(rec.ATTNAS_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTNAS_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTNAS_TRASCRITTO,'S','',
-                    decode(rec.ATTNAS_IDANSC,'',w_parte_nas,9))
+                    decode(rec.ATTNAS_IDANSC,'',w_parte_nas))
                 , decode(rec.ATTNAS_TRASCRITTO,'S','',
                     decode(rec.ATTNAS_IDANSC,'',substr(rec.ATTNAS_SERIE,1,1)))
                 , decode(rec.ATTNAS_TRASCRITTO,'S','',w_ufficio_nas)
 -- ANNO_ATTO_MAT -- ATTO_MAT -- PARTE_MAT -- SERIE_MAT -- UFFICIO_MAT
                 , decode(rec.ATTMAT_TRASCRITTO,'S','',rec.ATTMAT_ANNO)
                 , decode(rec.ATTMAT_TRASCRITTO,'S','',
-                    decode(rec.ATTMAT_IDANSC,'',substr(ltrim(rec.ATTMAT_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTMAT_IDANSC,'',
+                      substr(ltrim(rec.ATTMAT_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTMAT_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTMAT_TRASCRITTO,'S','',
-                    decode(rec.ATTMAT_IDANSC,'',w_parte_mat,9))
+                    decode(rec.ATTMAT_IDANSC,'',w_parte_mat))
                 , decode(rec.ATTMAT_TRASCRITTO,'S','',
                     decode(rec.ATTMAT_IDANSC,'',substr(rec.ATTMAT_SERIE,1,1)))
                 , decode(rec.ATTMAT_TRASCRITTO,'S','',w_ufficio_mat)
 -- ANNO_ATTO_UCI -- ATTO_UCI -- PARTE_UCI -- SERIE_UCI -- UFFICIO_UCI
                 , decode(rec.ATTUCI_TRASCRITTO,'S','',rec.ATTUCI_ANNO)
                 , decode(rec.ATTUCI_TRASCRITTO,'S','',
-                    decode(rec.ATTUCI_IDANSC,'',substr(ltrim(rec.ATTUCI_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTUCI_IDANSC,'',
+                      substr(ltrim(rec.ATTUCI_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTUCI_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTUCI_TRASCRITTO,'S','',
-                    decode(rec.ATTUCI_IDANSC,'',w_parte_uci,9))
+                    decode(rec.ATTUCI_IDANSC,'',w_parte_uci))
                 , decode(rec.ATTUCI_TRASCRITTO,'S','',
                     decode(rec.ATTUCI_IDANSC,'',substr(rec.ATTUCI_SERIE,1,1)))
                 , decode(rec.ATTUCI_TRASCRITTO,'S','',w_ufficio_uci)
 -- ANNO_ATTO_VED -- ATTO_VED -- PARTE_VED -- SERIE_VED -- UFFICIO_VED
                 , decode(rec.ATTVED_TRASCRITTO,'S','',rec.ATTVED_ANNO)
                 , decode(rec.ATTVED_TRASCRITTO,'S','',
-                    decode(rec.ATTVED_IDANSC,'',substr(ltrim(rec.ATTVED_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTVED_IDANSC,'',
+                      substr(ltrim(rec.ATTVED_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTVED_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTVED_TRASCRITTO,'S','',
-                    decode(rec.ATTVED_IDANSC,'',w_parte_ved,9))
+                    decode(rec.ATTVED_IDANSC,'',w_parte_ved))
                 , decode(rec.ATTVED_TRASCRITTO,'S','',
                     decode(rec.ATTVED_IDANSC,'',substr(rec.ATTVED_SERIE,1,1)))
                 , decode(rec.ATTVED_TRASCRITTO,'S','',w_ufficio_ved)
 -- ANNO_ATTO_SCI -- ATTO_SCI -- PARTE_SCI -- SERIE_SCI -- UFFICIO_SCI
                 , decode(rec.ATTSCI_TRASCRITTO,'S','',rec.ATTSCI_ANNO)
                 , decode(rec.ATTSCI_TRASCRITTO,'S','',
-                    decode(rec.ATTSCI_IDANSC,'',substr(ltrim(rec.ATTSCI_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTSCI_IDANSC,'',
+                      substr(ltrim(rec.ATTSCI_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTSCI_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTSCI_TRASCRITTO,'S','',
-                    decode(rec.ATTSCI_IDANSC,'',w_parte_sci,9))
+                    decode(rec.ATTSCI_IDANSC,'',w_parte_sci))
                 , decode(rec.ATTSCI_TRASCRITTO,'S','',
                     decode(rec.ATTSCI_IDANSC,'',substr(rec.ATTSCI_SERIE,1,1)))
                 , decode(rec.ATTSCI_TRASCRITTO,'S','',w_ufficio_sci)
 -- ANNO_ATTO_DIV -- ATTO_DIV -- PARTE_DIV -- SERIE_DIV -- UFFICIO_DIV
                 , decode(rec.ATTDIV_TRASCRITTO,'S','',rec.ATTDIV_ANNO)
                 , decode(rec.ATTDIV_TRASCRITTO,'S','',
-                    decode(rec.ATTDIV_IDANSC,'',substr(ltrim(rec.ATTDIV_NUMEROATTO,'0'),1,4),9999))
+                    decode(rec.ATTDIV_IDANSC,'',
+                      substr(ltrim(rec.ATTDIV_NUMEROATTO,'0'),1,4),
+                      substr(ltrim(rec.ATTDIV_NUMEROCOMUNALE,'0'),1,4)))
                 , decode(rec.ATTDIV_TRASCRITTO,'S','',
-                    decode(rec.ATTDIV_IDANSC,'',w_parte_div,9))
+                    decode(rec.ATTDIV_IDANSC,'',w_parte_div))
                 , decode(rec.ATTDIV_TRASCRITTO,'S','',
                     decode(rec.ATTDIV_IDANSC,'',substr(rec.ATTDIV_SERIE,1,1)))
                 , decode(rec.ATTDIV_TRASCRITTO,'S','',w_ufficio_div)
@@ -468,7 +489,7 @@ begin
            insert into anaana
                  ( MATRICOLA, COGNOME_NOME, FASCIA, STATO, DATA_ULT_EVE, COD_FAM
                  , STATO_CIVILE, SESSO, NAZIONALITA, DATA_INIZIO_NAZ
-                 , PATERNITA, MATRICOLA_PD, MATERNITA, MATRICOLA_MD 
+                 , PATERNITA, MATRICOLA_PD, MATERNITA, MATRICOLA_MD
                  , TITOLO_STUDIO, COD_PROF, ATTIVITA_PROF, POSIZIONE_PROF
                  , COD_PRO_NAS, COD_COM_NAS, DATA_NAS, ANNO_NAS
                  , COD_PRO_ATTO_NAS, COD_COM_ATTO_NAS
@@ -489,11 +510,11 @@ begin
                  , NOTE
                  , ATTO_NAS_DIGITALE, ATTO_MAT_DIGITALE, ATTO_VED_DIGITALE, ATTO_DIV_DIGITALE, ATTO_MOR_DIGITALE
                  )
-          values ( 
+          values (
 -- MATRICOLA
                    w_matricola
 -- COGNOME_NOME
-                 , rec.COGNOME||'/'||rec.NOME         
+                 , rec.COGNOME||'/'||rec.NOME
 -- FASCIA
                  , w_fascia
 -- STATO
@@ -505,19 +526,19 @@ begin
 -- STATO_CIVILE
                  , w_stato_civile
 -- SESSO
-                 , rec.SESSO                                  
+                 , rec.SESSO
 -- NAZIONALITA
                  , f_ADS_nazionalita(rec.CIT_CODICESTATO)
 -- DATA_INIZIO_NAZ
                  , f_ADS_data(rec.CIT_DATAVALIDITA)
 -- PATERNITA
-		 , decode(rec.COGNOME_PD,'','',rec.COGNOME_PD||'/')||rec.NOME_PD                                
+		 , decode(rec.COGNOME_PD,'','',rec.COGNOME_PD||'/')||rec.NOME_PD
 -- MATRICOLA_PD
                  , to_number(null)
 -- MATERNITA
-		 , decode(rec.COGNOME_MD,'','',rec.COGNOME_MD||'/')||rec.NOME_MD                                
--- MATRICOLA_MD 
-                 , to_number(null)    
+		 , decode(rec.COGNOME_MD,'','',rec.COGNOME_MD||'/')||rec.NOME_MD
+-- MATRICOLA_MD
+                 , to_number(null)
 -- TITOLO_STUDIO
                  , f_ADS_titolo_studio(rec.TITOLOSTUDIO)
 -- COD_PROF
@@ -644,7 +665,7 @@ begin
 -- COD_COM_VED
                  , case
                        when w_stato_civile in ('VE','NC') then w_cod_com_VED
-                       when w_stato_civile in ('VU')      then w_cod_com_SCI 
+                       when w_stato_civile in ('VU')      then w_cod_com_SCI
                    end
 -- DATA_VED
                  , case
@@ -752,7 +773,7 @@ begin
 -- ATTO_MOR_DIGITALE
                  , rec.attmor_idansc
                  )
-           ; 
+           ;
            ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', 'inserito matricola '||w_matricola);
          exception
            when others then
@@ -760,29 +781,29 @@ begin
                 raise errore;
          end;
 
-         begin 
+         begin
            anpr_pkg.ins_anpads('VANP',w_matricola,null,null,null,null,'Individuale','','');
-         exception 
+         exception
            when others then
                 w_errore := 'Errore in anpr_pkg.ins_anpads - Individuale ('||SQLERRM||')';
                 raise errore;
-         end; 
+         end;
 
-         begin 
+         begin
            anpr_pkg.upd_anpads('VANP',w_matricola,rec.idSoggettoANPR,null,null,null,null,null);
-         exception 
+         exception
            when others then
                 w_errore := 'Errore in anpr_pkg.upd_anpads - Individuale ('||SQLERRM||')';
                 raise errore;
-         end; 
+         end;
 
-         begin 
+         begin
            anpr_pkg.ins_anpads('VANP',w_matricola,null,null,null,rec.fam_idfamigliaanpr,'Famiglia ANPR','','',a_num_componenti_anpr,rec.fam_codiceLegame);
-         exception 
+         exception
            when others then
                 w_errore := 'Errore in anpr_pkg.ins_anpads - Famiglia ANPR ('||SQLERRM||')';
                 raise errore;
-         end; 
+         end;
 
          if rtrim(ltrim(rec.DI_NUMERO)) is not null then
             if nvl(rtrim(rec.DI_CARTACEAELETTRONICA),'0') = '1' then
@@ -810,7 +831,7 @@ begin
                      , NUMERO
                      , ESPATRIO
                      , DATA_SCADENZA
-                     )               
+                     )
               values ( w_matricola
                      , w_tipo_DI
                      , 1
@@ -855,7 +876,7 @@ begin
                      , COD_COM_ENTE
                      , NUMERO
                      , NOTE
-                     )               
+                     )
               values ( w_matricola
                      , w_tipo_DS
                      , 1
@@ -873,9 +894,147 @@ begin
               when others then
                    w_errore := 'Errore in ins_anadoc ('||SQLERRM||')';
                    ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', w_errore);
-             end;
+            end;
          else
-             ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', 'DS_NUMERO null');
+            ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', 'DS_NUMERO null');
+         end if;
+
+         if rec.DIV_NUMEROSENTENZA is not null or rec.SCI_NUMEROSENTENZA is not null then
+            begin
+              delete anasen
+               where matricola        = w_matricola
+                 and anagrafe_tpr     = 'ANP'
+                 and tipo_evento_tpr  = 'I'
+                 and anno_pratica_tpr = 0
+                 and pratica_tpr      = 0
+              ;
+            exception
+              when others then
+                   w_errore := 'Errore in del_anasen ('||SQLERRM||')';
+                   ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', w_errore);
+            end;
+
+            if rec.DIV_NUMEROSENTENZA is not null then
+               w_tipo_sentenza_SEN      := f_ADS_tipo_sentenza(rec.DIV_TIPOCESSAZIONE, rec.DIV_TIPOTRIBUNALESENTENZA);
+               w_tipo_provvedimento_SEN := f_ADS_tipo_provvedimento(rec.DIV_TIPOTRIBUNALESENTENZA);
+               w_ente_provvedimento_SEN := f_ADS_ente_provvedimento(rec.DIV_TIPOTRIBUNALESENTENZA, rec.DIV_TIPOCESSAZIONE);
+            elsif rec.SCI_NUMEROSENTENZA is not null then
+               w_tipo_sentenza_SEN      := f_ADS_tipo_sentenza(rec.SCI_MOTIVOSCIOGLIMENTO, rec.SCI_TIPOTRIBUNALESENTENZA);
+               w_tipo_provvedimento_SEN := f_ADS_tipo_provvedimento(rec.SCI_TIPOTRIBUNALESENTENZA);
+               w_ente_provvedimento_SEN := f_ADS_ente_provvedimento(rec.SCI_TIPOTRIBUNALESENTENZA, rec.SCI_MOTIVOSCIOGLIMENTO);
+            end if;
+
+            begin
+              insert into anasen
+                     ( MATRICOLA
+                     , TIPO_SENTENZA
+                     , COD_PRO_TRIB
+                     , COD_COM_TRIB
+                     , DATA_DECRETO
+                     , NUMERO_DECRETO
+                     , COD_PRO_ATTO_TR
+                     , COD_COM_ATTO_TR
+                     , DATA_ATTO_TR
+                     , ANNO_ATTO_TR
+                     , ATTO_TR
+                     , PARTE_ATTO_TR
+                     , SERIE_ATTO_TR
+                     , UFFICIO_ATTO_TR
+                     , ATTO_TR_DIGITALE
+                     , TIPO_PROVVEDIMENTO
+                     , ENTE_PROVVEDIMENTO
+                     , AUTORE_PROVVEDIMENTO
+                     , ANAGRAFE_TPR
+                     , TIPO_EVENTO_TPR
+                     , ANNO_PRATICA_TPR
+                     , PRATICA_TPR
+                     )
+              values ( w_matricola
+-- TIPO_SENTENZA
+                     , w_tipo_sentenza_SEN
+-- COD_PRO_TRIB
+                     , to_number(null)
+-- COD_COM_TRIB
+                     , to_number(null)
+-- DATA_DECRETO
+                     , case
+                           when rec.DIV_NUMEROSENTENZA is not null then f_ADS_data(rec.DIV_DATASENTENZA)
+                           when rec.SCI_NUMEROSENTENZA is not null then f_ADS_data(rec.SCI_DATASENTENZA)
+                       end
+-- NUMERO_DECRETO
+                     , case
+                           when rec.DIV_NUMEROSENTENZA is not null then rec.DIV_NUMEROSENTENZA
+                           when rec.SCI_NUMEROSENTENZA is not null then rec.SCI_NUMEROSENTENZA
+                       end
+-- COD_PRO_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_cod_pro_ATTDIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_cod_pro_ATTSCI
+                       end
+-- COD_COM_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_cod_com_ATTDIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_cod_com_ATTSCI
+                       end
+-- DATA_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then f_ADS_data(rec.ATTDIV_DATAFORMAZIONEATTO)
+                           when rec.SCI_NUMEROSENTENZA is not null then f_ADS_data(rec.ATTSCI_DATAFORMAZIONEATTO)
+                       end
+-- ANNO_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_ANNO_ATTO_DIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_ANNO_ATTO_SCI
+                       end
+-- ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_ATTO_DIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_ATTO_SCI
+                       end
+-- PARTE_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_PARTE_DIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_PARTE_SCI
+                       end
+-- SERIE_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_SERIE_DIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_SERIE_SCI
+                       end
+-- UFFICIO_ATTO_TR
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then w_UFFICIO_DIV
+                           when rec.SCI_NUMEROSENTENZA is not null then w_UFFICIO_SCI
+                       end
+-- ATTO_TR_DIGITALE
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then rec.ATTDIV_idansc
+                           when rec.SCI_NUMEROSENTENZA is not null then rec.ATTSCI_idansc
+                       end
+-- TIPO_PROVVEDIMENTO
+                     , w_tipo_provvedimento_SEN
+-- ENTE_PROVVEDIMENTO
+                     , w_ente_provvedimento_SEN
+-- AUTORE_PROVVEDIMENTO
+                     ,  case
+                           when rec.DIV_NUMEROSENTENZA is not null then rec.DIV_AUTORITASENTENZA
+                           when rec.SCI_NUMEROSENTENZA is not null then rec.SCI_AUTORITASENTENZA
+                       end
+-- ANAGRAFE_TPR
+                     , 'ANP'
+-- TIPO_EVENTO_TPR
+                     , 'I'
+-- ANNO_PRATICA_TPR
+                     , 0
+-- PRATICA_TPR
+                     , 0
+                     )
+              ;
+            exception
+              when others then
+                   w_errore := 'Errore in ins_anasen ('||SQLERRM||')';
+                   ANPR_pkg.ins_log('VANP', 'anaana_ANPR_ins', w_errore);
+            end;
          end if;
      end loop;
      a_matricola_ads := w_matricola;

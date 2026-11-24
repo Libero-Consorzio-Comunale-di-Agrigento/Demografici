@@ -58,5 +58,5 @@ class CivOcchiello {
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Numero, Etichette.Cognome, Etichette.Nome, Etichette.Sesso, Etichette.Anno, Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie")]
 }

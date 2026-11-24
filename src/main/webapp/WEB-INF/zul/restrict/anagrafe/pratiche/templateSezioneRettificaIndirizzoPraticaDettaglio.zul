@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowDatiIntestatario" macroURI="/restrict/anagrafe/pratiche/templateRowDatiIntestatario.zul" inline="true"?>
+<?component name="templateRowDatiConvivenza" macroURI="/restrict/anagrafe/pratiche/templateRowDatiConvivenza.zul" inline="true"?>
+<?component name="templateElementoCivico" macroURI="/restrict/anagrafe/pratiche/templateElementoCivico.zul" inline="true"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" closable="@bind(vm.soggetti.size() gt 0)"
+              onClick="@command('checkSoggetti')" onOpen="@command('checkSoggetti')"
+              visible="@bind(vm.dichiarazione.tipoRettifica.id eq 'F' and vm.pratica.id ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Indirizzo_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column width="500px"/>
+                <column width="150px"/>
+                <column/>
+                <column width="150px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Codice_Famiglia'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.dichiarazione.codFamiglia)" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Tipo'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaTipoFamiglia)" readonly="true" hflex="1" disabled="true"
+                                  selectedItem="@bind(vm.dichiarazione.tipoFamiglia) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem
+                                        label="@load(empty each?'--':vm.getEtichettaEnum(each))"
+                                        value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell/>
+                </row>
+                <!-- Riga Indirizzo + Specie Area + Toponimo -->
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Indirizzo'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" sclass="hlayout-indirizzo">
+                            <bandboxVia sclass="bandbox-via-spacing" hflex="1"
+                                        value="@load(vm.dichiarazione.indirizzo.via.denominazione)"
+                                        onSelect="@command('onSelectVia')"
+                                        disabled="@load(vm.readOnly)"/>
+                            <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoPratica', sezione='F')">
+                                <custom-attributes proprieta="indirizzo.via"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Specie_Area'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.dichiarazione.indirizzo.via.specieArea)" hflex="1"
+                                 readonly="true" disabled="true"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Toponimo'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.dichiarazione.indirizzo.via.toponimo)" hflex="1"
+                                 readonly="true" disabled="true"/>
+                    </cell>
+                </row>
+                <!-- Civico esterno: campi dinamici da ARCDNC -->
+                <row visible="@load(not empty vm.elementiCivicoEsterno)">
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Civico_Esterno'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <div sclass="dettagliCivicoContainer"
+                             children="@load(vm.elementiCivicoEsterno)">
+                            <template name="children" var="el">
+                                <templateElementoCivico/>
+                            </template>
+                        </div>
+                    </cell>
+                </row>
+                <!-- Civico interno: campi dinamici da ARCDNC -->
+                <row visible="@load(not empty vm.elementiCivicoInterno)">
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Civico_Interno'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <div sclass="dettagliCivicoContainer"
+                             children="@load(vm.elementiCivicoInterno)">
+                            <template name="children" var="el">
+                                <templateElementoCivico/>
+                            </template>
+                        </div>
+                    </cell>
+                </row>
+
+                <row visible="@load(vm.dichiarazione.tipoFamiglia.id eq 'F')">
+                    <cell colspan="6">
+                        <templateRowDatiIntestatario/>
+                    </cell>
+                </row>
+
+                <row visible="@load(vm.dichiarazione.tipoFamiglia.id eq 'C')">
+                    <cell colspan="6">
+                        <templateRowDatiConvivenza/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

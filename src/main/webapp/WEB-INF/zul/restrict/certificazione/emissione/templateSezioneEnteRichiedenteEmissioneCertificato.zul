@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <!-- ENTE RICHIEDENTE -->
+    <groupbox mold="3d" hflex="1" id="enteRichiedente"
+              visible="@load(vm.tipoRichiedente.isAttivaSezioneEnte())">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['SEZIONE_ENTE_RICHIEDENTE'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+        <grid sclass="form">
+            <rows>
+                <row>
+                    <cell>
+                        <groupbox closable="false">
+                            <grid sclass="form">
+                                <rows>
+                                    <row>
+                                        <cell align="right" width="160px">
+                                            <customLabel mandatory="true" value="@load(vm.etichette['Da'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxEnteRichiedente hflex="1" style="max-width: 618px;"
+                                                                        value="@bind(vm.enteRichiedenteState.enteRichiedente.denominazione)"
+                                                                        onSelect="@command('onSelectEnteRichiedente')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaCampoEnteRichiedente')">
+                                                    <custom-attributes proprieta="denominazione"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                        <cell colspan="3"/>
+                                    </row>
+                                    <row>
+                                        <cell align="right">
+                                            <customLabel mandatory="true" value="@load(vm.etichette['Comune'])"/>
+                                        </cell>
+                                        <cell colspan="3">
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxComuni hflex="1" style="max-width: 618px;"
+                                                               escludiSoppressi="true"
+                                                               value="@load(vm.enteRichiedenteState.enteRichiedente.comune.descrizione)"
+                                                               onSelect="@command('onSelectComune', campoRiferimento='CE_RIC')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        onClick="@command('onCancellaComune', campoRiferimento='CE_RIC')"/>
+                                            </hlayout>
+                                        </cell>
+                                        <cell>
+                                            <customTextbox value="@load(vm.enteRichiedenteState.enteRichiedente.comune.siglaProvincia)"
+                                                           hflex="1" readonly="true"/>
+                                        </cell>
+                                        <cell align="right">
+                                            <customLabel value="@load(vm.etichette['Consolato'])"/>
+                                        </cell>
+                                        <cell>
+                                            <hlayout valign="middle" hflex="1">
+                                                <bandboxConsolati hflex="1"
+                                                                  value="@load(vm.enteRichiedenteState.enteRichiedente.consolato.descrizione)"
+                                                                  disabled="@load(not vm.enteRichiedenteState.comuneEstero)"
+                                                                  onSelect="@command('onSelectConsolato', campoRiferimento='ENTE_RICHIEDENTE')"/>
+                                                <button image="/images/icon/action/16x16/cancel.png"
+                                                        tooltiptext="@load(vm.etichette['Cancella'])"
+                                                        disabled="@load(not vm.enteRichiedenteState.comuneEstero)"
+                                                        onClick="@command('onCancellaCampoEnteRichiedente')">
+                                                    <custom-attributes proprieta="consolato"/>
+                                                </button>
+                                            </hlayout>
+                                        </cell>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </cell>
+                    <cell hflex="min">
+                        <hlayout valign="middle" hflex="min">
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaEnteRichiedente')"/>
+                            <button image="/images/icon/action/16x16/info.png"
+                                    disabled="true" style="visibility:hidden;"/>
+                        </hlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

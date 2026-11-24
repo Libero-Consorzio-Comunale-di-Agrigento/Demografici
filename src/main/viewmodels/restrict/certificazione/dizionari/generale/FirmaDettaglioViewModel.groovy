@@ -5,7 +5,6 @@ import it.finmatica.de4gsdzk.certificazione.CerFirma
 import it.finmatica.de4gsdzk.certificazione.CerFirmaService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -32,12 +31,12 @@ class FirmaDettaglioViewModel extends DizionarioDettaglioViewModel implements Tr
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Firma]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Firma")]
         eList.addAll(CerFirma.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Firma)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Firma"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -66,7 +65,7 @@ class FirmaDettaglioViewModel extends DizionarioDettaglioViewModel implements Tr
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CerFirma c = cerFirmaService.save(tipoOperazione, dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

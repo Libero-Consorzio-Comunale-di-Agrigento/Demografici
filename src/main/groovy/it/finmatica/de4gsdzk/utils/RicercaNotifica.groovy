@@ -1,6 +1,6 @@
 package it.finmatica.de4gsdzk.utils
 
-class RicercaNotifica implements IRicercaNotificheAnsc {
+class RicercaNotifica implements IRicercaAnsc {
 
     private Date dal
     private Date al
@@ -46,6 +46,26 @@ class RicercaNotifica implements IRicercaNotificheAnsc {
         return tipoContenutoNotifica
     }
 
+    @Override
+    Date getDataNascita() {
+        return null
+    }
+
+    @Override
+    ESesso getSesso() {
+        return null
+    }
+
+    @Override
+    String getCognome() {
+        return null
+    }
+
+    @Override
+    String getNome() {
+        return null
+    }
+
     void setDal(Date dal) {
         this.dal = dal
     }
@@ -70,6 +90,7 @@ class RicercaNotifica implements IRicercaNotificheAnsc {
         this.tipoContenutoNotifica = tipoContenutoNotifica
     }
 
-    static final List<Map> etichetteRicercaNotDesc = [Etichette.Effettua_Ricerca, Etichette.Data_validita, Etichette.Da, Etichette.A, Etichette.Stato, Etichette.Genere]
+    static final List<Map> etichetteRicercaNotDesc = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Data_validita"), Etichette.getEtichetta("Da"),
+                                                      Etichette.getEtichetta("A"), Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Genere")]
 
 }

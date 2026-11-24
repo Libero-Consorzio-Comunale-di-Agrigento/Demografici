@@ -5,12 +5,10 @@ import com.google.gson.GsonBuilder
 import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.*
-import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.AnscClientUnmanagedStatusException
 import it.finmatica.de4gsdzk.errors.AnscRuntimeException
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.EmptyReportException
-import it.finmatica.de4gsdzk.ansc.*
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
 import org.json.JSONObject
@@ -25,7 +23,7 @@ import javax.net.ssl.SSLHandshakeException
 @Service
 class AnscComunicazioneService {
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     private final CompetenzaService competenzaService
 
@@ -66,7 +64,7 @@ class AnscComunicazioneService {
     AnscComunicazioneService(AnscComunicazioneRepository anscComunicazioneRepository, AnscComunicazioneAttoRepository anscComunicazioneAttoRepository,
                              AnscComunicazioneAnnotazioneRepository anscComunicazioneAnnotazioneRepository, AnscComunicazioneFirmatarioRepository anscComunicazioneFirmatarioRepository,
                              AnscComunicazioneAllegatoRepository anscComunicazioneAllegatoRepository, CivTestoLiberoService civTestoLiberoService,
-                             StatoCivileService statoCivileService, CompetenzaService competenzaService, CivAttoService civAttoService,
+                             GsdService gsdService, CompetenzaService competenzaService, CivAttoService civAttoService,
                              LogsService logsService, AnscParametroService anscParametroService, CivAnnotazioneAttoService civAnnotazioneAttoService,
                              CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService, CivFirmatarioAttoService civFirmatarioAttoService,
                              AnscEndPointServizioAllegatoService anscEndPointServizioAllegatoService,
@@ -77,7 +75,7 @@ class AnscComunicazioneService {
         this.anscComunicazioneAnnotazioneRepository = anscComunicazioneAnnotazioneRepository
         this.anscComunicazioneFirmatarioRepository = anscComunicazioneFirmatarioRepository
         this.anscComunicazioneAllegatoRepository = anscComunicazioneAllegatoRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.competenzaService = competenzaService
         this.civTestoLiberoService = civTestoLiberoService
         this.civAttoService = civAttoService
@@ -204,11 +202,11 @@ class AnscComunicazioneService {
             throw new CampoMandatoryRuntimeException("- Indicare l'archivio di riferimento")
         }
         if (servizio == null){
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_servizio_ANSC)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_servizio_ANSC"))
         }
         String sub = cre.getAnscUtente()?.codiceFiscale
         if (TestoUtils.isVuoto(sub)){
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_abilitazione_utente)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_abilitazione_utente"))
         }
         String anscOtp = cre.anscOtp
         if (TestoUtils.isVuoto(anscOtp)){
@@ -247,19 +245,23 @@ class AnscComunicazioneService {
 
         CivAnnotazioneAtto aa = civAnnotazioneAttoService.get(idRif)
         if ( (aa instanceof IEntitaAnsc) && ( (aa.getIdAttoAnsc()?:"") != "" ) && (aa.getIdAnscUseCase() != idCdu) ) {
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_modifica_cdu)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_modifica_cdu"))
         }
         civAnnotazioneAttoService.updateIdAnscUseCase(idRif, idCdu)
 
         if ( (aa instanceof IEntitaAnsc) && ( aa.getNumeroUnico() == null) ) {
             Integer annoAnnotazione = DataUtils.getAnnoCorrente()
-            Long numeroUnico = statoCivileService.getNumeroUnico(annoAnnotazione)
+            Long numeroUnico = gsdService.getNumeroUnico(annoAnnotazione)
             civAnnotazioneAttoService.updateAnnoAnnotazioneAndNumeroUnico(idRif, annoAnnotazione, numeroUnico)
+        }
+
+        if (epServizio.flagValidazione && aa.flagFirmatoUscAnsc ){
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_invio_annotazione_firmata"))
         }
     }
 
     private void validaComunicazioneNotifica(ETipoArchivioAnsc taCom, AnscEndPointServizio epServizio, Long idRif,
-                                             AnscCredenziali cre, IRicercaNotificheAnsc ricerca) {
+                                             AnscCredenziali cre, IRicercaAnsc ricerca) {
 
         validaDati(taCom, epServizio, cre)
 
@@ -316,7 +318,7 @@ class AnscComunicazioneService {
         }
 
         if (taCom == ETipoArchivioAnsc.ALL){
-            String retVal = statoCivileService.verificaAllegatoAnsc(taCom, idRif, null)
+            String retVal = gsdService.verificaAllegatoAnsc(taCom, idRif, null)
             if ( (retVal?:"") != ""){
                 throw new AnscRuntimeException(retVal)
             }
@@ -324,7 +326,7 @@ class AnscComunicazioneService {
             if (!epServizio.isCertificazione()) {
                 CivTestoLibero tli = civTestoLiberoService.getByUkAtto(atto.idAtto)
                 if ((tli == null) || TestoUtils.isVuoto(tli?.testo)) {
-                    throw new EmptyReportException(EtichetteMessaggi.Errore_testo_atto)
+                    throw new EmptyReportException(Etichette.getEtichetta("Errore_testo_atto"))
                 }
             }
         }
@@ -339,7 +341,7 @@ class AnscComunicazioneService {
         if (epServizio.flagAnnullaLinkFirma || epServizio.flagPoolingPresaVisione){
             Boolean b = civFirmatarioAttoService.isFirmatarioELNonGestito(idRif)
             if (b){
-                throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_Annullamento_link)
+                throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_Annullamento_link"))
             }
         }
 
@@ -374,11 +376,11 @@ class AnscComunicazioneService {
         bloccaSeRipetizioneNonAmmessa(taCom, epServizio, idRif)
 
         if (epServizio.flagValidazione && (atto instanceof IAttoAnsc) && atto.flagFirmatoUscAnsc ){
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_invio_atto_firmato)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_invio_atto_firmato"))
         }
 
         if ( (atto == null) || ( (atto instanceof IAttoAnsc) && ( (atto.getIdAttoAnsc()?:"") != "" ) && (atto.getIdAnscUseCase() != idCdu) ) ) {
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_modifica_cdu)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_modifica_cdu"))
         }
         civAttoService.updateIdAnscUseCase(atto.getTipoAttoEnum(), atto.id, idCdu)
 
@@ -386,7 +388,7 @@ class AnscComunicazioneService {
         EMotivoRecupero mrNew = ((IAttoAnsc)atto).motivoRecuperoAnsc
         if (mrOld != mrNew){
             if (((IEntitaAnsc)atto).flagFirmatoUscAnsc){
-                throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_invio_atto_firmato)
+                throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_invio_atto_firmato"))
             } else {
                 civAttoService.updateMotivoRecuperoAnsc(atto.getTipoAttoEnum(), atto.id, mrNew)
             }
@@ -427,7 +429,7 @@ class AnscComunicazioneService {
     }
 
     synchronized AnscInfoComunicazioneServizio inviaComunicazioneNotifica(ETipoArchivioAnsc taCom, AnscEndPointServizio epServizio, Long idRifNot,
-                                                                          Long idCom, AnscCredenziali cre, IRicercaNotificheAnsc ricerca=null, IAnscPaginazione paginazione=null,
+                                                                          Long idCom, AnscCredenziali cre, IRicercaAnsc ricerca=null, IAnscPaginazione paginazione=null,
                                                                           Boolean skipControlli=Boolean.FALSE, Boolean fullResponse=Boolean.FALSE){
         if (skipControlli){
             log.warn("Controllo di sequenza servizi non presente")
@@ -440,7 +442,7 @@ class AnscComunicazioneService {
         if (epServizio.flagAfterConsultazioneSoggetto){
             AnscEndPointServizioArchivio ssc = anscEndPointServizioArchivioService.getServizioArchivioNotificaConsultazioneSoggetto()
             if (ssc?.servizio == null) {
-                throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_servizio_notifica)
+                throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_servizio_notifica"))
             }
             validaComunicazioneNotifica(taCom, ssc.servizio, idRifNot, cre, ricerca)
             AnscInfoComunicazioneServizio retConsSogg = buildJsonAndSend(taCom, ssc.servizio, idRifNot, null, null, null, "", null, cre, ricerca, paginazione, null, fullResponse)
@@ -474,7 +476,7 @@ class AnscComunicazioneService {
                     if ((retConsSogg.getRetVal() ?: "") != "") {
                         log.warn("Errore in consultazione soggetto per id_atto " + atto.idAtto + " : " + retConsSogg.getRetVal())
                         // non sollevo eccezione per non rischiare di bloccare la validazione
-                        // throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_Consultazione_soggetto)
+                        // throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_Consultazione_soggetto"))
                     }
                 }
             }
@@ -529,9 +531,9 @@ class AnscComunicazioneService {
     */
     private AnscInfoComunicazioneServizio buildJsonAndSend(ETipoArchivioAnsc taCom, AnscEndPointServizio epServizio, Long idRif, Long idCdu,
                                                            Integer tipoAtto, Long pkAtto, String idAtto, Long idCom, AnscCredenziali cre,
-                                                           IRicercaNotificheAnsc ricerca = null, IAnscPaginazione paginazione = null, IRicercaEventoAnsc ricercaEvento = null, Boolean fullResponse = Boolean.FALSE) {
+                                                           IRicercaAnsc ricerca = null, IAnscPaginazione paginazione = null, IRicercaEventoAnsc ricercaEvento = null, Boolean fullResponse = Boolean.FALSE) {
 
-        Long idComunicazione = (idCom != null)?idCom:statoCivileService.getIdFromSequence(null, "ANSCIU")
+        Long idComunicazione = (idCom != null)?idCom:gsdService.getIdFromSequence(null, "ANSCIU")
 
         LinkedHashMap<String, ?> jwsPayloadClaims
         if (epServizio.flagOtpFirma){
@@ -554,9 +556,6 @@ class AnscComunicazioneService {
 
         String logOperazione = "zk - Id operazione: " + String.valueOf(idComunicazione) + " - " + cre.getAnscUtente()?.codiceFiscale
         String descrizioneServizio = epServizio.id + (epServizio.descrizione?" : " + epServizio.descrizione:"")
-        if (descrizioneServizio.length()>60){
-            descrizioneServizio = epServizio.descrizioneEstesa.substring(0, 59)
-        }
         logsService.save(ETipoLog.ANSC, new LogAnsc(servizio: descrizioneServizio, operazione: logOperazione, note: "request", clob: jwsPayloadClaimsString, idAtto: idAtto, noteAssistenza: cre.anscOtp))
         logsService.save(ETipoLog.ANSC, new LogAnsc(servizio: descrizioneServizio, operazione: logOperazione, note: "prettyRequest", clob: JsonOutput.prettyPrint(JsonOutput.toJson(jwsPayloadClaims)), idAtto: idAtto, noteAssistenza: cre.anscOtp))
 
@@ -576,10 +575,10 @@ class AnscComunicazioneService {
             response = anscClient.getResponse(epServizio?.indirizzoURL, responseXml, tokenJwt, tokenJws)
         } catch (SocketException ex){
             log.error(ex.message)
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_Down)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_Down"))
         } catch (SSLHandshakeException sslEx){
             log.error(sslEx.message)
-            throw new AnscRuntimeException(EtichetteMessaggi.Errore_ANSC_Down)
+            throw new AnscRuntimeException(Etichette.getEtichetta("Errore_ANSC_Down"))
         } catch (AnscClientUnmanagedStatusException ex) {
             log.error(ex.message)
             response = createUnmanagedStatusFakeResponse(ex)
@@ -592,7 +591,7 @@ class AnscComunicazioneService {
         } else {
             logsService.save(ETipoLog.ANSC, new LogAnsc(servizio: descrizioneServizio, operazione: logOperazione, note: "prettyResponse", clob: JsonOutput.prettyPrint(response.stringResponse), idAtto: idAtto))
         }
-        String retVal = statoCivileService.gestisciAnscResponse(epServizio.id, idComunicazione, taCom.name(), idRif, response.xmlResponse, cre.getAnscUtente()?.id, idAtto)
+        String retVal = gsdService.gestisciAnscResponse(epServizio.id, idComunicazione, taCom.name(), idRif, response.xmlResponse, cre.getAnscUtente()?.id, idAtto)
         // Errori della response da girare all'utente
         AnscInfoComunicazioneServizio infoComunicazioneServizio = new AnscInfoComunicazioneServizio(retVal, idComunicazione, response.stringResponse)
         String codiceErrore = infoComunicazioneServizio.getCodiceErrore()
@@ -633,9 +632,18 @@ class AnscComunicazioneService {
 
     AnscComunicazione save(AnscComunicazione obj) {
         if (obj.id == null){
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
         return anscComunicazioneRepository.save(obj)
+    }
+
+    synchronized AnscInfoComunicazioneServizio inviaComunicazioneSoggetto(ETipoArchivioAnsc taCom, AnscEndPointServizio epServizio, Long idRifNot,
+                                                                          AnscCredenziali cre, IRicercaAnsc ricerca=null){
+
+        //validaComunicazioneNotifica(taCom, epServizio, idRifNot, cre, ricerca)
+        AnscInfoComunicazioneServizio com = buildJsonAndSend(taCom, epServizio, idRifNot, null, null, null, "", null, cre, ricerca, null, null, Boolean.FALSE)
+
+        return com
     }
 
 }

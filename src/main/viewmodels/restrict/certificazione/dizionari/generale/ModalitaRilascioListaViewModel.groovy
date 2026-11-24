@@ -3,7 +3,10 @@ package restrict.certificazione.dizionari.generale
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.certificazione.CerModalitaRilascio
 import it.finmatica.de4gsdzk.certificazione.CerModalitaRilascioService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.OrderBy
+import it.finmatica.de4gsdzk.utils.Paginazione
+import it.finmatica.de4gsdzk.utils.SortUtils
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -26,6 +29,9 @@ class ModalitaRilascioListaViewModel extends DizionarioListaViewModel{
     List<CerModalitaRilascio> lista
     CerModalitaRilascio dettaglio
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -38,16 +44,27 @@ class ModalitaRilascioListaViewModel extends DizionarioListaViewModel{
         searchEnabled = true
         deleteEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Modalita_rilascio]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Modalita_rilascio")]
         eList.addAll(CerModalitaRilascio.etichetteDomain)
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Modalita_rilascio)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Modalita_rilascio"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")), SortUtils.idAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), SortUtils.idDesc)])
+
+        selectedOrder = listaOrder[0]
 
         caricaLista()
     }
@@ -61,7 +78,7 @@ class ModalitaRilascioListaViewModel extends DizionarioListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging){
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.idAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page p = cerModalitaRilascioService.listAllByDescrizioneLike(filtro, pr)
 
@@ -82,7 +99,7 @@ class ModalitaRilascioListaViewModel extends DizionarioListaViewModel{
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [:])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -92,14 +109,14 @@ class ModalitaRilascioListaViewModel extends DizionarioListaViewModel{
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
 
     String getMessaggioCancellazione(){
         if (dettaglio) {
-            return (dettaglio?.descrizione  + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio?.descrizione  + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

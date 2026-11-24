@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Individuo'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column/>
+                <column/>
+                <column width="135px"/>
+                <column/>
+                <column width="100px"/>
+                <column width="130px"/>
+                <column width="150px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true"
+                                     value="@load(vm.etichette['Cognome'])"/>
+                    </cell>
+                    <cell colspan="4">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.cognome)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChange="@command('onModificaDatiSoggetto', campoAnagrafe='COGNOME_INDIVIDUO')"
+                                     style="@load(vm.minuscole.cognome?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="cognome"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="cognome"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.cognome)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="cognome"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Cognome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaCognome)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.etichette['Matricola'])"/>
+                        <space/>
+                        <textbox value="@load(vm.soggetto.matricola)" readonly="true"
+                                 hflex="1"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Nome'])"/>
+                    </cell>
+                    <cell colspan="4">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@bind(vm.soggetto.nome)" hflex="1"
+                                     readonly="@load(vm.readOnly)"
+                                     onChange="@command('onModificaDatiSoggetto')"
+                                     style="@load(vm.minuscole.nome?'text-transform:none':'text-transform:uppercase')">
+                                <custom-attributes proprieta="nome"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoCustom')">
+                                <custom-attributes proprieta="nome"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right" width="85px">
+                        <hlayout valign="middle" >
+                            <label value="@load(vm.etichette['Minuscole'])"/>
+                            <checkbox checked="@bind(vm.minuscole.nome)" disabled="@load(vm.readOnly)" onCheck="@command('onAggiornaCase')">
+                                <custom-attributes proprieta="nome"/>
+                            </checkbox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle">
+                            <label value="@load(vm.etichette['Senza_Nome'])"/>
+                            <checkbox checked="@bind(vm.soggetto.senzaNome)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png" visible="${arg.rettifica ne true}"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Seleziona'])"
+                                onClick="@command('onRicercaSoggetto', sezione='I')"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Sesso'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <combobox model="@load(vm.listaSesso)" readonly="true" hflex="1"
+                                      disabled="@load(vm.readOnly)"
+                                      onSelect="@command('onSelectSesso')"
+                                      selectedItem="@bind(vm.soggetto.sesso) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem
+                                            label="@load(empty each? '--' :vm.getEtichettaEnum(each))"
+                                            value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Codice_Fiscale'])"/>
+                    </cell>
+                    <cell colspan="3">
+                        <hlayout valign="middle" hflex="1">
+                            <textbox value="@load(vm.soggetto.codiceFiscale)" hflex="1" readonly="@load(vm.readOnly)"/>
+                            <button image="/images/icon/action/16x16/calculator.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Calcolo_Codice_Fiscale'])"
+                                    onClick="@command('onCalcolaCf')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="codiceFiscale"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <hlayout valign="middle" hflex="1">
+                            <label value="@load(vm.etichette['Non_Validato']))"/>
+                            <checkbox checked="@bind(vm.soggetto.cfCalcolato)" disabled="@load(vm.readOnly)"/>
+                        </hlayout>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Stato_Civile'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaStatoCivile)" readonly="true"
+                                  hflex="1"
+                                  disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.soggetto.statoCivile) @converter('it.finmatica.zk.utils.PropertyConverter', property='codice')"
+                                  onSelect="@command('onSelectStatoCivile')">
+                            <template name="model">
+                                <comboitem label="@load(empty each?'- -':each.descrizione)"
+                                           value="@load(each.codice)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Nazionalita'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <hlayout valign="middle" hflex="1">
+                            <combobox model="@load(vm.listaNazionalita)" readonly="false"
+                                      hflex="1"
+                                      disabled="@load(vm.readOnly)"
+                                      selectedItem="@bind(vm.soggetto.nazionalita) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem
+                                            label="@load(empty each? '--' :each.descrizione)"
+                                            tooltiptext="@load(each.descrizione)"
+                                            value="@load(each)"/>
+                                </template>
+                            </combobox>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Dal'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy"
+                                 readonly="@load(vm.readOnly)"
+                                 value="@bind( vm.soggetto.dataNazionalita)"
+                                 width="95px"/>
+                        <button image="/images/icon/action/16x16/cancel.png"
+                                disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Cancella'])"
+                                onClick="@command('onCancellaCampo')">
+                            <custom-attributes proprieta="dataNazionalita"/>
+                        </button>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

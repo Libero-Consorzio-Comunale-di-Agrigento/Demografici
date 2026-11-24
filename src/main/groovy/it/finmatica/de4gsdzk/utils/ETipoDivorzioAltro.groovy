@@ -17,10 +17,10 @@ enum ETipoDivorzioAltro {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case M: return Etichette.Mancata_conferma_accordo
-            case C: return Etichette.Modifica_condizioni_separazione
-            case D: return Etichette.Modifica_condizioni_divorzio
-            case A: return Etichette.Altro
+            case M: return Etichette.getEtichetta("Mancata_conferma_accordo")
+            case C: return Etichette.getEtichetta("Modifica_condizioni_separazione")
+            case D: return Etichette.getEtichetta("Modifica_condizioni_divorzio")
+            case A: return Etichette.getEtichetta("Altro")
         }
         return null
     }

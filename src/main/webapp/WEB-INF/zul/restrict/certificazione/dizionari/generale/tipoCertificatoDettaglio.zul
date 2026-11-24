@@ -131,7 +131,7 @@
                     </row>
                     <row>
                         <cell align="right">
-                            <label value="@load(vm.labelTipoCertificatoEsterno)"/>
+                            <customLabel mandatory="@load(vm.dettaglio.tipoAttoEnum eq 'CIT')" value="@load(vm.labelTipoCertificatoEsterno)"/>
                         </cell>
                         <cell colspan="2">
                             <hlayout valign="middle" hflex="1">

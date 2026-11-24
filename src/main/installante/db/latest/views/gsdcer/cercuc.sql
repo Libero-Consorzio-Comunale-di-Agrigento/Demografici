@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset amonopoli:202303130845_2 runOnChange:true stripComments:false
-create or replace view cercuc 
+create or replace view cercuc
 	(ufficio,anno,atto,parte,parte_edit,serie,serie_edit,natura,
          NUMERO_ATTO_ANSC,
 	 ufficio_orig,anno_orig,atto_orig,parte_orig,parte_orig_edit,
@@ -38,11 +38,11 @@ create or replace view cercuc
          data_conferma_scioglimento,data_accordo_scioglimento,
 	 comune_data,comune,data,
 	 convenzioni,
-         testimone_1, 
+         testimone_1,
          nat_oa_il_testimone_1, comune_nas_testimone_1,
          data_nas_testimone_1, residenza_testimone_1,
          cittadin_oa_testimone_1, nazionalita_testimone_1,
-         testimone_2, 
+         testimone_2,
          nat_oa_il_testimone_2, comune_nas_testimone_2,
          data_nas_testimone_2, residenza_testimone_2,
          cittadin_oa_testimone_2, nazionalita_testimone_2,
@@ -51,7 +51,7 @@ create or replace view cercuc
 	 ufficiale_prov,qualifica_prov,
 	 protocollo_prov,anno_protocollo_prov,data_protocollo_prov,
          ente_straniero, comune_ente_straniero, stato_ente_straniero, data_atto_ente_straniero,
-         tipo_atto_ente_straniero, estremi_atto_ente_straniero, 
+         tipo_atto_ente_straniero, estremi_atto_ente_straniero,
          terminalista_atto,
 	 flag_comune_estero_res_m,flag_comune_estero_res_f,
          ID_ATTO, NUMERO_UNICO_COMUNALE)
@@ -62,39 +62,39 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
         uci.natura,
         f_CIV_numero_atto_ansc(uci.id_atto_ansc,uci.numero_unico),
 -- ufficio_orig
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.ufficio_orig, '', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.ufficio_orig, '',
             DECODE (ana.ufficio_orig, '', '__', ana.ufficio_orig),
             dpa.ufficio_orig)),
 -- anno_orig
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.anno_orig, '', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.anno_orig, '',
             DECODE (ana.anno_orig, '', '____', ana.anno_orig),
             dpa.anno_orig)),
 -- atto_orig
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.atto_orig, '', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.atto_orig, '',
             DECODE (ana.atto_orig, '', '____', ana.atto_orig),
             dpa.atto_orig),
           dpa.id_atto_ansc_orig),
 -- parte_orig
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.parte_orig, '', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.parte_orig, '',
             DECODE (ana.parte_orig, '', '__', ana.parte_orig),
             dpa.parte_orig)),
 -- parte_orig_edit
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.parte_orig,'', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.parte_orig,'',
             DECODE (ana.parte_orig,'', '__',DECODE (ana.parte_orig,1,'I',2,'II')),
             DECODE (dpa.parte_orig,1,'I',2,'II'))),
 -- serie_orig
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.serie_orig,'', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.serie_orig,'',
             DECODE (ana.serie_orig,'', DECODE (ana.atto_orig, '', '__', ''),ana.serie_orig),
             dpa.serie_orig)),
 -- serie_orig_edit
-        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '', 
-          DECODE (dpa.serie_orig,'', 
+        decode(f_CIV_numero_atto_ansc(dpa.id_atto_ansc_orig), '',
+          DECODE (dpa.serie_orig,'',
             DECODE (ana.serie_orig,'', DECODE (ana.atto_orig, '', 'Serie __', ''),'Serie ' || ana.serie_orig),
             'Serie ' || dpa.serie_orig)),
 -- numero_atto_ansc_orig
@@ -120,24 +120,24 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
 -- cap_comune_nascita_1
         LPAD (a.cap, 5, '0'),
 -- tribunale_nascita_1
-        nvl(a_trib.descrizione_al1,a_trib.descrizione), 
+        nvl(a_trib.descrizione_al1,a_trib.descrizione),
 -- atto_nascita_1
-        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '', 
+        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '',
           NVL (TO_CHAR (spo.atto_nas_m), '_____'),
           spo.id_atto_ansc_nas_m),
 -- parte_nascita_1
-        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '', 
+        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '',
           DECODE (spo.atto_nas_m,'', NVL (spo.parte_nas_m, '_____'),spo.parte_nas_m)),
 -- serie_nascita_1
-        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '', 
+        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '',
           DECODE (spo.serie_nas_m,'', DECODE (spo.atto_nas_m, '', '__', ''),spo.serie_nas_m)),
 -- anno_atto_nascita_1
-        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '', 
+        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '',
           DECODE (spo.anno_atto_nas_m,'', DECODE (spo.atto_nas_m, '', '____', ''),spo.anno_atto_nas_m)),
 -- numero_atto_ansc_nascita_1
         f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m),
 -- atto_nascita_1_edit
-        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '', 
+        decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_m), '',
           DECODE(spo.atto_nas_m,'',TO_CHAR (NULL),'atto N. ' || spo.atto_nas_m || ' p.' || spo.parte_nas_m
                     ||DECODE (spo.serie_nas_m,'', TO_CHAR (NULL),' s.' || spo.serie_nas_m)
                     ||DECODE (spo.anno_atto_nas_m,'', TO_CHAR (NULL),' / ' || spo.anno_atto_nas_m)),
@@ -176,7 +176,7 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
 -- cap_comune_nascita_2
         LPAD (c.cap, 5, '0'),
 -- tribunale_nascita_2
-        nvl(c_trib.descrizione_al1,c_trib.descrizione), 
+        nvl(c_trib.descrizione_al1,c_trib.descrizione),
 -- atto_nascita_2
         decode(f_CIV_numero_atto_ansc(spo.id_atto_ansc_nas_f), '',
           NVL (TO_CHAR (spo.atto_nas_f), '_____'),
@@ -277,52 +277,52 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
 -- convenzioni
         convenzioni,
 -- testimone_..._1
-  -- testimone_1 
-       decode(tta.atto,'', translate(nvl(test_1,'-'),'/',' '), 
+  -- testimone_1
+       decode(tta.atto,'', translate(nvl(test_1,'-'),'/',' '),
          tta.cognome_1||' '||tta.nome_1),
   -- nat_oa_il_testimone_1
-       decode(tta.atto,'', decode(tte.nato_1,'','-','nat'||tte.nato_1||' il'), 
+       decode(tta.atto,'', decode(tte.nato_1,'','-','nat'||tte.nato_1||' il'),
          decode(tta.sesso_1,'M','nato','F','nata')||' il'),
   -- comune_nas_testimone_1
-       decode(tta.atto,'', decode(tte.com_nas_1,'','-',tte.com_nas_1),  
+       decode(tta.atto,'', decode(tte.com_nas_1,'','-',tte.com_nas_1),
          f_comune_al(tta.cod_pro_nas_1,tta.cod_com_nas_1,to_char(tta.d_data_nas_1,'j'))||' '||
          f_provincia_stato_al(tta.cod_pro_nas_1,tta.cod_com_nas_1,'','S','S',to_char(tta.d_data_nas_1,'j'))),
   -- data_nas_testimone_1
-       decode(tta.atto,'', to_char(to_date(tte.data_nas_1_j,'j'),'dd/mm/yyyy'), 
+       decode(tta.atto,'', to_char(to_date(tte.data_nas_1_j,'j'),'dd/mm/yyyy'),
          to_char(tta.d_data_nas_1,'dd/mm/yyyy')),
   -- residenza_testimone_1
-       decode(tta.atto,'', nvl(tte.residenza_1,'-'), 
+       decode(tta.atto,'', nvl(tte.residenza_1,'-'),
          f_comune_al(tta.cod_pro_res_1,tta.cod_com_res_1,'')||' '||
          f_provincia_stato_al(tta.cod_pro_res_1,tta.cod_com_res_1,'','S','S','')),
   -- cittadin_oa_testimone_1
-       decode(tta.atto,'', decode(tte.cittadino_1,'','-','cittadin'||tte.cittadino_1), 
+       decode(tta.atto,'', decode(tte.cittadino_1,'','-','cittadin'||tte.cittadino_1),
          decode(tta.sesso_1,'M','cittadino','F','cittadina')),
   -- nazionalita_testimone_1
-       decode(tta.atto,'', nvl(tte.nazionalita_1,'-'), 
+       decode(tta.atto,'', nvl(tte.nazionalita_1,'-'),
          decode(tta.nazionalita_1, '','-', nvl(decode(tta.sesso_1,'M',dci_t1.descrizione_m,'F',dci_t1.descrizione_f),dci_t1.descrizione))),
 -- testimone_..._2
   -- testimone_2
-       decode(tta.atto,'', translate(nvl(test_2,'-'),'/',' '), 
+       decode(tta.atto,'', translate(nvl(test_2,'-'),'/',' '),
          tta.cognome_2||' '||tta.nome_2),
   -- nat_oa_il_testimone_2
-       decode(tta.atto,'', decode(tte.nato_2,'','-','nat'||tte.nato_2||' il'), 
+       decode(tta.atto,'', decode(tte.nato_2,'','-','nat'||tte.nato_2||' il'),
          decode(tta.sesso_2,'M','nato','F','nata')||' il'),
   -- comune_nas_testimone_2
-       decode(tta.atto,'', decode(tte.com_nas_2,'','-',tte.com_nas_2), 
+       decode(tta.atto,'', decode(tte.com_nas_2,'','-',tte.com_nas_2),
          f_comune_al(tta.cod_pro_nas_2,tta.cod_com_nas_2,to_char(tta.d_data_nas_2,'j'))||' '||
          f_provincia_stato_al(tta.cod_pro_nas_2,tta.cod_com_nas_2,'','S','S',to_char(tta.d_data_nas_2,'j'))),
   -- data_nas_testimone_2
-       decode(tta.atto,'', to_char(to_date(tte.data_nas_2_j,'j'),'dd/mm/yyyy'), 
+       decode(tta.atto,'', to_char(to_date(tte.data_nas_2_j,'j'),'dd/mm/yyyy'),
          to_char(tta.d_data_nas_2,'dd/mm/yyyy')),
   -- residenza_testimone_2
-       decode(tta.atto,'', nvl(tte.residenza_2,'-'), 
+       decode(tta.atto,'', nvl(tte.residenza_2,'-'),
          f_comune_al(tta.cod_pro_res_2,tta.cod_com_res_2,'')||' '||
          f_provincia_stato_al(tta.cod_pro_res_2,tta.cod_com_res_2,'','S','S','')),
   -- cittadin_oa_testimone_2
-       decode(tta.atto,'', decode(tte.cittadino_2,'','-','cittadin'||tte.cittadino_2), 
+       decode(tta.atto,'', decode(tte.cittadino_2,'','-','cittadin'||tte.cittadino_2),
          decode(tta.sesso_1,'M','cittadino','F','cittadina')),
   -- nazionalita_testimone_2
-       decode(tta.atto,'', nvl(tte.nazionalita_2,'-'), 
+       decode(tta.atto,'', nvl(tte.nazionalita_2,'-'),
          decode(tta.nazionalita_2, '','-', nvl(decode(tta.sesso_2,'M',dci_t2.descrizione_m,'F',dci_t2.descrizione_f),dci_t2.descrizione))),
 -- autorita_prov
        dpa.autorita_prov,
@@ -363,12 +363,12 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
        f_nazione(dpa.ente_straniero_cod_pro, dpa.ente_straniero_cod_com),
 -- data_atto_ente_straniero
        to_char(dpa.d_ente_straniero_data_atto,'dd/mm/yyyy'),
--- tipo_atto_ente_straniero	
+-- tipo_atto_ente_straniero
        dpa.ente_straniero_tipo_atto,
--- estremi_atto_ente_straniero	
+-- estremi_atto_ente_straniero
        dpa.ente_straniero_estremi_atto,
 -- terminalista_atto
-        terminalista,
+        uci.terminalista,
 -- flag_comune_estero_res_m
         DECODE (SIGN (nvl(uci.cod_pro_res_m,0) - 199), -1, TO_CHAR (NULL), 'S'),
 -- flag_comune_estero_res_f
@@ -377,7 +377,7 @@ SELECT uci.ufficio,uci.anno, uci.atto,uci.parte,
        uci.id_atto,
 -- numero_unico
        f_CIV_numero_unico_comunale(uci.numero_unico)
-  FROM arcinp inp, 
+  FROM arcinp inp,
        cilet cl_c, cilet cl_d,
        arccom a, arccom b, arccom c, arccom d, arccom e, arccom f, arccom com_atto_uci,
        arccom a_trib, arccom c_trib,

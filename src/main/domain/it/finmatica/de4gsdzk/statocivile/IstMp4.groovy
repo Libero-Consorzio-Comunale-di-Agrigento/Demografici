@@ -2,7 +2,7 @@ package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.IstBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.Etichette
 
@@ -77,7 +77,7 @@ class IstMp4 extends IstBaseDomain {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_PAT", nullable = true)
-    AnaNazionalita nazionalitaPadre
+    AnaCittadinanza nazionalitaPadre
 
     @Column(name = "STATO_CIVILE_PAT", nullable = true)
     String statoCivilePadre
@@ -103,7 +103,7 @@ class IstMp4 extends IstBaseDomain {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_MAT", nullable = true)
-    AnaNazionalita nazionalitaMadre
+    AnaCittadinanza nazionalitaMadre
 
     @Column(name = "STATO_CIVILE_MAT", nullable = true)
     String statoCivileMadre
@@ -127,6 +127,6 @@ class IstMp4 extends IstBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Indirizzo, Etichette.Intestatario, Etichette.Data_Iscrizione,
-                                              Etichette.Tot_Componenti, Etichette.Tot_Minori, Etichette.Sez_Censimento]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("Intestatario"), Etichette.getEtichetta("Data_Iscrizione"),
+                                              Etichette.getEtichetta("Tot_Componenti"), Etichette.getEtichetta("Tot_Minori"), Etichette.getEtichetta("Sez_Censimento")]
 }

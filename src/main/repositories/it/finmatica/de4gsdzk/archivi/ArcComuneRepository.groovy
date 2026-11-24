@@ -17,10 +17,20 @@ interface ArcComuneRepository extends JpaRepository<ArcComune, String> {
 
     List<ArcComune> findAllByCodiceComuneFusioneAndCodiceProvinciaFusione(Integer codiceComune, Integer codiceProvincia)
 
+    Page<ArcComune> findAllByDescrizioneComuneLikeIgnoreCaseAndSoppressoIsNull(String filtro, Pageable pageable)
+
     Page<ArcComune> findAllByDescrizioneComuneLikeIgnoreCase(String filtro, Pageable pageable)
+
+    Page<ArcComune> findAllByIdNotInAndDescrizioneComuneLikeIgnoreCaseAndSoppressoIsNull(List<String> ids, String filtro, Pageable pageable)
 
     Page<ArcComune> findAllByIdNotInAndDescrizioneComuneLikeIgnoreCase(List<String> ids, String filtro, Pageable pageable)
 
+    Page<ArcComune> findAllByIdNotInAndSoppressoIsNull(List<String> ids, Pageable pageable)
+
     Page<ArcComune> findAllByIdNotIn(List<String> ids, Pageable pageable)
+
+    Page<ArcComune> findAllBySoppressoIsNull(Pageable pageable)
+
+    List<ArcComune> findAllByCodiceComuneAndCodiceProvinciaGreaterThanOrderByDescrizioneComune(Integer codComune, Integer codProvincia)
 
 }

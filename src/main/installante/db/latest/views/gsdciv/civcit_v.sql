@@ -17,6 +17,25 @@ SELECT cit.*,
        f_provincia_stato_al(cit.cod_pro_res,cit.cod_com_res,'','S','',cit.data_cit) sigla_pro_res,
 -- flag_com_in_sospeso
        f_CIV_flag_com_in_sospeso(1,cit.ufficio,cit.anno,'','',cit.atto) flag_com_in_sospeso,
+-- ufficio_lista
+       cit.ufficio ufficio_lista,
+-- anno_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(cit.id_atto_ansc, '', cit.anno),
+              cit.anno) anno_lista,
+-- parte_lista
+       to_number(null) parte_lista,
+-- serie_lista
+       to_char(null) serie_lista,
+-- atto_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(cit.id_atto_ansc, '', 
+                decode(cit.numero_unico, '', cit.atto, cit.numero_unico)),
+              cit.atto) atto_lista,
+-- id_atto_ansc_lista
+       decode(f_flag_ANSC(), 
+         'S', cit.id_atto_ansc,
+              to_char(null)) id_atto_ansc_lista,
 -- cognome_lista
        decode(cit.natura,'N','*** ANNULLATO',cit.cognome) 	cognome_1_lista,
 -- nome_lista

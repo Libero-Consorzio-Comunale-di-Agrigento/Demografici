@@ -3,7 +3,6 @@ package it.finmatica.de4gsdzk.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivMotivoRichiestaRepository
 import it.finmatica.de4gsdzk.utils.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -54,13 +53,13 @@ class CivMotivoRichiestaService {
 		}
 
 		if (TestoUtils.isVuoto(obj.descrizione)) {
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
 		}
 
 		if (tipoOperazione.isInsert()){
 			long n = civMotivoRichiestaRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Record_duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_duplicato"))
 			}
 		}
 	}

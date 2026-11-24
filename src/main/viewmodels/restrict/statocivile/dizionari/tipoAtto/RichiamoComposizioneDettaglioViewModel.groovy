@@ -5,7 +5,9 @@ import it.finmatica.de4gsdzk.CivRichiamoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoComposizione
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoComposizioneService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.ETipoOperazione
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarDettaglioAttributes
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -39,7 +41,7 @@ class RichiamoComposizioneDettaglioViewModel extends AbstractDettaglioViewModel{
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Richiamo_Composizione, Etichette.Formule_Associate]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Richiamo_Composizione"), Etichette.getEtichetta("Formule_Associate")]
         eList.addAll(etichetteDettaglioDefault)
         eList.addAll(CivRichiamoBaseDomain.etichetteDomain)
         eList.addAll(CivRichiamoComposizione.etichetteDomain)
@@ -51,7 +53,7 @@ class RichiamoComposizioneDettaglioViewModel extends AbstractDettaglioViewModel{
         eList.addAll(ControlBarDettaglioAttributes.etichetteCbDettaglioDesc)
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Richiamo_Composizione)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Richiamo_Composizione"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -91,7 +93,7 @@ class RichiamoComposizioneDettaglioViewModel extends AbstractDettaglioViewModel{
     @Command void onSalvaRecord() {
         if (dettaglio) {
             CivRichiamoComposizione c = civRichiamoComposizioneService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

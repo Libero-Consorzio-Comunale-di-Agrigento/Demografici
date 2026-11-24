@@ -20,14 +20,15 @@ import org.zkoss.bind.annotation.Command
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.AbstractListaViewModel
-import restrict.statocivile.TraitStampaAttoCampi
+import restrict.statocivile.TraitStampaCampi
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
-abstract class DocumentoParentListaViewModel extends AbstractListaViewModel implements TraitStampaAttoCampi{
+abstract class DocumentoParentListaViewModel extends AbstractListaViewModel implements TraitStampaCampi{
 
     Boolean showDetailsProtocollazione = Boolean.TRUE
 
@@ -68,13 +69,13 @@ abstract class DocumentoParentListaViewModel extends AbstractListaViewModel impl
         searchEnabled = true
         addEnabled = false
 
-        eList.addAll([Etichette.Tipo_Documento, Etichette.Protocollo_crescente, Etichette.Protocollo_decrescente,
-                      Etichette.Documenti_Non_Associati, Etichette.Documenti_Associati,
-                      Etichette.Documenti_Numerati, Etichette.Documenti_Non_Numerati,
-                      Etichette.Estremi_Atto_decrescente, Etichette.Estremi_Atto_crescente,
-                      Etichette.Generalita_crescente, Etichette.Generalita_decrescente])
+        eList.addAll([Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Protocollo_crescente"), Etichette.getEtichetta("Protocollo_decrescente"),
+                      Etichette.getEtichetta("Documenti_Non_Associati"), Etichette.getEtichetta("Documenti_Associati"),
+                      Etichette.getEtichetta("Documenti_Numerati"), Etichette.getEtichetta("Documenti_Non_Numerati"),
+                      Etichette.getEtichetta("Estremi_Atto_decrescente"), Etichette.getEtichetta("Estremi_Atto_crescente"),
+                      Etichette.getEtichetta("Generalita_crescente"), Etichette.getEtichetta("Generalita_decrescente")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_registro])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_registro")])
         eList.addAll(etichetteListaDefault)
         eList.addAll(CivRegistroDocumentiUscita.etichetteDomain)
 
@@ -90,14 +91,14 @@ abstract class DocumentoParentListaViewModel extends AbstractListaViewModel impl
         totalSizeLabel = ""
 
         if (showDetailsProtocollazione) {
-            listaOrder.add(new OrderBy(getEtichetta(Etichette.Protocollo_crescente),            SortUtils.protocolloAsc))
-            listaOrder.add(new OrderBy(getEtichetta(Etichette.Protocollo_decrescente),          SortUtils.protocolloDesc))
+            listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Protocollo_crescente")),            SortUtils.protocolloAsc))
+            listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Protocollo_decrescente")),          SortUtils.protocolloDesc))
         } else {
-            listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),        SortUtils.estremiAttoDesc))
-            listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),          SortUtils.estremiAttoAsc))
+            listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),        SortUtils.estremiAttoDesc))
+            listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),          SortUtils.estremiAttoAsc))
         }
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),        SortUtils.cognomeNomeAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_decrescente),      SortUtils.cognomeNomeDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),        SortUtils.cognomeNomeAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_decrescente")),      SortUtils.cognomeNomeDesc))
 
         selectedOrder = listaOrder[0]
 
@@ -138,7 +139,7 @@ abstract class DocumentoParentListaViewModel extends AbstractListaViewModel impl
                     apriDettaglio(uriDettaglioDocumentoEntrata, [id: dettaglio.idDisposizioniTrattamento, registro: registro])
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -180,7 +181,7 @@ abstract class DocumentoParentListaViewModel extends AbstractListaViewModel impl
         // Popolo la lista nella form
         onRicarica()
         if ( (lista == null) || (lista.isEmpty()) ){
-            Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             return
         }
 
@@ -195,33 +196,34 @@ abstract class DocumentoParentListaViewModel extends AbstractListaViewModel impl
         if ( (tipo == ETipoFile.XLS) || (tipo == ETipoFile.CSV) ) {
 
             if (showDetailsProtocollazione || (tipoDocumento == ETipoDocumento.Entrata) ) {
-                exportFields.add(new ExportField("numeroProtocollo", getEtichetta(Etichette.Protocollo),
+                exportFields.add(new ExportField("numeroProtocollo", getEtichetta(Etichette.getEtichetta("Protocollo")),
                         ((tipo == ETipoFile.CSV) ? ExportUtils.STRING_FORMAT : ExportUtils.INTEGER_FORMAT),
                         ((tipo == ETipoFile.CSV) ? calcolaValoreExportStringFromInteger : null)))
-                exportFields.add(new ExportField("annoProtocollo", getEtichetta(Etichette.Anno_Protocollo),
+                exportFields.add(new ExportField("annoProtocollo", getEtichetta(Etichette.getEtichetta("Anno_Protocollo")),
                         ((tipo == ETipoFile.CSV) ? ExportUtils.STRING_FORMAT : ExportUtils.INTEGER_FORMAT),
                         ((tipo == ETipoFile.CSV) ? calcolaValoreExportStringFromInteger : null)))
-                exportFields.add(new ExportField("dataProtocollo", getEtichetta(Etichette.Data), ExportUtils.DATE_FORMAT))
+                exportFields.add(new ExportField("dataProtocollo", getEtichetta(Etichette.getEtichetta("Data")), ExportUtils.DATE_FORMAT))
             }
             if (tipoDocumento == ETipoDocumento.Uscita) {
-                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), ExportUtils.INTEGER_FORMAT))
-                exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno),
+                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.INTEGER_FORMAT))
+                exportFields.add(new ExportField("anno", getEtichetta(Etichette.getEtichetta("Anno")),
                         ((tipo == ETipoFile.CSV) ? ExportUtils.STRING_FORMAT : ExportUtils.INTEGER_FORMAT),
                         ((tipo == ETipoFile.CSV) ? calcolaValoreExportStringFromInteger : null)))
-                exportFields.add(new ExportField("parte", getEtichetta(Etichette.Parte), ExportUtils.INTEGER_FORMAT))
-                exportFields.add(new ExportField("serie", getEtichetta(Etichette.Serie)))
-                exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto),
+                exportFields.add(new ExportField("parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.INTEGER_FORMAT))
+                exportFields.add(new ExportField("serie", getEtichetta(Etichette.getEtichetta("Serie"))))
+                exportFields.add(new ExportField("atto", getEtichetta(Etichette.getEtichetta("Numero_Atto")),
                         ((tipo == ETipoFile.CSV) ? ExportUtils.STRING_FORMAT : ExportUtils.INTEGER_FORMAT),
                         ((tipo == ETipoFile.CSV) ? calcolaValoreExportStringFromInteger : null)))
             }
-            exportFields.add(new ExportField("nominativo", getEtichetta(Etichette.Cognome_Nome)))
+            exportFields.add(new ExportField("nominativo", getEtichetta(Etichette.getEtichetta("Cognome_Nome"))))
 
             StringBuilder b = new StringBuilder(msgTitle)
             b.append("_")
             b.append(getDescrizioneStato())
 
             ExportObject eo = new ExportObject("", exportFields, listaExport, null, null, csvCharsetName)
-            exportService.export(tipo, eo, b.toString())
+            InputStream exportStream = exportService.export(tipo, eo)
+            Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename(b.toString(), tipo))
         }
     }
 

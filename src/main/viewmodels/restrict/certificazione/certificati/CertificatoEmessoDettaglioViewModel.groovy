@@ -2,7 +2,7 @@ package restrict.certificazione.certificati
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ArcComuneBaseDomain
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.certificazione.*
 import it.finmatica.de4gsdzk.utils.*
 import org.zkoss.bind.annotation.*
@@ -36,12 +36,12 @@ class CertificatoEmessoDettaglioViewModel extends DizionarioDettaglioViewModel i
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Certificato, Etichette.Motivo, Etichette.CERTIFICATO_EMESSO, Etichette.CERTIFICATO_ANNULLATO,
-                                           Etichette.SEZIONE_BENEFICIARIO, Etichette.SEZIONE_RICHIEDENTE, Etichette.SEZIONE_DATI_CERTIFICATO]
-        eList.addAll([Etichette.Anno_emissione, Etichette.Progressivo_emissione])
-        eList.addAll([Etichette.Tipo_Certificato, Etichette.Modalita_rilascio, Etichette.Firma_Emissione, Etichette.Altri_Dati, Etichette.Dati_Annullamento])
-        eList.addAll([Etichette.annulla_certificato_tooltip, Etichette.ripristina_certificato_tooltip, Etichette.scarica_allegato_tooltip, EtichetteMessaggi.Ask_Ripristino_Certificato])
-        eList.addAll(GsdAnagrafeBaseDomain.etichetteDomain)
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Certificato"), Etichette.getEtichetta("Motivo"), Etichette.getEtichetta("CERTIFICATO_EMESSO"), Etichette.getEtichetta("CERTIFICATO_ANNULLATO"),
+                                           Etichette.getEtichetta("SEZIONE_BENEFICIARIO"), Etichette.getEtichetta("SEZIONE_RICHIEDENTE"), Etichette.getEtichetta("SEZIONE_DATI_CERTIFICATO")]
+        eList.addAll([Etichette.getEtichetta("Anno_emissione"), Etichette.getEtichetta("Progressivo_emissione")])
+        eList.addAll([Etichette.getEtichetta("Tipo_Certificato"), Etichette.getEtichetta("Modalita_rilascio"), Etichette.getEtichetta("Firma_Emissione"), Etichette.getEtichetta("Altri_Dati"), Etichette.getEtichetta("Dati_Annullamento")])
+        eList.addAll([Etichette.getEtichetta("annulla_certificato_tooltip"), Etichette.getEtichetta("ripristina_certificato_tooltip"), Etichette.getEtichetta("scarica_allegato_tooltip"), Etichette.getEtichetta("Ask_Ripristino_Certificato")])
+        eList.addAll(AnagrafeBaseDomain.etichetteDomain)
         eList.addAll(CerCertificatoEmesso.etichetteDomain)
         eList.addAll(CerCategoriaTipoCertificato.etichetteDomain)
         eList.addAll(CerTerminalista.etichetteDomain)
@@ -50,11 +50,11 @@ class CertificatoEmessoDettaglioViewModel extends DizionarioDettaglioViewModel i
         eList.addAll(ETipoSiNo.values()*.getEtichettaDesc())
         eList.addAll(EDiritto.values()*.getEtichettaDesc())
 
-        eList.addAll([EtichetteMessaggi.Errore_salvataggio_file_documentale, EtichetteMessaggi.Errore_modello_testo_non_trovato, EtichetteMessaggi.Ask_Conferma_Salvataggio_Documento])
+        eList.addAll([Etichette.getEtichetta("Errore_salvataggio_file_documentale"), Etichette.getEtichetta("Errore_modello_testo_non_trovato"), Etichette.getEtichetta("Ask_Conferma_Salvataggio_Documento")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Certificato)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Certificato"))
 
         resize()
 
@@ -126,7 +126,7 @@ class CertificatoEmessoDettaglioViewModel extends DizionarioDettaglioViewModel i
 
     @Command
     void onRipristinaCertificato() {
-        String errMsg = getEtichetta(EtichetteMessaggi.Ask_Ripristino_Certificato)
+        String errMsg = getEtichetta(Etichette.getEtichetta("Ask_Ripristino_Certificato"))
         Messagebox.show(errMsg, msgTitle,
                 Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, { e ->
             if (Messagebox.ON_OK.equals(e.getName())) {

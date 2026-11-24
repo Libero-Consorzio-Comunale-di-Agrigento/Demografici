@@ -135,6 +135,18 @@ select
        f_provincia_stato_al(pvu.cod_pro_mat,pvu.cod_com_mat,'','S','',pvu.data_mat) sigla_pro_mat,
 -- flag_com_in_sospeso
        f_CIV_flag_com_in_sospeso(-4,pvu.ufficio,pvu.anno,pvu.parte,pvu.serie,pvu.atto) flag_com_in_sospeso,
+-- ufficio_lista
+       pvu.ufficio ufficio_lista,
+-- anno_lista
+       pvu.anno anno_lista,
+-- parte_lista
+       pvu.parte parte_lista,
+-- serie_lista
+       pvu.serie serie_lista,
+-- atto_lista
+       pvu.atto atto_lista,
+-- id_atto_ansc_lista
+       to_char(null) id_atto_ansc_lista,
 -- cognome_m_lista
        decode(pvu.natura,'N','*** ANNULLATO',pvu.cognome_m)	cognome_1_lista,
 -- nome_m_lista

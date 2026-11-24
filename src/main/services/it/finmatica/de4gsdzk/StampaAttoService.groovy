@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.zkoss.zhtml.Filedownload
 
+import java.nio.charset.StandardCharsets
+
 import static it.finmatica.de4gsdzk.utils.EtichetteUtils.getEtichetta
 
 @Slf4j
@@ -52,16 +54,16 @@ class StampaAttoService {
 
     private final GsdMenuDittaService gsdMenuDittaService
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
-    StampaAttoService(JasperReportService jasperReportService, StatoCivileService statoCivileService, GsdMenuDittaService gsdMenuDittaService,
+    StampaAttoService(JasperReportService jasperReportService, GsdService gsdService, GsdMenuDittaService gsdMenuDittaService,
                       CivTipoAttoService civTipoAttoService, GsdFirmaService gsdFirmaService, ArcParametroService arcParametroService,
                       CivTestoLiberoService civTestoLiberoService, CivMargineService civMargineService, CivOcchielloService civOcchielloService,
                       CivFormulaTestoLiberoService civFormulaTestoLiberoService, CivAnnotazioneAttoService civAnnotazioneAttoService,
                       CivFascicoloAttoService civFascicoloAttoService, CivFascicoloAttoAllegatoService civFascicoloAttoAllegatoService,
                       GestioneTestiGsdModelloService gestioneTestiGsdModelloService, GestioneTestiService gestioneTestiService) {
         this.jasperReportService = jasperReportService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.gsdMenuDittaService = gsdMenuDittaService
         this.civTipoAttoService = civTipoAttoService
         this.gsdFirmaService = gsdFirmaService
@@ -85,7 +87,7 @@ class StampaAttoService {
             reportName = "stampa_PubPvu_A4"
         }
         if (atto.isProvvisorio()) {
-            throw new StampaAttoProvvisorioException(EtichetteMessaggi.Errore_stampa_provvisorio)
+            throw new StampaAttoProvvisorioException(Etichette.getEtichetta("Errore_stampa_provvisorio"))
         }
 
         Boolean anscOn = Boolean.FALSE
@@ -140,9 +142,9 @@ class StampaAttoService {
                 TIPO_ATTO       : atto.tipoAtto,
                 CODICE_TIPO_ATTO: atto.getTipoAttoEnum().name(),
                 ESTREMI_ATTO    : TestoUtils.getDescrizioneAtto(atto, etichette, md?.id, anscIntestazioneOn),//TODO: estrarlo nella query del report (e spostarlo in noDataSourceParams)
-                LABEL_COGNOME   : getEtichetta(etichette, Etichette.Cognome),
-                LABEL_NOME      : getEtichetta(etichette, Etichette.Nome),
-                LABEL_SESSO     : getEtichetta(etichette, Etichette.Sesso)
+                LABEL_COGNOME   : getEtichetta(etichette, Etichette.getEtichetta("Cognome")),
+                LABEL_NOME      : getEtichetta(etichette, Etichette.getEtichetta("Nome")),
+                LABEL_SESSO     : getEtichetta(etichette, Etichette.getEtichetta("Sesso"))
         ]
 
         Map<String, ?> noDataSourceParams = [:]
@@ -153,7 +155,7 @@ class StampaAttoService {
                 testoLibero = civTestoLiberoService.getByUkAtto(atto.idAtto)
             }
             if (testoLibero == null){
-                throw new EmptyReportException(EtichetteMessaggi.Errore_testo_atto)
+                throw new EmptyReportException(Etichette.getEtichetta("Errore_testo_atto"))
             }
 
             List<CivFormulaTestoLibero> formuleMargineLista = formuleMargine
@@ -189,9 +191,9 @@ class StampaAttoService {
             String testoFirmaCia = ""
             InputStream ciaIs = null
             if (baseOptions.cia) {
-                testoIntestazioneCia = statoCivileService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_INT, atto)
-                testoCia = statoCivileService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_TXT, atto)
-                testoFirmaCia = statoCivileService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_FIR, atto)
+                testoIntestazioneCia = gsdService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_INT, atto)
+                testoCia = gsdService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_TXT, atto)
+                testoFirmaCia = gsdService.decodificaTestoFormulaCia(ETipoFormulaAggiuntiva.CIA_FIR, atto)
                 ArcParametro logoCia = arcParametroService.get(ArcParametro.LOGO_SCIA)
                 if (logoCia.blobAllegato){
                     ciaIs = new ByteArrayInputStream(logoCia.blobAllegato)
@@ -287,12 +289,12 @@ class StampaAttoService {
                 String formato = (g.formatoTesto?.name()?:g.tipo).toLowerCase()
                 String nomeFile = "${g.descrizione}.${formato}"
                 ByteArrayInputStream bais = new ByteArrayInputStream(g.fileTemplate)
-                InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true)
+                InputStream is = gestioneTestiService.stampaUnione(bais, queryModello, parametriQuery, formato, true, StandardCharsets.UTF_8)
                 byte[] allegato = is.getBytes()
                 Filedownload.save(allegato, FileUtils.getMimeType(formato), nomeFile)
                 is.close()
             } else {
-                throw new FileNonValidoRuntimeException(EtichetteMessaggi.Errore_modello_etichetta_non_trovato)
+                throw new FileNonValidoRuntimeException(Etichette.getEtichetta("Errore_modello_etichetta_non_trovato"))
             }
         } else {
             String testo = TestoUtils.getTestoEtichettaCompleto(annotazioneAtto, formatoReport, dataFirma, attiLi, dataReg)

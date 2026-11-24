@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@bind(vm.dichiarazione.tipoRettifica.id ne 'I' and vm.pratica.id ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.dichiarazione.tipoRettifica.id eq 'R' ? vm.etichette['Sezione_Rapporti_Parentela_Pratica'] : vm.etichette['Sezione_Famiglia_Pratica'])"
+                       sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <hlayout valign="middle" sclass="navigazione">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/icon/action/22x22/add.png"
+                               tooltiptext="@load(vm.etichette['inserisci_soggetto_tooltip'])"
+                               onClick="@command('onInserisciSoggetto')"
+                               disabled="@bind(vm.readOnly or vm.soggetti.size() gt 0)"/>
+
+
+                <toolbarbutton image="/images/icon/action/22x22/delete.png"
+                               tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                               onClick="@command('onEliminaFamiglia')"
+                               disabled="@bind(vm.readOnly or vm.soggetti.size() eq 0)"/>
+
+            </hlayout>
+        </hlayout>
+
+        <listbox model="@load(vm.soggetti)" nonselectableTags=""
+                 emptyMessage="@load(vm.etichette['Nessun_Soggetto_Inserito'])">
+            <listhead>
+                <listheader label="@load(vm.etichette['Numero_Ordine'])" width="50px"/>
+                <listheader label="@load(vm.etichette['Matricola'])" width="100px"/>
+                <listheader label="@load(vm.etichette['Cognome'])"/>
+                <listheader label="@load(vm.etichette['Nome'])"/>
+                <listheader label="@load(vm.etichette['Data_Nascita'])" width="100px"/>
+                <listheader label="@load(vm.etichette['Sesso'])" width="50px"/>
+                <listheader label="@load(vm.dichiarazione.tipoRettifica.id eq 'R' ? vm.etichette['Rapporto_Parentela_Precedente'] : vm.etichette['Rapporto_Parentela'])"/>
+                <listheader label="@load(vm.etichette['Rapporto_Parentela_Nuovo'])"  visible="@load(vm.dichiarazione.tipoRettifica.id eq 'R')"/>
+                <listheader label="@load(vm.etichette['Stato_Anagrafico'])"/>
+                <zk if="${vm.caratteriSpecialiEnabled}">
+                    <listheader label="" width="60px"/>
+                </zk>
+            </listhead>
+            <template name="model" var="item">
+                <listitem>
+                    <listcell label="@bind(item.numeroOrdine)"/>
+                    <listcell label="@load(item.anagrafe.matricola)"/>
+                    <listcell label="@load(item.anagrafe.cognome)" style="text-transform:uppercase"/>
+                    <listcell label="@load(item.anagrafe.nome)" style="text-transform:uppercase"/>
+                    <listcell
+                            label="@load(empty item.anagrafe.dataNascita? null:(c:formatDate(item.anagrafe.dataNascita, 'dd/MM/yyyy')))"/>
+                    <listcell label="@load(item.anagrafe.sesso)"/>
+                    <listcell label="@load(item.rapportoParentelaPrecedente.descrizione)"/>
+                    <listcell visible="@load(vm.dichiarazione.tipoRettifica.id eq 'R')">
+                        <combobox
+                                model="@load(item.anagrafe.sesso eq 'M' ? vm.rapportoParentelaMList : vm.rapportoParentelaFList)"
+                                readonly="true" hflex="1"
+                                visible="@load(not vm.readOnly)"
+                                selectedItem="@bind(item.rapportoParentelaNuovo) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <label value="@load(item.rapportoParentelaNuovo.descrizione)" visible="@load(vm.readOnly)"/>
+                    </listcell>
+                    <listcell label="@load(item.anagrafe.descrizioneStatoAnagrafico)"/>
+                    <zk if="${vm.caratteriSpecialiEnabled}">
+                        <listcell>
+                            <button image="/images/icon/action/22x22/blackboard.png" disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['caratteri_speciali_tooltip'])"
+                                    onClick="@command('onOpenCaratteriSpeciali', soggetto=item)"/>
+                        </listcell>
+                    </zk>
+                </listitem>
+            </template>
+        </listbox>
+    </groupbox>
+
+</zk>

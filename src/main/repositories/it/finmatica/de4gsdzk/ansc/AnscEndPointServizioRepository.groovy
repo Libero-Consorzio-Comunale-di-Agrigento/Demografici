@@ -1,6 +1,6 @@
 package it.finmatica.de4gsdzk.ansc
 
-import it.finmatica.de4gsdzk.ansc.AnscEndPointServizio
+
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -24,4 +24,10 @@ interface AnscEndPointServizioRepository extends JpaRepository<AnscEndPointServi
     List<AnscEndPointServizio> findAllByFlagConsultazioneSoggettoIsTrueAndFlagDefaultIsTrue()
 
     List<AnscEndPointServizio> findAllByFlagConsultazioneEventoIsTrueAndFlagDefaultIsTrue()
+
+    List<AnscEndPointServizio> findAllByFlagCertificazioneIsTrueAndFlagCertificatoSempliceIsTrueAndFlagEnteRichiedente(String flagEnteRichiedente)
+
+    List<AnscEndPointServizio> findAllByFlagCertificazioneIsTrueAndFlagEstrattoXRiassuntoIsTrueAndFlagEnteRichiedente(String flagEnteRichiedente)
+
+    List<AnscEndPointServizio> findAllByFlagCertificazioneIsTrueAndFlagEstrattoIntegraleIsTrueAndFlagEnteRichiedente(String flagEnteRichiedente)
 }

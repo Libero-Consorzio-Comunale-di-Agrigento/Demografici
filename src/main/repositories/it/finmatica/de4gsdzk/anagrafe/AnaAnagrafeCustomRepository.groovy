@@ -4,6 +4,6 @@ interface AnaAnagrafeCustomRepository {
 
     AnaAnagrafe getByParams(Integer id, Map params)
 
-    List<AnaAnagrafe> findAllRettificatiByRicercaIndividuo(RicercaIndividuo r)
+    List<Integer> findAllRettificatiByRicercaIndividuo(RicercaIndividuo r)
 
 }

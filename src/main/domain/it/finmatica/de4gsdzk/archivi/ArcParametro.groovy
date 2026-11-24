@@ -22,6 +22,7 @@ class ArcParametro extends GsdParametroBaseDomain{
     public static final String FIRMA_AUTO       = "FIRMA_AUTO"
     public static final String FIRMA_OTP        = "FIRMA_OTP"
     public static final String CIV_COM_PR       = "CIV_COM_PR"
+    public static final String ANA_COM_PR       = "ANA_COM_PR"
     public static final String ISTATEL          = "ISTATEL"
     public static final String SEAW_DATA        = "SEAW_DATA"
     public static final String CSV_CHRSET       = "CSV_CHRSET"
@@ -40,6 +41,28 @@ class ArcParametro extends GsdParametroBaseDomain{
     public static final String WSPA = "WSPA"
     public static final String DEPAG_URL        = "DEPAG_URL"
     public static final String NEXT_URL         = "NEXT_URL"
+    public static final String ADOI_ECSTR       = "ADOI_ECSTR"
+    public static final String ADOI_ECTPR       = "ADOI_ECTPR"
+    public static final String ANA_MINUS       = "ANA_MINUS"
+    public static final String UNICODE         = "UNICODE"
+    public static final String LOGO_ANA         = "LOGO_ANA"
+    public static final String SAP4_TIM         = "SAP4_TIM"
+    public static final String LOGO_LEV         = "LOGO_LEV"
+    public static final String LOGO_ELE         = "LOGO_ELE"
+    public static final String LISTE_TIM        = "LISTE_TIM"
+    public static final String LISTE_TIM1       = "LISTE_TIM1"
+    public static final String LISTE_COM        = "LISTE_COM"
+    public static final String LISTE_MAT        = "LISTE_MAT"
+    public static final String LISTE_ANN        = "LISTE_ANN"
+    public static final String LISTE_PAG        = "LISTE_PAG"
+    public static final String LISTE_FIR        = "LISTE_FIR"
+    public static final String LISTE_PSEZ       = "LISTE_PSEZ"
+    public static final String LISTE_FIR2       = "LISTE_FIR2"
+    public static final String LISTE_PAGM       = "LISTE_PAGM"
+    public static final String RSEI_TIM         = "RSEI_TIM"
+    public static final String WSMI             = 'WSMI'
+    public static final String SIAN_NOTIT       = 'SIAN_NOTIT'
+    public static final String SIDE_NOTIT       = 'SIDE_NOTIT'
     @Deprecated
     public static final String CERT_SANN        = "CERT_SANN"
     public static final String XPMO_PARAM       = "XPMO"
@@ -59,5 +82,5 @@ class ArcParametro extends GsdParametroBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Note, Etichette.Valore]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Valore"), Etichette.getEtichetta("Gruppo")]
 }

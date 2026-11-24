@@ -27,6 +27,31 @@ SELECT uci.*,
        f_CIV_flag_com_in_sospeso(-4,uci.ufficio,uci.anno,uci.parte,uci.serie,uci.atto) flag_com_in_sospeso,
 -- flag_divorzio
        decode(cta.id, '', decode(uci.parte||uci.serie||uci.natura,'2D','S'), cta.flag_divorzio) flag_divorzio,
+-- ufficio_lista
+       uci.ufficio ufficio_lista,
+-- anno_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(uci.id_atto_ansc, '', uci.anno),
+              uci.anno) anno_lista,
+-- parte_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(uci.id_atto_ansc, '', 
+                decode(uci.numero_unico, '', uci.parte)),
+              uci.parte) parte_lista,
+-- serie_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(uci.id_atto_ansc, '', 
+                decode(uci.numero_unico, '', uci.serie)),
+              uci.serie) serie_lista,
+-- atto_lista
+       decode(f_flag_ANSC(), 
+         'S', decode(uci.id_atto_ansc, '', 
+                decode(uci.numero_unico, '', uci.atto, uci.numero_unico)),
+              uci.atto) atto_lista,
+-- id_atto_ansc_lista
+       decode(f_flag_ANSC(), 
+         'S', uci.id_atto_ansc,
+              to_char(null)) id_atto_ansc_lista,
 -- cognome_m_lista
        decode(uci.natura,'N','*** ANNULLATO',uci.cognome_m)	cognome_1_lista,
 -- nome_m_lista

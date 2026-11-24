@@ -42,6 +42,8 @@ class AnscEndPointServizioArchivio extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Sequenza, Etichette.Archivio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Sequenza"), Etichette.getEtichetta("Archivio"),
+                                              Etichette.getEtichetta("Servizio_Precedente"), Etichette.getEtichetta("Caso_Uso_Ansc"),
+                                              Etichette.getEtichetta("Tipo_Evento")]
 
 }

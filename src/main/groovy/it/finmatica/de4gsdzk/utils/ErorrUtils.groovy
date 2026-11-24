@@ -4,7 +4,6 @@ import java.sql.Driver
 import java.sql.DriverManager
 import java.sql.SQLException
 
-import static it.finmatica.de4gsdzk.utils.EtichetteMessaggi.Errore_Db_Constraint_Violation
 import static it.finmatica.de4gsdzk.utils.EtichetteUtils.getEtichetta
 
 class ErorrUtils {
@@ -16,7 +15,7 @@ class ErorrUtils {
             for (Driver d : drivers) {
                 if (d.getClass().getName().toLowerCase().contains("oracle") && checkedException(sqlException.getErrorCode()) ) {
                     if (sqlException.getErrorCode() == 20007) {
-                        detailMsg = getEtichetta(etichette, Errore_Db_Constraint_Violation)
+                        detailMsg = getEtichetta(etichette, Etichette.getEtichetta("Errore_Db_Constraint_Violation"))
                     }
                     String oraInitSubstr = "ORA-"
                     if (sqlException.message.startsWith(oraInitSubstr)) {

@@ -1,7 +1,8 @@
 package it.finmatica.de4gsdzk
 
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ESesso
+import it.finmatica.de4gsdzk.utils.EStatoCivile
 
 interface ISoggettoAtto1 extends ISoggettoAtto1Base{
 
@@ -53,10 +54,10 @@ interface ISoggettoAtto1 extends ISoggettoAtto1Base{
     Boolean getCfCalcolato1()
     void setCfCalcolato1(Boolean val)
 
-    AnaNazionalita getNazionalita1()
-    void setNazionalita1(AnaNazionalita n)
+    AnaCittadinanza getNazionalita1()
+    void setNazionalita1(AnaCittadinanza n)
 
-    String getStatoCivile1()
-    void setStatoCivile1(String s)
+    EStatoCivile getStatoCivile1()
+    void setStatoCivile1(EStatoCivile s)
 
 }

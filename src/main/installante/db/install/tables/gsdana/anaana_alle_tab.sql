@@ -25,6 +25,7 @@ dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
 ,ALLEGATO_BLOB           BLOB
 ,D_DATA_REG              DATE
 ,TERMINALISTA            VARCHAR2(20)
+,NOTE                    VARCHAR2(4000)
 )';
 
      begin

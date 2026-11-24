@@ -58,11 +58,11 @@ class RubricaNasciteDettaglioViewModel extends AbstractDettaglioViewModel implem
         saveRecordEnabled = true
         deleteRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Rubrica_Nascite, Etichette.Cancella, Etichette.Minuscole,
-                                           Etichette.SEZIONE_DATI_REGISTRAZIONE, Etichette.SEZIONE_DATI_NASCITA, Etichette.SEZIONE_DATI_ATTO, Etichette.SEZIONE_GENITORI]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Rubrica_Nascite"), Etichette.getEtichetta("Cancella"), Etichette.getEtichetta("Minuscole"),
+                                           Etichette.getEtichetta("SEZIONE_DATI_REGISTRAZIONE"), Etichette.getEtichetta("SEZIONE_DATI_NASCITA"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"), Etichette.getEtichetta("SEZIONE_GENITORI")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_Inserimento_Record_Rubrica_Duplicato, EtichetteMessaggi.Errore_data_futura,
-                      EtichetteMessaggi.Ask_Cancellazione_Record, EtichetteMessaggi.Ask_Conferma_Salvataggio])
+        eList.addAll([Etichette.getEtichetta("Errore_Inserimento_Record_Rubrica_Duplicato"), Etichette.getEtichetta("Errore_data_futura"),
+                      Etichette.getEtichetta("Ask_Cancellazione_Record"), Etichette.getEtichetta("Ask_Conferma_Salvataggio")])
 
         eList.addAll(etichetteDettaglioDefault)
         eList.addAll(CivRubricaNascite.etichetteDomain)
@@ -75,7 +75,7 @@ class RubricaNasciteDettaglioViewModel extends AbstractDettaglioViewModel implem
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Rubrica_Nascite)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Rubrica_Nascite"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -113,7 +113,7 @@ class RubricaNasciteDettaglioViewModel extends AbstractDettaglioViewModel implem
 
     @Command void onSelectDataNascita(){
         if (DataUtils.isDataFutura(dettaglio.dataNascita)){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_data_futura), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_data_futura")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
 //        else {
 //            if ( (dettaglio.attoNascita.anno == null) && (dettaglio.dataNascita != null) ){
@@ -151,10 +151,10 @@ class RubricaNasciteDettaglioViewModel extends AbstractDettaglioViewModel implem
     void salvaInRubrica(boolean force=false) {
         try {
             CivRubricaNascite c = civRubricaNasciteService.save(dettaglio, force)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         } catch(RecordDuplicatoRuntimeException r) {
-            Messagebox.show(etichette[r.getMessage()] + "\n" + getEtichetta(EtichetteMessaggi.Ask_Conferma_Salvataggio), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(etichette[r.getMessage()] + "\n" + getEtichetta(Etichette.getEtichetta("Ask_Conferma_Salvataggio")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK == e.getName()) {
@@ -168,7 +168,7 @@ class RubricaNasciteDettaglioViewModel extends AbstractDettaglioViewModel implem
 
     @Command void onEliminaRecord() {
         if (userModifyEnabled) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                 new org.zkoss.zk.ui.event.EventListener() {
                     void onEvent(Event e) {
                         if (Messagebox.ON_OK.equals(e.getName())) {

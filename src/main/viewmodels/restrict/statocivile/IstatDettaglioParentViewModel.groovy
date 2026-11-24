@@ -2,8 +2,8 @@ package restrict.statocivile
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.*
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalitaService
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanzaService
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
 import it.finmatica.de4gsdzk.utils.*
@@ -35,7 +35,7 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
 
     List<ArchivioIstat> listaSesso = []
 
-    List<AnaNazionalita> listaNazionalita = []
+    List<AnaCittadinanza> listaNazionalita = []
 
     List<ArchivioIstat> listaStatoCivileM = []
     List<ArchivioIstat> listaStatoCivileF = []
@@ -78,10 +78,10 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
     private GsdEtichettaService gsdEtichettaService
 
     @WireVariable
-    private AnaNazionalitaService anaNazionalitaService
+    private AnaCittadinanzaService anaCittadinanzaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivAttoService civAttoService
@@ -98,10 +98,10 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
 
         eList.addAll(IstBaseDomain.etichetteDomain)
 
-        eList.addAll([Etichette.Provvisorio, Etichette.Atto_Divorzio, Etichette.Atto_Scioglimento,
-                      Etichette.Calcolo_Codice_Fiscale])
+        eList.addAll([Etichette.getEtichetta("Provvisorio"), Etichette.getEtichetta("Atto_Divorzio"), Etichette.getEtichetta("Atto_Scioglimento"),
+                      Etichette.getEtichetta("Calcolo_Codice_Fiscale")])
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_cf, EtichetteMessaggi.Ask_Conferma_Salvataggio])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_cf"), Etichette.getEtichetta("Ask_Conferma_Salvataggio")])
 
         // Aggiungo etichette sesso
         eList.addAll(Arrays.asList(ESesso.values())*.etichettaDesc)
@@ -139,7 +139,7 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
             try{
                 salvaModello()
             } catch (ErroreCaricamentoDatiRuntimeException dre){
-                Messagebox.show(dre.getMessage() + "\n" + getEtichetta(EtichetteMessaggi.Ask_Conferma_Salvataggio), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                Messagebox.show(dre.getMessage() + "\n" + getEtichetta(Etichette.getEtichetta("Ask_Conferma_Salvataggio")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_YES == e.getName()) {
@@ -154,7 +154,7 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
 
     void salvaModello(boolean force=false) {
         IstBaseDomain c = istService.save(tipoAttoEnum, tipoModelloIstat, dettaglio, atto.id, force)
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         caricaDettaglio(c.id)
     }
 
@@ -168,7 +168,7 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
 
     void caricaListaNazionalita() {
         listaNazionalita = [null]
-        List<AnaNazionalita> l = anaNazionalitaService.listAll()
+        List<AnaCittadinanza> l = anaCittadinanzaService.listAll()
         if (l.size() > 0) {
             listaNazionalita.addAll(l)
         }
@@ -207,7 +207,7 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
         listaTipoProcedura = []
         listaSesso = [null]
 
-        List<ArchivioIstat> l = statoCivileService.listArchivioIstat(viewName, anno)
+        List<ArchivioIstat> l = gsdService.listArchivioIstat(viewName, anno)
         for (ArchivioIstat m:l){
             switch (m.archivioIstat) {
                 case ETipoArchivioIstat.GDI:
@@ -380,18 +380,18 @@ abstract class IstatDettaglioParentViewModel extends AbstractDettaglioViewModel 
             case ETipoSoggetto.SOGGETTO_1:
                 if (atto instanceof ISoggettoAtto1) {
                     ISoggettoAtto1 sa = (ISoggettoAtto1) atto
-                    cf = statoCivileService.calcolaCf(sa.cognome1, sa.nome1, sa.sesso1, sa.dataNascita1, sa.codiceProvinciaNascita1, sa.codiceComuneNascita1)
+                    cf = gsdService.calcolaCf(sa.cognome1, sa.nome1, sa.sesso1, sa.dataNascita1, sa.codiceProvinciaNascita1, sa.codiceComuneNascita1)
                 }
                 break
             case ETipoSoggetto.SOGGETTO_2:
                 if (atto instanceof ISoggettoAtto2){
                     ISoggettoAtto2 sa = (ISoggettoAtto2) atto
-                    cf = statoCivileService.calcolaCf(sa.cognome2, sa.nome2, sa.sesso2, sa.dataNascita2, sa.codiceProvinciaNascita2, sa.codiceComuneNascita2)
+                    cf = gsdService.calcolaCf(sa.cognome2, sa.nome2, sa.sesso2, sa.dataNascita2, sa.codiceProvinciaNascita2, sa.codiceComuneNascita2)
                 }
                 break
         }
-        if ( (cf?:StatoCivileService.ERRORE_CAMPI_CF) == StatoCivileService.ERRORE_CAMPI_CF ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Compilare_campi_cf), getEtichetta(Etichette.Calcolo_Codice_Fiscale), Messagebox.OK, Messagebox.EXCLAMATION)
+        if ( (cf?:GsdService.ERRORE_CAMPI_CF) == GsdService.ERRORE_CAMPI_CF ){
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Compilare_campi_cf")), getEtichetta(Etichette.getEtichetta("Calcolo_Codice_Fiscale")), Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             switch (ts) {
                 case ETipoSoggetto.SOGGETTO_1:

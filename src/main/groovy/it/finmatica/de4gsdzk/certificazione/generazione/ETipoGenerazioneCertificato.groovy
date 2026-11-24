@@ -13,9 +13,9 @@ enum ETipoGenerazioneCertificato {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case GTE: return Etichette.Gestione_Testi
-            case ANSC: return Etichette.ANSC
-            case ANPR: return Etichette.ANPR
+            case GTE: return Etichette.getEtichetta("Gestione_Testi")
+            case ANSC: return Etichette.getEtichetta("ANSC")
+            case ANPR: return Etichette.getEtichetta("ANPR")
         }
         return null
     }

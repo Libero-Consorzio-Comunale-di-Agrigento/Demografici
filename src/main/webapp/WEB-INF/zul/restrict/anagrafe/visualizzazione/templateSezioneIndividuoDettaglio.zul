@@ -21,7 +21,9 @@
                                         <label value="@load(vm.etichette['Ultimo_Evento'])"/>
                                     </cell>
                                     <cell colspan="4">
-                                        <label value="@load(c:cat5(vm.getEtichettaEnum(vm.dettaglio.fascia), ' ', vm.etichette['Per'], ' ', vm.dettaglio.stato.descrizione))"
+                                        <label value="@load((vm.dettaglio.fascia.id eq 5 or vm.dettaglio.fascia.id eq 6)
+                                                            ? vm.dettaglio.stato.descrizione
+                                                            : vm.getUltimoEventoDesc()))"
                                                sclass="grassetto"
                                                if="${arg.showAnp ne true}"/>
                                         <label value="@load(vm.getEtichettaEnum(vm.anpDettaglio.fascia))"
@@ -271,26 +273,41 @@
                         </grid>
                     </groupbox>
                     <groupboxIndirizzo label="@load(vm.etichette['Residenza'])"
-                                       value="${arg.showAnp ne true ? vm.dettaglio.indirizzo : vm.anpDettaglio.indirizzo}">
+                                       value="@load(vm.dettaglio.indirizzo)"
+                                       showAnp="${arg.showAnp}"
+                                       if="${arg.showAnp ne true}">
                         <row>
                             <cell align="right">
                                 <label value="@load(vm.etichette['Dal'])"/>
                             </cell>
-                            <cell>
-                                <hlayout if="${arg.showAnp ne true}">
+                            <cell colspan="3">
+                                <hlayout>
                                     <label value="@load(empty vm.dettaglio.dataResidenza ? null : (c:formatDate(vm.dettaglio.dataResidenza, 'dd/MM/yyyy')))"
                                            sclass="grassetto"/>
                                     <image src="/images/icon/presentation/16x16/alert.png"
                                            tooltiptext="@load(empty vm.dettaglio.dataResidenza ? '' : c:cat3(vm.etichette['Data_Convenzionale_tooltip'], ' ', c:formatDate(vm.dettaglio.dataResidenza, 'dd/MM/yyyy')))"
                                            visible="@load(vm.dettaglio.flagDataConvenzionaleRes)"/>
                                 </hlayout>
-                                <label value="@load(empty vm.anpDettaglio.dataResidenza ? null : (c:formatDate(vm.anpDettaglio.dataResidenza, 'dd/MM/yyyy')))"
-                                       sclass="@load(c:cat('grassetto', vm.dettaglio.dataResidenza ne vm.anpDettaglio.dataResidenza ? ' redText':''))"
-                                       if="${arg.showAnp eq true}"/>
                             </cell>
                         </row>
                     </groupboxIndirizzo>
-                    <groupbox closable="false">
+                    <groupboxIndirizzo label="@load(vm.etichette['Residenza'])"
+                                       value="@load(vm.anpDettaglio.indirizzo)"
+                                       showAnp="${arg.showAnp}"
+                                       indirizzoComparison="@load(vm.dettaglio.indirizzo)"
+                                       if="${arg.showAnp eq true}">
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Dal'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <label value="@load(empty vm.anpDettaglio.dataResidenza ? null : (c:formatDate(vm.anpDettaglio.dataResidenza, 'dd/MM/yyyy')))"
+                                       sclass="@load(c:cat('grassetto', vm.dettaglio.dataResidenza ne vm.anpDettaglio.dataResidenza ? ' redText':''))"/>
+                            </cell>
+                        </row>
+                    </groupboxIndirizzo>
+                    <groupbox closable="false"
+                              visible="@bind(vm.dettaglio.statoCivile.hasConiugeContraente() or vm.anpDettaglio.statoCivile.hasConiugeContraente())">
                         <caption
                                 label="@load(vm.dettaglio.statoCivile.isUnioneCivile() ? vm.etichette['Unione_Civile'] : vm.etichette['Matrimonio'])"
                                 if="${arg.showAnp ne true}"/>
@@ -418,6 +435,167 @@
                                                           if="${arg.showAnp eq true}"/>
                                     </cell>
                                     <cell/>
+                                </row>
+                            </rows>
+                        </grid>
+                    </groupbox>
+                    <groupbox closable="false"
+                              visible="@bind(vm.dettaglio.statoCivile.isVedovo() or vm.anpDettaglio.statoCivile.isVedovo())">
+                        <caption label="@load(vm.etichette['Vedovanza'])"/>
+                        <grid sclass="form">
+                            <columns>
+                                <column width="120px"/>
+                                <column/>
+                                <column width="120px"/>
+                                <column/>
+                                <column width="52px"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Data'])"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(empty vm.dettaglio.dataVedovanza ? null : (c:formatDate(vm.dettaglio.dataVedovanza, 'dd/MM/yyyy')))"
+                                               sclass="grassetto"
+                                               if="${arg.showAnp ne true}"/>
+                                        <label value="@load(empty vm.anpDettaglio.dataVedovanza ? null : (c:formatDate(vm.anpDettaglio.dataVedovanza, 'dd/MM/yyyy')))"
+                                               sclass="@load(c:cat('grassetto', vm.dettaglio.dataVedovanza ne vm.anpDettaglio.dataVedovanza ? ' redText':''))"
+                                               if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Comune'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <comuneLabel value="@load(vm.dettaglio.comuneVedovanza)"
+                                                     bold="true"
+                                                     if="${arg.showAnp ne true}"/>
+                                        <comuneLabel value="@load(vm.anpDettaglio.comuneVedovanza)"
+                                                     bold="true"
+                                                     sclass="@load(vm.dettaglio.comuneVedovanza ne vm.anpDettaglio.comuneVedovanza ? 'redText':'')"
+                                                     if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Atto'])"/>
+                                    </cell>
+                                    <cell>
+                                        <estremiAttoLabel value="@load(vm.dettaglio.attoVedovanza)"
+                                                          bold="true"
+                                                          if="${arg.showAnp ne true}"/>
+                                        <estremiAttoLabel value="@load(vm.anpDettaglio.attoVedovanza)"
+                                                          bold="true"
+                                                          sclass="@load(vm.dettaglio.attoVedovanza ne vm.anpDettaglio.attoVedovanza ? 'redText':'')"
+                                                          if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Comune_Atto'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <comuneLabel value="@load(vm.dettaglio.comuneAttoVedovanza)"
+                                                     bold="true"
+                                                     if="${arg.showAnp ne true}"/>
+                                        <comuneLabel value="@load(vm.anpDettaglio.comuneAttoVedovanza)"
+                                                     bold="true"
+                                                     sclass="@load(vm.dettaglio.comuneAttoVedovanza ne vm.anpDettaglio.comuneAttoVedovanza ? 'redText':'')"
+                                                     if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </groupbox>
+                    <groupbox closable="false"
+                              visible="@bind(vm.dettaglio.statoCivile.isDivorzioScioglimento() or vm.anpDettaglio.statoCivile.isDivorzioScioglimento())">
+                        <caption
+                                label="@load(vm.dettaglio.statoCivile.isUnioneCivile() ? vm.etichette['Scioglimento'] : vm.etichette['Divorzio'])"
+                                if="${arg.showAnp ne true}"/>
+                        <caption
+                                label="@load(vm.anpDettaglio.statoCivile.isUnioneCivile() ? vm.etichette['Scioglimento'] : vm.etichette['Divorzio'])"
+                                if="${arg.showAnp eq true}"/>
+                        <grid sclass="form">
+                            <columns>
+                                <column width="120px"/>
+                                <column/>
+                                <column width="120px"/>
+                                <column/>
+                                <column width="52px"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Data'])"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(empty vm.dettaglio.dataDivorzio ? null : (c:formatDate(vm.dettaglio.dataDivorzio, 'dd/MM/yyyy')))"
+                                               sclass="grassetto"
+                                               if="${arg.showAnp ne true}"/>
+                                        <label value="@load(empty vm.anpDettaglio.dataDivorzio ? null : (c:formatDate(vm.anpDettaglio.dataDivorzio, 'dd/MM/yyyy')))"
+                                               sclass="@load(c:cat('grassetto', vm.dettaglio.dataDivorzio ne vm.anpDettaglio.dataDivorzio ? ' redText':''))"
+                                               if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Comune'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <comuneLabel value="@load(vm.dettaglio.comuneDivorzio)"
+                                                     bold="true"
+                                                     if="${arg.showAnp ne true}"/>
+                                        <comuneLabel value="@load(vm.anpDettaglio.comuneDivorzio)"
+                                                     bold="true"
+                                                     sclass="@load(vm.dettaglio.comuneDivorzio ne vm.anpDettaglio.comuneDivorzio ? 'redText':'')"
+                                                     if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Atto'])"/>
+                                    </cell>
+                                    <cell>
+                                        <estremiAttoLabel value="@load(vm.dettaglio.attoDivorzio)"
+                                                          bold="true"
+                                                          if="${arg.showAnp ne true}"/>
+                                        <estremiAttoLabel value="@load(vm.anpDettaglio.attoDivorzio)"
+                                                          bold="true"
+                                                          sclass="@load(vm.dettaglio.attoDivorzio ne vm.anpDettaglio.attoDivorzio ? 'redText':'')"
+                                                          if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Comune_Atto'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <comuneLabel value="@load(vm.dettaglio.comuneAttoDivorzio)"
+                                                     bold="true"
+                                                     if="${arg.showAnp ne true}"/>
+                                        <comuneLabel value="@load(vm.anpDettaglio.comuneAttoDivorzio)"
+                                                     bold="true"
+                                                     sclass="@load(vm.dettaglio.comuneAttoDivorzio ne vm.anpDettaglio.comuneAttoDivorzio ? 'redText':'')"
+                                                     if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                </row>
+                                <row>
+                                    <cell align="right">
+                                        <customLabel value="@load(vm.etichette['Data_Giudicato'])"/>
+                                    </cell>
+                                    <cell>
+                                        <label value="@load(empty vm.dettaglio.dataDivorzioGiudicato ? null : (c:formatDate(vm.dettaglio.dataDivorzioGiudicato, 'dd/MM/yyyy')))"
+                                               sclass="grassetto"
+                                               if="${arg.showAnp ne true}"/>
+                                        <label value="@load(empty vm.anpDettaglio.dataDivorzioGiudicato ? null : (c:formatDate(vm.anpDettaglio.dataDivorzioGiudicato, 'dd/MM/yyyy')))"
+                                               sclass="@load(c:cat('grassetto', vm.dettaglio.dataDivorzioGiudicato ne vm.anpDettaglio.dataDivorzioGiudicato ? ' redText':''))"
+                                               if="${arg.showAnp eq true}"/>
+                                    </cell>
+                                    <cell align="right">
+                                        <customLabel value="@load(vm.etichette['Data_Annotazione'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <label value="@load(empty vm.dettaglio.dataDivorzioAnnotazione ? null : (c:formatDate(vm.dettaglio.dataDivorzioAnnotazione, 'dd/MM/yyyy')))"
+                                               sclass="grassetto"
+                                               if="${arg.showAnp ne true}"/>
+                                        <label value="@load(empty vm.anpDettaglio.dataDivorzioAnnotazione ? null : (c:formatDate(vm.anpDettaglio.dataDivorzioAnnotazione, 'dd/MM/yyyy')))"
+                                               sclass="@load(c:cat('grassetto', vm.dettaglio.dataDivorzioAnnotazione ne vm.anpDettaglio.dataDivorzioAnnotazione ? ' redText':''))"
+                                               if="${arg.showAnp eq true}"/>
+                                    </cell>
                                 </row>
                             </rows>
                         </grid>
@@ -623,7 +801,7 @@
                                                      if="${arg.showAnp eq true}"/>
                                     </cell>
                                 </row>
-                                <row>
+                                <row style="height: 20px;">
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Data_emissione'])"/>
                                     </cell>
@@ -649,6 +827,7 @@
                                                    if="${arg.showAnp eq true}"/>
                                     </cell>
                                     <cell>
+                                        <label value="@load(vm.etichette['Illimitata'])" if="${arg.showAnp ne true}"/>
                                         <checkbox checked="@load(vm.dettaglio.documentoSoggiorno.scadenzaIllimitata)"
                                                   disabled="true" tooltiptext="@load(vm.etichette['Scadenza_Illimitata'])"
                                                   if="${arg.showAnp ne true}" />
@@ -744,8 +923,6 @@
                             <columns>
                                 <column width="120px"/>
                                 <column/>
-                                <column width="120px"/>
-                                <column/>
                                 <column width="52px"/>
                             </columns>
                             <rows>
@@ -753,18 +930,26 @@
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Senza_Fissa_Dimora'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <checkbox checked="@load(vm.dettaglio.senzaFissaDimora)" disabled="true"
                                                   if="${arg.showAnp ne true}"/>
                                         <checkbox checked="@load(vm.anpDettaglio.senzaFissaDimora)" disabled="true"
                                                   if="${arg.showAnp eq true}"/>
                                     </cell>
                                 </row>
+                                <row if="${arg.showAnp eq true}">
+                                    <cell align="right">
+                                        <label value="@load(vm.etichette['Certificabile'])"/>
+                                    </cell>
+                                    <cell colspan="2">
+                                        <customLabel value="@load(vm.anpDettaglio.soggettoCertificabile)" bold="true"/>
+                                    </cell>
+                                </row>
                                 <row if="${arg.showAnp ne true}">
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Professione'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <customLabel value="@load(vm.dettaglio.descrizioneProfessione)" bold="true"/>
                                     </cell>
                                 </row>
@@ -772,7 +957,7 @@
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Titolo_Studio'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <customLabel value="@load(vm.dettaglio.descrizioneTitoloStudio)" bold="true"/>
                                     </cell>
                                 </row>
@@ -780,32 +965,25 @@
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Pensionato'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <checkbox checked="@load(vm.dettaglio.pensionato)" disabled="true"/>
                                     </cell>
                                 </row>
                                 <row if="${arg.showAnp ne true}">
                                     <cell align="right">
-                                        <label value="Coabitante"/>
+                                        <label value="@load(vm.etichette['Famiglia_Coabitante'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <checkbox checked="@load(vm.dettaglio.nucleoCoabitante)" disabled="true"/>
                                     </cell>
                                 </row>
                                 <row if="${arg.showAnp ne true}" visible="@load(vm.dettaglio.nucleoCoabitante)">
                                     <cell align="right">
-                                        <label value="@load(vm.etichette['Cognome_Coabitante'])"/>
+                                        <label value="@load(vm.etichette['Intestatario_Famiglia_Coabitante'])"/>
                                     </cell>
                                     <cell>
-                                        <label value="@load(vm.dettaglio.coabitante.capoFamiglia.cognome)"
-                                               sclass="grassetto"/>
-                                    </cell>
-                                    <cell align="right">
-                                        <label value="@load(vm.etichette['Nome_Coabitante'])"/>
-                                    </cell>
-                                    <cell>
-                                        <label value="@load(vm.dettaglio.coabitante.capoFamiglia.nome)"
-                                               sclass="grassetto"/>
+                                        <customLabel value="@load(c:cat3(vm.dettaglio.coabitante.capoFamiglia.cognome, ' ',vm.dettaglio.coabitante.capoFamiglia.nome))"
+                                                     bold="true"/>
                                     </cell>
                                     <cell>
                                         <button image="/images/icon/action/16x16/forward.png"
@@ -817,7 +995,7 @@
                                     <cell align="right">
                                         <label value="Domicilio Digitale"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <customLabel value="@load(vm.dettaglio.domicilioDigitale)" bold="true"/>
                                     </cell>
                                 </row>
@@ -825,7 +1003,7 @@
                                     <cell align="right">
                                         <label value="@load(vm.etichette['Note'])"/>
                                     </cell>
-                                    <cell colspan="4">
+                                    <cell colspan="2">
                                         <customLabel value="@load(vm.dettaglio.note)" bold="true" multiline="true"/>
                                     </cell>
                                 </row>

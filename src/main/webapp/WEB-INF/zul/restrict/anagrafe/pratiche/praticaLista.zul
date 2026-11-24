@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="showMsgBox" class="it.finmatica.de4gsdzk.utils.MessaggioUtils" signature="void showMsgBox(java.lang.String, java.lang.String, java.lang.String)"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.PraticaListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false"
+            onOK="@command('onRicerca')">
+
+        <vlayout vflex="1">
+
+            <hlayout valign="middle">
+                <controlBarLista/>
+                <controlBarPraticaFunzioniAggiuntive/>
+
+                <label value="@load(vm.formLabel)" sclass="formTitle"/>
+            </hlayout>
+
+            <groupbox closable="false">
+                <grid sclass="form">
+                    <columns>
+                        <column width="100px"/>
+                        <column/>
+                        <column/>
+                        <column width="35px"/>
+                        <column width="100px"/>
+                        <column/>
+                        <column width="100px"/>
+                        <column/>
+                        <column width="100px"/>
+                        <column/>
+                        <column/>
+                        <column width="50px"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Archivio_Anagrafe'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle">
+                                    <radiogroup model="@load(vm.listaTipoArchivioPratica)" hflex="1"
+                                                selectedItem="@bind(vm.ricercaPratica.archivioAnagrafe) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                                onCheck="@command('filtraStatiPratica')">
+                                        <template name="model">
+                                            <radio label="@load(empty each? vm.etichette['Tutti'] : vm.getEtichettaEnum(each))"
+                                                   value="@load(each)"
+                                                   style="padding-left:10px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Tipo_Pratica'])"/>
+                            </cell>
+                            <cell colspan="6">
+                                <hlayout valign="middle">
+                                    <radiogroup model="@load(vm.listaTipoPratica)" hflex="1"
+                                                selectedItem="@bind(vm.ricercaPratica.tipoPratica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                                onCheck="@command('filtraStatiPratica')">
+                                        <template name="model">
+                                            <radio label="@load(empty each? vm.etichette['Tutti'] : vm.getEtichettaEnum(each))"
+                                                   value="@load(each)"
+                                                   style="padding-left:10px"/>
+                                        </template>
+                                    </radiogroup>
+                                </hlayout>
+                            </cell>
+                            <cell/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Data_Pratica'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle">
+                                    <label value="@load(vm.etichette['Dal'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaPratica.dataPraticaDa)"
+                                             width="100px" onChange="@command('onRicerca')"/>
+                                    <space/>
+                                    <label value="@load(vm.etichette['Al'])"/>
+                                    <datebox format="dd/MM/yyyy" value="@bind(vm.ricercaPratica.dataPraticaAl)"
+                                             width="100px" onChange="@command('onRicerca')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="dataPraticaDa,dataPraticaAl"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Anno'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <intbox width="85px" value="@bind(vm.ricercaPratica.annoPratica)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="annoPratica"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Numero'])"/>
+                            </cell>
+                            <cell>
+                                <hlayout valign="middle">
+                                    <intbox width="85px" value="@bind(vm.ricercaPratica.numeroPratica)"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="numeroPratica"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Numerazione'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout valign="middle">
+                                    <combobox model="@load(vm.tipiNumerazione)" readonly="true"
+                                              selectedItem="@bind(vm.ricercaPratica.numerazione) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')" hflex="1"
+                                              onChange="@command('onRicerca')">
+                                        <template name="model">
+                                            <comboitem label="@load(empty each? '-' : vm.getEtichettaEnum(each))" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="numerazione"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Cognome_Dichiarante_Pratica'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.cognomeDichiarante)"
+                                             hflex="1" style="text-transform:uppercase"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="cognomeDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Nome_Dichiarante_Pratica'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.nomeDichiarante)"
+                                             hflex="1" style="text-transform:uppercase"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="nomeDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Codice_Fiscale_Dichiarante_Pratica'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.codiceFiscaleDichiarante)"
+                                             hflex="1" style="text-transform:uppercase"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="codiceFiscaleDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Matricola_Dichiarante'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.matricolaDichiarante)"
+                                             hflex="1"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="matricolaDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Id_scheda_ANPR'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.idSchedaDichiarante)"
+                                             hflex="1"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="idSchedaDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Id_unico_nazionale'])"/>
+                            </cell>
+                            <cell colspan="2">
+                                <hlayout valign="middle" hflex="1">
+                                    <textbox value="@bind(vm.ricercaPratica.idAnprDichiarante)"
+                                             hflex="1"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="idAnprDichiarante"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell/>
+                        </row>
+                        <row>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Terminalista'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle" hflex="1">
+                                    <bandboxTerminalista hflex="1"
+                                                         value="@load(vm.ricercaPratica.terminalista.cognomeNome)"
+                                                         onSelect="@command('onSelectTerminalista')"/>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="terminalista"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell align="right">
+                                <label value="@load(vm.etichette['Stato_Pratica'])"/>
+                            </cell>
+                            <cell colspan="3">
+                                <hlayout valign="middle">
+                                    <combobox model="@load(vm.statiPratica)" readonly="true"
+                                              selectedItem="@bind(vm.ricercaPratica.statoPratica)" hflex="1"
+                                              onChange="@command('onRicerca')">
+                                        <template name="model">
+                                            <comboitem label="@load(each.descrizione)" value="@load(each)"/>
+                                        </template>
+                                    </combobox>
+                                    <button image="/images/icon/action/16x16/cancel.png"
+                                            tooltiptext="@load(vm.etichette['Cancella'])"
+                                            onClick="@command('onCancellaCampoRicerca')">
+                                        <custom-attributes proprieta="statiPratica"/>
+                                    </button>
+                                </hlayout>
+                            </cell>
+                            <cell colspan="3"/>
+                            <cell>
+                                <hlayout valign="middle" hflex="1">
+                                    <button image="/images/icon/action/16x16/search.png"
+                                            tooltiptext="@load(vm.etichette['Effettua_Ricerca'])"
+                                            onClick="@command('onRicerca')"/>
+                                </hlayout>
+                            </cell>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+
+            <orderByBlock/>
+
+            <listbox model="@load(vm.lista)" selectedItem="@bind(vm.selectedDichiarante)" nonselectableTags="" vflex="1"
+                     emptyMessage="@load(vm.etichette['Nessun_dato_disponibile'])">
+                <listhead sizable="true">
+                    <listheader label="@load(vm.etichette['Archivio_Anagrafe'])" width="80px"/>
+                    <listheader label="@load(vm.etichette['Tipo_Pratica'])" width="150px"/>
+                    <listheader label="@load(vm.etichette['Data_Pratica'])" width="80px"/>
+                    <listheader label="@load(vm.etichette['Anno'])" width="80px"/>
+                    <listheader label="@load(vm.etichette['Numero'])" width="80px"/>
+                    <listheader label="@load(vm.etichette['Dichiarante'])" hflex="2"/>
+                    <listheader label="@load(vm.etichette['Codice_Variazione'])" hflex="2"/>
+                    <listheader label="@load(vm.etichette['Stato_Pratica'])"/>
+                    <listheader label="@load(vm.etichette['Giorni_Monitoraggio'])" width="130px"/>
+                    <listheader label="@load(vm.etichette['Terminalista'])" hflex="1"/>
+                    <listheader label="" width="52px"/>
+                </listhead>
+                <template name="model" var="item">
+                    <listitem onDoubleClick="@command('onApri')">
+                        <listcell label="@load(vm.getEtichettaEnum(item.pratica.archivioAnagrafe))"/>
+                        <listcell label="@load(vm.getEtichettaEnum(item.pratica.tipoPratica))"/>
+                        <listcell
+                                label="@load(empty item.pratica.data? null:(c:formatDate(item.pratica.data, 'dd/MM/yyyy')))"/>
+                        <listcell label="@load(item.pratica.anno)"/>
+                        <listcell label="@load(item.pratica.numero lt 0 ? vm.etichette['Provvisorio'] : item.pratica.numero)"/>
+                        <listcell label="@load(c:cat3(item.cognome,' ', item.nome))"/>
+                        <listcell label="@load(item.pratica.descrizioneVariazione)"/>
+                        <listcell label="@load(item.pratica.statoPratica.descrizione)"/>
+                        <listcell label="@load(item.pratica.giorniMonitoraggio)"/>
+                        <listcell label="@load(item.pratica.terminalista.cognomeNome)"/>
+                        <listcell>
+                            <button image="/images/icon/action/18x18/edit.png"
+                                    tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                                    visible="@bind(not (item.pratica.flagPerfezionamento or item.pratica.flagAnnullamento))"
+                                    onClick="@command('onApri')"/>
+                            <button image="/images/icon/action/18x18/forward.png"
+                                    tooltiptext="@load(vm.etichette['visualizza_tooltip'])"
+                                    visible="@bind(item.pratica.flagPerfezionamento or item.pratica.flagAnnullamento)"
+                                    onClick="@command('onApri')"/>
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
+
+        </vlayout>
+
+    </window>
+
+</zk>

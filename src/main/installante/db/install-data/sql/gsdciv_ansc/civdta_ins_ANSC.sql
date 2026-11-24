@@ -1037,6 +1037,43 @@ select 1,
                    )
 /
 insert into civdta
+       (TIPO_ATTO, PARTE, SERIE, DESCRIZIONE, NATURA, COD_MI, SEQUENZA,
+        NOTE, FLAG_WEGO, QUERY_WEGO, TYPE_WEGO,
+        ID, NUM_COLONNE, NUM_RIGHE, FLAG_DIMENSIONI_FISSE,
+        ID_CIVCTA, ID_CIVDMI, FLAG_DIVORZIO, TIPO_DIVORZIO,
+        ID_CIVDDO_CIA, FLAG_PREGRESSO, FLAG_DISMESSO, TIPO_DIVORZIO_ALTRO,
+        FLAG_ANSC)
+select 1,
+       '',
+       '',
+       'Trascrizione Atti Multipli',
+       'A',
+       '',
+       '109',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '109',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '',
+       '',
+       'S'
+  from dual
+ where not exists (select 1 from civdta b
+                    where b.tipo_atto = 1
+                      and b.sequenza  = 109
+                   )
+/
+insert into civdta
        (TIPO_ATTO, PARTE, SERIE, DESCRIZIONE, NATURA, COD_MI, SEQUENZA, 
         NOTE, FLAG_WEGO, QUERY_WEGO, TYPE_WEGO, 
         ID, NUM_COLONNE, NUM_RIGHE, FLAG_DIMENSIONI_FISSE, 

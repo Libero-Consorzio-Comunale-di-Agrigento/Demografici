@@ -6,63 +6,50 @@ import it.finmatica.de4gsdzk.export.ExportField
 import it.finmatica.de4gsdzk.export.ExportObject
 import it.finmatica.de4gsdzk.export.ExportUtils
 import it.finmatica.de4gsdzk.utils.ETipoFile
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.FileUtils
 import net.sf.jasperreports.engine.data.ExcelDataSource
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.zkoss.zul.Filedownload
 
 @Service
 class ExportService {
 
-    @Autowired
-    private ThymeLeafExportService thymeLeafExportService
+    private final ThymeLeafExportService thymeLeafExportService
+    private final JasperReportService jasperReportService
 
-    @Autowired
-    private JasperReportService jasperReportService
+    ExportService(ThymeLeafExportService thymeLeafExportService, JasperReportService jasperReportService) {
+        this.thymeLeafExportService = thymeLeafExportService
+        this.jasperReportService = jasperReportService
+    }
 
     private void validaDati(Map customMandatoryParams){
         if (customMandatoryParams){
             for (val in customMandatoryParams.values()) {
                 if (val == null){
-                    throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+                    throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
                 }
             }
         }
     }
 
-    void export(ETipoFile tipo, ExportObject eo, String filename, Map customMandatoryParams=null) {
-        String fn = "${filename.toString().replaceAll(" ", "_")}.${tipo.estensione}"
+    InputStream export(ETipoFile tipo, ExportObject eo, Map customMandatoryParams=null) {
         switch(tipo) {
             case ETipoFile.XLS:
-                InputStream is = ExportUtils.createExcel(eo.exportFields, eo.exportData)
-                download(is, tipo, fn)
-                break
+                return ExportUtils.createExcel(eo.exportFields, eo.exportData)
             case ETipoFile.CSV:
-                InputStream is = ExportUtils.createCsv(eo.exportFields, eo.exportData, eo.csvCharsetName)
-                download(is, tipo, fn)
-                break
-            case ETipoFile.PDF:
-                validaDati(customMandatoryParams)
-                InputStream is = createPdf(eo)
-                download(is, tipo, fn)
-                break
+                return ExportUtils.createCsv(eo.exportFields, eo.exportData, eo.csvCharsetName)
             case ETipoFile.XML:
                 validaDati(customMandatoryParams)
                 String xml = thymeLeafExportService.createXML(eo.reportName, eo.reportParams)
-                download(xml, tipo, fn)
-                break
+                return new ByteArrayInputStream(xml.getBytes('UTF-8'))
+            case ETipoFile.PDF_A:
+            case ETipoFile.PDF: //ogni pdf esportato sarà della tipologia pdf/a
+                validaDati(customMandatoryParams)
+                InputStream is = createPdf(eo)
+                return new ByteArrayInputStream(FileUtils.convertPdfToPdfA(is))
             default:
                 throw new De4gsdzkRuntimeException("Unsupported export type")
         }
-    }
-
-    private void download(InputStream is, ETipoFile tipo, String filename){
-        Filedownload.save(is, tipo.contentType, filename)
-    }
-
-    private void download(String s, ETipoFile tipo, String filename){
-        Filedownload.save(s, tipo.contentType, filename)
     }
 
     /**
@@ -104,6 +91,15 @@ class ExportService {
 
         //compilazione report
         return (jasperReportService.buildReport(reportName, headers + reportParams, [dataSource: xlsDS] + reportOptions).exportStream())
+    }
+
+    InputStream createPdfA(ExportObject eo) {
+        InputStream is = createPdf(eo)
+        return new ByteArrayInputStream(FileUtils.convertPdfToPdfA(is))
+    }
+
+    static String buildFilename(String name, ETipoFile tipo) {
+        return "${name.replaceAll(' ', '_')}.${tipo.estensione}"
     }
 
 }

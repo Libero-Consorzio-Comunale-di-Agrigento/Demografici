@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.PopupRecuperoPraticaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="1200px"
+            title="@load(vm.etichette['Sezione_Informazioni_Pratica'])"
+            sizable="false" closable="false">
+    <vlayout>
+        <grid sclass="form">
+            <columns>
+                <column width="120px"/>
+                <column />
+                <column width="120px"/>
+                <column />
+                <column width="120px"/>
+                <column />
+                <column width="120px"/>
+                <column width="120px"/>
+                <column width="120px"/>
+                <column width="120px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Anagrafe'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.getEtichettaEnum(vm.pratica.archivioAnagrafe))" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Tipo_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(vm.getEtichettaEnum(vm.pratica.tipoPratica))" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Variazione_Pratica'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <label value="@load(vm.variazione.descrizioneTpr)" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Iniziativa'])"/>
+                    </cell>
+                    <cell colspan="2">
+                        <label value="@load(vm.iniziativa.descrizione)" sclass="grassetto"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Numera'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaSiNo)"
+                                        selectedItem="@bind(vm.numeraPratica)" onCheck="@command('onSelectNumera')">
+                                <template name="model">
+                                    <radio label="@load(vm.etichette[each.name()])" value="@load(each)"
+                                           disabled="@load(vm.pratica.numero gt 0)"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Anno_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <intbox value="@bind(vm.pratica.anno)" maxlength="4" hflex="1"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Numero_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout visible="@load(vm.numeraPratica.id eq 'SI')">
+                            <intbox value="@bind(vm.pratica.numero)" hflex="1" width="70px"
+                                    readonly="@load(not vm.abilitaNumero)"/>
+                            <checkbox checked="@bind(vm.abilitaNumero)" tooltiptext="@load(vm.etichette['Abilita_Numero'])"
+                                      disabled="@load(vm.pratica.id ne null)"/>
+                        </hlayout>
+                        <label value="@load(c:cat3( '(', vm.etichette['Provvisorio'], ')' ))"
+                               visible="@load(vm.numeraPratica.id eq 'NO')"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Data_Pratica'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(empty vm.pratica.data ? null : (c:formatDate(vm.pratica.data, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Data_Decorrenza'])"/>
+                    </cell>
+                    <cell>
+                        <label value="@load(empty vm.pratica.dataDecorrenza ? null : (c:formatDate(vm.pratica.dataDecorrenza, 'dd/MM/yyyy')))" sclass="grassetto"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </vlayout>
+
+    <h:div sclass="barraPulsanti">
+        <h:div>
+            <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                    image="/images/icon/action/16x16/save.png"/>
+            <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                    image="/images/icon/action/16x16/close.png"/>
+        </h:div>
+    </h:div>
+
+    </window>
+</zk>

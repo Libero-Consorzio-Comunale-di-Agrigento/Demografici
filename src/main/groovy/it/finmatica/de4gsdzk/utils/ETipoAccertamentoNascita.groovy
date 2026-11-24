@@ -15,9 +15,9 @@ enum ETipoAccertamentoNascita {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case AN: return Etichette.attestazione_nascita
-            case CP: return Etichette.constatazione_parto
-            case DS: return Etichette.dichiarazione_sostitutiva
+            case AN: return Etichette.getEtichetta("attestazione_nascita")
+            case CP: return Etichette.getEtichetta("constatazione_parto")
+            case DS: return Etichette.getEtichetta("dichiarazione_sostitutiva")
         }
         return null
     }

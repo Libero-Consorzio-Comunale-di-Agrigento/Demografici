@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset amonopoli:202501311415 runOnChange:true stripComments:false
+--changeset amonopoli:202501311415_2 runOnChange:true stripComments:false
 create or replace trigger ANAANA_TIU
 before INSERT
     or UPDATE
@@ -18,7 +18,7 @@ errore			exception;
 begin
    begin  -- Check DATA Integrity on INSERT or UPDATE
       :new.cod_fam_unique   := f_ANA_get_cod_fam_unique(:new.fascia,:new.cod_fam);
-
+  
       if UPDATING then
          if nvl(:old.cognome_nome,' ') != nvl(:new.cognome_nome,' ') and nvl(:old.cognome||:old.nome,' ') = nvl(:new.cognome||:new.nome,' ') then
             :new.cognome         := f_cognome(:new.cognome_nome);
@@ -26,32 +26,205 @@ begin
          end if;
       end if;
 
-      :new.cognome          := nvl(:new.cognome,f_cognome(:new.cognome_nome));
-      :new.nome             := nvl(:new.nome,f_nome(:new.cognome_nome));
+      if INSERTING then
+         if rtrim(:new.cognome_nome) is not null and rtrim(:new.cognome||:new.nome) is null then
+            :new.cognome          := f_cognome(:new.cognome_nome);
+            :new.nome             := f_nome(:new.cognome_nome);
+         elsif rtrim(:new.cognome||:new.nome) is not null and rtrim(:new.cognome_nome) is null then
+            :new.cognome_nome := :new.cognome||'/'||:new.nome;
+         end if;
+         if rtrim(:new.paternita) is not null and rtrim(:new.cognome_pd||:new.nome_pd) is null then
+            :new.cognome_pd          := f_cognome_pd('',:new.paternita,:new.cognome_nome);
+            :new.nome_pd             := f_nome_pd('',:new.paternita,:new.cognome_nome);
+         elsif rtrim(:new.cognome_pd||:new.nome_pd) is not null and rtrim(:new.paternita) is null then
+            :new.paternita := :new.cognome_pd||'/'||:new.nome_pd;
+         end if;
+         if rtrim(:new.maternita) is not null and rtrim(:new.cognome_md||:new.nome_md) is null then
+            :new.cognome_md          := f_cognome(:new.maternita);
+            :new.nome_md             := f_nome(:new.maternita);
+         elsif rtrim(:new.cognome_md||:new.nome_md) is not null and rtrim(:new.maternita) is null then
+            :new.maternita := :new.cognome_md||'/'||:new.nome_md;
+         end if;
+         if rtrim(:new.cognome_nome_cn) is not null and rtrim(:new.cognome_cn||:new.nome_cn) is null then
+            :new.cognome_cn          := f_cognome(:new.cognome_nome_cn);
+            :new.nome_cn             := f_nome(:new.cognome_nome_cn);
+         elsif rtrim(:new.cognome_cn||:new.nome_cn) is not null and rtrim(:new.cognome_nome_cn) is null then
+            :new.cognome_nome_cn := :new.cognome_cn||'/'||:new.nome_cn;
+         end if;
+      end if;
+
+      if UPDATING then
+         if nvl(rtrim(:old.cognome_nome),' ') != nvl(rtrim(:new.cognome_nome),' ') then
+            :new.cognome         := f_cognome(:new.cognome_nome);
+            :new.nome            := f_nome(:new.cognome_nome);
+         elsif nvl(rtrim(:old.cognome||:old.nome),' ') != nvl(rtrim(:new.cognome||:new.nome),' ') then
+            :new.cognome_nome := :new.cognome||'/'||:new.nome;
+         end if;
+         if nvl(rtrim(:old.paternita),' ') != nvl(rtrim(:new.paternita),' ') then
+            :new.cognome_pd         := f_cognome_pd('',:new.paternita,:new.cognome_nome);
+            :new.nome_pd            := f_nome_pd('',:new.paternita,:new.cognome_nome);
+         elsif nvl(rtrim(:old.cognome_pd||:old.nome_pd),' ') != nvl(rtrim(:new.cognome_pd||:new.nome_pd),' ') then
+            :new.paternita := :new.cognome_pd||'/'||:new.nome_pd;
+         end if;
+         if nvl(rtrim(:old.maternita),' ') != nvl(rtrim(:new.maternita),' ') then
+            :new.cognome_md         := f_cognome(:new.maternita);
+            :new.nome_md            := f_nome(:new.maternita);
+         elsif nvl(rtrim(:old.cognome_md||:old.nome_md),' ') != nvl(rtrim(:new.cognome_md||:new.nome_md),' ') then
+            :new.maternita := :new.cognome_md||'/'||:new.nome_md;
+         end if;
+         if nvl(rtrim(:old.cognome_nome_cn),' ') != nvl(rtrim(:new.cognome_nome_cn),' ') then
+            :new.cognome_cn         := f_cognome(:new.cognome_nome_cn);
+            :new.nome_cn            := f_nome(:new.cognome_nome_cn);
+         elsif nvl(rtrim(:old.cognome_cn||:old.nome_cn),' ') != nvl(rtrim(:new.cognome_cn||:new.nome_cn),' ') then
+            :new.cognome_nome_cn := :new.cognome_cn||'/'||:new.nome_cn;
+         end if;
+      end if;
+   
       :new.cognome_nome_ric := upper(:new.cognome_nome);
       :new.cognome_ric      := upper(:new.cognome);
       :new.nome_ric         := upper(:new.nome);
 
-      :new.cognome_pd       := f_cognome_pd('',:new.paternita,:new.cognome_nome);
-      :new.nome_pd          := f_nome_pd('',:new.paternita,:new.cognome_nome);
-      :new.cognome_md       := f_cognome(:new.maternita);
-      :new.nome_md          := f_nome(:new.maternita);
-      :new.cognome_cn       := f_cognome(:new.cognome_nome_cn);
-      :new.nome_cn          := f_nome(:new.cognome_nome_cn);
+      if INSERTING then
+         if :new.data_reg is null and :new.d_data_reg is null then
+            :new.data_reg := to_char(sysdate,'j');
+            :new.d_data_reg := sysdate;
+         elsif :new.data_reg is not null and :new.d_data_reg is null then
+            :new.d_data_reg := to_date(:new.data_reg,'j');
+         elsif :new.d_data_reg is not null and :new.data_reg is null then
+            :new.data_reg := to_char(:new.d_data_reg,'j');
+         end if;
+         if :new.data_nas is not null and :new.d_data_nas is null then
+            :new.d_data_nas := to_date(:new.data_nas,'j');
+         elsif :new.d_data_nas is not null and :new.data_nas is null then
+            :new.data_nas := to_char(:new.d_data_nas,'j');
+         end if;
+         if :new.data_ult_eve is not null and :new.d_data_ult_eve is null then
+            :new.d_data_ult_eve := to_date(:new.data_ult_eve,'j');
+         elsif :new.d_data_ult_eve is not null and :new.data_ult_eve is null then
+            :new.data_ult_eve := to_char(:new.d_data_ult_eve,'j');
+         end if;
+         if :new.data_inizio_fam is not null and :new.d_data_inizio_fam is null then
+            :new.d_data_inizio_fam := to_date(:new.data_inizio_fam,'j');
+         elsif :new.d_data_inizio_fam is not null and :new.data_inizio_fam is null then
+            :new.data_inizio_fam := to_char(:new.d_data_inizio_fam,'j');
+         end if;
+         if :new.data_inizio_res is not null and :new.d_data_inizio_res is null then
+            :new.d_data_inizio_res := to_date(:new.data_inizio_res,'j');
+         elsif :new.d_data_inizio_res is not null and :new.data_inizio_res is null then
+            :new.data_inizio_res := to_char(:new.d_data_inizio_res,'j');
+         end if;
+         if :new.data_mat is not null and :new.d_data_mat is null then
+            :new.d_data_mat := to_date(:new.data_mat,'j');
+         elsif :new.d_data_mat is not null and :new.data_mat is null then
+            :new.data_mat := to_char(:new.d_data_mat,'j');
+         end if;
+         if :new.data_mor is not null and :new.d_data_mor is null then
+            :new.d_data_mor := to_date(:new.data_mor,'j');
+         elsif :new.d_data_mor is not null and :new.data_mor is null then
+            :new.data_mor := to_char(:new.d_data_mor,'j');
+         end if;
+         if :new.data_ved is not null and :new.d_data_ved is null then
+            :new.d_data_ved := to_date(:new.data_ved,'j');
+         elsif :new.d_data_ved is not null and :new.data_ved is null then
+            :new.data_ved := to_char(:new.d_data_ved,'j');
+         end if;
+         if :new.data_div is not null and :new.d_data_div is null then
+            :new.d_data_div := to_date(:new.data_div,'j');
+         elsif :new.d_data_div is not null and :new.data_div is null then
+            :new.data_div := to_char(:new.d_data_div,'j');
+         end if;
+         if :new.data_div_giu is not null and :new.d_data_div_giu is null then
+            :new.d_data_div_giu := to_date(:new.data_div_giu,'j');
+         elsif :new.d_data_div_giu is not null and :new.data_div_giu is null then
+            :new.data_div_giu := to_char(:new.d_data_div_giu,'j');
+         end if;
+         if :new.data_div_ann is not null and :new.d_data_div_ann is null then
+            :new.d_data_div_ann := to_date(:new.data_div_ann,'j');
+         elsif :new.d_data_div_ann is not null and :new.data_div_ann is null then
+            :new.data_div_ann := to_char(:new.d_data_div_ann,'j');
+         end if;
+         if :new.data_val_espatrio is not null and :new.d_data_val_espatrio is null then
+            :new.d_data_val_espatrio := to_date(:new.data_val_espatrio,'j');
+         elsif :new.d_data_val_espatrio is not null and :new.data_val_espatrio is null then
+            :new.data_val_espatrio := to_char(:new.d_data_val_espatrio,'j');
+         end if;
+         if :new.data_inizio_naz is not null and :new.d_data_inizio_naz is null then
+            :new.d_data_inizio_naz := to_date(:new.data_inizio_naz,'j');
+         elsif :new.d_data_inizio_naz is not null and :new.data_inizio_naz is null then
+            :new.data_inizio_naz := to_char(:new.d_data_inizio_naz,'j');
+         end if;
+      end if;
 
-      :new.d_data_nas          := nvl(:new.d_data_nas,to_date(:new.data_nas,'j'));
-      :new.d_data_ult_eve      := nvl(:new.d_data_ult_eve,to_date(:new.data_ult_eve,'j'));
-      :new.d_data_inizio_fam   := nvl(:new.d_data_inizio_fam,to_date(:new.data_inizio_fam,'j'));
-      :new.d_data_inizio_res   := nvl(:new.d_data_inizio_res,to_date(:new.data_inizio_res,'j'));
-      :new.d_data_mat          := nvl(:new.d_data_mat,to_date(:new.data_mat,'j'));
-      :new.d_data_mor          := nvl(:new.d_data_mor,to_date(:new.data_mor,'j'));
-      :new.d_data_ved          := nvl(:new.d_data_ved,to_date(:new.data_ved,'j'));
-      :new.d_data_div          := nvl(:new.d_data_div,to_date(:new.data_div,'j'));
-      :new.d_data_div_giu      := nvl(:new.d_data_div_giu,to_date(:new.data_div_giu,'j'));
-      :new.d_data_div_ann      := nvl(:new.d_data_div_ann,to_date(:new.data_div_ann,'j'));
-      :new.d_data_val_espatrio := nvl(:new.d_data_val_espatrio,to_date(:new.data_val_espatrio,'j'));
-      :new.d_data_inizio_naz   := nvl(:new.d_data_inizio_naz,to_date(:new.data_inizio_naz,'j'));
-      :new.d_data_reg          := nvl(:new.d_data_reg,to_date(:new.data_reg,'j'));
+      if UPDATING then
+         if nvl(:old.data_reg,0) != nvl(:new.data_reg,0) then
+            :new.d_data_reg := to_date(:new.data_reg,'j');
+         elsif nvl(:old.d_data_reg,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_reg,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_reg := to_char(:new.d_data_reg,'j');
+         elsif :old.fascia != :new.fascia or :old.stato != :new.stato or :old.data_inizio_fam != :new.data_inizio_fam or :old.data_inizio_res != :new.data_inizio_res then
+            :new.data_reg := to_char(sysdate,'j');
+            :new.d_data_reg := sysdate;
+         end if;
+         if nvl(:old.data_nas,0) != nvl(:new.data_nas,0) then
+            :new.d_data_nas := to_date(:new.data_nas,'j');
+         elsif nvl(:old.d_data_nas,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_nas,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_nas := to_char(:new.d_data_nas,'j');
+         end if;
+         if nvl(:old.data_ult_eve,0) != nvl(:new.data_ult_eve,0) then
+            :new.d_data_ult_eve := to_date(:new.data_ult_eve,'j');
+         elsif nvl(:old.d_data_ult_eve,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_ult_eve,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_ult_eve := to_char(:new.d_data_ult_eve,'j');
+         end if;
+         if nvl(:old.data_inizio_res,0) != nvl(:new.data_inizio_res,0) then
+            :new.d_data_inizio_res := to_date(:new.data_inizio_res,'j');
+         elsif nvl(:old.d_data_inizio_res,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_inizio_res,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_inizio_res := to_char(:new.d_data_inizio_res,'j');
+         end if;
+         if nvl(:old.data_inizio_fam,0) != nvl(:new.data_inizio_fam,0) then
+            :new.d_data_inizio_fam := to_date(:new.data_inizio_fam,'j');
+         elsif nvl(:old.d_data_inizio_fam,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_inizio_fam,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_inizio_fam := to_char(:new.d_data_inizio_fam,'j');
+         end if;
+         if nvl(:old.data_mat,0) != nvl(:new.data_mat,0) then
+            :new.d_data_mat := to_date(:new.data_mat,'j');
+         elsif nvl(:old.d_data_mat,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_mat,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_mat := to_char(:new.d_data_mat,'j');
+         end if;
+         if nvl(:old.data_mor,0) != nvl(:new.data_mor,0) then
+            :new.d_data_mor := to_date(:new.data_mor,'j');
+         elsif nvl(:old.d_data_mor,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_mor,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_mor := to_char(:new.d_data_mor,'j');
+         end if;
+         if nvl(:old.data_ved,0) != nvl(:new.data_ved,0) then
+            :new.d_data_ved := to_date(:new.data_ved,'j');
+         elsif nvl(:old.d_data_ved,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_ved,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_ved := to_char(:new.d_data_ved,'j');
+         end if;
+         if nvl(:old.data_div,0) != nvl(:new.data_div,0) then
+            :new.d_data_div := to_date(:new.data_div,'j');
+         elsif nvl(:old.d_data_div,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_div,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_div := to_char(:new.d_data_div,'j');
+         end if;
+         if nvl(:old.data_div_giu,0) != nvl(:new.data_div_giu,0) then
+            :new.d_data_div_giu := to_date(:new.data_div_giu,'j');
+         elsif nvl(:old.d_data_div_giu,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_div_giu,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_div_giu := to_char(:new.d_data_div_giu,'j');
+         end if;
+         if nvl(:old.data_div_ann,0) != nvl(:new.data_div_ann,0) then
+            :new.d_data_div_ann := to_date(:new.data_div_ann,'j');
+         elsif nvl(:old.d_data_div_ann,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_div_ann,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_div_ann := to_char(:new.d_data_div_ann,'j');
+         end if;
+         if nvl(:old.data_val_espatrio,0) != nvl(:new.data_val_espatrio,0) then
+            :new.d_data_val_espatrio := to_date(:new.data_val_espatrio,'j');
+         elsif nvl(:old.d_data_val_espatrio,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_val_espatrio,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_val_espatrio := to_char(:new.d_data_val_espatrio,'j');
+         end if;
+         if nvl(:old.data_inizio_naz,0) != nvl(:new.data_inizio_naz,0) then
+            :new.d_data_inizio_naz := to_date(:new.data_inizio_naz,'j');
+         elsif nvl(:old.d_data_inizio_naz,to_date('01/01/1800','dd/mm/yyyy')) != nvl(:new.d_data_inizio_naz,to_date('01/01/1800','dd/mm/yyyy')) then
+            :new.data_inizio_naz := to_char(:new.d_data_inizio_naz,'j');
+         end if;
+      end if;
 
       if :new.atto_nas_digitale is not null then
          w_errore := f_GSD_ctr_id_atto_ansc(:new.atto_nas_digitale);

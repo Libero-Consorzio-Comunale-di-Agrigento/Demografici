@@ -1,10 +1,8 @@
 package it.finmatica.de4gsdzk.certificazione
 
-import it.finmatica.de4gsdzk.certificazione.CerAnagrafeFiltro
-import it.finmatica.de4gsdzk.certificazione.CerCategoriaTipoCertificato
-import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
-import it.finmatica.de4gsdzk.certificazione.ECompetenzaCertificazione
+
 import it.finmatica.de4gsdzk.utils.CerAnagrafeFiltroPredicateUtils
+import it.finmatica.de4gsdzk.utils.ETipoCompetenzaCertificazioneOnLine
 import org.springframework.data.domain.Sort
 
 import javax.persistence.EntityManager
@@ -43,7 +41,13 @@ class CerCategoriaTipoCertificatoRepositoryImpl implements CerCategoriaTipoCerti
 
         Predicate competenzaPredicate = categoriaJoin.get("competenzaCertificazione").in(competenzaCertificazioneSet)
 
-        query.where(cb.and(wherePredicate, competenzaPredicate))
+        Predicate finalPredicate = cb.and(wherePredicate, competenzaPredicate)
+
+        if (params?.includiSoloStatoCivile) {
+            finalPredicate = cb.and(finalPredicate, cb.equal(categoriaJoin.get("tipoCompetenzaOnline"), ETipoCompetenzaCertificazioneOnLine.SC))
+        }
+
+        query.where(finalPredicate)
 
         if ((params?.order?.size ?: 0) > 0) {
             List<javax.persistence.criteria.Order> ll = []

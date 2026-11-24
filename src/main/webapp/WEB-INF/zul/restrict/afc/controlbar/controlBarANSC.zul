@@ -37,7 +37,7 @@
             </zk>
 
             <zk if="${vm.goToANSCEnabled}">
-                <toolbarbutton image="/images/de4gsdzk/22x22/ansc_ret.png"
+                <toolbarbutton image="/images/de4gsdzk/22x22/ansc.png"
                                tooltiptext="@load(vm.etichette['ansc_tooltip'])"
                                onClick="@command('onPreviewANSC')"/>
             </zk>

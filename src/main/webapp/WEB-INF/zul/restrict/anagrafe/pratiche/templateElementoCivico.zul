@@ -1,0 +1,48 @@
+<hlayout xmlns="http://www.zkoss.org/2005/zul" valign="middle" spacing="4px" sclass="dettagliCivicoItem">
+    <checkbox label="@load(vm.etichette[el.elemento])"
+              checked="@bind(vm.civico.flags[el.proprieta])"
+              visible="@load(el.flag)"
+              disabled="@load(vm.readOnly)"/>
+    <label value="@load(vm.etichette[el.elemento])" sclass="dettagliCivicoLabel"
+           visible="@load(not el.flag)"/>
+    <intbox value="@bind(vm.civico.numerics[el.proprieta])"
+            visible="@load(not el.flag and el.numerico)"
+            maxlength="@load(el.widthElemento)" width="120px"
+            readonly="@load(vm.readOnly)"/>
+    <textbox value="@bind(vm.civico[el.proprieta])"
+             visible="@load(not el.flag and not el.numerico)"
+             maxlength="@load(el.widthElemento)"
+             style="@load(el.styleUppercase)" width="120px"
+             readonly="@load(vm.readOnly)"/>
+    <!-- FLAG_METRICO inline con NUM_CIV -->
+    <checkbox label="@load(vm.etichette['FLAG_METRICO'])"
+              checked="@bind(vm.civico.flagMetrico)"
+              visible="@load(el.elemento eq 'NUM_CIV' and vm.isElementoPresente('FLAG_METRICO'))"
+              disabled="@load(vm.readOnly)"/>
+    <!-- FLAG_LETTERA e FLAG_ESPONENTE inline con SUFFISSO (mutuamente esclusivi) -->
+    <checkbox label="@load(vm.etichette['FLAG_LETTERA'])"
+              checked="@bind(vm.civico.flagLettera)"
+              visible="@load(el.elemento eq 'SUFFISSO' and vm.isElementoPresente('FLAG_LETTERA'))"
+              onCheck="@command('onCheckFlagLettera')"
+              disabled="@load(vm.readOnly)"/>
+    <checkbox label="@load(vm.etichette['FLAG_ESPONENTE'])"
+              checked="@bind(vm.civico.flagEsponente)"
+              visible="@load(el.elemento eq 'SUFFISSO' and vm.isElementoPresente('FLAG_ESPONENTE'))"
+              onCheck="@command('onCheckFlagEsponente')"
+              disabled="@load(vm.readOnly)"/>
+    <!-- FLAG_NUI inline tra INTERNO e lo slash -->
+    <checkbox label="@load(vm.etichette['FLAG_NUI'])"
+              checked="@bind(vm.civico.flagNui)"
+              visible="@load(el.elemento eq 'INTERNO' and vm.isElementoPresente('FLAG_NUI'))"
+              disabled="@load(vm.readOnly)"/>
+    <!-- Sub-campo inline (es. INTERNO / SUB_INTERNO) -->
+    <label value="/" visible="@load(vm.hasSubElemento(el.elemento))"/>
+    <textbox value="@bind(vm.civico[vm.getSubProprieta(el.elemento)])"
+             visible="@load(vm.hasSubElemento(el.elemento))"
+             maxlength="@load(vm.getSubWidth(el.elemento))" style="text-transform:uppercase" width="120px"
+             readonly="@load(vm.readOnly)"/>
+    <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+            tooltiptext="@load(vm.etichette['Cancella'])"
+            visible="@load(not el.flag)"
+            onClick="@command('onCancellaCampoCivico', elemento=el.elemento)"/>
+</hlayout>

@@ -53,8 +53,8 @@ class RicercaAttoStampa extends RicercaAtto{
         return (tipoAtto == ETipoAtto.CIT)
     }
 
-    static final List<Map> etichetteRicercaStampaDesc = [Etichette.Estrazioni, Etichette.Luogo, Etichette.Sesso, Etichette.Escludi_annullati,
-                                                         Etichette.Tipo_Individui, Etichette.Anno, Etichette.Data_Evento,
-                                                         Etichette.Data_Registrazione, Etichette.Da, Etichette.A, Etichette.Tutti, Etichette.Tutte]
+    static final List<Map> etichetteRicercaStampaDesc = [Etichette.getEtichetta("Estrazioni"), Etichette.getEtichetta("Luogo"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Escludi_annullati"),
+                                                         Etichette.getEtichetta("Tipo_Individui"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Data_Evento"),
+                                                         Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Da"), Etichette.getEtichetta("A"), Etichette.getEtichetta("Tutti"), Etichette.getEtichetta("Tutte")]
 
 }

@@ -4,7 +4,10 @@ import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.GsdEtichettaService
 import it.finmatica.de4gsdzk.IAnscComunicazione
 import it.finmatica.de4gsdzk.ansc.*
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.CustomEvents
+import it.finmatica.de4gsdzk.utils.ETipoArchivioAnsc
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.*
@@ -54,7 +57,7 @@ class AnscComunicazioniOggettoListaViewModel extends AbstractListaViewModel{
             }
         })
 
-        List<Map> eList = [Etichette.ANSC, Etichette.Chiudi, Etichette.Salta_controllo_dipendenze, Etichette.Salta_errore_http]
+        List<Map> eList = [Etichette.getEtichetta("ANSC"), Etichette.getEtichetta("Chiudi"), Etichette.getEtichetta("Salta_controllo_dipendenze"), Etichette.getEtichetta("Salta_errore_http")]
         eList.addAll(AnscComunicazione.etichetteDomain)
 
         eList.addAll(etichetteListaDefault)
@@ -67,7 +70,7 @@ class AnscComunicazioniOggettoListaViewModel extends AbstractListaViewModel{
 
         caricaFiltriList()
 
-        msgTitle = getEtichetta(Etichette.ANSC)
+        msgTitle = getEtichetta(Etichette.getEtichetta("ANSC"))
 
         totalSizeLabel = ""
 
@@ -82,11 +85,11 @@ class AnscComunicazioniOggettoListaViewModel extends AbstractListaViewModel{
             if (invioDisabled){
                 filtriList = []
             } else {
-                filtriList << [codice: "SKIP", descrizione: getEtichetta(Etichette.Salta_controllo_dipendenze)]
+                filtriList << [codice: "SKIP", descrizione: getEtichetta(Etichette.getEtichetta("Salta_controllo_dipendenze"))]
             }
         }
         if (isLastComunicazioneInvalid(oggettoInvio)) {
-            filtriList << [codice: "SKIP_HTTP_ERROR", descrizione: getEtichetta(Etichette.Salta_errore_http)]
+            filtriList << [codice: "SKIP_HTTP_ERROR", descrizione: getEtichetta(Etichette.getEtichetta("Salta_errore_http"))]
         }
         filtriExtraEnabled = (filtriList.size() > 0)
         BindUtils.postNotifyChange(null, null, this, "filtriList")

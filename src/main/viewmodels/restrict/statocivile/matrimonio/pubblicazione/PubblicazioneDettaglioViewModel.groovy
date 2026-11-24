@@ -2,6 +2,7 @@ package restrict.statocivile.matrimonio.pubblicazione
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
@@ -23,7 +24,7 @@ class PubblicazioneDettaglioViewModel extends PubblicazioneDettaglioParentViewMo
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivPubblicazioneService civPubblicazioneService
@@ -64,7 +65,7 @@ class PubblicazioneDettaglioViewModel extends PubblicazioneDettaglioParentViewMo
 
         try {
             dettaglio = new CivPubblicazione(anno: Calendar.getInstance().get(Calendar.YEAR), codiceRecord: new Integer(3))
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             anagrafe = new CivAnagrafe()
 
@@ -144,7 +145,7 @@ class PubblicazioneDettaglioViewModel extends PubblicazioneDettaglioParentViewMo
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -161,7 +162,7 @@ class PubblicazioneDettaglioViewModel extends PubblicazioneDettaglioParentViewMo
                 try {
                     c = civPubblicazioneService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, sposi, documentoPubblicazione, mapFormule, gc, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (statoFrammenti == 1) {
                         statoFrammenti = 2
@@ -181,7 +182,7 @@ class PubblicazioneDettaglioViewModel extends PubblicazioneDettaglioParentViewMo
     }
 
     void numera(){
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null){
             numeraAtto = null
         }

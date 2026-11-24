@@ -24,8 +24,8 @@ class Protocollo {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Protocollo,
-                                              Etichette.Anno, Etichette.Anno_Protocollo,
-                                              Etichette.Data, Etichette.Data_Protocollo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Protocollo"),
+                                              Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Anno_Protocollo"),
+                                              Etichette.getEtichetta("Data"), Etichette.getEtichetta("Data_Protocollo")]
 
 }

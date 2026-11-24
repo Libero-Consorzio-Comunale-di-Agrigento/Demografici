@@ -238,8 +238,8 @@ class CivDisposizioniAnticipateTrattamento  {
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Atto, Etichette.Data_Consegna, Etichette.Data_Modifica, Etichette.Data_Revoca, Etichette.Notaio,
-                                              Etichette.Indirizzo, Etichette.Consenso_Invio_DAT, Etichette.Comune, Etichette.Collegio_Notarile, Etichette.Reperibilta_DAT,
-                                              Etichette.Consenso_Notifica_Mail, Etichette.Reperibilita_DAT, Etichette.Note, Etichette.Numero_Protocollo_Anno, Etichette.Data]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Data_Consegna"), Etichette.getEtichetta("Data_Modifica"), Etichette.getEtichetta("Data_Revoca"), Etichette.getEtichetta("Notaio"),
+                                              Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("Consenso_Invio_DAT"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Collegio_Notarile"), Etichette.getEtichetta("Reperibilta_DAT"),
+                                              Etichette.getEtichetta("Consenso_Notifica_Mail"), Etichette.getEtichetta("Reperibilita_DAT"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("Data")]
 }
 

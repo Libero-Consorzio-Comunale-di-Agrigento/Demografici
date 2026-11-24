@@ -46,7 +46,7 @@ GRANT EXECUTE ON AD4_SOGGETTO   TO ${targetUser}
 GRANT EXECUTE ON AD4_UTENTE   TO ${targetUser}
 /
 
-GRANT SELECT  ON REGISTRO               TO ${targetUser}
+GRANT SELECT  ON REGISTRO               TO ${targetUser} WITH GRANT OPTION
 /
 GRANT INSERT  ON REGISTRO               TO ${targetUser}
 /

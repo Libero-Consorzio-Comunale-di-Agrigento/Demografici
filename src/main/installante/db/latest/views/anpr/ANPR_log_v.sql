@@ -5,11 +5,12 @@ AS
 select v.*
      , '('||v.servizio||') '||v.note||
          decode(v.flag_errore,'','',' [errore]') note_vis
+     , v.campo_clob info_vis
   from (select t.ID
-             , t.DATA_ORA       
-             , t.SERVIZIO       
+             , t.DATA_ORA
+             , t.SERVIZIO
              , t.OPERAZIONE
-             , t.NOTE           
+             , t.NOTE
              , t.CAMPO_CLOB
              , f_ANPR_flag_errore_log(t.servizio, t.operazione, t.note, t.campo_clob) flag_errore
              , f_ANPR_info_errore_log(t.servizio, t.operazione, t.note, 'MATRICOLA', t.campo_clob) matricola_errore

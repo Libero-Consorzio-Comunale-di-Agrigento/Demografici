@@ -3,14 +3,14 @@ package it.finmatica.de4gsdzk.anagrafe
 import it.finmatica.de4gsdzk.GsdFirmaService
 import it.finmatica.de4gsdzk.anagrafe.errors.NomeAllegatoEsistenteRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.documentale.IntegrazioneDocumentaleService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import spock.lang.Specification
 
 class AnaAnagrafeAllegatoServiceSpec extends Specification {
     AnaAnagrafeAllegatoService service
 
     void setup() {
-        service = new AnaAnagrafeAllegatoService(Mock(AnaAnagrafeAllegatoRepository), Mock(AnaAnagrafeRepository), Mock(GsdFirmaService), Mock(IntegrazioneDocumentaleService), Mock(StatoCivileService))
+        service = new AnaAnagrafeAllegatoService(Mock(AnaAnagrafeAllegatoRepository), Mock(AnaAnagrafeRepository), Mock(GsdFirmaService), Mock(IntegrazioneDocumentaleService), Mock(GsdService))
     }
 
     void "Creazione allegato"() {

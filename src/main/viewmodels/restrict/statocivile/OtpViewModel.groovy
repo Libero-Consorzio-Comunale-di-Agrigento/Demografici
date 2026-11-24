@@ -7,10 +7,9 @@ import it.finmatica.de4gsdzk.certificazione.CerTerminalista
 import it.finmatica.de4gsdzk.certificazione.CerTerminalistaService
 import it.finmatica.de4gsdzk.certificazione.error.FirmatariListRuntimeException
 import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.CustomEvents
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
@@ -42,7 +41,7 @@ class OtpViewModel {
     private GsdEtichettaService gsdEtichettaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CerTerminalistaService cerTerminalistaService
@@ -56,10 +55,10 @@ class OtpViewModel {
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map> eList = [Etichette.Firma, Etichette.Firmatario, Etichette.Otp, Etichette.Elabora,
-                           Etichette.Seleziona, Etichette.Chiudi, Etichette.Nessun_dato_disponibile]
+        List<Map> eList = [Etichette.getEtichetta("Firma"), Etichette.getEtichetta("Firmatario"), Etichette.getEtichetta("Otp"), Etichette.getEtichetta("Elabora"),
+                           Etichette.getEtichetta("Seleziona"), Etichette.getEtichetta("Chiudi"), Etichette.getEtichetta("Nessun_dato_disponibile")]
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_firmatario, EtichetteMessaggi.Errore_Certificazioni_utente_non_firmatario, EtichetteMessaggi.Errore_Certificazioni_nessun_firmatario])
+        eList.addAll([Etichette.getEtichetta("Compilare_firmatario"), Etichette.getEtichetta("Errore_Certificazioni_utente_non_firmatario"), Etichette.getEtichetta("Errore_Certificazioni_nessun_firmatario")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
@@ -80,15 +79,15 @@ class OtpViewModel {
                 }
             }
             if (firmatarioUtente == null) {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_Certificazioni_utente_non_firmatario),
-                        getEtichetta(etichette, Etichette.Otp), Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_Certificazioni_utente_non_firmatario")),
+                        getEtichetta(etichette, Etichette.getEtichetta("Otp")), Messagebox.OK, Messagebox.EXCLAMATION)
                 firmatario = listaFirmatari.first()
             } else {
                 firmatario = firmatarioUtente
             }
         } catch (FirmatariListRuntimeException ex) {
             Messagebox.show(getEtichetta(etichette, ex.getEtichetta()) ?: ex.getMessage(),
-                    getEtichetta(etichette, Etichette.Otp), Messagebox.OK, Messagebox.ERROR)
+                    getEtichetta(etichette, Etichette.getEtichetta("Otp")), Messagebox.OK, Messagebox.ERROR)
         }
         BindUtils.postNotifyChange(null, null, this, "listaFirmatari")
         BindUtils.postNotifyChange(null, null, this, "firmatario")
@@ -99,15 +98,15 @@ class OtpViewModel {
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [codUtentefirmatario:firmatario.id, otp:otp] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(etichette, Etichette.Nessun_dato_disponibile), getEtichetta(etichette, Etichette.Otp), Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Nessun_dato_disponibile")), getEtichetta(etichette, Etichette.getEtichetta("Otp")), Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     @Command void onRecuperaOtp () {
         if (firmatario){
-            statoCivileService.recuperaOtp(firmatario.id)
+            gsdService.recuperaOtp(firmatario.id)
         } else {
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Compilare_firmatario), getEtichetta(etichette, Etichette.Otp), Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Compilare_firmatario")), getEtichetta(etichette, Etichette.getEtichetta("Otp")), Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

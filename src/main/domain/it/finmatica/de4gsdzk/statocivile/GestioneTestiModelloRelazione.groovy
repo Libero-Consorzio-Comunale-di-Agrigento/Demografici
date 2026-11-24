@@ -2,6 +2,8 @@ package it.finmatica.de4gsdzk.statocivile
 
 import groovy.transform.CompileStatic
 import it.finmatica.de4gsdzk.GestioneTestiGsdModello
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaComunicazionePratica
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaModello
 import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
 import org.hibernate.annotations.Check
 
@@ -25,6 +27,10 @@ class GestioneTestiModelloRelazione {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CIVDCA")
     CivComunicazioneAtto comunicazioneAtto
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_ANAMOD")
+    AnaModello modelloAnagrafe
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="CODICE_CO")

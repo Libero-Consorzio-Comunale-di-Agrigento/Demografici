@@ -19,24 +19,24 @@
 				<tab label="@load(vm.etichette['Parametri_Protocollo'])"	/>
 				<tab label="@load(vm.etichette['Loghi'])" 		/>
 				<tab label="@load(vm.etichette['Etichette'])" 		visible="@load(vm.attivaGestioneEtichette)"/>
-				<tab label="Log" 					                        />
+				<tab label="@load(vm.etichette['Log'])" 					                        />
 			</tabs>
 			<tabpanels>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/parametroLista.zul" />
+					<include hflex="1" vflex="1" src="/restrict/parametroLista.zul" sezione="CIV"/>
 				</tabpanel>
 				<tabpanel>
 					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/parametroProtocolloLista.zul" />
 				</tabpanel>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/logoLista.zul"/>
+					<include hflex="1" vflex="1" src="/restrict/logoLista.zul" sezione="CIV"/>
 				</tabpanel>
 				<tabpanel>
 					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/etichettaLista.zul"
 							 visible="@load(vm.attivaGestioneEtichette)"/>
 				</tabpanel>
 				<tabpanel>
-					<include hflex="1" vflex="1" src="/restrict/statocivile/dizionari/configurazione/logsLista.zul" />
+					<include hflex="1" vflex="1" src="/restrict/logsLista.zul" sezione="CIV"/>
 				</tabpanel>
 
 			</tabpanels>

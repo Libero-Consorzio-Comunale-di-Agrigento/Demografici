@@ -21,6 +21,7 @@ import org.zkoss.bind.annotation.Init
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.TraitComune
@@ -61,15 +62,15 @@ class StampaRubricaNasciteListaViewModel extends AbstractStampaAttiListaViewMode
 
         ricerca = new RicercaRubricaNascite()
 
-        List<Map<String, String>> eList = [Etichette.Rubrica_Nascite, Etichette.Effettua_Ricerca, Etichette.Cancella,
-                                           Etichette.Data_Registrazione_decrescente, Etichette.Data_Registrazione_crescente,
-                                           Etichette.Generalita_crescente, Etichette.Generalita_decrescente,
-                                           Etichette.Data_Nascita_decrescente, Etichette.Data_Nascita_crescente,
-                                           Etichette.FONTE, Etichette.STATO_CIVILE, Etichette.Tutti_gli_uffici,
-                                           Etichette.Residenza, Etichette.Dal, Etichette.Al, Etichette.Atto_Nascita,
-                                           Etichette.Totale_Atti, Etichette.Maschi, Etichette.Femmine, Etichette.Non_conosciuto]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Rubrica_Nascite"), Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Cancella"),
+                                           Etichette.getEtichetta("Data_Registrazione_decrescente"), Etichette.getEtichetta("Data_Registrazione_crescente"),
+                                           Etichette.getEtichetta("Generalita_crescente"), Etichette.getEtichetta("Generalita_decrescente"),
+                                           Etichette.getEtichetta("Data_Nascita_decrescente"), Etichette.getEtichetta("Data_Nascita_crescente"),
+                                           Etichette.getEtichetta("FONTE"), Etichette.getEtichetta("STATO_CIVILE"), Etichette.getEtichetta("Tutti_gli_uffici"),
+                                           Etichette.getEtichetta("Residenza"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"), Etichette.getEtichetta("Atto_Nascita"),
+                                           Etichette.getEtichetta("Totale_Atti"), Etichette.getEtichetta("Maschi"), Etichette.getEtichetta("Femmine"), Etichette.getEtichetta("Non_conosciuto")]
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_estrazione])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_estrazione")])
 
         eList.addAll(RicercaRubricaNascite.etichetteRicercaRubricaDesc)
         eList.addAll(CivRubricaNascite.etichetteDomain)
@@ -79,17 +80,17 @@ class StampaRubricaNasciteListaViewModel extends AbstractStampaAttiListaViewMode
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.Rubrica_Nascite)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Rubrica_Nascite"))
 
-        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.Estrazioni)?.toUpperCase() + ")"
+        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.getEtichetta("Estrazioni"))?.toUpperCase() + ")"
 
         //ordinamento
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_decrescente),          SortUtils.dataRegistrazioneDescOnly))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_crescente),            SortUtils.dataRegistrazioneAscOnly))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),                    SortUtils.cognomeNomeAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_decrescente),                  SortUtils.cognomeNomeDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Nascita_decrescente),                SortUtils.dataNascitaDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Nascita_crescente),                  SortUtils.dataNascitaAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_decrescente")),          SortUtils.dataRegistrazioneDescOnly))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_crescente")),            SortUtils.dataRegistrazioneAscOnly))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),                    SortUtils.cognomeNomeAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_decrescente")),                  SortUtils.cognomeNomeDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Nascita_decrescente")),                SortUtils.dataNascitaDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Nascita_crescente")),                  SortUtils.dataNascitaAsc))
 
         selectedOrder = listaOrder[0]
 
@@ -111,7 +112,7 @@ class StampaRubricaNasciteListaViewModel extends AbstractStampaAttiListaViewMode
             p = civRubricaNasciteService.search(((RicercaRubricaNascite) ricerca), pr)
         } catch (CampoMandatoryRuntimeException ex) {
             resetRicerca()
-            Messagebox.show((getEtichetta(ex.getEtichetta())?:getEtichetta(EtichetteMessaggi.Compilare_campi_estrazione)), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show((getEtichetta(ex.getEtichetta())?:getEtichetta(Etichette.getEtichetta("Compilare_campi_estrazione"))), msgTitle, Messagebox.OK, Messagebox.ERROR)
         }
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
     }
@@ -131,7 +132,7 @@ class StampaRubricaNasciteListaViewModel extends AbstractStampaAttiListaViewMode
         // Popolo la lista nella form
         onRicarica()
         if ( (lista == null) || (lista.isEmpty()) ){
-            Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             return
         }
 
@@ -145,71 +146,72 @@ class StampaRubricaNasciteListaViewModel extends AbstractStampaAttiListaViewMode
 
         if ( (tipo == ETipoFile.XLS) || (tipo == ETipoFile.CSV) ) {
 
-            exportFields.add(new ExportField("cognome", getEtichetta(Etichette.Cognome)))
-            exportFields.add(new ExportField("nome", getEtichetta(Etichette.Nome)))
+            exportFields.add(new ExportField("cognome", getEtichetta(Etichette.getEtichetta("Cognome"))))
+            exportFields.add(new ExportField("nome", getEtichetta(Etichette.getEtichetta("Nome"))))
 
-            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.Sesso)))
+            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.getEtichetta("Sesso"))))
 
-            exportFields.add(new ExportField("dataNascita", getEtichetta(Etichette.Data_Nascita), ExportUtils.DATE_FORMAT))
-
-            if (tipo == ETipoFile.CSV) {
-                exportFields.add(new ExportField("annoRegistrazione", getEtichetta(Etichette.Anno_Registrazione), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
-            } else {
-                exportFields.add(new ExportField("annoRegistrazione", getEtichetta(Etichette.Anno_Registrazione), ExportUtils.INTEGER_FORMAT))
-            }
-            exportFields.add(new ExportField("dataRegistrazione", getEtichetta(Etichette.Data_Registrazione), ExportUtils.DATE_FORMAT))
+            exportFields.add(new ExportField("dataNascita", getEtichetta(Etichette.getEtichetta("Data_Nascita")), ExportUtils.DATE_FORMAT))
 
             if (tipo == ETipoFile.CSV) {
-                exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'anno') }))
-                exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'atto') }))
-                exportFields.add(new ExportField("parte", getEtichetta(Etichette.Parte), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'parte') }))
-                exportFields.add(new ExportField("serie", getEtichetta(Etichette.Serie), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.serie ?: null }))
-                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'ufficio') }))
+                exportFields.add(new ExportField("annoRegistrazione", getEtichetta(Etichette.getEtichetta("Anno_Registrazione")), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
             } else {
-                exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.INTEGER_FORMAT, { it, propertyName -> it?.attoNascita?.anno ?: null }))
-                exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.INTEGER_FORMAT, { it, propertyName -> it?.attoNascita?.atto ?: null }))
-                exportFields.add(new ExportField("parte", getEtichetta(Etichette.Parte), ExportUtils.INTEGER_FORMAT, { it, propertyName -> (it?.attoNascita?.parte ?: null) as Number }))
-                exportFields.add(new ExportField("serie", getEtichetta(Etichette.Serie), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.serie ?: null }))
-                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), ExportUtils.INTEGER_FORMAT, { it, propertyName -> (it?.attoNascita?.ufficio ?: null) as Number }))
+                exportFields.add(new ExportField("annoRegistrazione", getEtichetta(Etichette.getEtichetta("Anno_Registrazione")), ExportUtils.INTEGER_FORMAT))
             }
-            exportFields.add(new ExportField("idAttoAnsc", getEtichetta(Etichette.Id_Atto_Ansc), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.idAttoAnsc ?: null }))
-            exportFields.add(new ExportField("descrizioneComuneAttoNascita", getEtichetta(Etichette.Comune_Atto_Nascita)))
+            exportFields.add(new ExportField("dataRegistrazione", getEtichetta(Etichette.getEtichetta("Data_Registrazione")), ExportUtils.DATE_FORMAT))
+
+            if (tipo == ETipoFile.CSV) {
+                exportFields.add(new ExportField("anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'anno') }))
+                exportFields.add(new ExportField("atto", getEtichetta(Etichette.getEtichetta("Numero_Atto")), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'atto') }))
+                exportFields.add(new ExportField("parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'parte') }))
+                exportFields.add(new ExportField("serie", getEtichetta(Etichette.getEtichetta("Serie")), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.serie ?: null }))
+                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.STRING_FORMAT, { it, propertyName -> calcolaValoreExportStringFromInteger(it?.attoNascita, 'ufficio') }))
+            } else {
+                exportFields.add(new ExportField("anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.INTEGER_FORMAT, { it, propertyName -> it?.attoNascita?.anno ?: null }))
+                exportFields.add(new ExportField("atto", getEtichetta(Etichette.getEtichetta("Numero_Atto")), ExportUtils.INTEGER_FORMAT, { it, propertyName -> it?.attoNascita?.atto ?: null }))
+                exportFields.add(new ExportField("parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.INTEGER_FORMAT, { it, propertyName -> (it?.attoNascita?.parte ?: null) as Number }))
+                exportFields.add(new ExportField("serie", getEtichetta(Etichette.getEtichetta("Serie")), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.serie ?: null }))
+                exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.INTEGER_FORMAT, { it, propertyName -> (it?.attoNascita?.ufficio ?: null) as Number }))
+            }
+            exportFields.add(new ExportField("idAttoAnsc", getEtichetta(Etichette.getEtichetta("Id_Atto_Ansc")), ExportUtils.STRING_FORMAT, { it, propertyName -> it?.attoNascita?.idAttoAnsc ?: null }))
+            exportFields.add(new ExportField("descrizioneComuneAttoNascita", getEtichetta(Etichette.getEtichetta("Comune_Atto_Nascita"))))
         } else if (tipo == ETipoFile.PDF) {
             exportFields.add(new ExportField("natura",  "",                                    ExportUtils.STRING_FORMAT, calcolaValoreExportNull))
-            exportFields.add(new ExportField("cognome1Lista", getEtichetta(Etichette.Cognome)))
-            exportFields.add(new ExportField("nome1Lista", getEtichetta(Etichette.Nome)))
-            exportFields.add(new ExportField("comuneResidenza1", getEtichetta(Etichette.Paternita),     ExportUtils.STRING_FORMAT, {CivRubricaNascite e, String prop -> e.paternita}))
-            exportFields.add(new ExportField("extra1Lista", getEtichetta(Etichette.Maternita)))
-            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.Sesso),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("dataNascita1", getEtichetta(Etichette.Data_Nascita),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("cognome1Lista", getEtichetta(Etichette.getEtichetta("Cognome"))))
+            exportFields.add(new ExportField("nome1Lista", getEtichetta(Etichette.getEtichetta("Nome"))))
+            exportFields.add(new ExportField("comuneResidenza1", getEtichetta(Etichette.getEtichetta("Paternita")),     ExportUtils.STRING_FORMAT, {CivRubricaNascite e, String prop -> e.paternita}))
+            exportFields.add(new ExportField("extra1Lista", getEtichetta(Etichette.getEtichetta("Maternita"))))
+            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.getEtichetta("Sesso")),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("dataNascita1", getEtichetta(Etichette.getEtichetta("Data_Nascita")),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
             exportFields.add(new ExportField("codiceFiscale1", "",                             ExportUtils.STRING_FORMAT, calcolaValoreExportNull))
-            exportFields.add(new ExportField("extra2Lista", getEtichetta(Etichette.Data_Registrazione), ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("comuneNascita1", getEtichetta(Etichette.Comune_Nascita)))
-            exportFields.add(new ExportField("extra3Lista", getEtichetta(Etichette.Comune_Atto_Nascita)))
-            exportFields.add(new ExportField("estremiAttoLista", getEtichetta(Etichette.Atto_Nascita)))
+            exportFields.add(new ExportField("extra2Lista", getEtichetta(Etichette.getEtichetta("Data_Registrazione")), ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("comuneNascita1", getEtichetta(Etichette.getEtichetta("Comune_Nascita"))))
+            exportFields.add(new ExportField("extra3Lista", getEtichetta(Etichette.getEtichetta("Comune_Atto_Nascita"))))
+            exportFields.add(new ExportField("estremiAttoListaPdf", getEtichetta(Etichette.getEtichetta("Atto_Nascita"))))
         }
 
         StringBuilder b = new StringBuilder(msgTitle)
-        b.append(getNomeFileXAnno(getEtichetta(Etichette.Anno_Registrazione), ((RicercaRubricaNascite) ricerca).annoRegistrazioneDa, ((RicercaRubricaNascite) ricerca).annoRegistrazioneA))
-        b.append(getNomeFileXData(getEtichetta(Etichette.Data_Registrazione), ((RicercaRubricaNascite) ricerca).dataRegistrazioneDa, ((RicercaRubricaNascite) ricerca).dataRegistrazioneA))
+        b.append(getNomeFileXAnno(getEtichetta(Etichette.getEtichetta("Anno_Registrazione")), ((RicercaRubricaNascite) ricerca).annoRegistrazioneDa, ((RicercaRubricaNascite) ricerca).annoRegistrazioneA))
+        b.append(getNomeFileXData(getEtichetta(Etichette.getEtichetta("Data_Registrazione")), ((RicercaRubricaNascite) ricerca).dataRegistrazioneDa, ((RicercaRubricaNascite) ricerca).dataRegistrazioneA))
 
         Map reportParams = [
                 TIPO_ATTO: "RNA",
                 ENTE: arcComuneBaseService.getComuneCliente().getDescrizioneComune(),
-                TITOLO: getEtichetta(Etichette.Rubrica_Nascite),
-                FONTE: getEtichetta(Etichette.FONTE) + " " + getEtichetta(Etichette.STATO_CIVILE),
+                TITOLO: getEtichetta(Etichette.getEtichetta("Rubrica_Nascite")),
+                FONTE: getEtichetta(Etichette.getEtichetta("FONTE")) + " " + getEtichetta(Etichette.getEtichetta("STATO_CIVILE")),
                 PARAMETRI: getParametri([
-                        [label: getEtichetta(Etichette.Anno_Registrazione), da: ((RicercaRubricaNascite) ricerca).annoRegistrazioneDa, a: ((RicercaRubricaNascite) ricerca).annoRegistrazioneA],
-                        [label: getEtichetta(Etichette.Data_Registrazione), da: ((RicercaRubricaNascite) ricerca).dataRegistrazioneDa, a: ((RicercaRubricaNascite) ricerca).dataRegistrazioneA],
-                        [label: getEtichetta(Etichette.Data_Nascita), da: ((RicercaRubricaNascite) ricerca).dataNascitaDa, a: ((RicercaRubricaNascite) ricerca).dataNascitaA]
+                        [label: getEtichetta(Etichette.getEtichetta("Anno_Registrazione")), da: ((RicercaRubricaNascite) ricerca).annoRegistrazioneDa, a: ((RicercaRubricaNascite) ricerca).annoRegistrazioneA],
+                        [label: getEtichetta(Etichette.getEtichetta("Data_Registrazione")), da: ((RicercaRubricaNascite) ricerca).dataRegistrazioneDa, a: ((RicercaRubricaNascite) ricerca).dataRegistrazioneA],
+                        [label: getEtichetta(Etichette.getEtichetta("Data_Nascita")), da: ((RicercaRubricaNascite) ricerca).dataNascitaDa, a: ((RicercaRubricaNascite) ricerca).dataNascitaA]
                 ]),
-                TOTALE: getEtichetta(Etichette.Totale_Atti),
-                MASCHI: getEtichetta(Etichette.Maschi),
-                FEMMINE: getEtichetta(Etichette.Femmine),
-                ND: getEtichetta(Etichette.Non_conosciuto)
+                TOTALE: getEtichetta(Etichette.getEtichetta("Totale_Atti")),
+                MASCHI: getEtichetta(Etichette.getEtichetta("Maschi")),
+                FEMMINE: getEtichetta(Etichette.getEtichetta("Femmine")),
+                ND: getEtichetta(Etichette.getEtichetta("Non_conosciuto"))
         ]
         ExportObject eo = new ExportObject("stampa_atti", exportFields, listaExport, reportParams, null, csvCharsetName)
-        exportService.export(tipo, eo, b.toString())
+        InputStream exportStream = exportService.export(tipo, eo)
+        Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename(b.toString(), tipo))
     }
 
     void resetLista(){

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <row>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Registrato_in_Data'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <datebox format="dd/MM/yyyy" value="@bind(vm.pratica.occupazioneImmobile.dataContrattoLocazione)"
+                         width="100px" disabled="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="dataContrattoLocazione"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <datebox format="dd/MM/yyyy" value="@bind(vm.pratica.occupazioneImmobile.dataContrattoComodato)"
+                         width="100px" disabled="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="dataContrattoComodato"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell/>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Numero'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.numeroContrattoLocazione)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="numeroContrattoLocazione"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.numeroContrattoComodato)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="numeroContrattoComodato"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Presso_AE'])"/>
+        </cell>
+        <cell>
+            <hlayout valign="middle" hflex="1" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.pratica.occupazioneImmobile.sedeContrattoLocazione)"
+                               onSelect="@command('onSelectComune', campoRiferimento='LOC_SEDE')" disabled="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='LOC_SEDE')"
+                />
+            </hlayout>
+            <hlayout valign="middle" hflex="1" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.pratica.occupazioneImmobile.sedeContrattoComodato)"
+                               onSelect="@command('onSelectComune', campoRiferimento='COM_SEDE')" disabled="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='COM_SEDE')"
+                />
+            </hlayout>
+        </cell>
+    </row>
+    <row>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Proprietario'])"/>
+        </cell>
+        <cell colspan="2">
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.nomeProprietaLocazione)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/search.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Seleziona'])"
+                        onClick="@command('onRicercaSoggetto', sezione='LOC_PROP')"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="nomeProprietaLocazione"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.nomeProprietaComodato)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/search.png"
+                        disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Seleziona'])"
+                        onClick="@command('onRicercaSoggetto', sezione='COM_PROP')"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="nomeProprietaComodato"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Codice_Fiscale'])"/>
+        </cell>
+        <cell colspan="2">
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.cfProprietaLocazione)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="cfProprietaLocazione"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.cfProprietaComodato)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="cfProprietaComodato"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell/>
+    </row>
+    <row>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['Residente'])"/>
+        </cell>
+        <cell colspan="2">
+            <hlayout valign="middle" hflex="1" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.pratica.occupazioneImmobile.comuneProprietaLocazione.descrizione)"
+                               onSelect="@command('onSelectComune', campoRiferimento='LOC')" disabled="@load(vm.readOnly)"/>
+                <textbox value="@load(vm.pratica.occupazioneImmobile.comuneProprietaLocazione.siglaProvincia)"
+                         readonly="true" width="60px"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='LOC')"
+                />
+            </hlayout>
+            <hlayout valign="middle" hflex="1" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <bandboxComuni hflex="1"
+                               value="@load(vm.pratica.occupazioneImmobile.comuneProprietaComodato.descrizione)"
+                               onSelect="@command('onSelectComune', campoRiferimento='COM')" disabled="@load(vm.readOnly)"/>
+                <textbox value="@load(vm.pratica.occupazioneImmobile.comuneProprietaComodato.siglaProvincia)"
+                         readonly="true" width="60px" disabled="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaComune', campoRiferimento='COM')"
+                />
+            </hlayout>
+        </cell>
+        <cell align="right">
+            <customLabel value="@load(vm.etichette['In'])"/>
+        </cell>
+        <cell colspan="2">
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagLocazione)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.viaProprietaLocazione)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="viaProprietaLocazione"/>
+                </button>
+            </hlayout>
+            <hlayout valign="middle" visible="@load(vm.pratica.occupazioneImmobile.flagComodato)">
+                <textbox value="@bind(vm.pratica.occupazioneImmobile.viaProprietaComodato)" hflex="1" readonly="@load(vm.readOnly)"/>
+                <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                        tooltiptext="@load(vm.etichette['Cancella'])"
+                        onClick="@command('onCancellaCampoPratica', sezione='I')">
+                    <custom-attributes proprieta="viaProprietaComodato"/>
+                </button>
+            </hlayout>
+        </cell>
+        <cell/>
+    </row>
+</zk>

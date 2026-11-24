@@ -34,13 +34,13 @@ class NascitaListaViewModel extends AttoListaParentViewModel{
 
         ricercaAtto = new RicercaAtto(ETipoAtto.NAS)
 
-        List<Map<String, String>> eList = [Etichette.Atti_Nascita, Etichette.Generalita_decrescente, Etichette.Generalita_crescente]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Atti_Nascita"), Etichette.getEtichetta("Generalita_decrescente"), Etichette.getEtichetta("Generalita_crescente")]
 
         eList.addAll(CivNascita.etichetteDomain)
 
         doInit(eList)
 
-        msgTitle = getEtichetta(Etichette.Atti_Nascita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atti_Nascita"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -48,12 +48,12 @@ class NascitaListaViewModel extends AttoListaParentViewModel{
 
         onCaricaTipiAttoByCategoria()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),            SortUtils.estremiAttoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),              SortUtils.estremiAttoAsc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_decrescente),              SortUtils.cognomeNomeNatoDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),                SortUtils.cognomeNomeNatoAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_decrescente),             SortUtils.dataEventoDesc ))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_crescente),               SortUtils.dataEventoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),            SortUtils.estremiAttoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),              SortUtils.estremiAttoAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_decrescente")),              SortUtils.cognomeNomeNatoDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),                SortUtils.cognomeNomeNatoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_decrescente")),             SortUtils.dataEventoDesc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_crescente")),               SortUtils.dataEventoAsc ))
 
         //Default: estremi atto discendente
         selectedOrder = listaOrder[0]

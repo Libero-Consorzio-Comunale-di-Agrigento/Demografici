@@ -47,7 +47,7 @@ class AccordiDivScioSelectViewModel extends AbstractRecuperoSelectViewModel {
         addEnabled = false
         modifyEnabled = false
 
-        List<Map> eList = [Etichette.Estremi_Accordo, Etichette.Data]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Accordo"), Etichette.getEtichetta("Data")]
         eList.addAll(CivMatrimonio.etichetteDomain)
         eList.addAll(CivUnioneCivile.etichetteDomain)
         eList.addAll(CivAttoBaseDomain.etichetteDomain)
@@ -60,7 +60,7 @@ class AccordiDivScioSelectViewModel extends AbstractRecuperoSelectViewModel {
 
         etichetteCustom = FormUtils.getAttoCustomLabels(tipoAttoEnum, etichette)
 
-        msgTitle = getEtichetta(Etichette.Estremi_Accordo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Estremi_Accordo"))
 
         totalSizeLabel = ""
 
@@ -111,7 +111,7 @@ class AccordiDivScioSelectViewModel extends AbstractRecuperoSelectViewModel {
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, [idAccordo: dettaglio.id, idAnagrafe1: dettaglio.idAnagrafe1, idAnagrafe2: dettaglio.idAnagrafe2] )
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

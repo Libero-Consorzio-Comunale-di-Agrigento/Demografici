@@ -36,7 +36,7 @@ class LuogoViewModel extends AbstractResizedViewModel{
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
         self = w
 
-        List<Map> eList = [Etichette.Luogo]
+        List<Map> eList = [Etichette.getEtichetta("Luogo")]
         // Aggiungo etichette tipo luogo
         eList.addAll([ETipoEvento.Nascita.etichettaDesc, ETipoEvento.Matrimonio.etichettaDesc, ETipoEvento.Decesso.etichettaDesc])
 

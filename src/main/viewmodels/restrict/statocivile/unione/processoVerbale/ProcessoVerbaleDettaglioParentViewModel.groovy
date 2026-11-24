@@ -1,6 +1,7 @@
 package restrict.statocivile.unione.processoVerbale
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.statocivile.*
@@ -20,7 +21,7 @@ abstract class ProcessoVerbaleDettaglioParentViewModel extends AttoSoggettiDetta
     List<Map> listaImpossibilitato = []
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivProcessoVerbaleService civProcessoVerbaleService
@@ -35,18 +36,18 @@ abstract class ProcessoVerbaleDettaglioParentViewModel extends AttoSoggettiDetta
 
         List<Map> eList = []
         eList.addAll(CivProcessoVerbale.etichetteDomain)
-        eList.addAll([Etichette.Comune, Etichette.Impossibilitato,Etichette.Certificato_del, Etichette.Comune_Atto, Etichette.Dati_Certificato,
-                      Etichette.Documenti_presentati, Etichette.Dati_Tribunale, Etichette.Autorizzazione_tribunale_di])
+        eList.addAll([Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Impossibilitato"),Etichette.getEtichetta("Certificato_del"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Dati_Certificato"),
+                      Etichette.getEtichetta("Documenti_presentati"), Etichette.getEtichetta("Dati_Tribunale"), Etichette.getEtichetta("Autorizzazione_tribunale_di")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
         eList.addAll(CivDocumentoPubblicazione.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Richiedenti, Etichette.Documenti])
+        eList.addAll([Etichette.getEtichetta("Richiedenti"), Etichette.getEtichetta("Documenti")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_RICHIEDENTI, Etichette.SEZIONE_DATI_PUBBLICAZIONE,
-                      Etichette.SEZIONE_COMPOSIZIONE, Etichette.SEZIONE_REDAZIONE])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_RICHIEDENTI"), Etichette.getEtichetta("SEZIONE_DATI_PUBBLICAZIONE"),
+                      Etichette.getEtichetta("SEZIONE_COMPOSIZIONE"), Etichette.getEtichetta("SEZIONE_REDAZIONE")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriProcessoVerbale()
@@ -66,7 +67,7 @@ abstract class ProcessoVerbaleDettaglioParentViewModel extends AttoSoggettiDetta
                                      getDCFItem(EImpossibilitato.C2),
                                      getDCFItem(EImpossibilitato.EN)])
 
-        msgTitle = getEtichetta(Etichette.Processo_Verbale)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Processo_Verbale"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.PVU)
 
         resize()
@@ -123,7 +124,7 @@ abstract class ProcessoVerbaleDettaglioParentViewModel extends AttoSoggettiDetta
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleProcessoVerbale(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleProcessoVerbale(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }

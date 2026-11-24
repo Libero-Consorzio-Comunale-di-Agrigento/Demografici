@@ -25,5 +25,5 @@ class CerSindaco extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome_Nome]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome_Nome")]
 }

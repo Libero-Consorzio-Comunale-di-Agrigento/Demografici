@@ -1,13 +1,13 @@
 package restrict.certificazione.dizionari.generale
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.anagrafe.AnaTipoDocumento
 import it.finmatica.de4gsdzk.anpr.AnprTipoCertificatoEsterno
 import it.finmatica.de4gsdzk.ansc.AnscTipoCertificatoEsterno
 import it.finmatica.de4gsdzk.certificazione.*
 import it.finmatica.de4gsdzk.certificazione.generazione.ETipoGenerazioneCertificato
 import it.finmatica.de4gsdzk.errors.FileNameNonAttesoRuntimeException
-import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazioneService
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.zkutils.ETipoDocumentoAnagrafeFiltro
 import org.springframework.data.domain.PageRequest
@@ -21,7 +21,7 @@ import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.TraitCancellazioneCampi
 import restrict.statocivile.DizionarioDettaglioViewModel
-import restrict.statocivile.dizionari.comunicazione.TraitGestioneTestiModelloRelazione
+import restrict.statocivile.dizionari.comunicazioni.TraitGestioneTestiModelloRelazione
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
@@ -68,7 +68,7 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.Tipo_Certificato]
+        List<Map> eList = [Etichette.getEtichetta("Tipo_Certificato")]
         eList.addAll(CerTipoCertificato.etichetteDomain)
 
         // Aggiungo etichette tipo si no
@@ -83,7 +83,7 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
         // Aggiungo etichette tipi atto
         eList.addAll(ETipoAtto.values()*.getEtichettaPluralDesc())
 
-        eList.addAll(EtichetteMessaggi.Compilare_tipo_certificato_categoria, EtichetteMessaggi.Ask_Conferma_Salvataggio)
+        eList.addAll(Etichette.getEtichetta("Compilare_tipo_certificato_categoria"), Etichette.getEtichetta("Ask_Conferma_Salvataggio"))
 
         // Aggiungo etichette per tipi generazione esterne
         eList.addAll(ETipoGenerazioneCertificato.values().findAll { it.isGenerazioneEsterna() }*.getEtichettaDesc())
@@ -95,7 +95,7 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Tipo_Certificato)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Tipo_Certificato"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -168,7 +168,12 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
     }
 
     void caricaListaFiltro() {
-        listaFiltro = [null]
+        if(!dettaglio.isStatoCivile()){
+            listaFiltro = [null]
+        } else {
+            listaFiltro.clear()
+        }
+
         if (dettaglio.categoriaTipoCertificato != null) {
             List<CerFiltro> l = cerFiltroService.listAllByTipoCompetenza(dettaglio.categoriaTipoCertificato.tipoCompetenzaOnline)
             if (l.size() > 0) {
@@ -203,11 +208,11 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
     void salvaTipoCertificato(boolean force = false) {
         try {
             CerTipoCertificato c = cerTipoCertificatoService.save(tipoOperazione, dettaglio, modelloRelazione, force)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         } catch (FileNameNonAttesoRuntimeException fnv) {
             log.warn(fnv.getMessage())
-            Messagebox.show(fnv.getMessage() + "\n" + getEtichetta(EtichetteMessaggi.Ask_Conferma_Salvataggio), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+            Messagebox.show(fnv.getMessage() + "\n" + getEtichetta(Etichette.getEtichetta("Ask_Conferma_Salvataggio")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
                     new org.zkoss.zk.ui.event.EventListener() {
                         void onEvent(Event e) {
                             if (Messagebox.ON_OK == e.getName()) {
@@ -228,6 +233,9 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
     void onSelectCategoria() {
         caricaListaFiltro()
         resetTipoCertificatoEsterno()
+        if(!dettaglio.categoriaTipoCertificato.isStatoCivile()) {
+            dettaglio.tipoAttoEnum = null
+        }
         refreshUi()
     }
 
@@ -272,12 +280,12 @@ class TipoCertificatoDettaglioViewModel extends DizionarioDettaglioViewModel imp
 
     String getLabelTipoCertificatoEsterno() {
         if (dettaglio.categoriaTipoCertificato?.isStatoCivile()) {
-            return String.format(getEtichetta(Etichette.Tipo_Certificato_esterno), getEtichettaEnum(ETipoGenerazioneCertificato.ANSC))
+            return String.format(getEtichetta(Etichette.getEtichetta("Tipo_Certificato_esterno")), getEtichettaEnum(ETipoGenerazioneCertificato.ANSC))
         }
         if (dettaglio.categoriaTipoCertificato?.isAnagrafe()) {
-            return String.format(getEtichetta(Etichette.Tipo_Certificato_esterno), getEtichettaEnum(ETipoGenerazioneCertificato.ANPR))
+            return String.format(getEtichetta(Etichette.getEtichetta("Tipo_Certificato_esterno")), getEtichettaEnum(ETipoGenerazioneCertificato.ANPR))
         }
-        return String.format(getEtichetta(Etichette.Tipo_Certificato_esterno), "${getEtichettaEnum(ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(ETipoGenerazioneCertificato.ANSC)}")
+        return String.format(getEtichetta(Etichette.getEtichetta("Tipo_Certificato_esterno")), "${getEtichettaEnum(ETipoGenerazioneCertificato.ANPR)}/${getEtichettaEnum(ETipoGenerazioneCertificato.ANSC)}")
     }
 
 }

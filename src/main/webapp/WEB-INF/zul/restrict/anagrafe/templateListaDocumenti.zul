@@ -1,0 +1,55 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <listhead>
+        <listheader label="@load(vm.etichette['Tipo_Documento'])"/>
+        <listheader label="@load(vm.etichette['Numero'])"/>
+        <listheader label="@load(vm.etichette['Natura_Documento'])"/>
+        <listheader label="@load(vm.etichette['Data_emissione'])"/>
+        <listheader label="@load(vm.etichette['Data_Scadenza'])"/>
+        <listheader label="@load(vm.etichette['Scadenza_Illimitata'])"/>
+        <listheader label="@load(vm.etichette['Espatrio'])"/>
+        <listheader label="@load(vm.etichette['Categoria'])"/>
+        <listheader label="@load(vm.etichette['Comune_Ente'])"/>
+        <listheader label="" width="60px"/>
+        <listheader label="" width="60px"/>
+    </listhead>
+    <template name="model" var="item">
+        <listitem>
+            <listcell label="@load(item.tipoDocumento.descrizione)"/>
+            <listcell label="@load(item.numero)"/>
+            <listcell label="@load(vm.getEtichettaEnum(item.natura))"/>
+            <listcell sclass="testo-al-centro"
+                      label="@load(empty item.dataEmissione? null:(c:formatDate(item.dataEmissione, 'dd/MM/yyyy')))"/>
+            <listcell sclass="testo-al-centro"
+                      label="@load(empty item.dataScadenza? null:(c:formatDate(item.dataScadenza, 'dd/MM/yyyy')))"/>
+            <listcell>
+                <checkbox checked="@load(item.scadenzaIllimitata)" disabled="true"/>
+            </listcell>
+            <listcell>
+                <checkbox checked="@load(item.espatrio eq 'S')" disabled="true"/>
+            </listcell>
+            <listcell label="@load(item.categoria.descrizione)"/>
+            <listcell>
+                <comuneLabel value="@load(item.comuneEnte)"/>
+            </listcell>
+            <listcell>
+                <button image="/images/icon/action/22x22/edit.png"
+                        tooltiptext="@load(vm.etichette['modifica_tooltip'])"
+                        disabled="@load(vm.readOnly eq true)"
+                        onClick="@command('onModificaDocumento', documento=item)"/>
+            </listcell>
+            <listcell>
+                <button image="/images/icon/action/22x22/delete.png"
+                        tooltiptext="@load(vm.etichette['elimina_tooltip'])"
+                        onClick="@command('onEliminaDocumento', documento=item)"
+                        disabled="@bind(not empty item.allegati or vm.readOnly eq true)"/>
+            </listcell>
+        </listitem>
+    </template>
+
+</zk>

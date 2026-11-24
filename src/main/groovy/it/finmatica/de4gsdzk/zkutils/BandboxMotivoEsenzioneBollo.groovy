@@ -51,8 +51,8 @@ class BandboxMotivoEsenzioneBollo extends CustomBandbox {
 
         paging.setPageSize(Paginazione.pageSize)
 
-        errorTitle = getEtichetta(etichette, Etichette.Validazione)
-        errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+        errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+        errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
     }
 
     protected void loadData(String filtro, Boolean searchEqual = Boolean.FALSE) {
@@ -65,7 +65,7 @@ class BandboxMotivoEsenzioneBollo extends CustomBandbox {
 
         listbox.setModel(new ListModelList<CerMotivoEsenzioneBolloBaseDomain>(p.getContent()))
         paging.setTotalSize((int) p.getTotalElements())
-        label.value = (getEtichetta(etichette, Etichette.Numero_record_trovati) ?: "") + paging.totalSize
+        label.value = (getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) ?: "") + paging.totalSize
     }
 
     private getPage(StringBuilder b) {

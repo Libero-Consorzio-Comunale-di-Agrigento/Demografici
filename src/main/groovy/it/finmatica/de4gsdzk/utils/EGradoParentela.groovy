@@ -18,12 +18,12 @@ enum EGradoParentela {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PD: return Etichette.Padre
-            case MD: return Etichette.Madre
-            case OP: return Etichette.Nonno_paterno
-            case AP: return Etichette.Nonna_paterna
-            case OM: return Etichette.Nonno_materno
-            case AM: return Etichette.Nonna_materna
+            case PD: return Etichette.getEtichetta("Padre")
+            case MD: return Etichette.getEtichetta("Madre")
+            case OP: return Etichette.getEtichetta("Nonno_paterno")
+            case AP: return Etichette.getEtichetta("Nonna_paterna")
+            case OM: return Etichette.getEtichetta("Nonno_materno")
+            case AM: return Etichette.getEtichetta("Nonna_materna")
         }
         return null
     }

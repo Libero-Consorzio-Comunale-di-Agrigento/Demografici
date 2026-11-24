@@ -21,7 +21,7 @@ dbms_output.put_line('oggetto '||w_des_ogg||' non esistente');
 (ID_OPERAZIONE      number
 ,DATA_ORA           date
 ,SEQUENZA           number
-,CODICE_ERRORE      varchar2(10)
+,CODICE_ERRORE      varchar2(20)
 ,TIPO_ERRORE        varchar2(1)
 ,TESTO_ERRORE       varchar2(4000)
 ,FLAG_ANOMALIA      varchar2(1)

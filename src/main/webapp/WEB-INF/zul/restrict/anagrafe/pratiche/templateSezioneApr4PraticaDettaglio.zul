@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" visible="@bind(vm.selectedVariazione.flagApr4 and vm.pratica.id ne null)">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Modello_Apr_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <hlayout valign="middle" sclass="navigazione">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/icon/action/22x22/print.png"
+                               tooltiptext="@load(vm.etichette['Stampa_Modello_Apr4_tooltip'])"
+                               onClick="@command('onStampaModelloApr4')"
+                               disabled="@bind(vm.soggetti.size() eq 0)"/>
+
+            </hlayout>
+        </hlayout>
+
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column width="400px"/>
+                <column/>
+                <column width="150px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell>
+                        <customLabel value="@load(vm.etichette['Richiedo_Comune'])"/>
+                    </cell>
+                    <cell>
+                            <textbox value="@load(not empty vm.dichiarazione.comuneIscrizioneAire.descrizione ? vm.dichiarazione.comuneIscrizioneAire.descrizione : vm.dichiarazione.comuneProvenienza.descrizione)" hflex="1" readonly="true"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(not empty vm.dichiarazione.comuneIscrizioneAire.siglaProvincia ? vm.dichiarazione.comuneIscrizioneAire.siglaProvincia : vm.dichiarazione.comuneProvenienza.siglaProvincia)" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory='true' value="@load(vm.etichette['Conteggio'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout height="20px">
+                            <radiogroup model="@load(vm.listaConteggio)" hflex="1" selectedItem="@bind(vm.dichiarazione.conteggio)">
+                                <template name="model">
+                                    <radio label="@load(vm.getEtichettaEnum(each))"
+                                           value="@load(each)"
+                                           style="padding-left:10px"
+                                           disabled="@load(vm.readOnly)"/>
+                                </template>
+                            </radiogroup>
+                        </hlayout>
+                    </cell>
+                </row>
+                <row>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaRichieste)" readonly="true" hflex="1" disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.dichiarazione.richiesta) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each.codice ? each.descrizione : c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="3"/>
+                </row>
+                <row>
+                    <cell>
+                        <label value="@load(vm.etichette['Comunico'])"/>
+                    </cell>
+                    <cell colspan="4"/>
+                </row>
+                <row>
+                    <cell colspan="2">
+                        <combobox model="@load(vm.listaProvvedimenti)" readonly="true" hflex="1" disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.dichiarazione.provvedimento) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(empty each.codice ? each.descrizione : c:cat3(each.codice, ' - ', each.descrizione))" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaStati)" readonly="true" disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.selectedStato)" visible="@load(vm.dichiarazione.provvedimento.codice eq 2)">
+                            <template name="model">
+                                <comboitem label="@load(c:cat3(each.codiceProvincia, ' - ', each.descrizioneComune))" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.dichiarazione.dataIrreperibilita)" width="95px" visible="@load(vm.dichiarazione.provvedimento.codice eq 3)" disabled="@load(vm.readOnly)"/>
+                        <textbox value="@bind(vm.dichiarazione.motivo)" visible="@load(vm.dichiarazione.provvedimento.codice eq 4)" hflex="1" readonly="@load(vm.readOnly)"/>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

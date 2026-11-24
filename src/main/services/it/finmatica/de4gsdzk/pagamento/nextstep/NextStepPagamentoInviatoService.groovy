@@ -6,7 +6,7 @@ import it.finmatica.de4gsdzk.pagamento.EFunzionePagamentoInviato
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviato
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviatoService
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoInviatoRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.Funzioni
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class NextStepPagamentoInviatoService extends WspaPagamentoInviatoService {
 
-    NextStepPagamentoInviatoService(StatoCivileService statoCivileService,
+    NextStepPagamentoInviatoService(GsdService gsdService,
                                     UtenteCustomService utenteCustomService,
                                     WspaPagamentoInviatoRepository wspaPagamentoInviatoRepository) {
-        super(statoCivileService, utenteCustomService, wspaPagamentoInviatoRepository)
+        super(gsdService, utenteCustomService, wspaPagamentoInviatoRepository)
     }
 
     @Override

@@ -8,7 +8,6 @@ import it.finmatica.de4gsdzk.pagamento.depag.DepagServizio
 import it.finmatica.de4gsdzk.pagamento.depag.DepagServizioService
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.annotation.*
 import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.select.annotation.VariableResolver
@@ -40,14 +39,14 @@ class DocumentoDettaglioViewModel extends DizionarioDettaglioViewModel {
 
         saveRecordEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Documento]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Documento")]
         eList.addAll(DepagDocumento.etichetteDomain)
         eList.addAll(CerTipoCertificato.etichetteDomain)
         eList.addAll(DepagServizio.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Documento)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Documento"))
 
         formLabel = msgTitle?.toUpperCase()
 
@@ -81,7 +80,7 @@ class DocumentoDettaglioViewModel extends DizionarioDettaglioViewModel {
     void onSalvaRecord() {
         if (dettaglio) {
             DepagDocumento c = depagDocumentoService.save(dettaglio)
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             caricaDettaglio(c.id)
         }
     }

@@ -1,14 +1,15 @@
 package restrict.anagrafe
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.AnsAnagrafe
+import it.finmatica.de4gsdzk.AnsAnagrafeService
 import it.finmatica.de4gsdzk.GsdAnagrafe
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdAnagrafeService
-import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
-import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
-import it.finmatica.de4gsdzk.anagrafe.AnpAnagrafeService
-import it.finmatica.de4gsdzk.anagrafe.RicercaIndividuo
+import it.finmatica.de4gsdzk.anagrafe.*
 import it.finmatica.de4gsdzk.anpr.AnpAnagrafe
+import it.finmatica.de4gsdzk.ansc.*
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.NoRecordFoundRuntimeException
 import it.finmatica.de4gsdzk.errors.TooManyRecordsFoundRuntimeException
@@ -28,16 +29,17 @@ import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.AbstractSelectViewModel
 import restrict.TraitCancellazioneCampi
+import restrict.TraitInvioComunicazioneAnsc
 
 @Slf4j
 @VariableResolver(DelegatingVariableResolver.class)
-class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements TraitCancellazioneCampi {
+class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements TraitCancellazioneCampi, TraitInvioComunicazioneAnsc {
 
     final List<ESesso> listaSesso = [null] + ESesso.values().toList()
     final List<ETipoSiNo> listaSoloResidenti = ETipoSiNo.values() + null
 
-    List<GsdAnagrafeBaseDomain> lista = []
-    GsdAnagrafeBaseDomain dettaglio
+    List<AnagrafeBaseDomain> lista = []
+    AnagrafeBaseDomain dettaglio
 
     boolean newSearchOn = true
     RicercaIndividuo ricercaIndividuo
@@ -52,11 +54,18 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
     Boolean checkConiuge
     Boolean soloResidenti
     Boolean anagrafeEstesa
+    Boolean inserimentoSoggetto
+    Boolean flagInserimento
+    ETipoAnagrafe archivioAnagrafe
+    ETipoPratica tipoPratica
+    Boolean statoCivile
 
     ETipoSorgenteRicercaSoggetto sorgente = ETipoSorgenteRicercaSoggetto.ANA
 
     EArchivioSorgenteSoggetto archivio
     List<EArchivioSorgenteSoggetto> listaArchivio = [null, EArchivioSorgenteSoggetto.ANA, EArchivioSorgenteSoggetto.CIV]
+
+    AnscEndPointServizioArchivio servizioRicercaSoggetti
 
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
@@ -70,6 +79,18 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
     @WireVariable
     private GsdAnagrafeService gsdAnagrafeService
 
+    @WireVariable
+    private AnsAnagrafeService ansAnagrafeService
+
+    @WireVariable
+    private AnscEndPointServizioArchivioService anscEndPointServizioArchivioService
+
+    @WireVariable
+    private AnscComunicazioneService anscComunicazioneService
+
+    @WireVariable
+    private AnscUtenteService anscUtenteService
+
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w,
          @ExecutionArgParam("cognome") String cognome,
@@ -80,35 +101,40 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
          @ExecutionArgParam("codiceFiscale") String codiceFiscale,
          @ExecutionArgParam("soloResidenti") Boolean soloResidenti,
          @ExecutionArgParam("anagrafeEstesa") Boolean anagrafeEstesa,
-         @ExecutionArgParam("sessoEnabled") Boolean sessoEnabled) {
+         @ExecutionArgParam("sessoEnabled") Boolean sessoEnabled,
+         @ExecutionArgParam("inserimentoSoggetto") Boolean inserimentoSoggetto,
+         @ExecutionArgParam("flagInserimento") Boolean flagInserimento,
+         @ExecutionArgParam("archivioAnagrafe") ETipoAnagrafe archivioAnagrafe,
+         @ExecutionArgParam("tipoPratica") ETipoPratica tipoPratica,
+         @ExecutionArgParam("statoCivile") Boolean statoCivile) {
         self = w
 
         searchEnabled = false
         addEnabled = false
         modifyEnabled = false
 
-        List<Map> eList = [Etichette.Seleziona_Soggetto, Etichette.Anagrafe_Locale, Etichette.Anagrafe_Gsd, Etichette.ANPR_desc,
-                           Etichette.Codice_Fiscale, Etichette.Ricerca_in_ANPR, Etichette.Cancella, Etichette.Comune_Residenza, Etichette.Archivio, Etichette.Tutti]
+        List<Map> eList = [Etichette.getEtichetta("Seleziona_Soggetto"), Etichette.getEtichetta("Anagrafe_Locale"), Etichette.getEtichetta("Anagrafe_Gsd"), Etichette.getEtichetta("ANPR_desc"),
+                           Etichette.getEtichetta("Codice_Fiscale"), Etichette.getEtichetta("Ricerca_in_ANPR"), Etichette.getEtichetta("Ricerca_ANSC"), Etichette.getEtichetta("Cancella"), Etichette.getEtichetta("Comune_Residenza"), Etichette.getEtichetta("Archivio"), Etichette.getEtichetta("Tutti")]
         // Aggiungo etichette ricerca individuo
         eList.addAll(RicercaIndividuo.etichetteRicercaDesc)
-        // Aggiungo etichette per valori campi di ricerca
-        eList.addAll([Etichette.Cancella])
+        eList.addAll([Etichette.getEtichetta("Prosegui")])
         eList.addAll(ESesso.values()*.getEtichettaDesc())
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Errore_Ricerca_ANPR_No_Result, EtichetteMessaggi.Errore_Ricerca_ANPR,
-                      EtichetteMessaggi.Errore_Ricerca_ANPR_Soggetto_Non_presente, EtichetteMessaggi.Compilare_campi_ANPR,
-                      EtichetteMessaggi.Errore_Ricerca_Archivio_Soggetto])
-        eList.addAll(GsdAnagrafeBaseDomain.etichetteDomain)
+        eList.addAll([Etichette.getEtichetta("Errore_Ricerca_ANPR_No_Result"), Etichette.getEtichetta("Errore_Ricerca_ANPR"), Etichette.getEtichetta("Errore_ANSC_servizio_notifica"),
+                      Etichette.getEtichetta("Errore_Ricerca_ANPR_Soggetto_Non_presente"), Etichette.getEtichetta("Compilare_campi_ANPR"),
+                      Etichette.getEtichetta("Errore_Ricerca_Archivio_Soggetto")])
+        eList.addAll(AnagrafeBaseDomain.etichetteDomain)
 
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
         // Aggiungo etichette Archivio
         eList.addAll(EArchivioSorgenteSoggetto.values()*.getEtichettaDesc())
+        eList.addAll(Etichette.getEtichetta("Soggetto_Non_Compatibile"))
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Seleziona_Soggetto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Seleziona_Soggetto"))
 
         ricercaIndividuo = new RicercaIndividuo()
         ricercaIndividuo.cognome = cognome
@@ -118,6 +144,11 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         ricercaIndividuo.sesso = sesso
         ricercaIndividuo.codiceFiscale = codiceFiscale
         ricercaIndividuo.sessoEnabled = sessoEnabled ?: false
+        ricercaIndividuo.ricercaAnsc = anagrafeEstesa ?: false
+
+        if(ricercaIndividuo.ricercaAnsc) {
+            servizioRicercaSoggetti =  anscEndPointServizioArchivioService.getServizioArchivioSoggettiRicerca()
+        }
 
         this.sesso = sesso
         this.cognome = (cognome?:'')
@@ -128,10 +159,20 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         this.checkConiuge = checkConiuge
         this.soloResidenti = soloResidenti
         this.anagrafeEstesa = anagrafeEstesa
+        this.inserimentoSoggetto = inserimentoSoggetto ?: false
+        this.flagInserimento = flagInserimento ?: false
+        this.archivioAnagrafe = archivioAnagrafe
+        this.tipoPratica = tipoPratica
+        this.statoCivile = statoCivile ?: false
 
         totalSizeLabel = ""
 
-        onRicerca()
+        if(ricercaIndividuo.cognome != null || ricercaIndividuo.nome != null ||
+                ricercaIndividuo.dataNascitaDal != null || ricercaIndividuo.dataNascitaAl != null ||
+                ricercaIndividuo.sesso != null || ricercaIndividuo.codiceFiscale != null){
+            onRicerca()
+        }
+
     }
 
     @Command
@@ -149,6 +190,12 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
     void onRicercaANP() {
         this.sorgente = ETipoSorgenteRicercaSoggetto.ANP
         resetArchivio()
+        onRicarica()
+    }
+
+    @Command
+    void onRicercaANSC() {
+        this.sorgente = ETipoSorgenteRicercaSoggetto.ANS
         onRicarica()
     }
 
@@ -175,7 +222,7 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         refreshLista()
     }
 
-    Paginazione<GsdAnagrafeBaseDomain> eseguiQuery(Boolean usePaging){
+    Paginazione<AnagrafeBaseDomain> eseguiQuery(Boolean usePaging){
         PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.cognomeNomeNatoAsc))
         Page<?> p
         if (newSearchOn) {
@@ -188,6 +235,10 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
                     break
                 case ETipoSorgenteRicercaSoggetto.GSD:
                     p = gsdAnagrafeService.listAllByRicercaIndividuo(ricercaIndividuo, pr)
+                    break
+                case ETipoSorgenteRicercaSoggetto.ANS:
+                    ricercaANSC(ricercaIndividuo)
+                    p = ansAnagrafeService.listAllByRicercaIndividuo(ricercaIndividuo, pr)
                     break
             }
         } else {
@@ -204,7 +255,21 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
                     break
             }
         }
-        return new Paginazione<GsdAnagrafeBaseDomain>((p?.getContent()?:[]), (p?.getTotalElements()?:0))
+        return new Paginazione<AnagrafeBaseDomain>((p?.getContent()?:[]), (p?.getTotalElements()?:0))
+    }
+
+    private void ricercaANSC(RicercaIndividuo ricercaIndividuo) {
+        if (servizioRicercaSoggetti?.servizio == null) {
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            return
+        } else {
+            RicercaSoggettoAnsc ricercaSoggetto = new RicercaSoggettoAnsc()
+            ricercaSoggetto.nome = ricercaIndividuo.nome
+            ricercaSoggetto.cognome = ricercaIndividuo.cognome
+            ricercaSoggetto.sesso = ricercaIndividuo.sesso
+            ricercaSoggetto.dataNascita = ricercaIndividuo.dataNascitaDal
+            verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc.CER, servizioRicercaSoggetti, null, null, ricercaSoggetto, null)
+        }
     }
 
     void resetDettaglio(){
@@ -214,25 +279,28 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
 
     boolean isAnpr() { sorgente == ETipoSorgenteRicercaSoggetto.ANP }
 
-    boolean isGsd() { sorgente == ETipoSorgenteRicercaSoggetto.GSD }
+    boolean isGsd() { sorgente == ETipoSorgenteRicercaSoggetto.GSD || sorgente == ETipoSorgenteRicercaSoggetto.ANS }
 
     String getLabelSorgente(){
         switch (sorgente) {
             case ETipoSorgenteRicercaSoggetto.ANP:
-                return getEtichetta(Etichette.ANPR_desc)
+                return getEtichetta(Etichette.getEtichetta("ANPR_desc"))
             case ETipoSorgenteRicercaSoggetto.ANA:
-                return getEtichetta(Etichette.Anagrafe_Locale)
+                return getEtichetta(Etichette.getEtichetta("Anagrafe_Locale"))
             case ETipoSorgenteRicercaSoggetto.GSD:
-                return getEtichetta(Etichette.Anagrafe_Gsd)
+                return getEtichetta(Etichette.getEtichetta("Anagrafe_Gsd"))
+            case ETipoSorgenteRicercaSoggetto.ANS:
+                return getEtichetta(Etichette.getEtichetta("Anagrafe_Gsd"))
         }
     }
 
     @Command onSeleziona() {
         if (dettaglio) {
             if (dettaglio instanceof AnpAnagrafe) {
+                //Controllo DECEDUTO - RESIDENTE nel comune
                 try {
                     // faccio partire nuovamente la ricerca per ottenere i dati completi del soggetto e per recupero di eventuale dati coniuge
-                    GsdAnagrafeBaseDomain soggettoCompleto = anpAnagrafeService.findBySoggetto(dettaglio)
+                    AnagrafeBaseDomain soggettoCompleto = anpAnagrafeService.findBySoggetto(dettaglio)
                     checkAndSelectSoggetto(soggettoCompleto)
                 } catch (Exception e) {
                     // non dovrebbe mai accadere
@@ -254,36 +322,53 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
                 }
                 try {
                     // prendo il soggetto dall'ANPR
-                    GsdAnagrafeBaseDomain soggettoAnpr = anpAnagrafeService.findBySoggetto(dettaglio)
+                    AnagrafeBaseDomain soggettoAnpr = anpAnagrafeService.findBySoggetto(dettaglio)
                     checkAndSelectSoggetto(soggettoAnpr)
                 } catch (CampoMandatoryRuntimeException e) {
                     throw e
                 } catch (NoRecordFoundRuntimeException ex) {
                     log.error(ex.message, ex)
-                    String errMsg = getEtichetta(EtichetteMessaggi.Errore_Ricerca_ANPR_Soggetto_Non_presente) + "\nVerranno recuperati i dati $errArchivioSorgente"
-                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, {
-                        checkAndSelectSoggetto(dettaglio)
+                    String errMsg = getEtichetta(Etichette.getEtichetta("Errore_Ricerca_ANPR_Soggetto_Non_presente")) + "\nVerranno recuperati i dati $errArchivioSorgente"
+                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, { event ->
+                        if (event.name == Messagebox.ON_OK) {
+                            checkAndSelectSoggetto(dettaglio)
+                        }
                     })
                 } catch (TooManyRecordsFoundRuntimeException ex) {
                     log.error(ex.message, ex)
-                    String errMsg = getEtichetta(EtichetteMessaggi.Errore_Ricerca_ANPR) + "\nVerranno recuperati i dati $errArchivioSorgente"
-                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, {
-                        checkAndSelectSoggetto(dettaglio)
+                    String errMsg = getEtichetta(Etichette.getEtichetta("Errore_Ricerca_ANPR")) + "\nVerranno recuperati i dati $errArchivioSorgente"
+                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, { event ->
+                        if (event.name == Messagebox.ON_OK) {
+                            checkAndSelectSoggetto(dettaglio)
+                        }
                     })
                 } catch (Exception ex) {
                     log.error(ex.message, ex)
-                    String errMsg = getEtichetta(EtichetteMessaggi.Errore_Ricerca_ANPR) + "\nVerranno recuperati i dati $errArchivioSorgente"
-                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, {
-                        checkAndSelectSoggetto(dettaglio)
+                    String errMsg = getEtichetta(Etichette.getEtichetta("Errore_Ricerca_ANPR")) + "\nVerranno recuperati i dati $errArchivioSorgente"
+                    Messagebox.show(errMsg, msgTitle, Messagebox.OK, Messagebox.EXCLAMATION, { event ->
+                        if (event.name == Messagebox.ON_OK) {
+                            checkAndSelectSoggetto(dettaglio)
+                        }
                     })
+                }
+            } else if (dettaglio instanceof AnsAnagrafe) {
+                try {
+                    // prendo il soggetto dall'ANPR
+                    AnagrafeBaseDomain soggettoAnpr = anpAnagrafeService.findBySoggetto(dettaglio)
+                    checkAndSelectSoggetto(soggettoAnpr)
+                } catch (CampoMandatoryRuntimeException e) {
+                    throw e
+                } catch (Exception ex) {
+                    log.error(ex.message, ex)
+                    checkAndSelectSoggetto(dettaglio)
                 }
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
-    private void checkAndSelectSoggetto(GsdAnagrafeBaseDomain selected) {
+    private void checkAndSelectSoggetto(AnagrafeBaseDomain selected) {
         if ((selected != null) && (sesso != null) && (selected.sesso != null) && (sesso != selected.sesso)) {
             Messagebox.show("Il sesso del soggetto selezionato non risulta coerente con quello indicato fra i parametri di ricerca", msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
@@ -305,7 +390,7 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         SoggettoAnpr sAnpr = new SoggettoAnpr(selected.cognome, selected.nome, selected.matricola, selected.dataNascita,
                 selected.comuneNascita.codice, selected.comuneNascita.codiceProvincia, selected.comuneNascita.descrizione, selected.comuneNascita.siglaProvincia,
                 selected.comuneResidenza.codice, selected.comuneResidenza.codiceProvincia, selected.comuneResidenza.descrizione, selected.comuneResidenza.siglaProvincia)
-        String anomalia = anaAnagrafeService.checkCoerenzaAnprAnagrafe(sAnpr, selected.anagrafe)
+        String anomalia = anaAnagrafeService.checkCoerenzaAnprAnagrafe(sAnpr, selected.anagrafe, "SOGGETTO", statoCivile)
 
         //Verifico coerenza fra i dati dell'anagrafe locale e quelli di ANPR per il coniuge
         if (checkConiuge && selected.coniuge?.idAnagrafe != null) {
@@ -321,7 +406,7 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
                     selected.coniuge?.comuneNascita?.descrizione, selected.coniuge?.comuneNascita?.siglaProvincia,
                     selected.coniuge?.comuneResidenza?.codice, selected.coniuge?.comuneResidenza?.codiceProvincia,
                     selected.coniuge?.comuneResidenza?.descrizione, selected.coniuge?.comuneResidenza?.siglaProvincia)
-            String anomaliaConiuge = anaAnagrafeService.checkCoerenzaAnprAnagrafe(sConAnpr, anaConiuge, "CONIUGE")
+            String anomaliaConiuge = anaAnagrafeService.checkCoerenzaAnprAnagrafe(sConAnpr, anaConiuge, "CONIUGE", statoCivile)
             if (anomaliaConiuge) {
                 anomalia += anomaliaConiuge
             }
@@ -329,10 +414,56 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         return anomalia
     }
 
-    private void selectSoggetto(GsdAnagrafeBaseDomain selected) {
-        Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, selected)
-        onChiudi()
+    private void selectSoggetto(AnagrafeBaseDomain selected) {
+        boolean esito = true
+        if (selected && !(selected instanceof GsdAnagrafeBaseDomain) && archivioAnagrafe && tipoPratica) {
+            esito = checkSoggettoValidoPerInserimento(selected as AnaAnagrafeBaseDomain)
+        }
+
+        if (esito) {
+            Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, selected)
+            onChiudi()
+        } else {
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Soggetto_Non_Compatibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+        }
     }
+
+
+    private boolean checkSoggettoValidoPerInserimento(AnaAnagrafeBaseDomain selected) {
+        boolean esito
+        switch (tipoPratica) {
+            case ETipoPratica.ISC:
+                if (archivioAnagrafe == ETipoAnagrafe.RESIDENTI) {
+                    esito = selected.flagResInsEnable
+                } else { // AIRE
+                    esito = selected.flagAirInsEnable
+                }
+                break
+            case ETipoPratica.CANC:
+                if (archivioAnagrafe == ETipoAnagrafe.RESIDENTI) {
+                    esito = selected.flagResCancEnable
+                } else { // AIRE
+                    esito = selected.flagAirCancEnable
+                }
+                break
+            case ETipoPratica.VAR:
+                if (archivioAnagrafe == ETipoAnagrafe.RESIDENTI) {
+                    esito = selected.flagResVarEnable
+                } else { // AIRE
+                    esito = selected.flagAirVarEnable
+                }
+                break
+            case ETipoPratica.RET:
+                if (archivioAnagrafe == ETipoAnagrafe.RESIDENTI) {
+                    esito = selected.flagResRetEnable
+                } else { // AIRE
+                    esito = selected.flagAirRetEnable
+                }
+                break
+        }
+        return esito
+    }
+
 
     @Command
     void onCancellaCampoRicerca(@ContextParam(ContextType.TRIGGER_EVENT) Event e) {
@@ -351,5 +482,30 @@ class AnagrafeAllSelectViewModel extends AbstractSelectViewModel implements Trai
         resetLista()
         updateTotalSize(0L)
         refreshUi()
+    }
+
+    @Override
+    Boolean isInvioServizioDisabled(AnscEndPointServizioArchivio servizioCdu, ETipoArchivioAnsc archivioRif, Long idRif) {
+        return null
+    }
+
+    @Override
+    void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione) {
+        AnscUtente ansUte = anscUtenteService.getAnscUtenteCorrente()
+        recuperaCredenzialiEInviaComunicazione(ansUte, taRifCom, servizioCdu, idRif, idComunicazione, r, paginazione)
+    }
+
+    @Override
+    void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu, AnscCredenziali cre, Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione, Boolean skip) {
+        AnscEndPointServizio servizio = servizioCdu?.servizio
+        AnscInfoComunicazioneServizio com = anscComunicazioneService.inviaComunicazioneSoggetto(taRifCom, servizio, idRif,cre, r)
+        if ((com.getRetVal() ?: "") != "") {
+            Messagebox.show(servizio.descrizioneEstesa + " :\n" + com.getRetVal(), msgTitle, Messagebox.OK, Messagebox.ERROR)
+        }
+    }
+
+    @Command
+    void onProsegui(){
+        selectSoggetto(null)
     }
 }

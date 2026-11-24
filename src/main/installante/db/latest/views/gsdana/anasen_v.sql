@@ -12,11 +12,6 @@ select sen.*
      , f_get_descrizione_TSE(sen.tipo_sentenza) des_tipo_sentenza
      , f_get_descrizione_DTP(sen.tipo_provvedimento) des_tipo_provvedimento
      , f_get_descrizione_DEN(sen.ente_provvedimento) des_ente_provvedimento
---
-     , to_date(sen.data_decreto,'j') d_data_decreto
-     , to_date(sen.data_atto_tr,'j') d_data_atto_tr
---
-     , sen.anno_progr_mov||lpad(sen.numero_progr_mov,6,'0') ID
   from anasen sen
 /
 comment on table anasen_v is 'Anagrafe - Provvedimento / Sentenze dell''Individuo (view)'

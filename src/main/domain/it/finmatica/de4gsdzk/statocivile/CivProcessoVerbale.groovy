@@ -5,8 +5,9 @@ import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.IAttoPubPvu
 import it.finmatica.de4gsdzk.ISoggettoAtto1
 import it.finmatica.de4gsdzk.ISoggettoAtto2
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ESesso
+import it.finmatica.de4gsdzk.utils.EStatoCivile
 import it.finmatica.de4gsdzk.utils.ETipoAtto
 import it.finmatica.de4gsdzk.utils.Etichette
 
@@ -134,13 +135,13 @@ class CivProcessoVerbale extends CivAttoBaseDomain implements ISoggettoAtto1, IS
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_M", nullable = true)
-    private AnaNazionalita nazionalita1
+    private AnaCittadinanza nazionalita1
 
-    AnaNazionalita getNazionalita1() {
+    AnaCittadinanza getNazionalita1() {
         return nazionalita1
     }
 
-    void setNazionalita1(AnaNazionalita n) {
+    void setNazionalita1(AnaCittadinanza n) {
         this.nazionalita1 = n
     }
 
@@ -205,11 +206,11 @@ class CivProcessoVerbale extends CivAttoBaseDomain implements ISoggettoAtto1, IS
     @Column(name = "D_DATA_EVENTO_LISTA", nullable = true, updatable = false, insertable = false)
     Date dataEventoLista
 
-    String getStatoCivile1() {
+    EStatoCivile getStatoCivile1() {
         return null
     }
 
-    void setStatoCivile1(String s) {
+    void setStatoCivile1(EStatoCivile s) {
         log.info ("Parametri stato civile non gestito su civpvu: " + (s?:"") )
     }
 
@@ -360,13 +361,13 @@ class CivProcessoVerbale extends CivAttoBaseDomain implements ISoggettoAtto1, IS
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_F", nullable = true)
-    private AnaNazionalita nazionalita2
+    private AnaCittadinanza nazionalita2
 
-    AnaNazionalita getNazionalita2() {
+    AnaCittadinanza getNazionalita2() {
         return nazionalita2
     }
 
-    void setNazionalita2(AnaNazionalita n) {
+    void setNazionalita2(AnaCittadinanza n) {
         this.nazionalita2 = n
     }
 
@@ -560,6 +561,16 @@ class CivProcessoVerbale extends CivAttoBaseDomain implements ISoggettoAtto1, IS
         return Boolean.FALSE
     }
 
+    @Override
+    String getIdAttoAnsc() {
+        return null
+    }
+
+    @Override
+    Long getNumeroUnico() {
+        return null
+    }
+
     Boolean isUfficialeStatoCivileMandatory() {
         return false
     }
@@ -568,14 +579,14 @@ class CivProcessoVerbale extends CivAttoBaseDomain implements ISoggettoAtto1, IS
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Anno, Etichette.Tipo_Atto, Etichette.Provvisorio,
-                                              Etichette.Numero_Atto, Etichette.Data_Pubblicazione,
-                                              Etichette.Data_Nascita, Etichette.Codice_Fiscale, Etichette.Comune_Nascita,
-                                              Etichette.Processo_Verbale, Etichette.Natura_Atto, Etichette.Codice_Fiscale, Etichette.Stato_Anagrafico, Etichette.Data_Unione_Civile,
-                                              Etichette.Stato_Civile, Etichette.Senza_Cognome, Etichette.Senza_Nome, Etichette.Nazionalita, Etichette.Sesso,
-                                              Etichette.Comune_Residenza, Etichette.Comune_Unione_Civile, Etichette.Ore, Etichette.Minuti,
-                                              Etichette.Parte, Etichette.Serie, // per estremi atto di nascita
-                                              Etichette.Cognome_Contraente_1, Etichette.Nome_Contraente_1, Etichette.Cognome_Contraente_2, Etichette.Nome_Contraente_2]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Provvisorio"),
+                                              Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Data_Pubblicazione"),
+                                              Etichette.getEtichetta("Data_Nascita"),Etichette.getEtichetta("Codice_Fiscale"), Etichette.getEtichetta("Comune_Nascita"),
+                                              Etichette.getEtichetta("Processo_Verbale"), Etichette.getEtichetta("Natura_Atto"),Etichette.getEtichetta("Codice_Fiscale"), Etichette.getEtichetta("Stato_Anagrafico"), Etichette.getEtichetta("Data_Unione_Civile"),
+                                              Etichette.getEtichetta("Stato_Civile"), Etichette.getEtichetta("Senza_Cognome"), Etichette.getEtichetta("Senza_Nome"), Etichette.getEtichetta("Nazionalita"), Etichette.getEtichetta("Sesso"),
+                                              Etichette.getEtichetta("Comune_Residenza"), Etichette.getEtichetta("Comune_Unione_Civile"), Etichette.getEtichetta("Ore"), Etichette.getEtichetta("Minuti"),
+                                              Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), // per estremi atto di nascita
+                                              Etichette.getEtichetta("Cognome_Contraente_1"), Etichette.getEtichetta("Nome_Contraente_1"), Etichette.getEtichetta("Cognome_Contraente_2"), Etichette.getEtichetta("Nome_Contraente_2")]
 
     @PrePersist
     void beforeInsert() {

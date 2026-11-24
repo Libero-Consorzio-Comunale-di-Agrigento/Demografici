@@ -16,10 +16,10 @@ enum ETipoImpedimentoParentelaMatrimonio {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case I0: return Etichette.Nessun_impedimento
-            case I1: return Etichette.Impedimento_parentela
-            case I2: return Etichette.Impedimento_affinita
-            case I3: return Etichette.Impedimento_affiliazione
+            case I0: return Etichette.getEtichetta("Nessun_impedimento")
+            case I1: return Etichette.getEtichetta("Impedimento_parentela")
+            case I2: return Etichette.getEtichetta("Impedimento_affinita")
+            case I3: return Etichette.getEtichetta("Impedimento_affiliazione")
         }
         return null
     }

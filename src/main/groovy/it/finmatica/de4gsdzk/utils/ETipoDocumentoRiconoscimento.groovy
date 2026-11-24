@@ -15,9 +15,9 @@ enum ETipoDocumentoRiconoscimento {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PT: return Etichette.Patente
-            case PP: return Etichette.Passaporto
-            case CI: return Etichette.Carta_Identita
+            case PT: return Etichette.getEtichetta("Patente")
+            case PP: return Etichette.getEtichetta("Passaporto")
+            case CI: return Etichette.getEtichetta("Carta_Identita")
         }
         return null
     }

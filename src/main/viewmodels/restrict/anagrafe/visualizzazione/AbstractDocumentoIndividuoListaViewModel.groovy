@@ -6,17 +6,21 @@ import it.finmatica.de4gsdzk.anagrafe.*
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
 import it.finmatica.de4gsdzk.utils.*
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarAttributes
+import it.finmatica.de4gsdzk.zkutils.ScanEvent
 import it.finmatica.smartdoc.api.DocumentaleRuntimeException
 import org.zkoss.bind.annotation.BindingParam
 import org.zkoss.bind.annotation.Command
 import org.zkoss.bind.annotation.ContextParam
 import org.zkoss.bind.annotation.ContextType
 import org.zkoss.util.media.Media
+import org.zkoss.zk.ui.Executions
+import org.zkoss.zk.ui.event.Event
 import org.zkoss.zk.ui.event.Events
 import org.zkoss.zk.ui.event.UploadEvent
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 import restrict.AbstractListaViewModel
 import restrict.TraitCancellazioneCampi
@@ -46,7 +50,7 @@ abstract class AbstractDocumentoIndividuoListaViewModel extends AbstractListaVie
     protected AnaDocumentoService anaDocumentoService
 
     @WireVariable
-    private AnaDocumentoAllegatoService anaDocumentoAllegatoService
+    protected AnaDocumentoAllegatoService anaDocumentoAllegatoService
 
     @WireVariable
     private GsdEtichettaService gsdEtichettaService
@@ -72,25 +76,25 @@ abstract class AbstractDocumentoIndividuoListaViewModel extends AbstractListaVie
         eList.addAll(ControlBarAttributes.etichetteCbDesc)
 
         // Aggiungo etichette order
-        eList.addAll([Etichette.Data_emissione_decrescente, Etichette.Data_emissione_crescente])
+        eList.addAll([Etichette.getEtichetta("Data_emissione_decrescente"), Etichette.getEtichetta("Data_emissione_crescente")])
 
-        eList.addAll([EtichetteMessaggi.Warn_Nessun_elemento_selezionato])
+        eList.addAll([Etichette.getEtichetta("Warn_Nessun_elemento_selezionato"), Etichette.getEtichetta("Errore_file_formato")])
 
         // Aggiungo etichette funzioni dettaglio
         eList.addAll(EFunzioneDocumento.values()*.getEtichettaDesc())
 
         // Aggiungo etichette funzioni di ogni riga
-        eList.addAll([Etichette.scarica_allegato_tooltip])
+        eList.addAll([Etichette.getEtichetta("inserisci_allegato_tooltip"), Etichette.getEtichetta("scarica_allegato_tooltip"), Etichette.getEtichetta("info_tooltip"), Etichette.getEtichetta("scarica_allegati_tooltip"), Etichette.getEtichetta("elimina_allegato_tooltip")])
 
         // Aggiungo etichette per messaggi restituiti da funzioni dettaglio
-        eList.addAll([EtichetteMessaggi.Errore_nome_allegato_esistente])
+        eList.addAll([Etichette.getEtichetta("Errore_nome_allegato_esistente"), Etichette.getEtichetta("Ask_Cancellazione_Allegato")])
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
         totalSizeLabel = ""
 
-        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.Data_emissione_decrescente), SortUtils.dataEmissioneDocumentoDesc),
-                           new OrderBy(getEtichetta(Etichette.Data_emissione_crescente), SortUtils.dataEmissioneDocumentoAsc)])
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_decrescente")), SortUtils.dataEmissioneDocumentoDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Data_emissione_crescente")), SortUtils.dataEmissioneDocumentoAsc)])
 
         //Default: data emissione discendente
         selectedOrder = listaOrder[0]
@@ -133,9 +137,10 @@ abstract class AbstractDocumentoIndividuoListaViewModel extends AbstractListaVie
         caricaDettaglio()
     }
 
-    private void caricaDettaglio() {
-        funzioniDettaglio.setFunzioni(anaDocumentoService.getFunzioniDocumento(dettaglio))
+    protected void caricaDettaglio() {
         allegatoLista = anaDocumentoAllegatoService.listAllByDocumento(dettaglio)
+        dettaglio.allegati = allegatoLista //refresh della lista allegata al documento
+        funzioniDettaglio.setFunzioni(anaDocumentoService.getFunzioniDocumento(dettaglio))
         refreshUi()
     }
 
@@ -145,29 +150,33 @@ abstract class AbstractDocumentoIndividuoListaViewModel extends AbstractListaVie
     }
 
     @Command
-    void onUploadDocumentoAllegato(@ContextParam(ContextType.TRIGGER_EVENT) UploadEvent event, @BindingParam("documento") AnaDocumento documento) {
+    void onUploadDocumentoAllegato(@ContextParam(ContextType.TRIGGER_EVENT) UploadEvent event) {
         Media media = event.media
         byte[] fileContent = media.isBinary() ? media.byteData : media.stringData.getBytes(StandardCharsets.UTF_8.name())
-        Map<String, String> etichettaErrore = FileUtils.checkFile(fileContent, media.name, FileUtils.defaultAcceptableMimeTypesXAnaDoc)
+        Map<String, String> etichettaErrore = FileUtils.checkFile(fileContent, FileUtils.defaultAcceptableMimeTypesXComEFas)
         if (etichettaErrore) {
             MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(etichettaErrore))
             return
         }
 
-        AnaDocumentoAllegato allegato = anaDocumentoAllegatoService.create(documento, media.name)
+        salvaAllegato(media.name, fileContent)
+
+    }
+
+    private void salvaAllegato(String nomeAllegato, byte[] contenutoAllegato) {
+        AnaDocumentoAllegato allegato = anaDocumentoAllegatoService.create(dettaglio, nomeAllegato)
         anaDocumentoAllegatoService.save(allegato)
 
         try {
-            EModelloGdm modello = anaTipoDocumentoService.getModelloGdm(documento.tipoDocumento)
-            boolean checkCompetenza = anaTipoDocumentoService.shouldCheckCompetenza(documento.tipoDocumento)
+            EModelloGdm modello = anaTipoDocumentoService.getModelloGdm(dettaglio.tipoDocumento)
 
-            anaDocumentoAllegatoService.saveAllegatoDocumentale(modello, checkCompetenza, allegato, fileContent)
+            anaDocumentoAllegatoService.saveAllegatoDocumentale(modello, allegato, contenutoAllegato)
             caricaDettaglio()
 
         } catch (DocumentaleRuntimeException dre) {
             log.error(dre.message, dre)
 
-            anaDocumentoAllegatoService.saveAllegatoLocale(allegato, fileContent)
+            anaDocumentoAllegatoService.saveAllegatoLocale(allegato, contenutoAllegato)
             caricaDettaglio()
 
             throw dre
@@ -178,11 +187,65 @@ abstract class AbstractDocumentoIndividuoListaViewModel extends AbstractListaVie
 
             throw ex
         }
+
+        refreshUi()
     }
 
     @Command
-    void onDownloadDocumentoAllegato(@BindingParam("allegato") AnaDocumentoAllegato allegato) {
+    void onScanDocumentoAllegato(@ContextParam(ContextType.TRIGGER_EVENT) ScanEvent event) {
+        String nomeAllegato = event.filename
+        byte[] fileContent = event.inputStream.bytes
+        Map<String, String> etichettaErrore = FileUtils.checkFile(fileContent, FileUtils.defaultAcceptableMimeTypesXComEFas)
+        if (etichettaErrore) {
+            MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.E, getEtichetta(etichettaErrore))
+            return
+        }
+        salvaAllegato(nomeAllegato, fileContent)
+
+    }
+
+    @Command
+    void onDownloadAllegato(@BindingParam("allegato") AnaDocumentoAllegato allegato) {
         anaDocumentoAllegatoService.downloadAllegato(allegato)
+    }
+
+    @Command
+    void onEliminaAllegato(@BindingParam("allegato") AnaDocumentoAllegato allegato) {
+        Messagebox.show(allegato.nome + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Allegato")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+                new org.zkoss.zk.ui.event.EventListener() {
+                    void onEvent(Event e) {
+                        if (Messagebox.ON_OK.equals(e.getName())) {
+                            anaDocumentoAllegatoService.delete(allegato)
+                            caricaDettaglio()
+                            if (allegatoLista.size() == 0) {
+                                anaDocumentoAllegatoService.deleteDocumento(allegato)
+                            }
+                        }
+                    }
+                }
+        )
+
+    }
+
+    @Command
+    void onEditaNote(@BindingParam("allegato") AnaDocumentoAllegato allegato) {
+        Window w = (Window) Executions.createComponents("/restrict/afc/popupNote.zul", self, [allegato: allegato, serviceBeanName: "anaDocumentoAllegatoService"])
+        w.addEventListener(CustomEvents.ON_CLOSE_RELOAD, { e ->
+            caricaDettaglio()
+        })
+        w.doModal()
+    }
+
+    @Command
+    void onShowInfo(@BindingParam("allegato") AnaDocumentoAllegato allegato) {
+        String message
+        if (allegato.terminalista != null || allegato.dataRegistrazione != null) {
+            message = "${getEtichetta(Etichette.getEtichetta("Terminalista"))}: ${allegato.terminalista?.nominativo ?: ""}\n${getEtichetta(Etichette.getEtichetta("Data_Registrazione"))}: ${DataUtils.fromDateToString(allegato.dataRegistrazione)}"
+        } else {
+            message = getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile"))
+        }
+
+        Messagebox.show(message, msgTitle, Messagebox.OK, Messagebox.INFORMATION)
     }
 
 }

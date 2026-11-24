@@ -25,7 +25,7 @@ class PagamentoViewModel extends AbstractTabNavigatorViewModel {
 
     @Init
     init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Parametri, Etichette.Voci_di_costo, Etichette.Servizi, Etichette.Documenti, Etichette.Utenti]
+        List<Map> eList = [Etichette.getEtichetta("Parametri"), Etichette.getEtichetta("Voci_di_costo"), Etichette.getEtichetta("Servizi"), Etichette.getEtichetta("Documenti"), Etichette.getEtichetta("Utenti")]
 
         doInit(w, eList)
 

@@ -7,10 +7,10 @@ import com.auth0.jwt.algorithms.Algorithm
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.AnscRuntimeException
 import it.finmatica.de4gsdzk.errors.De4gsdzkRuntimeException
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.IAnscPaginazione
 import it.finmatica.de4gsdzk.utils.IRicercaEventoAnsc
-import it.finmatica.de4gsdzk.utils.IRicercaNotificheAnsc
+import it.finmatica.de4gsdzk.utils.IRicercaAnsc
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -29,7 +29,7 @@ import java.time.Instant
 @Service
 class AnscJsonService {
 
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     private final AnscSezioneService anscSezioneService
 
@@ -38,21 +38,21 @@ class AnscJsonService {
     private final AnscParametroService anscParametroService
 
     AnscJsonService(AnscSezioneService anscSezioneService, AnscCampoService anscCampoService,
-                    AnscParametroService anscParametroService, StatoCivileService statoCivileService) {
+                    AnscParametroService anscParametroService, GsdService gsdService) {
         this.anscSezioneService = anscSezioneService
         this.anscCampoService = anscCampoService
         this.anscParametroService = anscParametroService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     LinkedHashMap<String, ?> buildJwsPayloadClaims(String servizio, Integer tipoAtto, Integer livello, AnscSezione sezionePadre,
-                                                   Long idRif, Long idCdu, Long pkAtto, Long idOperazione, AnscCredenziali cre, IRicercaNotificheAnsc ricerca=null, IAnscPaginazione paginazione=null, IRicercaEventoAnsc ricercaEvento = null) {
+                                                   Long idRif, Long idCdu, Long pkAtto, Long idOperazione, AnscCredenziali cre, IRicercaAnsc ricerca=null, IAnscPaginazione paginazione=null, IRicercaEventoAnsc ricercaEvento = null) {
         LinkedHashMap<String, ?> mJson = build(servizio, tipoAtto, livello, sezionePadre, idRif, idCdu, pkAtto, idOperazione, cre, ricerca, paginazione, ricercaEvento)
         return mJson
     }
 
     private LinkedHashMap<String, ?> build(String servizio, Integer tipoAtto, Integer livello, AnscSezione sezionePadre,
-                                           Long idRif, Long idCdu, Long pkAtto, Long idOperazione, AnscCredenziali cre, IRicercaNotificheAnsc ricerca = null, IAnscPaginazione paginazione = null, IRicercaEventoAnsc ricercaEvento = null) {
+                                           Long idRif, Long idCdu, Long pkAtto, Long idOperazione, AnscCredenziali cre, IRicercaAnsc ricerca = null, IAnscPaginazione paginazione = null, IRicercaEventoAnsc ricercaEvento = null) {
         if (livello == null){
             throw new De4gsdzkRuntimeException("Errore in costruzione sezione json da inviare ad ANSC - indicare il livello di annidamento")
         }
@@ -89,7 +89,7 @@ class AnscJsonService {
                         for (AnscCampo c: lCampi){
                             mCampi.put((c.campoDb?:c.campo).toUpperCase(), c.campo)
                         }
-                        List<Map<String, ?>> ll = statoCivileService.anscQuery(mCampi, s.vista, s.parametro, s.flagOtpFirma, idRif, pkAtto, idOperazione, cre, ricerca, paginazione, ricercaEvento)
+                        List<Map<String, ?>> ll = gsdService.anscQuery(mCampi, s.vista, s.parametro, s.flagOtpFirma, idRif, pkAtto, idOperazione, cre, ricerca, paginazione, ricercaEvento)
                         if (s.isArray){
                             mj.put(s.nomeSezione, ll)
                         } else {
@@ -99,7 +99,7 @@ class AnscJsonService {
                     }
                 } else {
                     mCampi.put((s.campoDb?:s.nomeSezione).toUpperCase(), s.nomeSezione)
-                    List<Map<String, ?>> ll = statoCivileService.anscQuery(mCampi, s.vista, s.parametro, s.flagOtpFirma, idRif, pkAtto, idOperazione, cre, ricerca, paginazione, ricercaEvento)
+                    List<Map<String, ?>> ll = gsdService.anscQuery(mCampi, s.vista, s.parametro, s.flagOtpFirma, idRif, pkAtto, idOperazione, cre, ricerca, paginazione, ricercaEvento)
                     if (s.isArray){
                         ArrayList<Long> llValori = new ArrayList<Long>()
                         for (Map mVal: ll) {

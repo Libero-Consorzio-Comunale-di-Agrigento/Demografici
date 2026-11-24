@@ -2,6 +2,7 @@ package restrict.statocivile.nascita
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.archivi.ArcComune
@@ -26,7 +27,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
     ETipoSiNo numeraAtto
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivNascitaService civNascitaService
@@ -64,7 +65,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
         try {
             dettaglio = new CivNascita(anno: Calendar.getInstance().get(Calendar.YEAR), partoPlurimo: Boolean.FALSE, natoMorto: EStatoNascita.Nato_vivo,
                     codiceRecord: new Integer(3), certificabile: ETipoSiNo.NO)
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             anagrafe = new CivAnagrafe()
 
@@ -94,7 +95,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
             }
 
             if (dettaglio.isPrimaA() || dettaglio.isPrimaB()) {
-                ArcComune comune = statoCivileService.checkComuneNascitaAuto()
+                ArcComune comune = gsdService.checkComuneNascitaAuto()
                 if (comune) {
                     dettaglio.codiceComuneNascita = comune.codiceComune
                     dettaglio.codiceProvinciaNascita = comune.codiceProvincia
@@ -104,7 +105,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
             }
 
             if (dettaglio.isSecondaA()) {
-                ArcComune comune = statoCivileService.checkComuneResidenzaAuto()
+                ArcComune comune = gsdService.checkComuneResidenzaAuto()
                 if (comune) {
                     dettaglio.codiceComuneResidenza = comune.codiceComune
                     dettaglio.codiceProvinciaResidenza = comune.codiceProvincia
@@ -182,7 +183,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -193,7 +194,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
     }
 
     void numera(){
-        dettaglio.atto = statoCivileService.getNumeroAtto(dettaglio, numeraAtto)
+        dettaglio.atto = gsdService.getNumeroAtto(dettaglio, numeraAtto)
         if (dettaglio.atto == null){
             numeraAtto = null
         }
@@ -219,7 +220,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
                     && ((anagrafe?.anagrafe2?.id != anagrafe?.anagrafe1?.coniuge?.idAnagrafe) || (anagrafe?.anagrafe2?.coniuge?.idAnagrafe != anagrafe?.anagrafe1?.id))) {
                 Integer codRec = (tipoOperazione.isInsert()?dettaglio.codiceRecord:civNascitaService.getCodiceRecord(dettaglio.id))
                 if (codRec.intValue() == 3){
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_stato_civile_genitori), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_stato_civile_genitori")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 } else {
                     log.info("Stato anagrafico genitori da non verificare per gli atti consolidati")
                 }
@@ -229,7 +230,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
                 try {
                     c = civNascitaService.save(tipoOperazione, dettaglio, anagrafe, datiProvenienza, margine, mapFormule, Boolean.TRUE, gc, margineMandatory, listaSoggettiCollegati, false, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && (statoFrammenti == 2)) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (statoFrammenti == 1) {
                         statoFrammenti = 2
@@ -274,7 +275,7 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
             try{
                 List<AnaAnagrafe> ll = (anaAnagrafeService.listXDatiAnagrafici(dettaglio)?:[])
                 if (ll.size() > 0){
-                    Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Inserimento_In_Anagrafe), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Inserimento_In_Anagrafe")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     civAnagrafeService.selectAndDelete(anagrafe)
                 }
             } finally {
@@ -292,10 +293,10 @@ class NascitaDettaglioViewModel extends NascitaDettaglioParentViewModel{
     @Command void onSelectDataNascita(){
         super.onSelectDataNascita()
         if (DataUtils.isDataNascitaIncompatibileInPrimaA(dettaglio)){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_data_nascita_vs_1A), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_data_nascita_vs_1A")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
         if (DataUtils.isDataNascitaIncompatibileInPrimaB(dettaglio)){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_data_nascita_vs_1B), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_data_nascita_vs_1B")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

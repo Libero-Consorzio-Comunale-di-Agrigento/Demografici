@@ -14,9 +14,9 @@ enum ETipoFormulaAggiuntiva {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case CIA_INT: return Etichette.Intestazione_CIA
-            case CIA_TXT: return Etichette.Testo_CIA
-            case CIA_FIR: return Etichette.Firma_CIA
+            case CIA_INT: return Etichette.getEtichetta("Intestazione_CIA")
+            case CIA_TXT: return Etichette.getEtichetta("Testo_CIA")
+            case CIA_FIR: return Etichette.getEtichetta("Firma_CIA")
         }
         return null
     }

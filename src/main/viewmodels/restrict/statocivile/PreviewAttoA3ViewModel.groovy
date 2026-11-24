@@ -136,7 +136,7 @@ class PreviewAttoA3ViewModel extends PreviewAttoParentViewModel{
 
     @Command void onStampaRecord() {
         if (atto.isProvvisorio()){
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_stampa_provvisorio), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_stampa_provvisorio")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
 
@@ -165,7 +165,7 @@ class PreviewAttoA3ViewModel extends PreviewAttoParentViewModel{
                 // genero mappa parametri
                 Map<?, ?> parametriQuery =  [ 'id' : atto.id,
                                               'parteRomana': TestoUtils.getParteRomana(atto.parte?.intValue())]
-                String formato = statoCivileService.getFormatoAtti()
+                String formato = gsdService.getFormatoAtti()
                 String formato = TipoFile.PDF.estensione
                 ArcParametro p = arcParametroService.get(ArcParametro.ATTI_ODT)
                 if ((p?.valore?.trim()?.toUpperCase() == ETipoSN.S.name()){
@@ -176,10 +176,10 @@ class PreviewAttoA3ViewModel extends PreviewAttoParentViewModel{
                 is.close()
             } catch (Exception ex){
                 log.error(ex.getMessage())
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_generazione_testo), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_generazione_testo")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
         } else {
-            Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_modello_testo_non_trovato), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_modello_testo_non_trovato")), msgTitle, Messagebox.OK, Messagebox.ERROR)
         }
         */
     }

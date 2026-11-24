@@ -96,7 +96,7 @@ class DivorzioPregressoDettaglioViewModel extends DivorzioDettaglioParentViewMod
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -117,7 +117,7 @@ class DivorzioPregressoDettaglioViewModel extends DivorzioDettaglioParentViewMod
                 try {
                     c = civDivorzioService.save(tipoOperazione, dettaglio, null, datiProvenienza, margine, sposi, mapFormule, null, gc, margineMandatory, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && composizioneTestoAttiva) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (composizioneTestoAttiva && (statoFrammenti == 1)) {
                         statoFrammenti = 2

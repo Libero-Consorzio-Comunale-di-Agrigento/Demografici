@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivRichiamoComposizioneRepository
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivRichiamoComposizioneService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivRichiamoComposizioneRepository civRichiamoComposizioneRepository
 
-    CivRichiamoComposizioneService(CivRichiamoComposizioneRepository civRichiamoComposizioneRepository, StatoCivileService statoCivileService){
+    CivRichiamoComposizioneService(CivRichiamoComposizioneRepository civRichiamoComposizioneRepository, GsdService gsdService){
 
 		this.civRichiamoComposizioneRepository = civRichiamoComposizioneRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivRichiamoComposizione get (Long id){
@@ -56,7 +56,7 @@ class CivRichiamoComposizioneService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 
 		return  civRichiamoComposizioneRepository.save(obj)

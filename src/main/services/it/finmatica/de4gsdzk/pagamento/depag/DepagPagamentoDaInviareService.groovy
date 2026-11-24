@@ -5,8 +5,7 @@ import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoDaInviare
 import it.finmatica.de4gsdzk.pagamento.WspaPagamentoDaInviareService
 import it.finmatica.de4gsdzk.pagamento.error.ServizioNonCoerenteRuntimeException
-import it.finmatica.de4gsdzk.pagamento.depag.DepagPagamentoDaInviareRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.certificazione.RicercaCertificato
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -20,10 +19,10 @@ class DepagPagamentoDaInviareService extends WspaPagamentoDaInviareService {
 
     DepagPagamentoDaInviareRepository depagPagamentoDaInviareRepository
 
-    DepagPagamentoDaInviareService(StatoCivileService statoCivileService,
+    DepagPagamentoDaInviareService(GsdService gsdService,
                                    UtenteCustomService utenteCustomService,
                                    DepagPagamentoDaInviareRepository depagPagamentoDaInviareRepository) {
-        super(statoCivileService, utenteCustomService)
+        super(gsdService, utenteCustomService)
         this.depagPagamentoDaInviareRepository = depagPagamentoDaInviareRepository
     }
 

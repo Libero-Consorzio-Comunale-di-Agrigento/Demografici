@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivLuogoMatrimonioRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivLuogoMatrimonioService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivLuogoMatrimonioRepository civLuogoMatrimonioRepository
 
-    CivLuogoMatrimonioService(CivLuogoMatrimonioRepository civLuogoMatrimonioRepository, StatoCivileService statoCivileService) {
+    CivLuogoMatrimonioService(CivLuogoMatrimonioRepository civLuogoMatrimonioRepository, GsdService gsdService) {
 
 		this.civLuogoMatrimonioRepository = civLuogoMatrimonioRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivLuogoMatrimonio get (Integer id){
@@ -54,7 +54,7 @@ class CivLuogoMatrimonioService {
 
 		if (obj.id == null){
 			// solo in caso di inserimento
-			obj.id = statoCivileService.getIntegerIdFromSequence(obj)
+			obj.id = gsdService.getIntegerIdFromSequence(obj)
 		}
 		return  civLuogoMatrimonioRepository.save(obj)
 	}

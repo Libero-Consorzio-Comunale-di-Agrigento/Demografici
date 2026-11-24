@@ -2,6 +2,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <?component name="templateSezioneBeneficiarioEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneBeneficiarioEmissioneCertificato.zul" inline="true"?>
 <?component name="templateSezioneRichiedenteEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneRichiedenteEmissioneCertificato.zul" inline="true"?>
+<?component name="templateSezioneEnteRichiedenteEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneEnteRichiedenteEmissioneCertificato.zul" inline="true"?>
 <?component name="templateSezioneArchivioEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneArchivioEmissioneCertificato.zul" inline="true"?>
 <?component name="templateSezioneModalitaRilascioEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneModalitaRilascioEmissioneCertificato.zul" inline="true"?>
 <?component name="templateSezioneTerminalistaEmissioneCertificato" macroURI="/restrict/certificazione/emissione/templateSezioneTerminalistaEmissioneCertificato.zul" inline="true"?>
@@ -63,6 +64,8 @@
             </groupbox>
 
             <templateSezioneRichiedenteEmissioneCertificato/>
+
+            <templateSezioneEnteRichiedenteEmissioneCertificato/>
 
             <groupbox mold="3d" hflex="1">
                 <caption sclass="mainCaption">

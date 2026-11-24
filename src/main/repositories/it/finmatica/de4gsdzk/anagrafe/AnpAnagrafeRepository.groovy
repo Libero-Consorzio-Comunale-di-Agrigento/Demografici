@@ -14,17 +14,18 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AnpAnagrafeRepository extends JpaRepository<AnpAnagrafe, Long> {
 
-    @Query(value = """SELECT c FROM AnpAnagrafe c 
-                        LEFT OUTER JOIN FETCH c.nazionalita 
+    @Query(value = """SELECT c FROM AnpAnagrafe c
+                        LEFT OUTER JOIN FETCH c.nazionalita
                         LEFT OUTER JOIN FETCH c.coniuge.nazionalita
+                        LEFT OUTER JOIN FETCH c.coniuge.anagrafe
                         LEFT OUTER JOIN FETCH c.padre
                         LEFT OUTER JOIN FETCH c.madre
-                       WHERE c.idOperazione = :idOperazione 
-                         AND (:sesso IS NULL OR c.sesso = :sesso) """,
-            countQuery = """SELECT count(c) FROM AnpAnagrafe c 
-                              LEFT OUTER JOIN c.nazionalita  
+                       WHERE c.idOperazione = :idOperazione
+                         AND (:sesso IS NULL OR c.sesso = :sesso)""",
+            countQuery = """SELECT count(c) FROM AnpAnagrafe c
+                              LEFT OUTER JOIN c.nazionalita
                               LEFT OUTER JOIN c.coniuge.nazionalita
-                             WHERE c.idOperazione = :idOperazione 
+                             WHERE c.idOperazione = :idOperazione
                                AND (:sesso IS NULL OR c.sesso = :sesso) """)
     Page<AnpAnagrafe> findAllByIdOperazione(@Param("idOperazione") Long idOperazione, @Param("sesso") ESesso sesso, Pageable pageable)
 

@@ -1,25 +1,6 @@
 --liquibase formatted sql
 --changeset snocca:202211141527 runOnChange:true stripComments:false
-create or replace view anaana_v
-AS
---
--- FASCIA         - decodifica con EFascia
--- STATO          - decodifica con EStato
--- STATO_CIVILE   - decodifica su ANADSC (id: COD_SC / SESSO) - DES_STATO_CIVILE (con f_descrizione_DSC)
--- NAZIONALITA    - decodifica su ANADCI (id: COD_CI) - DES_NAZIONALITA (con f_descrizione_DCI)
--- COD_PROF       - decodifica su ANADPR (id: COD_PR / SESSO) - DES_COD_PROF (con f_descrizione_DPR)
--- RAPPORTO_PAR   - decodifica su ANADRP (id: COD_RP / SESSO) - DES_RAPPORTO_PAR (con f_descrizione_DRP)
--- SOSPENSIONE    - decodifica su CERDMS (id: COD_MS)
--- TITOLO_STUDIO  - decodifica su ANADTS (id: COD_TS)
--- ATTIVITA_PROF  - decodifica su ANADAT (id: COD_AT)
--- POSIZIONE_PROF - decodifica su ANADPP (id: COD_PP)
--- PENSIONATO     - valorizzato a '1' indica soggetto pensionato (altrimenti null)
--- SEQUENZA_PAR   - replica del corrispondente campo di ANADRP (ad uso di order by)
--- ANNO_NAS       - valorizzato a 'S' indica giorno e mese di nascita non significativi
--- CF_CALCOLATO   - valorizzato a 'S' indica COD_FISCALE calcolato
--- VAL_ESPATRIO   - valorizzato a 'N' indica inibizione all'espatrio (collegato a DATA_VAL_ESPATRIO)
--- ANNO_MAT       - valorizzato a 'S' indica giorno e mese di matrimonio non significativi
---
+create or replace view anaana_v as
 select /*+ PUSH_SUBQ*/
        ana.*
 --
@@ -74,7 +55,9 @@ select /*+ PUSH_SUBQ*/
 --
      , f_get_descrizione_DSC(ana.stato_civile,ana.sesso,'','','') des_stato_civile
      , f_get_descrizione_DCI(ana.nazionalita,'') des_nazionalita
+     , decode(ana.cod_prof, '', to_char(null), ana.sesso||lpad(ana.cod_prof,5,'0')) id_anadpr
      , f_get_descrizione_DPR(ana.cod_prof,ana.sesso) des_cod_prof
+     , decode(ana.rapporto_par, '', '', ana.sesso||ana.rapporto_par) id_anadrp
      , f_get_descrizione_DRP(ana.rapporto_par,ana.sesso) des_rapporto_par
      , f_get_descrizione_DTS(ana.titolo_studio) des_titolo_studio
 --
@@ -180,7 +163,17 @@ select /*+ PUSH_SUBQ*/
      , f_ANPR_id_unico(ana.matricola,'') id_unico_anpr
      , to_number(null) id_famiglia_anpr
      , to_number(null) tipo_scheda_anpr
+     , f_TPR_enable_soggetto('RES','I',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_RES_I
+     , f_TPR_enable_soggetto('RES','E',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_RES_E
+     , f_TPR_enable_soggetto('RES','C',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_RES_C
+     , f_TPR_enable_soggetto('RES','R',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_RES_R
+     , f_TPR_enable_soggetto('AIR','I',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_AIR_I
+     , f_TPR_enable_soggetto('AIR','E',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_AIR_E
+     , f_TPR_enable_soggetto('AIR','C',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_AIR_C
+     , f_TPR_enable_soggetto('AIR','R',ana.fascia, ana.stato, '', '', 'ANA') flag_TPR_enable_AIR_R
+     , f_ANA_esiste_DOC(ana.matricola,'PT') flag_esiste_DOC_PT
+     , f_ANA_esiste_DOC(ana.matricola,'CC') flag_esiste_DOC_CC
   from anaana ana
 /
-comment on table anaana_v is 'Anagrafe - Soggetti (view)'
+comment on table ANAANA_V is 'Anagrafe - Soggetti (view)'
 /

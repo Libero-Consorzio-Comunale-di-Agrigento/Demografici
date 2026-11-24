@@ -245,7 +245,7 @@ class CivTestimoniAtto {
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome, Etichette.Nome, Etichette.Sesso, Etichette.Numero_testimoni, Etichette.Testimone]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Numero_testimoni"), Etichette.getEtichetta("Testimone")]
 
 
 }

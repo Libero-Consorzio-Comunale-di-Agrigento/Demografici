@@ -7,6 +7,7 @@ class ControlBarComunicazioniAttributes extends ControlBarListaAttributes {
 	boolean protocollaComunicazioneEnabled = false
 	boolean sendAlboComunicazioneEnabled = false
 	boolean goToFascicoloEnabled = false
+	boolean goToAllegatiEnabled = false
 
 	ControlBarComunicazioniAttributes() {
 		super()
@@ -39,9 +40,9 @@ class ControlBarComunicazioniAttributes extends ControlBarListaAttributes {
 		super.addEnabled = addComunicazioneEnabled
 	}
 
-	static final List<Map> etichetteCbComListDesc = [Etichette.back_tooltip, Etichette.inserisci_tooltip, Etichette.genera_testo_tooltip, Etichette.elimina_tooltip,
-													 Etichette.invio_fascicolo_tooltip, Etichette.protocolla_tooltip, Etichette.invio_albo_tooltip,
-													 Etichette.info_tooltip, Etichette.inserisci_destinatario_tooltip, Etichette.invia_pec_tooltip,
-													 Etichette.inserisci_allegato_tooltip, Etichette.scarica_allegato_tooltip,
-													 Etichette.Ordina_per, Etichette.salva_tooltip, Etichette.allega_copia_conforme_tooltip, Etichette.fascicolo_tooltip]
+	static final List<Map> etichetteCbComListDesc = [Etichette.getEtichetta("back_tooltip"), Etichette.getEtichetta("inserisci_tooltip"), Etichette.getEtichetta("genera_testo_tooltip"), Etichette.getEtichetta("elimina_tooltip"),
+													 Etichette.getEtichetta("invio_fascicolo_tooltip"),Etichette.getEtichetta("invio_fascicolo_tooltip_pratica"), Etichette.getEtichetta("protocolla_tooltip"), Etichette.getEtichetta("invio_albo_tooltip"),
+													 Etichette.getEtichetta("info_tooltip"), Etichette.getEtichetta("inserisci_destinatario_tooltip"), Etichette.getEtichetta("invia_pec_tooltip"),
+													 Etichette.getEtichetta("inserisci_allegato_tooltip"), Etichette.getEtichetta("scarica_allegato_tooltip"), Etichette.getEtichetta("allegati_tooltip"),
+													 Etichette.getEtichetta("Ordina_per"), Etichette.getEtichetta("salva_tooltip"), Etichette.getEtichetta("allega_copia_conforme_tooltip"), Etichette.getEtichetta("allega_modello_apr4_tooltip"), Etichette.getEtichetta("fascicolo_tooltip")]
 }

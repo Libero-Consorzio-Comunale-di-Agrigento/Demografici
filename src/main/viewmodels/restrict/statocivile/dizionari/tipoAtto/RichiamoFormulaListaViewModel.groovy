@@ -8,7 +8,6 @@ import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormula
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormulaService
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import it.finmatica.de4gsdzk.utils.Paginazione
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import org.zkoss.bind.annotation.*
@@ -54,14 +53,14 @@ class RichiamoFormulaListaViewModel extends DizionarioListaViewModel {
         this.richiamoComposizione = richiamoComposizione
         this.opener = opener
 
-        List<Map<String, String>> eList = [Etichette.Testo, Etichette.Richiami_Formule, EtichetteMessaggi.Ask_Cancellazione_associazione_formula]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Testo"), Etichette.getEtichetta("Richiami_Formule"), Etichette.getEtichetta("Ask_Cancellazione_associazione_formula")]
         eList.addAll(CivRichiamoBaseDomain.etichetteDomain)
         eList.addAll(CivRichiamoFormula.etichetteDomain)
         eList.addAll(CivFormulaAnnotazione.etichetteDomain)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Richiami_Formule)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Richiami_Formule"))
 
         resize()
 
@@ -101,7 +100,7 @@ class RichiamoFormulaListaViewModel extends DizionarioListaViewModel {
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), opener, [id: dettaglio.id, richiamoComposizione: richiamoComposizione])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -110,13 +109,13 @@ class RichiamoFormulaListaViewModel extends DizionarioListaViewModel {
         if (addEnabled && userModifyEnabled) {
             apriDettaglio(getUriDettaglio(), opener, [richiamoComposizione: richiamoComposizione])
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     String getMessaggioCancellazione(){
         if (dettaglio?.formula) {
-            return String.format(getEtichetta(EtichetteMessaggi.Ask_Cancellazione_associazione_formula), dettaglio.formula.descrizioneEstesa)
+            return String.format(getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_associazione_formula")), dettaglio.formula.descrizioneEstesa)
         }
         return ""
     }

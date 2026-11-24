@@ -2,6 +2,7 @@ package it.finmatica.de4gsdzk.ansc
 
 import it.finmatica.de4gsdzk.GsdBaseDomain
 import it.finmatica.de4gsdzk.statocivile.CivTipoDocumentoFascicolo
+import it.finmatica.de4gsdzk.utils.Etichette
 
 import javax.persistence.*
 
@@ -41,6 +42,7 @@ class AnscEndPointServizioAllegato extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = []
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Allegato"), Etichette.getEtichetta("Sequenza"), Etichette.getEtichetta("Servizio"),
+                                              Etichette.getEtichetta("Caso_Uso_Ansc")]
 
 }

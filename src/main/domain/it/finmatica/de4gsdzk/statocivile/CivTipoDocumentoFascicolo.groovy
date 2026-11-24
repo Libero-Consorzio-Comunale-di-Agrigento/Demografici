@@ -70,7 +70,7 @@ class CivTipoDocumentoFascicolo extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Documento, Etichette.Codice, Etichette.Tipo_Atto, Etichette.Valido_ANSC,
-                                              Etichette.Descrizione, Etichette.Ricorrente, Etichette.Tipo_Documento_Fascicolo]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Valido_ANSC"),
+                                              Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Ricorrente"), Etichette.getEtichetta("Tipo_Documento_Fascicolo")]
 
 }

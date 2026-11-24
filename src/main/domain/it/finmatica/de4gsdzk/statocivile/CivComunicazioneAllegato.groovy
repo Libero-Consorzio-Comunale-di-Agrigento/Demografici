@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j
 import it.finmatica.ad4.autenticazione.Ad4Utente
 import it.finmatica.ad4.hibernate.UtenteUpd
 import it.finmatica.de4gsdzk.GsdFileDocumentoEsternoBaseDomain
+import it.finmatica.de4gsdzk.IComunicazioneAllegato
 import it.finmatica.de4gsdzk.integrazioni.documentale.IDocumentoEsterno
 import it.finmatica.de4gsdzk.utils.ETipoSN
 import it.finmatica.de4gsdzk.utils.Etichette
@@ -15,7 +16,7 @@ import javax.persistence.*
 @Slf4j
 @Entity
 @Table(name = "CIVCOM_ALLE")
-class CivComunicazioneAllegato extends GsdFileDocumentoEsternoBaseDomain{
+class CivComunicazioneAllegato extends GsdFileDocumentoEsternoBaseDomain implements  IComunicazioneAllegato {
 
     @Id
     @Column(name = "ID")
@@ -44,46 +45,17 @@ class CivComunicazioneAllegato extends GsdFileDocumentoEsternoBaseDomain{
     @Column(name = "NOTE_WS_FIRMA")
     String noteWSFirma
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "FLAG_DA_FIRMARE", nullable = false, length = 1)
-    ETipoSN daFirmareDb
+    @Convert(converter = BooleanToStringConverter.class)
+    @Column(name = "FLAG_DA_FIRMARE", nullable = true)
+    Boolean daFirmare
 
-    void setDaFirmare(Boolean val) {
-        this.daFirmareDb = (val? ETipoSN.S: null)
-    }
+    @Convert(converter = BooleanToStringConverter.class)
+    @Column(name = "FLAG_WS_FIRMA", nullable = true)
+    Boolean firmato
 
-    Boolean getDaFirmare() {
-        return (daFirmareDb == ETipoSN.S)
-    }
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "FLAG_WS_FIRMA", nullable = false, length = 1)
-    ETipoSN firmatoDb
-
-    void setFirmato(Boolean val) {
-        this.firmatoDb = (val? ETipoSN.S: null)
-    }
-
-    Boolean getFirmato() {
-        return (firmatoDb == ETipoSN.S)
-    }
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "FLAG_PRINCIPALE", nullable = false, length = 1)
-    ETipoSN principaleDb
-
-    @Formula("CASE WHEN COALESCE(FLAG_PRINCIPALE, 'N') = 'N' THEN 0 ELSE 1 END")
-    @Type(type="numeric_boolean")
-    private Boolean principale
-
-    Boolean getPrincipale() {
-        return this.principale
-    }
-
-    void setPrincipale(Boolean val) {
-        this.principale = val
-        this.principaleDb = (val? ETipoSN.S: null)
-    }
+    @Convert(converter = BooleanToStringConverter.class)
+    @Column(name = "FLAG_PRINCIPALE", nullable = true)
+    Boolean principale
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TERMINALISTA", nullable = false)
@@ -98,6 +70,6 @@ class CivComunicazioneAllegato extends GsdFileDocumentoEsternoBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Allegato, Etichette.Principale, Etichette.Da_Firmare, Etichette.Firmato]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Allegato"), Etichette.getEtichetta("Principale"), Etichette.getEtichetta("Da_Firmare"), Etichette.getEtichetta("Firmato")]
 
 }

@@ -15,9 +15,9 @@ enum ETipoTrasmissioneCittadinanza {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case PD: return Etichette.Padre
-            case MD: return Etichette.Madre
-            case EN: return Etichette.Entrambi
+            case PD: return Etichette.getEtichetta("Padre")
+            case MD: return Etichette.getEtichetta("Madre")
+            case EN: return Etichette.getEtichetta("Entrambi")
         }
         return null
     }

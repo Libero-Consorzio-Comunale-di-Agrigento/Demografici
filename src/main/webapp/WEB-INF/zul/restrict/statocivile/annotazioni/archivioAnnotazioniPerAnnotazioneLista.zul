@@ -154,6 +154,7 @@
 										</row>
 										<row>
 											<cell>
+
 												<hlayout spacing="10px" valign="middle">
 													<hlayout valign="middle" spacing="8px"  visible="@load(s.annotazione.isAttoDiAltroComune())">
 														<label value="@load(vm.etichette['Generata_da'])" sclass="grassetto"/>
@@ -162,28 +163,30 @@
 
 													<hlayout valign="middle" spacing="8px">
 														<label value="@load(vm.getEtichettaEnum(s.attoAnnotazione.tipoAttoEnum) )" sclass="grassetto" />
-														<label value="-"/>
-														<label value="@load(vm.etichette['Ufficio'])"/>
-														<label value="@load(s.attoAnnotazione.ufficio)" sclass="grassetto" />
+														<label value="-" />
+														<label value="@load(vm.etichette['Id_Atto_Ansc'])" visible="@load(s.attoAnnotazione.idAttoAnsc ne null)"/>
+														<label value="@load(s.attoAnnotazione.idAttoAnsc)" visible="@load(s.attoAnnotazione.idAttoAnsc ne null)" sclass="grassetto" />
+														<label value="@load(vm.etichette['Ufficio'])" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)"/>
+														<label value="@load(s.attoAnnotazione.ufficio)" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)" sclass="grassetto" />
 													</hlayout>
 
-													<hlayout valign="middle" spacing="8px">
+													<hlayout valign="middle" spacing="8px" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)">
 														<label value="@load(vm.etichette['Anno'])"/>
 														<label value="@load(s.attoAnnotazione.anno)" sclass="grassetto" />
 													</hlayout>
 
-													<hlayout valign="middle" spacing="8px">
+													<hlayout valign="middle" spacing="8px" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)">
 														<label value="@load(vm.etichette['Numero_Atto'])"/>
 														<label value="@load(s.attoAnnotazione.atto)" 		sclass="grassetto"  visible="@load(s.attoAnnotazione.atto gt 0)"/>
 														<label value="@load(vm.etichette['Provvisorio'])" 	sclass="grassetto" 	visible="@load(s.attoAnnotazione.atto le 0)"/>
 													</hlayout>
 
-													<hlayout valign="middle" spacing="8px">
+													<hlayout valign="middle" spacing="8px" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)">
 														<label value="@load(vm.etichette['Parte'])"  						visible="@load(not empty s.attoAnnotazione.parte)"/>
 														<label value="@load(s.attoAnnotazione.parte)" sclass="grassetto"   	visible="@load(not empty s.attoAnnotazione.parte)"/>
 													</hlayout>
 
-													<hlayout valign="middle" spacing="8px">
+													<hlayout valign="middle" spacing="8px" visible="@load(s.attoAnnotazione.idAttoAnsc eq null)">
 														<label value="@load(vm.etichette['Serie'])" 						visible="@load(not empty s.attoAnnotazione.serie)"/>
 														<label value="@load(s.attoAnnotazione.serie)" sclass="grassetto" 	visible="@load(not empty s.attoAnnotazione.serie)"/>
 													</hlayout>

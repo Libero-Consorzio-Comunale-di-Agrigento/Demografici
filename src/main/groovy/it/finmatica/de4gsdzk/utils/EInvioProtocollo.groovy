@@ -4,9 +4,9 @@ enum EInvioProtocollo {
     R, S, N
     Map getEtichettaDesc() {
         switch(this) {
-            case R: return Etichette.A_Richiesta
-            case S: return Etichette.SI
-            case N: return Etichette.NO
+            case R: return Etichette.getEtichetta("A_Richiesta")
+            case S: return Etichette.getEtichetta("SI")
+            case N: return Etichette.getEtichetta("NO")
         }
     }
 }

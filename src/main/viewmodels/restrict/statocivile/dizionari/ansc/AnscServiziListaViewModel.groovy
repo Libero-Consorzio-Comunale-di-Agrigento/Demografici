@@ -26,6 +26,9 @@ class AnscServiziListaViewModel extends DizionarioListaViewModel{
     List<AnscEndPointServizio> lista
     AnscEndPointServizio dettaglio
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     @Delegate
     ControlBarListaAttributes cbLista = new ControlBarListaAttributes()
 
@@ -39,17 +42,28 @@ class AnscServiziListaViewModel extends DizionarioListaViewModel{
         searchEnabled = true
         deleteEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Funzione_non_abilitata, Etichette.Archivio, Etichette.Servizi_Ansc]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Archivio"), Etichette.getEtichetta("Servizi_Ansc")]
 
         eList.addAll(AnscEndPointServizio.etichetteDomain)
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Servizio_crescente"), Etichette.getEtichetta("Servizio_decrescente")])
 
         doInitEtichette(eList)
 
         totalSizeLabel = ""
 
-        msgTitle = getEtichetta(Etichette.Servizi_Ansc)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Servizi_Ansc"))
 
         formLabel = msgTitle?.toUpperCase()
+
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), SortUtils.descrizioneAsc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), SortUtils.descrizioneDesc),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Servizio_crescente")), [new Sort.Order(Sort.Direction.ASC, "servizio")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Servizio_decrescente")), [new Sort.Order(Sort.Direction.DESC, "servizio")])])
+
+        selectedOrder = listaOrder[0]
 
         caricaLista()
 
@@ -69,7 +83,7 @@ class AnscServiziListaViewModel extends DizionarioListaViewModel{
     }
 
     Paginazione eseguiQuery(Boolean usePaging) {
-        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(SortUtils.descrizioneAsc))
+        PageRequest pr = new PageRequest((usePaging?activePage:0), (usePaging?pageSize:Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page<AnscEndPointServizio> p = anscEndPointServizioService.listAllByServizioOrDescrizioneLike(SqlUtils.beginsAndEndsLike(filtro), pr)
 
@@ -90,13 +104,13 @@ class AnscServiziListaViewModel extends DizionarioListaViewModel{
         if (userModifyEnabled) {
             apriDettaglio(getUriDettaglio(), [:])
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     String getMessaggioCancellazione(){
         if (dettaglio) {
-            return (dettaglio.descrizioneEstesa + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio.descrizioneEstesa + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

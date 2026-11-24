@@ -2,16 +2,17 @@ package it.finmatica.de4gsdzk.ansc
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IAttoAnsc
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.ansc.AnscEndPointServizioArchivioRepository
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
 import it.finmatica.de4gsdzk.statocivile.CivFirmatarioAtto
 import it.finmatica.de4gsdzk.statocivile.CivFirmatarioAttoService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.utils.ETipoArchivioAnsc
 import it.finmatica.de4gsdzk.utils.ETipoFirmaAnsc
 import it.finmatica.de4gsdzk.utils.SortUtils
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 class AnscEndPointServizioArchivioService {
 
     private static final String CODICE_SERVIZIO_R001 = 'R001'
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     private final CivAttoService civAttoService
 
@@ -30,10 +31,10 @@ class AnscEndPointServizioArchivioService {
 
     private final AnscEndPointServizioArchivioRepository anscEndPointServizioArchivioRepository
 
-    AnscEndPointServizioArchivioService(StatoCivileService statoCivileService, CivAttoService civAttoService,
+    AnscEndPointServizioArchivioService(GsdService gsdService, CivAttoService civAttoService,
                                         AnscEndPointServizioArchivioRepository anscEndPointServizioArchivioRepository,
                                         CivFirmatarioAttoService civFirmatarioAttoService) {
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.civAttoService = civAttoService
         this.anscEndPointServizioArchivioRepository = anscEndPointServizioArchivioRepository
         this.civFirmatarioAttoService = civFirmatarioAttoService
@@ -181,6 +182,10 @@ class AnscEndPointServizioArchivioService {
         return anscEndPointServizioArchivioRepository.findAllByArchivioAndCasoUsoAndFlagConsultazioneEventoIsTrueOrderBySequenza(tipoArchivio, idCasoUso)
     }
 
+    Page<AnscEndPointServizioArchivio> findAllByArchivioAndCasoUso(ETipoArchivioAnsc tipoArchivio, Long idCasoUso, Pageable pageable){
+        return anscEndPointServizioArchivioRepository.findAllByArchivioAndCasoUso(tipoArchivio, idCasoUso, pageable)
+    }
+
     private void validaDati(AnscEndPointServizioArchivio obj){
         if ( (obj.servizio == null) || (obj.archivio == null) || (obj.idCasoUso == null) ) {
             throw new CampoMandatoryRuntimeException()
@@ -192,7 +197,7 @@ class AnscEndPointServizioArchivioService {
 
         if (obj.id == null) {
             // solo in caso di inserimento
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
         log.info("Lancio salvataggio su ANSTWS_ARC per id " + obj.id)
         return anscEndPointServizioArchivioRepository.save(obj)
@@ -202,6 +207,14 @@ class AnscEndPointServizioArchivioService {
         if (obj.id != null) {
             anscEndPointServizioArchivioRepository.delete(obj)
         }
+    }
+
+    AnscEndPointServizioArchivio getServizioArchivioSoggettiRicerca(){
+        List<AnscEndPointServizioArchivio> l = anscEndPointServizioArchivioRepository.findByServizioFlagConsultazioneSoggParIsTrue()
+        if ((l?.size() ?: 0) == 1) {
+            return l.get(0)
+        }
+        return null
     }
 
 }

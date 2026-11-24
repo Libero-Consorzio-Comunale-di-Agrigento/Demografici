@@ -31,12 +31,12 @@ class DocumentoUscitaAssociatoListaViewModel extends DocumentoParentListaViewMod
         //excelExportEnabled = true
         //csvExportEnabled = true
 
-        List<Map<String, String>> eList = [Etichette.Gestione_Documenti_Uscita, Etichette.Registro, Etichette.Anni]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Gestione_Documenti_Uscita"), Etichette.getEtichetta("Registro"), Etichette.getEtichetta("Anni")]
         eList.addAll(CivVisualizzazioneDocumentiUscita.etichetteDomain)
 
         doInit(w, eList, ETipoDocumento.Uscita)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Documenti_Uscita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Documenti_Uscita"))
 
         formLabel = msgTitle?.toUpperCase() + " - " + getDescrizioneStato()?.toUpperCase()
 
@@ -44,7 +44,7 @@ class DocumentoUscitaAssociatoListaViewModel extends DocumentoParentListaViewMod
     }
 
     String getDescrizioneStato(){
-        return getEtichetta(Etichette.Documenti_Associati)
+        return getEtichetta(Etichette.getEtichetta("Documenti_Associati"))
     }
 
     void caricaListaAnni() {

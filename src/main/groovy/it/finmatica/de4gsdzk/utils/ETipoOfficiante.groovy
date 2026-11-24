@@ -23,16 +23,16 @@ enum ETipoOfficiante {
     /*
     Map getEtichettaDesc(){
         switch(this) {
-            case O1: return Etichette.Sindaco
-            case O2: return Etichette.Vicesindaco
-            case O3: return Etichette.Ufficiale_Stato_Civile
-            case O4: return Etichette.Comune_Cittadino
-            case O5: return Etichette.Parroco
-            case O6: return Etichette.Diacono
-            case O7: return Etichette.Cappellano_Militare
-            case O8: return Etichette.Comandante_Nave
-            case O9: return Etichette.Comandante_Aereo
-            case O10: return Etichette.Ministro_culto
+            case O1: return Etichette.getEtichetta("getEtichetta("Sindaco"),
+            case O2: return Etichette.getEtichetta("Vicesindaco")
+            case O3: return Etichette.getEtichetta("Ufficiale_Stato_Civile")
+            case O4: return Etichette.getEtichetta("Comune_Cittadino")
+            case O5: return Etichette.getEtichetta("Parroco")
+            case O6: return Etichette.getEtichetta("Diacono")
+            case O7: return Etichette.getEtichetta("Cappellano_Militare")
+            case O8: return Etichette.getEtichetta("Comandante_Nave")
+            case O9: return Etichette.getEtichetta("Comandante_Aereo")
+            case O10: return Etichette.getEtichetta("Ministro_culto")
         }
         return null
     }

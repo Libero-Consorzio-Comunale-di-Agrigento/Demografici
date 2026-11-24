@@ -26,11 +26,13 @@
 
         <listbox width="750px" height="250px" multiple="false">
             <listhead>
-                <customlistheader label="@load(self.bbParent.etichette['Via'])"/>
+                <customlistheader label="@load(self.bbParent.etichette['Codice'])" width="60px"/>
+                <customlistheader label="@load(self.bbParent.etichette['Denominazione'])"/>
             </listhead>
             <template name="model">
                 <listitem>
-                    <listcell label="${each.denominazione}"/>
+                    <listcell label="${each.id}"/>
+                    <listcell label="${each.denominazione}" style="text-transform:uppercase"/>
                 </listitem>
             </template>
         </listbox>

@@ -171,7 +171,7 @@
 									<label value="@load(vm.etichette['Rito'])"/>
 								</cell>
 								<cell colspan="2">
-									<combobox model="@load(vm.listaRito)" readonly="false" hflex="1"
+									<combobox model="@load(vm.listaRito)" readonly="true" hflex="1"
 											  disabled="@load(not vm.dettaglio.isSecondaA() )"
 											  selectedItem="@bind(vm.datiProvenienza.rito)">
 										<template name="model">

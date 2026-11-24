@@ -4,6 +4,6 @@ import it.finmatica.de4gsdzk.utils.Etichette
 
 class ControlBarTestoAttributes {
 
-	static List<Map> etichetteCbTestoDesc = [Etichette.blocca_testo_tooltip, Etichette.blocca_margine_tooltip]
+	static List<Map> etichetteCbTestoDesc = [Etichette.getEtichetta("blocca_testo_tooltip"), Etichette.getEtichetta("blocca_margine_tooltip")]
 
 }

@@ -1,10 +1,8 @@
 package it.finmatica.de4gsdzk.certificazione
 
-import it.finmatica.de4gsdzk.certificazione.BaseRicercaCertificato
-import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmesso
-import it.finmatica.de4gsdzk.certificazione.RicercaCertificato
-import it.finmatica.de4gsdzk.certificazione.RicercaCertificatoStampa
+
 import it.finmatica.de4gsdzk.utils.ETipoSiNo
+import it.finmatica.de4gsdzk.utils.ETipoSoggetto
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import it.finmatica.de4gsdzk.utils.TestoUtils
 
@@ -53,32 +51,56 @@ class CerCertificatoEmessoRepositoryUtils {
             predicates.add(cb.equal(root.get("tipoCertificato"), r.tipoCertificato))
         }
 
-        if (r.findRichiedenti()) {
+        if(r.tipoSoggettoCertificato == null) {
+            // Se il tipo soggetto non è specificato, cerca sia in richiedente che in beneficiario (OR)
+            if (!TestoUtils.isVuoto(r.cognomeTipoSoggettoCertificato)) {
+                predicates.add(cb.or(
+                    cb.like(
+                        cb.lower(root.get("richiedente").get("cognome")),
+                        SqlUtils.endsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
+                    ),
+                    cb.like(
+                        cb.lower(root.get("beneficiario").get("cognome")),
+                        SqlUtils.endsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
+                    )
+                ))
+            }
+            if (!TestoUtils.isVuoto(r.nomeTipoSoggettoCertificato)) {
+                predicates.add(cb.or(
+                    cb.like(
+                        cb.lower(root.get("richiedente").get("nome")),
+                        SqlUtils.endsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
+                    ),
+                    cb.like(
+                        cb.lower(root.get("beneficiario").get("nome")),
+                        SqlUtils.endsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
+                    )
+                ))
+            }
+        } else if (r.tipoSoggettoCertificato == ETipoSoggetto.RICHIEDENTE_CERTIFICATO) {
             if (!TestoUtils.isVuoto(r.cognomeTipoSoggettoCertificato)) {
                 predicates.add(cb.like(
                         cb.lower(root.get("richiedente").get("cognome")),
-                        SqlUtils.beginsAndEndsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
+                        SqlUtils.endsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
                 ))
             }
             if (!TestoUtils.isVuoto(r.nomeTipoSoggettoCertificato)) {
                 predicates.add(cb.like(
                         cb.lower(root.get("richiedente").get("nome")),
-                        SqlUtils.beginsAndEndsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
+                        SqlUtils.endsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
                 ))
             }
-        }
-
-        if (r.findBeneficiari()) {
+        } else if (r.tipoSoggettoCertificato == ETipoSoggetto.BENEFICIARIO_CERTIFICATO) {
             if (!TestoUtils.isVuoto(r.cognomeTipoSoggettoCertificato)) {
                 predicates.add(cb.like(
                         cb.lower(root.get("beneficiario").get("cognome")),
-                        SqlUtils.beginsAndEndsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
+                        SqlUtils.endsLike(r.cognomeTipoSoggettoCertificato.toLowerCase())
                 ))
             }
             if (!TestoUtils.isVuoto(r.nomeTipoSoggettoCertificato)) {
                 predicates.add(cb.like(
                         cb.lower(root.get("beneficiario").get("nome")),
-                        SqlUtils.beginsAndEndsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
+                        SqlUtils.endsLike(r.nomeTipoSoggettoCertificato.toLowerCase())
                 ))
             }
         }

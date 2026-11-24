@@ -3,9 +3,8 @@ package it.finmatica.de4gsdzk.certificazione
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
-import it.finmatica.de4gsdzk.certificazione.CerFirmaRepository
 import it.finmatica.de4gsdzk.utils.ETipoOperazione
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import it.finmatica.de4gsdzk.utils.SqlUtils
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
@@ -44,7 +43,7 @@ class CerFirmaService {
 		if (tipoOperazione.isInsert()){
 			long n = cerFirmaRepository.countById(obj.id)
 			if (n > 0) {
-				throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Record_duplicato)
+				throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_duplicato"))
 			}
 		}
 	}

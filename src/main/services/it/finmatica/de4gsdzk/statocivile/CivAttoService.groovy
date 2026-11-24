@@ -9,7 +9,7 @@ import it.finmatica.de4gsdzk.certificazione.CerStatoCivileFiltro
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.utils.EMotivoRecupero
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -33,9 +33,22 @@ class CivAttoService {
 
 	private final CivCittadinanzaService civCittadinanzaService
 
+	private final CivNascitaCertificazioneService civNascitaCertificazioneService
+
+	private final CivMatrimonioCertificazioneService civMatrimonioCertificazioneService
+
+	private final CivUnioneCivileCertificazioneService civUnioneCivileCertificazioneService
+
+	private final CivMorteCertificazioneService civMorteCertificazioneService
+
+	private final CivCittadinanzaCertificazioneService civCittadinanzaCertificazioneService
+
     CivAttoService(CivNascitaService civNascitaService, CivPubblicazioneService civPubblicazioneService,
 				   CivMatrimonioService civMatrimonioService, CivUnioneCivileService civUnioneCivileService,
-				   CivProcessoVerbaleService civProcessoVerbaleService, CivMorteService civMorteService, CivCittadinanzaService civCittadinanzaService) {
+				   CivProcessoVerbaleService civProcessoVerbaleService, CivMorteService civMorteService, CivCittadinanzaService civCittadinanzaService,
+                   CivNascitaCertificazioneService civNascitaCertificazioneService, CivMatrimonioCertificazioneService civMatrimonioCertificazioneService,
+                   CivUnioneCivileCertificazioneService civUnioneCivileCertificazioneService, CivMorteCertificazioneService civMorteCertificazioneService,
+                   CivCittadinanzaCertificazioneService civCittadinanzaCertificazioneService) {
 
 		this.civNascitaService = civNascitaService
 		this.civPubblicazioneService = civPubblicazioneService
@@ -44,6 +57,11 @@ class CivAttoService {
 		this.civProcessoVerbaleService = civProcessoVerbaleService
 		this.civMorteService = civMorteService
 		this.civCittadinanzaService = civCittadinanzaService
+        this.civNascitaCertificazioneService = civNascitaCertificazioneService
+		this.civMatrimonioCertificazioneService = civMatrimonioCertificazioneService
+		this.civUnioneCivileCertificazioneService = civUnioneCivileCertificazioneService
+		this.civMorteCertificazioneService = civMorteCertificazioneService
+		this.civCittadinanzaCertificazioneService = civCittadinanzaCertificazioneService
 	}
 
 	IAttoService getService(ETipoAtto tipoAtto) {
@@ -167,18 +185,40 @@ class CivAttoService {
 		return attoDomain
 	}
 
+    CivAttoBaseDomain getAttoCertificazione(ETipoAtto tipoAttoEnum, Long pkAtto){
+        CivAttoBaseDomain attoDomain
+        switch (tipoAttoEnum) {
+            case ETipoAtto.NAS:
+                attoDomain = civNascitaCertificazioneService.findById(pkAtto)
+                break
+            case ETipoAtto.MAT: //Va bene anche per i divorzi in quanto registrati sulla stessa tabella
+                attoDomain = civMatrimonioCertificazioneService.findById(pkAtto)
+                break
+            case ETipoAtto.UCI: //Va bene anche per gli scioglimenti in quanto registrati sulla stessa tabella
+                attoDomain = civUnioneCivileCertificazioneService.findById(pkAtto)
+                break
+            case ETipoAtto.CIT:
+                attoDomain = civCittadinanzaCertificazioneService.findById(pkAtto)
+                break
+            case ETipoAtto.MOR:
+                attoDomain = civMorteCertificazioneService.findById(pkAtto)
+                break
+        }
+        return attoDomain
+    }
+
 	Page<CivAttoBaseDomain> search (ETipoAtto tipoAttoEnum, Map params, Map customMandatoryParams=null) {
 		if (customMandatoryParams){
 			for (val in customMandatoryParams.values()) {
 				if (val == null){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
 				}
 			}
 		}
 		if ( (params.annoDa != null) || (params.annoA != null) || (params.dataRegistrazioneDa) || (params.dataRegistrazioneA) || (params.dataEventoDa) || (params.dataEventoA) ) {
 			return list (tipoAttoEnum, params)
 		}
-		throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+		throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
 	}
 
 	Page<CivAttoBaseDomain> list (ETipoAtto tipoAttoEnum, Map params) {
@@ -252,16 +292,16 @@ class CivAttoService {
 
 		Map<ETipoAtto, List<CerStatoCivileFiltro>> m = statoCivileFiltroList.groupBy { it.getTipoAttoEnum() }
 		if (m.containsKey(ETipoAtto.NAS)) {
-			lAtti.addAll(civNascitaService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.NAS)))
+			lAtti.addAll(civNascitaCertificazioneService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.NAS)))
 		}
 		if (m.containsKey(ETipoAtto.MAT)) {
-			lAtti.addAll(civMatrimonioService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.MAT)))
+			lAtti.addAll(civMatrimonioCertificazioneService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.MAT)))
 		}
 		if (m.containsKey(ETipoAtto.UCI)) {
-			lAtti.addAll(civUnioneCivileService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.UCI)))
+			lAtti.addAll(civUnioneCivileCertificazioneService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.UCI)))
 		}
 		if (m.containsKey(ETipoAtto.MOR)) {
-			lAtti.addAll(civMorteService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.MOR)))
+			lAtti.addAll(civMorteCertificazioneService.listAllByStatoCivileFiltroList(m.get(ETipoAtto.MOR)))
 		}
 		return lAtti
 	}
@@ -270,19 +310,30 @@ class CivAttoService {
 	///////////////////////////////   ANSC  ////////////////////////////////
 	////////////////////////////////////////////////////////////////////////
 
-	IAttoAnscService getAnscService(ETipoAtto tipoAttoEnum) {
-		switch(tipoAttoEnum) {
-			case ETipoAtto.NAS: return civNascitaService
-			case ETipoAtto.MAT: return civMatrimonioService
-			case ETipoAtto.UCI: return civUnioneCivileService
-			case ETipoAtto.MOR:	return civMorteService
-			case ETipoAtto.CIT: return civCittadinanzaService
-		}
+	IAttoAnscService getAnscService(ETipoAtto tipoAttoEnum, Boolean certificazione = Boolean.FALSE) {
+        if(certificazione) {
+            switch(tipoAttoEnum) {
+                case ETipoAtto.NAS: return civNascitaCertificazioneService
+                case ETipoAtto.MAT: return civMatrimonioCertificazioneService
+                case ETipoAtto.UCI: return civUnioneCivileCertificazioneService
+                case ETipoAtto.MOR:	return civMorteCertificazioneService
+                case ETipoAtto.CIT: return civCittadinanzaCertificazioneService
+            }
+        } else {
+            switch(tipoAttoEnum) {
+                case ETipoAtto.NAS: return civNascitaService
+                case ETipoAtto.MAT: return civMatrimonioService
+                case ETipoAtto.UCI: return civUnioneCivileService
+                case ETipoAtto.MOR:	return civMorteService
+                case ETipoAtto.CIT: return civCittadinanzaService
+            }
+        }
+
 		return null
 	}
 
-	Boolean isInviatoAnsc(ETipoAtto tipoAttoEnum, Long id) {
-		return getAnscService(tipoAttoEnum).isInviatoAnsc(id)
+	Boolean isInviatoAnsc(ETipoAtto tipoAttoEnum, Long id, Boolean certificazione = Boolean.FALSE) {
+		return getAnscService(tipoAttoEnum, certificazione).isInviatoAnsc(id)
 	}
 
 	Boolean isFirmatoUscAnsc(ETipoAtto tipoAttoEnum, Long id) {

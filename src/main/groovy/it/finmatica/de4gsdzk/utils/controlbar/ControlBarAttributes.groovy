@@ -33,9 +33,9 @@ class ControlBarAttributes {
     String additionalToolbarbutton2 = null
     String additionalToolbarbutton3 = null
 
-    static List<Map> etichetteCbDesc = [Etichette.back_tooltip,
-                                        Etichette.filtro_ricerca_placeholder, Etichette.filtro_ricerca_tooltip, Etichette.ricerca_tooltip,
-                                        Etichette.salva_tooltip, Etichette.modifica_tooltip, Etichette.inserisci_tooltip, Etichette.elimina_tooltip, Etichette.seleziona_tooltip,
-                                        Etichette.print_tooltip, Etichette.csv_export_tooltip, Etichette.xls_export_tooltip, Etichette.filtri_extra_tooltip,
-                                        Etichette.filtro_ricerca_placeholder, Etichette.ricerca_tooltip, Etichette.filtro_ricerca_tooltip]
+    static List<Map> etichetteCbDesc = [Etichette.getEtichetta("back_tooltip"),
+                                        Etichette.getEtichetta("filtro_ricerca_placeholder"), Etichette.getEtichetta("filtro_ricerca_tooltip"), Etichette.getEtichetta("ricerca_tooltip"),
+                                        Etichette.getEtichetta("salva_tooltip"), Etichette.getEtichetta("modifica_tooltip"), Etichette.getEtichetta("inserisci_tooltip"), Etichette.getEtichetta("elimina_tooltip"), Etichette.getEtichetta("seleziona_tooltip"),
+                                        Etichette.getEtichetta("print_tooltip"), Etichette.getEtichetta("csv_export_tooltip"), Etichette.getEtichetta("xls_export_tooltip"), Etichette.getEtichetta("filtri_extra_tooltip"),
+                                        Etichette.getEtichetta("filtro_ricerca_placeholder"), Etichette.getEtichetta("ricerca_tooltip"), Etichette.getEtichetta("filtro_ricerca_tooltip")]
 }

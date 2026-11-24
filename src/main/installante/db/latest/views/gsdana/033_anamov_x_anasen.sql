@@ -3,6 +3,7 @@
 create or replace view anamov_x_anasen
 AS
 select mov_v.*
+     , sen.id      id_anasen
      , sen.privacy sen_privacy
   from anasen sen, anamov_v mov_v
  where sen.anno_progr_mov   = mov_v.anno_progr

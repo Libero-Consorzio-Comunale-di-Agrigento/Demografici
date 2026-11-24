@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import it.finmatica.de4gsdzk.GsdDocumentoEsternoBaseDomain
+import it.finmatica.de4gsdzk.IArchivioComunicazione
 import it.finmatica.de4gsdzk.IRiferimentoAttoDomain
 import it.finmatica.de4gsdzk.utils.*
 import org.hibernate.annotations.Formula
@@ -10,7 +11,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "CIVCOM_V")
-class CivArchivioComunicazione extends GsdDocumentoEsternoBaseDomain implements IRiferimentoAttoDomain{
+class CivArchivioComunicazione extends GsdDocumentoEsternoBaseDomain implements IRiferimentoAttoDomain, IArchivioComunicazione {
 
     @Id
     @Column(name = "ID")
@@ -105,6 +106,11 @@ class CivArchivioComunicazione extends GsdDocumentoEsternoBaseDomain implements 
         return ((statoInvioAlbo != null) && (statoInvioAlbo == EStatoInvioAlbo.D))
     }
 
+    @Override
+    Integer getNumero() {
+        return atto
+    }
+
     Boolean isInviatoAlbo(){
         return ((statoInvioAlbo != null) && (statoInvioAlbo == EStatoInvioAlbo.I))
     }
@@ -136,7 +142,7 @@ class CivArchivioComunicazione extends GsdDocumentoEsternoBaseDomain implements 
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Anno, Etichette.Tipo_Atto, Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie,
-                                              Etichette.Codice, Etichette.Descrizione, Etichette.Stampa_Eseguita, Etichette.Numero_copie, Etichette.Data_Registrazione]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"),
+                                              Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Stampa_Eseguita"), Etichette.getEtichetta("Numero_copie"), Etichette.getEtichetta("Data_Registrazione")]
 
 }

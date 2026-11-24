@@ -22,6 +22,7 @@ class BandboxTerminalista extends CustomBandbox {
 		super()
 
 		attributoDaLeggere = "cognomeNome"
+		onChangePreventDefault = Boolean.TRUE
 
 		Executions.createComponents("/restrict/afc/bandboxTerminalista.zul", this, null)
 
@@ -39,8 +40,8 @@ class BandboxTerminalista extends CustomBandbox {
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 	
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -54,7 +55,7 @@ class BandboxTerminalista extends CustomBandbox {
 		Page<CerTerminalista> p = Holders.getApplicationContext().getBean(CerTerminalistaService.class).listAllByIdLikeOrCognomeNomeLike(b.toString(), pr)
 		listbox.setModel(new ListModelList<CerTerminalista>(p.getContent()))
 		paging.setTotalSize((int)p.getTotalElements())
-		label.value = getEtichetta(etichette, Etichette.Numero_record_trovati) + paging.totalSize
+		label.value = getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati")) + paging.totalSize
 	}
 
 }

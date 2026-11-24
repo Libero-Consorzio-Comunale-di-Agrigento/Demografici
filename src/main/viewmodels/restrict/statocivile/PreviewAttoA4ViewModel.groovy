@@ -81,7 +81,7 @@ class PreviewAttoA4ViewModel extends PreviewAttoParentViewModel{
                  ( (occhiello?.nome?:"").length() > TestoUtils.maxGeneralitaLength) ||
                  ( (occhiello?.cognomeConiuge?:"").length() > TestoUtils.maxGeneralitaLength) ||
                  ( (occhiello?.nomeConiuge?:"").length() > TestoUtils.maxGeneralitaLength) ){
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Warn_Dati_Occhiello), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Warn_Dati_Occhiello")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             }
         }
 
@@ -167,7 +167,7 @@ class PreviewAttoA4ViewModel extends PreviewAttoParentViewModel{
             Messagebox.show( (getEtichetta(etichette, ignored.getEtichetta())?:ignored.getMessage()), msgTitle, Messagebox.OK, Messagebox.ERROR)
         } catch (MultiplePagesException ignored) {
             if (blocca) {
-                Messagebox.show(getEtichetta(etichette, EtichetteMessaggi.Errore_report_troppo_lungo), msgTitle, Messagebox.OK, Messagebox.ERROR)
+                Messagebox.show(getEtichetta(etichette, Etichette.getEtichetta("Errore_report_troppo_lungo")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             } else {
                 Map options = [dataSource: jasperSource, checkSinglePage: false]
                 pagine = stampaAttoService.downloadReportAtto(atto, dettaglio, margine, occhiello, formuleMargine, formuleAnnotazioni, etichette, options)?.pages

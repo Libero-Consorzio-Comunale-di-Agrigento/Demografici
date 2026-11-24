@@ -51,7 +51,7 @@ class VisualizzazioneIndividuoListaViewModel extends AbstractListaViewModel impl
         controlBarAttributes.addEnabled = false
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Visualizzazione_Individuo]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Visualizzazione_Individuo")]
         // Aggiungo etichette standard
         eList.addAll(etichetteListaDefault)
         // Aggiungo etichette domain
@@ -59,14 +59,14 @@ class VisualizzazioneIndividuoListaViewModel extends AbstractListaViewModel impl
         // Aggiungo etichette ricerca
         eList.addAll(RicercaIndividuo.etichetteRicercaDesc)
         // Aggiungo etichette per bottoni ricerca
-        eList.addAll([Etichette.Ricerca_in_Anagrafe, Etichette.Ricerca_in_ANPR, Etichette.Ricerca_movimenti_rettificati])
+        eList.addAll([Etichette.getEtichetta("Ricerca_in_Anagrafe"), Etichette.getEtichetta("Ricerca_in_ANPR"), Etichette.getEtichetta("Ricerca_movimenti_rettificati")])
         // Aggiungo etichette per valori campi di ricerca
-        eList.addAll([Etichette.Cancella])
+        eList.addAll([Etichette.getEtichetta("Cancella")])
         eList.addAll(ESesso.values()*.getEtichettaDesc())
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Visualizzazione_Individuo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Visualizzazione_Individuo"))
 
         formLabel = msgTitle?.toUpperCase()
 

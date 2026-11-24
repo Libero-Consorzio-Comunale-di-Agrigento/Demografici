@@ -2,14 +2,13 @@ package it.finmatica.de4gsdzk
 
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.CivRichiamoFormula
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import spock.lang.Specification
 
 class AbstractServiceSpec<E> extends Specification {
 
-    StatoCivileService statoCivileService
+    GsdService gsdService
 
     GsdEtichettaService gsdEtichettaService
 
@@ -19,9 +18,9 @@ class AbstractServiceSpec<E> extends Specification {
     private JdbcTemplate jdbcTemplate
 
     void setup() {
-        statoCivileService = Mock(StatoCivileService)
-        statoCivileService.getIdFromSequence(_) >> { (Long) (Math.random() * 10000) }
-        statoCivileService.getIdFromSequence(_,_) >> { (Long) (Math.random() * 10000) }
+        gsdService = Mock(GsdService)
+        gsdService.getIdFromSequence(_) >> { (Long) (Math.random() * 10000) }
+        gsdService.getIdFromSequence(_,_) >> { (Long) (Math.random() * 10000) }
         arcParametroService = Mock(ArcParametroService)
         gsdEtichettaService = new GsdEtichettaService(null, null, arcParametroService)
     }

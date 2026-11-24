@@ -1,9 +1,8 @@
 package it.finmatica.de4gsdzk.certificazione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
-import it.finmatica.de4gsdzk.certificazione.CerAnagrafeFiltroRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,7 +19,7 @@ class CerAnagrafeFiltroService {
         this.anaAnagrafeService = anaAnagrafeService
     }
 
-    List<CerAnagrafeFiltro> listAllByAnagrafe(GsdAnagrafeBaseDomain anagrafe) {
+    List<CerAnagrafeFiltro> listAllByAnagrafe(AnagrafeBaseDomain anagrafe) {
         if (anagrafe.matricola != null) {
             return cerAnagrafeFiltroRepository.findAllByMatricola(anagrafe.matricola)
         }

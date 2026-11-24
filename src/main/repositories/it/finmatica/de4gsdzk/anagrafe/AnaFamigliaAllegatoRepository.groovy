@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
@@ -14,10 +15,15 @@ interface AnaFamigliaAllegatoRepository extends JpaRepository<AnaFamigliaAllegat
 
     @Query(value = """SELECT a FROM AnaFamigliaAllegato a
                         JOIN FETCH a.famiglia
+                        JOIN FETCH a.terminalista
                         WHERE a.famiglia = :famiglia""",
             countQuery = """SELECT count(a) FROM AnaFamigliaAllegato a
                                 JOIN a.famiglia
                                 WHERE a.famiglia = :famiglia""")
     Page<AnaFamigliaAllegato> findByFamiglia(@Param("famiglia") AnaFamiglia famiglia, Pageable pageable)
+
+    @Modifying
+    @Query("UPDATE AnaFamigliaAllegato a SET a.note = :note WHERE a.id = :id")
+    void updateNote(@Param(value = "id") Long id, @Param(value = "note") String note)
 
 }

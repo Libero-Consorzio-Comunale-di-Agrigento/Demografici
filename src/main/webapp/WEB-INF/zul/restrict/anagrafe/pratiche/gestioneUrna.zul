@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="templateRowEstremiAttoSoggettoPratica" macroURI="/restrict/anagrafe/pratiche/templateRowEstremiAttoSoggettoPratica.zul" inline="true"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.GestioneUrnaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            width="1200px"
+            title="@load(vm.msgTitle)"
+            sizable="false" closable="false">
+
+        <grid sclass="form">
+            <columns>
+                <column width="200px"/>
+                <column/>
+                <column width="200px"/>
+                <column/>
+                <column width="60px"/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Cognome_Defunto'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout>
+                            <textbox value="@bind(vm.urna.cognomeMorto)" hflex="1">
+                                <custom-attributes proprieta="cognomeMorto"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="cognomeMorto"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Nome_Defunto'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout>
+                            <textbox value="@bind(vm.urna.nomeMorto)" hflex="1">
+                                <custom-attributes proprieta="nomeMorto"/>
+                            </textbox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="nomeMorto"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png"
+                                tooltiptext="@load(vm.etichette['Seleziona'])"
+                                onClick="@command('onRicercaSoggetto')"/>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Data_Nascita_Defunto'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind(vm.urna.dataNascitaMorto)"
+                                     onChange="@command('onAggiornaDataRiferimento', campoRiferimento='URNA_NAS')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataNascitaMorto"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Comune_Nascita_Defunto'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComuni hflex="1"
+                                           value="@load(vm.urna.comuneNascitaMorto.descrizione)"
+                                           dataRiferimento="@load(vm.dataRiferimentoComuneNascita)"
+                                           onSelect="@command('onSelectComune', campoRiferimento='URNA_NAS')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaComune', campoRiferimento='URNA_NAS')"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.urna.comuneNascitaMorto.siglaProvincia)" hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Sesso_Defunto'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <combobox model="@load(vm.listaSesso)" readonly="true" hflex="1"
+                                      selectedItem="@bind(vm.urna.sessoMorto) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                                <template name="model">
+                                    <comboitem label="@load(empty each? '--' : vm.getEtichettaEnum(each))"
+                                               value="@load(each)"/>
+                                </template>
+                            </combobox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="sessoMorto"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Rapporto_Parentela_Affidatario'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <combobox
+                                    model="@load(vm.rapportoParentelaList)"
+                                    readonly="true" hflex="1"
+                                    selectedItem="@bind(vm.urna.rapportoParentela) @converter('it.finmatica.zk.utils.PropertyConverter', property='codiceRapportoParentela')">
+                                <template name="model">
+                                    <comboitem label="@load(empty each? '--' : each.descrizione)"
+                                               value="@load(each)"/>
+                                </template>
+                            </combobox>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="rapportoParentela"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell/>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Data_Morte'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind(vm.urna.dataMorte)"
+                                     onChange="@command('onAggiornaDataRiferimento', campoRiferimento='URNA_MOR')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataMorte"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Comune_Morte'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle" hflex="1">
+                            <bandboxComuni hflex="1"
+                                           value="@load(vm.urna.comuneMorte.descrizione)"
+                                           dataRiferimento="@load(vm.dataRiferimentoComuneMorte)"
+                                           onSelect="@command('onSelectComune', campoRiferimento='URNA_MOR')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaComune', campoRiferimento='URNA_MOR')"/>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <textbox value="@load(vm.urna.comuneMorte.siglaProvincia)" hflex="1" readonly="true"/>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Estremi_Atto_Morte'])"/>
+                    </cell>
+                    <cell colspan="4">
+                        <grid hflex="1">
+                            <rows>
+                                <row>
+                                    <cell>
+                                        <grid>
+                                            <rows>
+                                                <templateRowEstremiAttoSoggettoPratica
+                                                        urna="true"/>
+                                            </rows>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Data_Cremazione'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind(vm.urna.dataCremazione)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataCremazione"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell colspan="3"/>
+                </row>
+
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Data_Affidamento'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout hflex="1">
+                            <datebox format="dd/MM/yyyy" width="100px"
+                                     value="@bind(vm.urna.dataAffidamento)"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="dataAffidamento"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Verbale_Affidamento'])"/>
+                    </cell>
+                    <cell colspan="3">
+                        <hlayout>
+                            <textbox value="@bind(vm.urna.verbaleAffidamento)" hflex="1"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="verbaleAffidamento"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+
+                </row>
+
+                <row>
+                    <cell align="right" width="160px">
+                        <label value="@load(vm.etichette['Numero_Registro'])"/>
+                    </cell>
+                    <cell colspan="4" width="460px">
+                        <hlayout valign="middle">
+                            <intbox value="@bind(vm.urna.numeroRegistro)" width="100px"/>
+                            <label value="/"/>
+                            <intbox value="@bind(vm.urna.annoRegistro)" width="80px"/>
+                            <button image="/images/icon/action/16x16/calculator.png"
+                                    tooltiptext="@load(vm.etichette['Numera'])"
+                                    disabled="@load( not empty vm.urna.numeroRegistro)"
+                                    onClick="@command('onGeneraNumeroRegistrazione')"/>
+                            <button image="/images/icon/action/16x16/cancel.png"
+                                    tooltiptext="@load(vm.etichette['Cancella'])" onClick="@command('onCancellaCampo')">
+                                <custom-attributes proprieta="numeroRegistro,annoRegistro"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                </row>
+
+
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Note'])"/>
+                    </cell>
+                    <cell colspan="5">
+                        <textbox rows="3" value="@bind(vm.urna.note)" hflex="1"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+
+        <h:div sclass="barraPulsanti">
+            <h:div>
+                <button label="@load(vm.etichette['Aggiungi'])" onClick="@command('onSalva')"
+                        image="/images/icon/action/16x16/add.png" visible="@load(not vm.modifica)"/>
+                <button label="@load(vm.etichette['Salva'])" onClick="@command('onSalva')"
+                        image="/images/icon/action/16x16/save.png" visible="@load(vm.modifica)"/>
+                <button label="@load(vm.etichette['Chiudi'])" onClick="@command('onChiudi')"
+                        image="/images/icon/action/16x16/close.png"/>
+            </h:div>
+        </h:div>
+
+    </window>
+</zk>

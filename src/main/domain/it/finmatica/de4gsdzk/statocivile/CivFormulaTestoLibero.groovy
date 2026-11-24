@@ -296,7 +296,7 @@ class CivFormulaTestoLibero implements IRiferimentoAttoDomain{
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [ Etichette.Ufficio, Etichette.Anno, Etichette.Parte, Etichette.Serie, Etichette.Numero_Atto]
+    static final List<Map> etichetteDomain = [ Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Numero_Atto")]
 
 
 }

@@ -3,7 +3,7 @@ package it.finmatica.de4gsdzk.statocivile
 import it.finmatica.de4gsdzk.GsdBaseDomain
 import it.finmatica.de4gsdzk.IRiferimentoAttoDomain
 import it.finmatica.de4gsdzk.ISoggettoCollegato
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.ansc.AnscConsolato
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.*
@@ -404,13 +404,13 @@ class CivDatiProvenienzaAtto extends GsdBaseDomain implements ISoggettoCollegato
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="NAZIONALITA_DIC", nullable = true)
-    AnaNazionalita nazionalitaDichiarante
+    AnaCittadinanza nazionalitaDichiarante
 
-    AnaNazionalita getNazionalita(){
+    AnaCittadinanza getNazionalita(){
         return nazionalitaDichiarante
     }
 
-    void setNazionalita(AnaNazionalita n){
+    void setNazionalita(AnaCittadinanza n){
         this.nazionalitaDichiarante = n
     }
 
@@ -627,6 +627,10 @@ class CivDatiProvenienzaAtto extends GsdBaseDomain implements ISoggettoCollegato
     @Temporal(TemporalType.DATE)
     @Column(name = "D_ACCORDO_DATA_COM_AVV_2", nullable = true)
     Date dataComunicazioneAvvocato2Accordo
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "D_ACCORDO_DATA_STIPULA", nullable = true)
+    Date dataStipulaAccordo
 
     ////////////////////////////////////////////////////////////////////////
     //////////////////////////////// SENTENZA //////////////////////////////
@@ -1601,24 +1605,24 @@ class CivDatiProvenienzaAtto extends GsdBaseDomain implements ISoggettoCollegato
 
     }
 
-    static final List<Map> etichetteDomain = [Etichette.Da, Etichette.In, Etichette.Descrizione, Etichette.Ufficio, Etichette.Qualifica,
-                                              Etichette.Sede_parto, Etichette.Luogo_decesso, Etichette.Nota_Rif_Anno, Etichette.Consolato,
-                                              Etichette.In_data, Etichette.Numero_Protocollo_Anno, Etichette.Motivo_Impedimento, Etichette.Luogo,
-                                              Etichette.Condizioni_dichiarante, Etichette.Luogo, Etichette.Segretario_comunale, Etichette.Firmato,
-                                              Etichette.Notificato_in_data, Etichette.Ufficiale_Stato_Civile, Etichette.Provenienza, Etichette.Tipo_richiesta,
-                                              Etichette.Richiesta_da_privato_cittadino,
-                                              Etichette.Dati_Richiedente, Etichette.Registrato_da, Etichette.Nome_Ente, Etichette.Comune_Atto, Etichette.Comune_Provenienza,
-                                              Etichette.Atto_Notarile, Etichette.Dati_Atto_Notarile, Etichette.Estremi_Atto_Notarile, Etichette.Tipo_provvedimento,
-                                              Etichette.Ente_Straniero, Etichette.Comune_Ente_Straniero, Etichette.Comune_Ente, Etichette.Estremi_Atto_Straniero, Etichette.Descrizione_Atto_Straniero,
-                                              Etichette.Sentenza, Etichette.Data_Pubblicazione, Etichette.Data_Decorrenza,
-                                              Etichette.Dati_Decreto_Attestazione, Etichette.Dati_residenza_biennale, Etichette.Dati_assegno_mantenimento, Etichette.Dati_accertamento,
-                                              Etichette.Data_deposito, Etichette.Data_Comunicazione, Etichette.Data_comunicazione_avv, Etichette.Foro,
-                                              Etichette.Autorita_giudiziale, Etichette.Dichiarazione_giudiziale, Etichette.Protocollo,
-                                              Etichette.Atto_da_trascrivere, Etichette.Atto_da_trascrivere_sentenza_tribunale, Etichette.Autorita_mittente, Etichette.Data_Atto, Etichette.Data_Formazione, Etichette.Ricezione_Atto,
-                                              Etichette.Estremi_Atto, Etichette.Ente, Etichette.Luogo_Celebrazione, Etichette.Indirizzo, Etichette.Civico, Etichette.Entrambi,
-                                              Etichette.Giudizio_pendente, Etichette.Autorita_giudiziale, Etichette.Autorita_Giudiziaria, Etichette.Tempistica_assunzione, Etichette.Numero,
-                                              Etichette.Tipo_separazione, Etichette.Tipo, Etichette.Rilasciato_da, Etichette.Data_Richiesta, Etichette.Dati_Richiesta,
-                                              Etichette.Data_Rilascio, Etichette.Data_Scadenza, Etichette.Estremi_documento, Etichette.Estremi_delega,
-                                              Etichette.Comune_delegante, Etichette.Riassunto_dichiarazione, Etichette.Testo_Riassunto_placeholder, Etichette.Estremi_Certificazione, Etichette.Durante_viaggio, Etichette.Tipo_Luogo_Nascita]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Da"), Etichette.getEtichetta("In"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Qualifica"),
+                                              Etichette.getEtichetta("Sede_parto"), Etichette.getEtichetta("Luogo_decesso"), Etichette.getEtichetta("Nota_Rif_Anno"), Etichette.getEtichetta("Consolato"),
+                                              Etichette.getEtichetta("In_data"), Etichette.getEtichetta("Numero_Protocollo_Anno"), Etichette.getEtichetta("Motivo_Impedimento"),
+                                              Etichette.getEtichetta("Condizioni_dichiarante"), Etichette.getEtichetta("Luogo"), Etichette.getEtichetta("Segretario_comunale"), Etichette.getEtichetta("Firmato"),
+                                              Etichette.getEtichetta("Notificato_in_data"), Etichette.getEtichetta("Ufficiale_Stato_Civile"), Etichette.getEtichetta("Provenienza"), Etichette.getEtichetta("Tipo_richiesta"),
+                                              Etichette.getEtichetta("Richiesta_da_privato_cittadino"),
+                                              Etichette.getEtichetta("Dati_Richiedente"), Etichette.getEtichetta("Registrato_da"), Etichette.getEtichetta("Nome_Ente"), Etichette.getEtichetta("Comune_Atto"), Etichette.getEtichetta("Comune_Provenienza"),
+                                              Etichette.getEtichetta("Atto_Notarile"), Etichette.getEtichetta("Dati_Atto_Notarile"), Etichette.getEtichetta("Estremi_Atto_Notarile"), Etichette.getEtichetta("Tipo_provvedimento"),
+                                              Etichette.getEtichetta("Ente_Straniero"), Etichette.getEtichetta("Comune_Ente_Straniero"), Etichette.getEtichetta("Comune_Ente"), Etichette.getEtichetta("Estremi_Atto_Straniero"), Etichette.getEtichetta("Descrizione_Atto_Straniero"),
+                                              Etichette.getEtichetta("Sentenza"), Etichette.getEtichetta("Data_Pubblicazione"), Etichette.getEtichetta("Data_Decorrenza"), Etichette.getEtichetta("Data_Stipula"),
+                                              Etichette.getEtichetta("Dati_Decreto_Attestazione"), Etichette.getEtichetta("Dati_residenza_biennale"), Etichette.getEtichetta("Dati_assegno_mantenimento"), Etichette.getEtichetta("Dati_accertamento"),
+                                              Etichette.getEtichetta("Data_deposito"), Etichette.getEtichetta("Data_Comunicazione"), Etichette.getEtichetta("Data_comunicazione_avv"), Etichette.getEtichetta("Foro"),
+                                              Etichette.getEtichetta("Autorita_giudiziale"), Etichette.getEtichetta("Dichiarazione_giudiziale"), Etichette.getEtichetta("Protocollo"),
+                                              Etichette.getEtichetta("Atto_da_trascrivere"), Etichette.getEtichetta("Atto_da_trascrivere_sentenza_tribunale"), Etichette.getEtichetta("Autorita_mittente"), Etichette.getEtichetta("Data_Atto"), Etichette.getEtichetta("Data_Formazione"), Etichette.getEtichetta("Ricezione_Atto"),
+                                              Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Ente"), Etichette.getEtichetta("Luogo_Celebrazione"), Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("Civico"), Etichette.getEtichetta("Entrambi"),
+                                              Etichette.getEtichetta("Giudizio_pendente"), Etichette.getEtichetta("Autorita_giudiziale"), Etichette.getEtichetta("Autorita_Giudiziaria"), Etichette.getEtichetta("Tempistica_assunzione"), Etichette.getEtichetta("Numero"),
+                                              Etichette.getEtichetta("Tipo_separazione"), Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Rilasciato_da"), Etichette.getEtichetta("Data_Richiesta"), Etichette.getEtichetta("Dati_Richiesta"),
+                                              Etichette.getEtichetta("Data_Rilascio"), Etichette.getEtichetta("Data_scadenza"), Etichette.getEtichetta("Estremi_documento"), Etichette.getEtichetta("Estremi_delega"),
+                                              Etichette.getEtichetta("Comune_delegante"), Etichette.getEtichetta("Riassunto_dichiarazione"), Etichette.getEtichetta("Testo_Riassunto_placeholder"), Etichette.getEtichetta("Estremi_Certificazione"), Etichette.getEtichetta("Durante_viaggio"), Etichette.getEtichetta("Tipo_Luogo_Nascita")]
 
 }

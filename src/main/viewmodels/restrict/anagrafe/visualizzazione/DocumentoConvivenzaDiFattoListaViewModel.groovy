@@ -21,11 +21,11 @@ class DocumentoConvivenzaDiFattoListaViewModel extends AbstractDocumentoIndividu
     init(@ContextParam(ContextType.COMPONENT) Window w) {
 
         // Aggiungo etichette titolo
-        List<Map<String, String>> eList = [Etichette.Documenti_Convivenza_di_Fatto, Etichette.Ordina_per]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Documenti_Convivenza_di_Fatto")]
 
         doInit(w, eList)
 
-        msgTitle = getEtichetta(Etichette.Documenti_Convivenza_di_Fatto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Documenti_Convivenza_di_Fatto"))
 
         formLabel = msgTitle?.toUpperCase()
     }

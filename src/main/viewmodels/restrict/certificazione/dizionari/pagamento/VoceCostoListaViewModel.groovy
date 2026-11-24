@@ -34,6 +34,9 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
     List<WspaVoceCosto> lista
     WspaVoceCosto dettaglio
 
+    List<OrderBy> listaOrder = []
+    OrderBy selectedOrder
+
     Boolean showDepagColumns
 
     @Delegate
@@ -54,25 +57,36 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
         addPlusEnabled = true
         deleteEnabled = false
 
-        List<Map<String, String>> eList = [Etichette.Voci_di_costo, Etichette.Funzione_non_abilitata, Etichette.Sincronizza_con_altro, Etichette.Tariffe_Diritti]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Voci_di_costo"), Etichette.getEtichetta("Funzione_non_abilitata"), Etichette.getEtichetta("Sincronizza_con_altro"), Etichette.getEtichetta("Tariffe_Diritti")]
         eList.addAll(WspaVoceCosto.etichetteDomain)
         eList.addAll(DepagVoceCosto.etichetteDomain)
         eList.addAll(CerTariffaDiritto.etichetteDomain)
-        eList.addAll(EtichetteMessaggi.Info_Sincronizzazione_successo)
+        eList.addAll(Etichette.getEtichetta("Info_Sincronizzazione_successo"))
         eList.addAll(EDiritto.values()*.getEtichettaDesc())
+
+        eList.addAll([Etichette.getEtichetta("Descrizione_crescente"), Etichette.getEtichetta("Descrizione_decrescente"),
+                      Etichette.getEtichetta("Codice_crescente"), Etichette.getEtichetta("Codice_decrescente")])
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Voci_di_costo)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Voci_di_costo"))
 
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
 
+        //Ordinamento
+        listaOrder.addAll([new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_crescente")), [new Sort.Order(Sort.Direction.ASC, "tariffaDiritto.descrizione")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Descrizione_decrescente")), [new Sort.Order(Sort.Direction.DESC, "tariffaDiritto.descrizione")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_crescente")),  [new Sort.Order(Sort.Direction.ASC, "tariffaDiritto.diritto"), new Sort.Order(Sort.Direction.ASC, "tariffaDiritto.fasciaTariffaria")]),
+                           new OrderBy(getEtichetta(Etichette.getEtichetta("Codice_decrescente")), [new Sort.Order(Sort.Direction.DESC, "tariffaDiritto.diritto"), new Sort.Order(Sort.Direction.ASC, "tariffaDiritto.fasciaTariffaria")])])
+
+        selectedOrder = listaOrder[0]
+
         wspaVoceCostoService = wspaVoceCostoServiceFactory.getService()
         showDepagColumns = arcParametroService.getServizioPagamento() == EServizioPagamento.DEPAG
 
-        addPlusList.add([id: ADD_SINCRONIZZA, idDomain: ADD_SINCRONIZZA, descrizione: String.format(getEtichetta(Etichette.Sincronizza_con_altro), getEtichetta(Etichette.Tariffe_Diritti)), tipo: "T"])
+        addPlusList.add([id: ADD_SINCRONIZZA, idDomain: ADD_SINCRONIZZA, descrizione: String.format(getEtichetta(Etichette.getEtichetta("Sincronizza_con_altro")), getEtichetta(Etichette.getEtichetta("Tariffe_Diritti"))), tipo: "T"])
 
         caricaLista()
     }
@@ -86,7 +100,7 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
     }
 
     Paginazione eseguiQuery(Boolean usePaging) {
-        PageRequest pr = new PageRequest((usePaging ? activePage : 0), (usePaging ? pageSize : Integer.MAX_VALUE), new Sort(SortUtils.tariffaDirittoAsc))
+        PageRequest pr = new PageRequest((usePaging ? activePage : 0), (usePaging ? pageSize : Integer.MAX_VALUE), new Sort(selectedOrder?.campi))
 
         Page<WspaVoceCosto> p = wspaVoceCostoService.listAllByDescrizioneLike(SqlUtils.beginsAndEndsLike(filtro), pr)
 
@@ -108,7 +122,7 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -119,7 +133,7 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
             if (userModifyEnabled) {
                 apriDettaglio(getUriDettaglio(), [:])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -130,7 +144,7 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
             if (idDomain == ADD_SINCRONIZZA) {
                 try {
                     wspaVoceCostoService.sincronizza()
-                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(EtichetteMessaggi.Info_Sincronizzazione_successo))
+                    MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.I, getEtichetta(Etichette.getEtichetta("Info_Sincronizzazione_successo")))
                 } catch (SincronizzazioneNessunElementoException e) {
                     MessaggioUtils.showMsgBox(msgTitle, MessaggioUtils.W, e.message)
                 } catch (SincronizzazioneErroreException e) {
@@ -139,13 +153,13 @@ class VoceCostoListaViewModel extends DizionarioListaViewModel {
                 onRicarica()
             }
         } else {
-            Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
     String getMessaggioCancellazione() {
         if (dettaglio) {
-            return (dettaglio.tariffaDiritto.descrizione + ":\n" + getEtichetta(EtichetteMessaggi.Ask_Cancellazione_Record))
+            return (dettaglio.tariffaDiritto.descrizione + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_Cancellazione_Record")))
         }
         return ""
     }

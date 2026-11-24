@@ -32,7 +32,7 @@ class PopupAvvisiViewModel extends AbstractSelectViewModel {
         self = w
 
         List<Map<String, String>> eList = []
-        eList.addAll(Etichette.Messaggi)
+        eList.addAll(Etichette.getEtichetta("Messaggi"))
         eList.addAll(AnaMessaggio.etichetteDomain)
         doInitEtichette(eList)
 

@@ -2,9 +2,8 @@ package it.finmatica.de4gsdzk.export
 
 import com.opencsv.CSVWriter
 import it.finmatica.de4gsdzk.utils.DataUtils
-import org.apache.poi.hssf.usermodel.HSSFCellStyle
-import org.apache.poi.hssf.usermodel.HSSFRichTextString
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.*
 
 import java.nio.charset.StandardCharsets
@@ -111,7 +110,11 @@ class ExportUtils {
     }
 
     static InputStream createExcel (List<ExportField> columnsExportDetails, List<?> exportData){
-        Workbook wb = new HSSFWorkbook()
+        // Scelta del formato in base al numero di righe
+        // .xls (HSSF) ha limite di 65535 righe, .xlsx (XSSF) supporta oltre 1 milione
+        boolean useXlsx = exportData.size() > 65535
+        Workbook wb = useXlsx ? new XSSFWorkbook() : new HSSFWorkbook()
+
         //CreationHelper createHelper = wb.getCreationHelper()
         Sheet sheet = wb.createSheet("QueryExport")
 
@@ -130,9 +133,9 @@ class ExportUtils {
             cell.setCellStyle(headerCellStyle)
         }
 
-        HSSFCellStyle dateCellStyle = wb.createCellStyle()
+        CellStyle dateCellStyle = wb.createCellStyle()
         dateCellStyle.setDataFormat(wb.createDataFormat().getFormat(DataUtils.DATE_FORMAT_PATTERN))
-        HSSFCellStyle datetimeCellStyle = wb.createCellStyle()
+        CellStyle datetimeCellStyle = wb.createCellStyle()
         datetimeCellStyle.setDataFormat(wb.createDataFormat().getFormat(DataUtils.DATE_TIME_FORMAT_PATTERN))
 
         // Data to export
@@ -169,10 +172,13 @@ class ExportUtils {
                                 cell.setCellValue(dataRow."$propertyName")
                             }
                         } catch (Exception e) {
+                            // Fallback to string if numeric conversion fails
                             if (columnDetail.getExportClosure() != null ){
-                                cell.setCellValue(new HSSFRichTextString(columnDetail.getExportClosure().call(dataRow, propertyName)))
+                                def val = columnDetail.getExportClosure().call(dataRow, propertyName)
+                                cell.setCellValue(val != null ? val.toString() : "")
                             } else {
-                                cell.setCellValue(new HSSFRichTextString(dataRow."$propertyName"))
+                                def val = dataRow."$propertyName"
+                                cell.setCellValue(val != null ? val.toString() : "")
                             }
                         }
                         break

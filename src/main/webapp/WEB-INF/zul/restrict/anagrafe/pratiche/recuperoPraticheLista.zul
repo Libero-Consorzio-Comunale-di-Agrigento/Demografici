@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window viewModel="@id('vm') @init('restrict.anagrafe.pratiche.RecuperoPraticheListaViewModel')"
+            apply="org.zkoss.bind.BindComposer"
+            border="none"
+            width="100%" height="100%"
+            sizable="false" closable="false">
+
+        <hlayout valign="middle">
+            <hlayout sclass="navigazione" valign="middle">
+                <hlayout sclass="afc-control-bar" valign="middle">
+                    <toolbarbuttonBackFromList/>
+                    <paging sclass="afc-paging"
+                            onPaging="@command('onPagina')"
+                            activePage="@bind(vm.activePage)"
+                            pageSize="@bind(vm.pageSize)"
+                            totalSize="@load(vm.totalSize)"/>
+                    <hlayout sclass="campo-ricerca">
+                        <textbox hflex="1" vflex="1"
+                                 width="120px"
+                                 value="@bind(vm.filtro)"
+                                 tooltiptext="@load(vm.etichette['filtro_ricerca_tooltip'])"
+                                 placeholder="@load(vm.etichette['filtro_ricerca_placeholder'])"
+                                 mold="default"
+                                 onOK="@command('onFiltro')"
+                                 style="border-width:0px;"/>
+                        <image src="/images/de4gsdzk/10x10/cancelSimple.png"
+                               style="padding:5px;"
+                               sclass="toolbar-mini-button"
+                               onClick="@command('onResetFiltro')"/>
+                    </hlayout>
+
+                    <toolbarbutton image="/images/icon/action/22x22/search.png"
+                                   tooltiptext="@load(vm.etichette['ricerca_tooltip'])"
+                                   onClick="@command('onFiltro')"/>
+                </hlayout>
+            </hlayout>
+
+            <label value="@load(vm.formLabel)" sclass="formTitle"/>
+        </hlayout>
+
+        <groupbox closable="false">
+            <grid sclass="form">
+                <rows>
+                    <row>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Archivio_Anagrafe'])"/>
+                        </cell>
+                        <cell colspan="3">
+                            <hlayout valign="middle">
+                                <radiogroup model="@load(vm.listaTipoArchivioPratica)" hflex="1">
+                                    <template name="model">
+                                        <radio label="@load(vm.getEtichettaEnum(each))"
+                                               value="@load(each)"
+                                               selected="true"/>
+                                    </template>
+                                </radiogroup>
+                            </hlayout>
+                        </cell>
+                        <cell align="right">
+                            <label value="@load(vm.etichette['Tipo_Pratica'])"/>
+                        </cell>
+                        <cell colspan="6">
+                            <hlayout valign="middle">
+                                <radiogroup model="@load(vm.listaTipoPratica)" hflex="1"
+                                            selectedItem="@bind(vm.tipoPratica) @converter('it.finmatica.zk.utils.PropertyConverter', property='id')"
+                                            onCheck="@command('selectTipoPratica')">
+                                    <template name="model">
+                                        <radio label="@load(empty each? vm.etichette['Tutti'] : vm.getEtichettaEnum(each))"
+                                               value="@load(each)"
+                                               style="padding-left:10px"/>
+                                    </template>
+                                </radiogroup>
+                            </hlayout>
+                        </cell>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+
+        <orderByBlock/>
+
+        <listbox model="@load(vm.lista)" vflex="1"
+                 emptyMessage="@load(vm.etichette['Nessuna_Pratica_Presente'])">
+            <listhead>
+                <listheader label="@load(vm.etichette['Tipo_Pratica'])"/>
+                <listheader label="@load(vm.etichette['Matricola_Dichiarante'])"/>
+                <listheader label="@load(vm.etichette['Dichiarante'])"/>
+                <listheader label="@load(vm.etichette['Data_Inoltro'])"/>
+                <listheader label="@load(vm.etichette['Codice_Famiglia_Provenienza'])" width="180px"/>
+                <listheader label="@load(vm.etichette['Utente'])"/>
+                <listheader label="@load(vm.etichette['Email'])"/>
+                <listheader label="@load(vm.etichette['Numero_Telefonico'])"/>
+                <listheader label="@load(vm.etichette['Note'])"/>
+                <listheader label="" width="52px"/>
+                <listheader label="" width="52px"/>
+            </listhead>
+            <template name="model" var="item">
+                <listitem>
+                    <listcell label="@load(vm.getEtichettaEnum(item.tipoPratica))"/>
+                    <listcell label="@bind(item.matricolaDichiarante)"/>
+                    <listcell label="@bind(item.dichiarante)"/>
+                    <listcell
+                            label="@load(empty item.dataInoltro? null:(c:formatDate(item.dataInoltro, 'dd/MM/yyyy')))"/>
+                    <listcell label="@bind(item.codFamigliaProvenienza)"/>
+                    <listcell label="@bind(item.utente)"/>
+                    <listcell label="@bind(item.email)"/>
+                    <listcell label="@bind(item.telefono)"/>
+                    <listcell label="@bind(item.note)"/>
+                    <listcell>
+                        <button image="/images/icon/action/16x16/import.png"
+                                tooltiptext="@load(vm.etichette['scarica_documenti_tooltip'])"
+                                disabled="@load(item.allegati.size() eq 0)"
+                                onClick="@command('onDownloadDocumenti', pratica=item)"/>
+                    </listcell>
+                    <listcell>
+                        <button image="/images/icon/action/16x16/forward.png"
+                                tooltiptext="@load(vm.etichette['seleziona_tooltip'])"
+                                onClick="@command('onSeleziona', pratica=item)"/>
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

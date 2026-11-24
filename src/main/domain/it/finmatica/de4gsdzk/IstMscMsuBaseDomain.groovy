@@ -112,9 +112,9 @@ abstract class IstMscMsuBaseDomain extends IstBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_procedura, Etichette.Data_iscrizione_procedimento,
-                                              Etichette.Data_provvedimento, Etichette.Data_trascrizione_provvedimento,
-                                              Etichette.Comune_provvedimento_trib_cda, Etichette.Tipo_provvedimento_trib_cda,
-                                              Etichette.Causa_divorzio, Etichette.Data_Separazione]
+    static final List<Map> etichetteDomain = [ Etichette.getEtichetta("Tipo_procedura"), Etichette.getEtichetta("Data_iscrizione_procedimento"),
+                                               Etichette.getEtichetta("Data_provvedimento"),  Etichette.getEtichetta("Data_trascrizione_provvedimento"),
+                                               Etichette.getEtichetta("Comune_provvedimento_trib_cda"),  Etichette.getEtichetta("Tipo_provvedimento_trib_cda"),
+                                               Etichette.getEtichetta("Causa_divorzio"),  Etichette.getEtichetta("Data_Separazione")]
 
 }

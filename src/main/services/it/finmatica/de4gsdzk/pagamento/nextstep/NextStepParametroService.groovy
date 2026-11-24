@@ -7,8 +7,7 @@ import it.finmatica.de4gsdzk.pagamento.IWspaParametroService
 import it.finmatica.de4gsdzk.pagamento.WspaParametro
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneErroreException
 import it.finmatica.de4gsdzk.pagamento.error.SincronizzazioneNessunElementoException
-import it.finmatica.de4gsdzk.pagamento.nextstep.NextStepParametroRepository
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.utils.TestoUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -20,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class NextStepParametroService implements IWspaParametroService {
     private final NextStepParametroRepository nextStepParametroRepository
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
 
     NextStepParametroService(NextStepParametroRepository nextStepParametroRepository,
-                             StatoCivileService statoCivileService) {
+                             GsdService gsdService) {
         this.nextStepParametroRepository = nextStepParametroRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     @Override
@@ -37,7 +36,7 @@ class NextStepParametroService implements IWspaParametroService {
     void sincronizza() {
         Integer ret
         try {
-            ret = statoCivileService.popolaParametriWspa(EServizioPagamento.NEXTSTEP)
+            ret = gsdService.popolaParametriWspa(EServizioPagamento.NEXTSTEP)
         } catch (De4gsdzkRuntimeException e) {
             log.error(e.message, e)
             throw new SincronizzazioneErroreException()

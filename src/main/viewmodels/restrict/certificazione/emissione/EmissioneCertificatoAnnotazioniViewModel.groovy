@@ -41,7 +41,7 @@ class EmissioneCertificatoAnnotazioniViewModel extends RiferimentiAttoListaParen
         modifyEnabled = false
         addEnabled = false
 
-        List<Map> eList = [Etichette.Annotazioni, Etichette.SEZIONE_ANNOTAZIONI_ATTO, Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.Del, Etichette.Annotazione, Etichette.Modello_Personalizzato]
+        List<Map> eList = [Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("Del"), Etichette.getEtichetta("Annotazione"), Etichette.getEtichetta("Modello_Personalizzato")]
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarAnnotazioniAttributes.etichetteCbAnnListDesc)
 
@@ -54,12 +54,12 @@ class EmissioneCertificatoAnnotazioniViewModel extends RiferimentiAttoListaParen
         eList.addAll(listaTipoAnnotazione*.etichettaDesc)
 
         //Aggiungo etichette pulsanti
-        eList.addAll([Etichette.Conferma, Etichette.Chiudi])
+        eList.addAll([Etichette.getEtichetta("Conferma"), Etichette.getEtichetta("Chiudi")])
 
         doInit(eList, pkAtto, tipoAttoEnum)
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
-        formLabel = getEtichetta(Etichette.SEZIONE_ANNOTAZIONI_ATTO)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
+        formLabel = getEtichetta(Etichette.getEtichetta("SEZIONE_ANNOTAZIONI_ATTO"))
 
         resize()
 

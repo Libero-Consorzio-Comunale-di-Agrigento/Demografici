@@ -47,8 +47,8 @@ select mor.id
      , to_char(dpa.d_data_documento_tes,'yyyy-mm-dd') dataTrasmissione
 -- intestatari
      , mor.cod_fiscale INT_codiceFiscale
-     , nvl(occ.cognome,mor.cognome) INT_cognome
-     , nvl(occ.nome,mor.nome) INT_nome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'COGNOME_1',nvl(occ.cognome,mor.cognome)) INT_cognome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'NOME_1',nvl(occ.nome,mor.nome)) INT_nome
      , mor.sesso INT_sesso
      , decode(mor.sesso,'M','maschile','F','femminile','non conosciuto') INT_descrizioneSesso
      , to_char(mor.d_data_nas,'yyyy-mm-dd') INT_dataNascita
@@ -177,8 +177,8 @@ select mor.id
      , to_char(null) oraPresuntaMorteDa
      , to_char(null) oraPresuntaMorteA
 -- coniuge
-     , mor.cognome_cn CON_cognome
-     , mor.nome_cn CON_nome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'COGNOME_CN',mor.cognome_cn) CON_cognome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'NOME_CN',mor.nome_cn) CON_nome
      , mor.sesso_cn CON_sesso
      , to_char(mor.d_data_nas_cn,'yyyy-mm-dd') CON_dataNascita
      , f_ANSC_id_comune_al(mor.cod_pro_nas_cn,mor.cod_com_nas_cn,mor.d_data_nas_cn) CON_idComuneNascita
@@ -203,11 +203,11 @@ select mor.id
      , f_ANSC_id_nazionalita(dci_cn.ist_ci) CON_idNazionalita
      , f_get_descrizione_DCI(mor.nazionalita_cn,'') CON_nazionalita
 -- madre
-     , mor.cognome_md MAT_cognome
-     , mor.nome_md MAT_nome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'COGNOME_MD',mor.cognome_md) MAT_cognome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'NOME_MD',mor.nome_md) MAT_nome
 -- padre
-     , mor.cognome_pd PAT_cognome
-     , mor.nome_pd PAT_nome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'COGNOME_PD',mor.cognome_pd) PAT_cognome
+     , f_ANSC_stringa_unicode('CIVMOR',mor.id,'NOME_PD',mor.nome_pd) PAT_nome
 -- inteprete
      , sog_ITP.cognome ITP_cognome
      , sog_ITP.nome ITP_nome

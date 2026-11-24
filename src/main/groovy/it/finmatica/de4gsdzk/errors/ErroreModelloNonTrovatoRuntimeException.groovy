@@ -1,11 +1,11 @@
 package it.finmatica.de4gsdzk.errors
 
+import it.finmatica.de4gsdzk.utils.Etichette
 
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 
 class ErroreModelloNonTrovatoRuntimeException extends De4gsdzkRuntimeException {
 
-    private static final Map<String, String> etichettaDefault = EtichetteMessaggi.Errore_modello_testo_non_trovato
+    private static final Map<String, String> etichettaDefault = Etichette.getEtichetta("Errore_modello_testo_non_trovato")
 
     ErroreModelloNonTrovatoRuntimeException() {
         super(etichettaDefault, (String) etichettaDefault?.defaultValue)

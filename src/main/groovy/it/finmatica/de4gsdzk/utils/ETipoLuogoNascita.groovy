@@ -15,10 +15,10 @@ enum ETipoLuogoNascita {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case AE: return Etichette.Aereo
-            case NA: return Etichette.Nave
-            case TR: return Etichette.Treno
-            case AL: return Etichette.Altro
+            case AE: return Etichette.getEtichetta("Aereo")
+            case NA: return Etichette.getEtichetta("Nave")
+            case TR: return Etichette.getEtichetta("Treno")
+            case AL: return Etichette.getEtichetta("Altro")
         }
         return null
     }

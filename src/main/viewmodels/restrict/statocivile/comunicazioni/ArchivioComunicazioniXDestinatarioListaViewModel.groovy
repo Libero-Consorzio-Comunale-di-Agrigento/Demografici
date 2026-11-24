@@ -55,8 +55,8 @@ class ArchivioComunicazioniXDestinatarioListaViewModel extends ComunicazioniAtto
         pagingComunicazioneEnabled = true
         backFromListComunicazioneEnabled = false
 
-        List<Map> eList = [Etichette.Estremi_Atto, Etichette.Comune, Etichette.Data_Registrazione_decrescente, Etichette.Data_Registrazione_crescente,
-                           Etichette.Gestione_Comunicazioni_Archiviate, Etichette.Per_Destinatario]
+        List<Map> eList = [Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Registrazione_decrescente"), Etichette.getEtichetta("Data_Registrazione_crescente"),
+                           Etichette.getEtichetta("Gestione_Comunicazioni_Archiviate"), Etichette.getEtichetta("Per_Destinatario")]
         eList.addAll(etichetteComunicazioniDefault)
 
         eList.addAll(etichetteListaDefault)
@@ -80,12 +80,12 @@ class ArchivioComunicazioniXDestinatarioListaViewModel extends ComunicazioniAtto
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Comunicazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Comunicazioni"))
 
-        formLabel = getEtichetta(Etichette.Gestione_Comunicazioni_Archiviate)?.toUpperCase() + " - " + getEtichetta(Etichette.Per_Destinatario)?.toUpperCase()
+        formLabel = getEtichetta(Etichette.getEtichetta("Gestione_Comunicazioni_Archiviate"))?.toUpperCase() + " - " + getEtichetta(Etichette.getEtichetta("Per_Destinatario"))?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_decrescente),  SortUtils.dataRegistrazioneDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_crescente),    SortUtils.dataRegistrazioneAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_decrescente")),  SortUtils.dataRegistrazioneDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_crescente")),    SortUtils.dataRegistrazioneAsc))
 
         //Default: data registrazione discendente
         selectedOrder = listaOrder[0]
@@ -132,7 +132,7 @@ class ArchivioComunicazioniXDestinatarioListaViewModel extends ComunicazioniAtto
             RicercaDestinatario rd = null
             if ((m.comuneDestinatario != null) && (m.provinciaDestinatario != null)){
                 ArcComune comuneDomain = arcComuneBaseService.getByCodiceComuneAndCodiceProvincia(m.comuneDestinatario, m.provinciaDestinatario)
-                rd = new RicercaDestinatario((i+1), comuneDomain, null, (getEtichetta(Etichette.Comune) + ": " + comuneDomain.descrizioneComune))
+                rd = new RicercaDestinatario((i+1), comuneDomain, null, (getEtichetta(Etichette.getEtichetta("Comune")) + ": " + comuneDomain.descrizioneComune))
             } else {
                 if (m.ente != null){
                     CivEnte ente = civEnteService.get(m.ente)

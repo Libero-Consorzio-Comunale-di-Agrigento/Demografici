@@ -13,5 +13,7 @@ class ConfigurazioneUtils {
 
     public static final String ARCHIVIO_RIFERIMENTO_STATO_CIVILE = "CIVCOM"
 
+    public static final String ARCHIVIO_RIFERIMENTO_ANAGRAFE = "ANACOM"
+
     public static final String CODICE_UTENZA_TECNICA = "ADS"
 }

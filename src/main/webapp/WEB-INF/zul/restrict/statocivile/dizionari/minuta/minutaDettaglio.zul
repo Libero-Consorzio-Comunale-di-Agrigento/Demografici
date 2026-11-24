@@ -34,7 +34,7 @@
 							<h:span class="mandatoryLabel">*</h:span><label value="@load(vm.etichette['Codice'])"/>
 						</cell>
 						<cell>
-							<intbox value="@bind(vm.dettaglio.codice)" maxlength="2" disabled="@load(vm.tipoOperazione.isUpdate())"/>
+							<intbox value="@bind(vm.dettaglio.codice)" maxlength="3" disabled="@load(vm.tipoOperazione.isUpdate())"/>
 						</cell>
 					</row>
 					<row>

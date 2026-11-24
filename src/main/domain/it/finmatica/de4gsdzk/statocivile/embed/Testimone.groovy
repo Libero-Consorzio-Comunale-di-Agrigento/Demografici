@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile.embed
 
 import it.finmatica.de4gsdzk.ISoggettoCollegato
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.utils.ESesso
 import it.finmatica.de4gsdzk.utils.Etichette
 
@@ -66,12 +66,12 @@ class Testimone implements ISoggettoCollegato{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NAZIONALITA", nullable = true)
-    AnaNazionalita nazionalita
+    AnaCittadinanza nazionalita
 
     ////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome, Etichette.Nome]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome"),Etichette.getEtichetta("Nome")]
 
 }

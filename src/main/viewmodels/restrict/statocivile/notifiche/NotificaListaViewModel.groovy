@@ -68,11 +68,11 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
         ricercaNotifica = new RicercaNotifica(DataUtils.addDays((new Date()).clearTime(), -1), (new Date()).clearTime())
 
-        List<Map> eList = [Etichette.Gestione_Notifiche, Etichette.Tipo_Atto,
-                           Etichette.Tipo, Etichette.Tutti, Etichette.Data_decrescente, Etichette.Data_crescente]
+        List<Map> eList = [Etichette.getEtichetta("Gestione_Notifiche"), Etichette.getEtichetta("Tipo_Atto"),
+                           Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Tutti"), Etichette.getEtichetta("Data_decrescente"), Etichette.getEtichetta("Data_crescente")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_conferma_notifica_ANSC,
-                      EtichetteMessaggi.Errore_ANSC_servizio_notifica, EtichetteMessaggi.Errore_ANSC_abilitazione_utente])
+        eList.addAll([Etichette.getEtichetta("Ask_conferma_notifica_ANSC"),
+                      Etichette.getEtichetta("Errore_ANSC_servizio_notifica"), Etichette.getEtichetta("Errore_ANSC_abilitazione_utente")])
 
         eList.addAll(etichetteListaDefault)
 
@@ -101,15 +101,15 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
         eList.addAll(Arrays.asList(ETipoContenutoAnsc.values())*.etichettaDesc)
 
         // Aggiungo etichette ordinamento non applicabile
-        eList.addAll(Etichette.Ordinamento_non_applicabile)
+        eList.addAll(Etichette.getEtichetta("Ordinamento_non_applicabile"))
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Gestione_Notifiche)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Gestione_Notifiche"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_crescente),    SortUtils.validoDalIdAsc ))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_crescente")),    SortUtils.validoDalIdAsc ))
 
         selectedOrder = listaOrder[0]
 
@@ -221,13 +221,13 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
     }
 
     void verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu,
-                                                     Long idRif, Long idComunicazione, IRicercaNotificheAnsc r, IAnscPaginazione paginazione) {
+                                                     Long idRif, Long idComunicazione, IRicercaAnsc r, IAnscPaginazione paginazione) {
         AnscUtente ansUte = anscUtenteService.getAnscUtenteCorrente()
         recuperaCredenzialiEInviaComunicazione(ansUte, taRifCom, servizioCdu, idRif, idComunicazione, r, paginazione)
     }
 
     void inviaComunicazione(ETipoArchivioAnsc taRifCom, AnscEndPointServizioArchivio servizioCdu,
-                            AnscCredenziali cre, Long idRifNot, Long idComunicazione, IRicercaNotificheAnsc rn, IAnscPaginazione paginazione, Boolean skip) {
+                            AnscCredenziali cre, Long idRifNot, Long idComunicazione, IRicercaAnsc rn, IAnscPaginazione paginazione, Boolean skip) {
         AnscEndPointServizio servizio = servizioCdu?.servizio
         AnscInfoComunicazioneServizio com = anscComunicazioneService.inviaComunicazioneNotifica(taRifCom, servizio, idRifNot, idComunicazione, cre, rn, paginazione, skip, (servizio.flagNotificaRicerca || servizio.flagConsultazioneEvento || servizio.flagConsultazioneSoggetto))
         if ((com.getRetVal() ?: "") != "") {
@@ -275,7 +275,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
     void ricercaNotifiche(AnscCredenziali cre){
         if (servizioRicercaNotifiche?.servizio == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_notifica), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             AnscPaginazione anscPaginazione = getAnscPaginazioneByCounters()
             if (cre == null){
@@ -304,7 +304,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
     void rifiutaNotifica(Long idRifNot){
         if (servizioRifiutoNotifica?.servizio == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_notifica), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc.NOT, servizioRifiutoNotifica, idRifNot, null, null, null)
         }
@@ -315,7 +315,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
     /////////////////////////////////////////////////////////////////////
 
     @Command void onConfermaNotificaAnsc(@BindingParam("infoNotifica") AnscInfoNotifica infoNotifica){
-        Messagebox.show(infoNotifica.idAnsc + " - " + (infoNotifica.descrizione?:"") + ":\n" + getEtichetta(EtichetteMessaggi.Ask_conferma_notifica_ANSC), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
+        Messagebox.show(infoNotifica.idAnsc + " - " + (infoNotifica.descrizione?:"") + ":\n" + getEtichetta(Etichette.getEtichetta("Ask_conferma_notifica_ANSC")), msgTitle, Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION,
             new org.zkoss.zk.ui.event.EventListener() {
                 void onEvent(Event e) {
                     if (Messagebox.ON_OK.equals(e.getName())) {
@@ -328,7 +328,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
     void confermaNotifica(Long idRifNot){
         if (servizioConfermaNotifica?.servizio == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_notifica), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc.NOT, servizioConfermaNotifica, idRifNot, null, null, null)
         }
@@ -340,7 +340,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
     @Command void onConsultaEventoNotificaAnsc(@BindingParam("infoNotifica") AnscInfoNotifica infoNotifica){
         if (servizioConsultazioneEvento?.servizio == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_notifica), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc.NOT, servizioConsultazioneEvento, infoNotifica.id, null, null, null)
         }
@@ -352,7 +352,7 @@ class NotificaListaViewModel extends AbstractListaViewModel implements TraitCanc
 
     void consultaSoggettoNotificaAnsc(Long idRifNot, AnscCredenziali cre){
         if (servizioConsultazioneSoggetto?.servizio == null) {
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_ANSC_servizio_notifica), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_ANSC_servizio_notifica")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         } else {
             if (cre == null){
                 verificaSequenzaServiziERecuperaCredenziali(ETipoArchivioAnsc.NOT, servizioConsultazioneSoggetto, idRifNot, null, null, null)

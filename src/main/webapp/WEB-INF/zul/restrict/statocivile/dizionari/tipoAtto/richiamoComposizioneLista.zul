@@ -19,7 +19,7 @@
 			<label value="@load(vm.formLabel)" sclass="formTitle"/>
 		</hlayout>
 
-		<groupbox closable="false">
+        <groupbox closable="false">
 			<grid sclass="form">
 				<rows>
 					<templateRowTipoAttoRicerca/>
@@ -29,7 +29,7 @@
 
 		<vlayout vflex="1">
 
-			<totalSizeBlock/>
+            <orderByBlock/>
 
 			<borderlayout vflex="1">
 				<center vflex="1">

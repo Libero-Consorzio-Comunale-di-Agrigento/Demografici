@@ -21,16 +21,28 @@ enum ETipoArchivioAnsc {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case NAS: return Etichette.Atti_Nascita
-            case MAT: return Etichette.Atti_Matrimonio
-            case UCI: return Etichette.Atti_Unione_Civile
-            case MOR: return Etichette.Atti_Morte
-            case CIT: return Etichette.Atti_Cittadinanza
-            case ANN: return Etichette.Annotazioni
-            case ALL: return Etichette.Allegati
-            case CER: return Etichette.Certificati
-            case NOT: return Etichette.Notifiche
-            case FIR: return Etichette.Firmatari
+            case NAS: return Etichette.getEtichetta("Atti_Nascita")
+            case MAT: return Etichette.getEtichetta("Atti_Matrimonio")
+            case UCI: return Etichette.getEtichetta("Atti_Unione_Civile")
+            case MOR: return Etichette.getEtichetta("Atti_Morte")
+            case CIT: return Etichette.getEtichetta("Atti_Cittadinanza")
+            case ANN: return Etichette.getEtichetta("Annotazioni")
+            case ALL: return Etichette.getEtichetta("Allegati")
+            case CER: return Etichette.getEtichetta("Certificati")
+            case NOT: return Etichette.getEtichetta("Notifiche")
+            case FIR: return Etichette.getEtichetta("Firmatari")
+        }
+        return null
+
+    }
+
+    ETipoAtto getTipoAtto(){
+        switch(this) {
+            case NAS: return ETipoAtto.NAS
+            case MAT: return ETipoAtto.MAT
+            case UCI: return ETipoAtto.UCI
+            case MOR: return ETipoAtto.MOR
+            case CIT: return ETipoAtto.CIT
         }
         return null
 

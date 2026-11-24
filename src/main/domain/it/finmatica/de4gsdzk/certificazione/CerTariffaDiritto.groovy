@@ -46,9 +46,9 @@ class CerTariffaDiritto extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione,
-                                              Etichette.Codice_diritto, Etichette.Fascia_tariffaria,
-                                              Etichette.Importo_1, Etichette.Importo_2,
-                                              Etichette.Importo_1_on_line, Etichette.Importo_2_on_line,
-                                              Etichette.Categoria_Tipo_Certificato,Etichette.Categorie_Tipo_Certificato]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"),
+                                              Etichette.getEtichetta("Codice_diritto"),  Etichette.getEtichetta("Fascia_tariffaria"),
+                                              Etichette.getEtichetta("Importo_1"), Etichette.getEtichetta("Importo_2"),
+                                              Etichette.getEtichetta("Importo_1_on_line"), Etichette.getEtichetta("Importo_2_on_line"),
+                                              Etichette.getEtichetta("Categoria_Tipo_Certificato"),Etichette.getEtichetta("Categorie_Tipo_Certificato")]
 }

@@ -6,9 +6,9 @@ enum EModalita {
 
     Map getEtichettaDesc() {
         switch(this) {
-            case PAR: return Etichette.Modalita_PAR
-            case ARR: return Etichette.Modalita_ARR
-            case INT: return Etichette.Modalita_INT
+            case PAR: return Etichette.getEtichetta("Modalita_PAR")
+            case ARR: return Etichette.getEtichetta("Modalita_ARR")
+            case INT: return Etichette.getEtichetta("Modalita_INT")
         }
         return null
     }

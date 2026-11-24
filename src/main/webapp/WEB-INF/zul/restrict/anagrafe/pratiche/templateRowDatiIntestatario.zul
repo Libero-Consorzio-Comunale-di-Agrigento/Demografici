@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:w="http://www.zkoss.org/2005/zk/client"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Intestatario'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="135px"/>
+                <column/>
+                <column width="135px"/>
+                <column/>
+                <column width="135px"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Cognome'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.dichiarazione.famigliaDest.cognomeIntestatario)" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <customLabel value="@load(vm.etichette['Nome'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.dichiarazione.famigliaDest.nomeIntestatario)" readonly="true"/>
+                    </cell>
+                    <cell align="right">
+                        <zk if="${arg.codice eq true}">
+                            <customLabel value="@load(vm.etichette['Codice_Famiglia'])"/>
+                        </zk>
+                    </cell>
+                    <cell>
+                        <zk if="${arg.codice eq true}">
+                            <textbox value="@bind(vm.dichiarazione.codFamigliaDest)" readonly="true"/>
+                        </zk>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

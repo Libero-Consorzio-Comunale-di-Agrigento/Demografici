@@ -18,10 +18,10 @@ enum EStatoFlussoNotifica {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case DA: return Etichette.Da_approvare
-            case AP: return Etichette.Approvata
-            case RI: return Etichette.Rifiutata
-            case SI: return Etichette.Informativa
+            case DA: return Etichette.getEtichetta("Da_approvare")
+            case AP: return Etichette.getEtichetta("Approvata")
+            case RI: return Etichette.getEtichetta("Rifiutata")
+            case SI: return Etichette.getEtichetta("Informativa")
         }
         return null
     }

@@ -172,8 +172,8 @@ class CivDocumentoPubblicazione extends GsdBaseDomain{
     /////////////////////////////// GENERALI ///////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static List<Map> etichetteDomain = [Etichette.Prodotti, Etichette.Acquisiti, Etichette.Visionati, Etichette.Il,
-                                        Etichette.Copia_integrale_atto_nascita,
-                                        Etichette.Certificato_contestuale_residenza_cittadinanza_stato_libero]
+    static List<Map> etichetteDomain = [Etichette.getEtichetta("Prodotti"), Etichette.getEtichetta("Acquisiti"), Etichette.getEtichetta("Visionati"), Etichette.getEtichetta("Il"),
+                                        Etichette.getEtichetta("Copia_integrale_atto_nascita"),
+                                        Etichette.getEtichetta("Certificato_contestuale_residenza_cittadinanza_stato_libero")]
 
 }

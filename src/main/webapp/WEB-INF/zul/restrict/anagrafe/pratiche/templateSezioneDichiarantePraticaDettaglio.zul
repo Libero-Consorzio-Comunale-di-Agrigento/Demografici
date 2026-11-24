@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox mold="3d" hflex="1" open="false" closable="@bind(vm.soggetti.size() gt 0)" visible="@load(vm.pratica.id ne null)"
+              onClick="@command('checkSoggetti')" onOpen="@command('checkSoggetti')">
+        <caption sclass="mainCaption">
+            <div>
+                <updownbutton onClick="@command(self.openClose())" sclass="captionButton"/>
+                <label value="@load(vm.etichette['Sezione_Dichiarante_Pratica'])" sclass="captionLabel"/>
+            </div>
+        </caption>
+
+        <hlayout valign="middle" sclass="navigazione" visible="@load(vm.tipoPratica.id ne 'R')">
+            <hlayout sclass="afc-control-bar" valign="middle">
+                <toolbarbutton image="/images/icon/action/22x22/print.png"
+                               tooltiptext="@load(vm.etichette['Stampa_Dichiarazione_Residenza_tooltip'])"
+                               onClick="@command('onStampaDichiarazioneResidenza')"
+                               disabled="@bind(vm.selectedDichiarante eq null)"/>
+
+            </hlayout>
+        </hlayout>
+
+
+        <grid sclass="form">
+            <columns>
+                <column width="150px"/>
+                <column/>
+                <column width="150px"/>
+                <column/>
+                <column width="100px"/>
+                <column width="50px"/>
+            </columns>
+            <rows visible="@bind(vm.soggetti.size() gt 0)">
+                <row>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Dichiarante'])"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.listaDichiaranti)" readonly="true" hflex="1" disabled="@load(vm.readOnly)"
+                                  selectedItem="@bind(vm.selectedDichiarante)"
+                                  onSelect="@command('onSelectDichiarante')"
+                                  value="@load(vm.selectedDichiarante eq null ? '' :
+                                            c:cat3(vm.selectedDichiarante.anagrafe.cognome, ' ',
+                                            vm.selectedDichiarante.anagrafe.nome))">
+                            <template name="model">
+                                <comboitem label="@load(c:cat3(each.numeroOrdine, ' - ', c:cat3(each.anagrafe.cognome, ' ', each.anagrafe.nome)))" value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell colspan="4"/>
+                </row>
+                <row visible="@bind(vm.selectedDichiarante.numeroOrdine eq 9)">
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Cognome'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle">
+                            <textbox value="@bind(vm.pratica.cognomeDichiarante)" hflex="1"
+                                     style="text-transform:uppercase"
+                                     onChanging="@command('svuotaMatricolaECodiceDichiarante')"
+                                     readonly="@load(vm.readOnly)"/>
+                            <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoPratica', sezione='D')">
+                                <custom-attributes proprieta="cognomeDichiarante"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell align="right">
+                        <customLabel mandatory="true" value="@load(vm.etichette['Nome'])"/>
+                    </cell>
+                    <cell>
+                        <hlayout valign="middle">
+                            <textbox value="@bind(vm.pratica.nomeDichiarante)" hflex="1"
+                                     style="text-transform:uppercase"
+                                     onChanging="@command('svuotaMatricolaECodiceDichiarante')"
+                                     readonly="@load(vm.readOnly)"/>
+                            <button image="/images/icon/action/16x16/cancel.png" disabled="@load(vm.readOnly)"
+                                    tooltiptext="@load(vm.etichette['Cancella'])"
+                                    onClick="@command('onCancellaCampoPratica', sezione='D')">
+                                <custom-attributes proprieta="nomeDichiarante"/>
+                            </button>
+                        </hlayout>
+                    </cell>
+                    <cell>
+                        <intbox value="@bind(vm.pratica.matricolaDichiarante)" readonly="true" hflex="1"/>
+                    </cell>
+                    <cell>
+                        <button image="/images/icon/action/16x16/search.png" disabled="@load(vm.readOnly)"
+                                tooltiptext="@load(vm.etichette['Seleziona'])" onClick="@command('onRicercaSoggetto', sezione='D')"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

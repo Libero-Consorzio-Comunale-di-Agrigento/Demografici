@@ -26,6 +26,6 @@ class CivRegistroDocumentiEntrata extends CivRegistroDocumentiBaseDomain{
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Archivio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Archivio")]
 
 }

@@ -25,11 +25,11 @@ class DivorzioSCDettaglioViewModel extends IstatDettaglioParentViewModel{
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_MODELLO_SC, Etichette.SEZIONE_DATI_ATTO, Etichette.SEZIONE_DATI_MATRIMONIO,
-                           Etichette.SEZIONE_MARITO, Etichette.SEZIONE_MOGLIE, Etichette.SEZIONE_AVVOCATI, Etichette.SEZIONE_FIGLI]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_MODELLO_SC"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"), Etichette.getEtichetta("SEZIONE_DATI_MATRIMONIO"),
+                           Etichette.getEtichetta("SEZIONE_MARITO"), Etichette.getEtichetta("SEZIONE_MOGLIE"), Etichette.getEtichetta("SEZIONE_AVVOCATI"), Etichette.getEtichetta("SEZIONE_FIGLI")]
         eList.addAll(IstMscDivorzio.etichetteDomain)
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.SC, Etichette.SEZIONE_MODELLO_SC)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.SC, Etichette.getEtichetta("SEZIONE_MODELLO_SC"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita1', tipo: JoinType.LEFT], [campo:'nazionalita2', tipo: JoinType.LEFT]]])

@@ -25,14 +25,14 @@
 					 if="${not empty vm.additionalFascicoloSearchFilter}"/>
 
 			<zk if="${vm.uploadFascicoloEnabled}">
-				<button image="/images/icon/action/22x22/export.png"
-						upload="true"
-						tooltiptext="@load(vm.etichette['carica_documento_tooltip'])"
-						onUpload="@command('onUploadFascicolo')" />
+				<toolbarbutton image="/images/icon/action/22x22/export.png"
+							   upload="true"
+							   tooltiptext="@load(vm.etichette['carica_documento_tooltip'])"
+							   onUpload="@command('onUploadFascicolo')"/>
 			</zk>
 
 			<zk if="${vm.scansionaEnabled}">
-				<scanButton onScanCompleted="@command('onScanFascicolo')"/>
+				<ScanToolbarbutton onScanCompleted="@command('onScanFascicolo')"/>
 			</zk>
 
 			<zk if="${vm.importaDaProtocolloEnabled}">

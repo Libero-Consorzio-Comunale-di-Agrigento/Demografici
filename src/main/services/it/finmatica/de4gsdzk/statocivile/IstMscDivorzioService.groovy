@@ -1,9 +1,9 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.IstMscDivorzioRepository
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class IstMscDivorzioService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivMatrimonioService civMatrimonioService
 
@@ -20,11 +20,11 @@ class IstMscDivorzioService {
 
 	private final IstMscDivorzioRepository istMscDivorzioRepository
 
-    IstMscDivorzioService(IstMscDivorzioRepository istMscDivorzioRepository, StatoCivileService statoCivileService,
-						  CivMatrimonioService civMatrimonioService, CivValidazioneModelloIstatService civValidazioneModelloIstatService) {
+    IstMscDivorzioService(IstMscDivorzioRepository istMscDivorzioRepository, GsdService gsdService,
+                          CivMatrimonioService civMatrimonioService, CivValidazioneModelloIstatService civValidazioneModelloIstatService) {
 
 		this.istMscDivorzioRepository = istMscDivorzioRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civMatrimonioService = civMatrimonioService
 		this.civValidazioneModelloIstatService = civValidazioneModelloIstatService
 	}
@@ -49,11 +49,11 @@ class IstMscDivorzioService {
 		CivMatrimonio mat = civMatrimonioService.get(pkAtto, [:])
 		if (mat.hasModelloSDSU && (obj.is6sd() || obj.is12sd()) ){
 			if (obj.tipoAccordo == null){
-				throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+				throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
 			}
 			if (obj.tipoAccordo.intValue() == 2){
 				if (obj.causaScioglimento == null){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
 				}
 			}
 		}
@@ -61,13 +61,13 @@ class IstMscDivorzioService {
 		if (obj.isProvvedimento()){
 			if ( (obj.tipoProvvedimentoTribCda.intValue() == 3) ||(obj.tipoProvvedimentoTribCda.intValue() == 4) ){
 				if (obj.causaScioglimento == null){
-					throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+					throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
 				}
 			}
 		}
         // Dati matrimonio
         if ( (obj.comuneMatUci?.codice == null) || (obj.comuneMatUci?.codiceProvincia == null) || (obj.rito == null) || (obj.dataMatUci == null) ) {
-            throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_modello_istat)
+            throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_modello_istat"))
         }
 	}
 
@@ -75,7 +75,7 @@ class IstMscDivorzioService {
 		validaDati(obj, pkAtto)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		return  istMscDivorzioRepository.save(obj)
 	}

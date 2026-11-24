@@ -14,9 +14,9 @@ enum EQualifica {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case ME: return Etichette.Medico
-            case OS: return Etichette.Ostetrica
-            case AL: return Etichette.Altro
+            case ME: return Etichette.getEtichetta("Medico")
+            case OS: return Etichette.getEtichetta("Ostetrica")
+            case AL: return Etichette.getEtichetta("Altro")
         }
         return null
     }

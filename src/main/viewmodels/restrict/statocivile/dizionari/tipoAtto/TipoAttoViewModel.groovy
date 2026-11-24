@@ -15,8 +15,8 @@ import restrict.AbstractTabNavigatorViewModel
 class TipoAttoViewModel extends AbstractTabNavigatorViewModel {
 
     @Init init(@ContextParam(ContextType.COMPONENT) Window w) {
-        List<Map> eList = [Etichette.Tipi_di_Atto, Etichette.Tipi_di_Verbale,
-                           Etichette.Richiami_Composizione, Etichette.Formule_Composizione]
+        List<Map> eList = [Etichette.getEtichetta("Tipi_di_Atto"), Etichette.getEtichetta("Tipi_di_Verbale"),
+                           Etichette.getEtichetta("Richiami_Composizione"), Etichette.getEtichetta("Formule_Composizione")]
 
         doInit(w, eList)
 

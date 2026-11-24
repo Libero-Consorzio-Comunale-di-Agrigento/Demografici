@@ -22,7 +22,6 @@ class AnaEventoAnagrafeRepositoryImpl implements AnaEventoAnagrafeCustomReposito
         Root<AnaEventoAnagrafe> root = query.from(AnaEventoAnagrafe.class)
 
         root.fetch("famiglia", JoinType.LEFT)
-        //root.fetch("anagrafe", JoinType.LEFT)
 
         Predicate[] predicates = getPredicates(cb, root, anagrafe)
         query
@@ -68,8 +67,6 @@ class AnaEventoAnagrafeRepositoryImpl implements AnaEventoAnagrafeCustomReposito
 
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class)
         Root<AnaEventoAnagrafe> countRoot = countQuery.from(AnaEventoAnagrafe.class)
-
-        countRoot.join("famiglia", JoinType.LEFT)
 
         Predicate[] countPredicates = getPredicates(cb, countRoot, anagrafe)
         countQuery

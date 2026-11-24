@@ -15,10 +15,10 @@ enum ETipoAnnotazione {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case C: return Etichette.In_calce
-            case M: return Etichette.A_margine
-            case A: return Etichette.In_corpo_atto_da_formulario
-            case W: return Etichette.In_corpo_atto_da_frammenti
+            case C: return Etichette.getEtichetta("In_calce")
+            case M: return Etichette.getEtichetta("A_margine")
+            case A: return Etichette.getEtichetta("In_corpo_atto_da_formulario")
+            case W: return Etichette.getEtichetta("In_corpo_atto_da_frammenti")
         }
         return null
     }

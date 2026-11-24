@@ -1,24 +1,24 @@
 package it.finmatica.de4gsdzk.certificazione.generazione.gte
 
 import it.finmatica.de4gsdzk.GestioneTestiGsdModello
+import it.finmatica.de4gsdzk.GestioneTestiModelloRelazioneService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.certificazione.CerCertificatoEmesso
 import it.finmatica.de4gsdzk.certificazione.CerTipoCertificato
 import it.finmatica.de4gsdzk.errors.ErroreModelloNonTrovatoRuntimeException
 import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazione
-import it.finmatica.de4gsdzk.statocivile.GestioneTestiModelloRelazioneService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.gestionetesti.GestioneTestiService
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GteGenerazioneCertificatoServiceSpec extends Specification {
 
-    StatoCivileService statoCivileService = Mock(StatoCivileService)
+    GsdService gsdService = Mock(GsdService)
     private GestioneTestiService gestioneTestiService = Mock(GestioneTestiService)
     private GestioneTestiModelloRelazioneService gestioneTestiModelloRelazioneService = Mock(GestioneTestiModelloRelazioneService)
 
     @Subject
-    GteGenerazioneCertificatoService service = new GteGenerazioneCertificatoService(statoCivileService, gestioneTestiService, gestioneTestiModelloRelazioneService)
+    GteGenerazioneCertificatoService service = new GteGenerazioneCertificatoService(gsdService, gestioneTestiService, gestioneTestiModelloRelazioneService)
 
     def "Check su possibilità di generare il certificato quando modello non trovato"() {
         given: "Il certificato avente il tipo certificato con un modello non trovato"

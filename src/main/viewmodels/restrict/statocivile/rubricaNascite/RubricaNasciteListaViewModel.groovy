@@ -46,10 +46,10 @@ class RubricaNasciteListaViewModel extends AbstractListaViewModel implements Tra
 
         ricerca = new RicercaRubricaNascite()
 
-        List<Map<String, String>> eList = [Etichette.Rubrica_Nascite, Etichette.Effettua_Ricerca, Etichette.Cancella,
-                                           Etichette.Data_Registrazione_decrescente, Etichette.Data_Registrazione_crescente,
-                                           Etichette.Generalita_crescente, Etichette.Generalita_decrescente,
-                                           Etichette.Data_Nascita_decrescente, Etichette.Data_Nascita_crescente, Etichette.Estrazioni]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Rubrica_Nascite"), Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Cancella"),
+                                           Etichette.getEtichetta("Data_Registrazione_decrescente"), Etichette.getEtichetta("Data_Registrazione_crescente"),
+                                           Etichette.getEtichetta("Generalita_crescente"), Etichette.getEtichetta("Generalita_decrescente"),
+                                           Etichette.getEtichetta("Data_Nascita_decrescente"), Etichette.getEtichetta("Data_Nascita_crescente"), Etichette.getEtichetta("Estrazioni")]
         eList.addAll(etichetteListaDefault)
         eList.addAll(RicercaRubricaNascite.etichetteRicercaRubricaDesc)
         eList.addAll(CivRubricaNascite.etichetteDomain)
@@ -58,18 +58,18 @@ class RubricaNasciteListaViewModel extends AbstractListaViewModel implements Tra
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Rubrica_Nascite)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Rubrica_Nascite"))
 
         formLabel = msgTitle?.toUpperCase()
 
-        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.Estrazioni)]]
+        filtriList = [[codice: "ESTRAZIONE", descrizione: getEtichetta(Etichette.getEtichetta("Estrazioni"))]]
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_decrescente), SortUtils.dataRegistrazioneDescOnly))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Registrazione_crescente),   SortUtils.dataRegistrazioneAscOnly))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_crescente),           SortUtils.cognomeNomeAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Generalita_decrescente),         SortUtils.cognomeNomeDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Nascita_decrescente),       SortUtils.dataNascitaDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Nascita_crescente),         SortUtils.dataNascitaAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_decrescente")), SortUtils.dataRegistrazioneDescOnly))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Registrazione_crescente")),   SortUtils.dataRegistrazioneAscOnly))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_crescente")),           SortUtils.cognomeNomeAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Generalita_decrescente")),         SortUtils.cognomeNomeDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Nascita_decrescente")),       SortUtils.dataNascitaDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Nascita_crescente")),         SortUtils.dataNascitaAsc))
 
         selectedOrder = listaOrder[0]
 
@@ -104,7 +104,7 @@ class RubricaNasciteListaViewModel extends AbstractListaViewModel implements Tra
             if (userModifyEnabled) {
                 apriDettaglio(uriDettaglio, [:])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -114,7 +114,7 @@ class RubricaNasciteListaViewModel extends AbstractListaViewModel implements Tra
             if (userModifyEnabled) {
                 apriDettaglio(uriDettaglio, [id: dettaglio.id])
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }
@@ -130,10 +130,10 @@ class RubricaNasciteListaViewModel extends AbstractListaViewModel implements Tra
                 if (codice == "ESTRAZIONE") {
                     apriDettaglio("rubricaNascite/stampaRubricaNasciteLista.zul", [:])
                 } else {
-                    Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                    Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                 }
             } else {
-                Messagebox.show(getEtichetta(Etichette.Funzione_non_abilitata), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                Messagebox.show(getEtichetta(Etichette.getEtichetta("Funzione_non_abilitata")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
             }
         }
     }

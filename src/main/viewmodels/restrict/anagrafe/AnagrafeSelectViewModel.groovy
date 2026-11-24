@@ -1,7 +1,7 @@
 package restrict.anagrafe
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
 import it.finmatica.de4gsdzk.utils.*
@@ -51,15 +51,15 @@ class AnagrafeSelectViewModel extends AbstractSelectViewModel{
         addEnabled = false
         modifyEnabled = false
 
-        List<Map> eList = [Etichette.Seleziona_Soggetto]
-        eList.addAll(GsdAnagrafeBaseDomain.etichetteDomain)
+        List<Map> eList = [Etichette.getEtichetta("Seleziona_Soggetto")]
+        eList.addAll(AnagrafeBaseDomain.etichetteDomain)
 
         // Aggiungo etichette della Controlbar
         eList.addAll(ControlBarListaAttributes.etichetteCbDesc)
 
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Seleziona_Soggetto)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Seleziona_Soggetto"))
 
         this.sesso = sesso
         this.cognome = (cognome?:'')
@@ -100,7 +100,7 @@ class AnagrafeSelectViewModel extends AbstractSelectViewModel{
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, dettaglio)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

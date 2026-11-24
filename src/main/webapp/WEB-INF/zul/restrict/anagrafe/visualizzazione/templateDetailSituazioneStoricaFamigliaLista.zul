@@ -18,7 +18,7 @@
                 <listcell
                         label="@load(empty item.anagrafe.dataNascita? null:(c:formatDate(item.anagrafe.dataNascita, 'dd/MM/yyyy')))"/>
                 <listcell label="@load(item.anagrafe.descrizioneComuneNascita)"/>
-                <listcell label="@load(item.rapportoParentela)"/>
+                <listcell label="@load(item.rapportoParentelaDescrizione)"/>
                 <listcell label="@load(item.descrizione)"/>
                 <listcell>
                     <button image="/images/icon/action/16x16/forward.png"

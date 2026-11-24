@@ -2,6 +2,7 @@ package restrict.statocivile.cittadinanza
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.competenze.CompetenzeRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
 import it.finmatica.de4gsdzk.statocivile.*
@@ -20,7 +21,7 @@ import javax.persistence.criteria.JoinType
 class CittadinanzaPregressoDettaglioViewModel extends CittadinanzaDettaglioParentViewModel{
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivCittadinanzaService civCittadinanzaService
@@ -48,7 +49,7 @@ class CittadinanzaPregressoDettaglioViewModel extends CittadinanzaDettaglioParen
 
         try {
             dettaglio = new CivCittadinanza(codiceRecord: new Integer(0))
-            dettaglio.ufficio = statoCivileService.getLoggedUserUfficio()
+            dettaglio.ufficio = gsdService.getLoggedUserUfficio()
 
             //Nel caso di inserimento di un pregresso non devo creare il collegamento con CivAnagrafe
 
@@ -118,7 +119,7 @@ class CittadinanzaPregressoDettaglioViewModel extends CittadinanzaDettaglioParen
 
             } catch (Exception ex){
                 log.error("Errore apertura record", ex)
-                String errorMsg = getEtichetta(EtichetteMessaggi.Errore_apertura_record)
+                String errorMsg = getEtichetta(Etichette.getEtichetta("Errore_apertura_record"))
                 if (ex instanceof ErroreCaricamentoDatiRuntimeException){
                     errorMsg = (getEtichetta(ex.getEtichetta())?:ex.getMessage())
                 }
@@ -140,7 +141,7 @@ class CittadinanzaPregressoDettaglioViewModel extends CittadinanzaDettaglioParen
                 try {
                     c = civCittadinanzaService.save(tipoOperazione, dettaglio, null, datiProvenienza, margine, mapFormule, null, gc, margineMandatory, listaSoggettiCollegati, hasBeenStoricizzato)
                     if (tipoOperazione.isUpdate() && showAlert && composizioneTestoAttiva) {
-                        Messagebox.show(getEtichetta(EtichetteMessaggi.Warn_Aggiornamento_Formule), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+                        Messagebox.show(getEtichetta(Etichette.getEtichetta("Warn_Aggiornamento_Formule")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
                     }
                     if (composizioneTestoAttiva && (statoFrammenti == 1)) {
                         statoFrammenti = 2

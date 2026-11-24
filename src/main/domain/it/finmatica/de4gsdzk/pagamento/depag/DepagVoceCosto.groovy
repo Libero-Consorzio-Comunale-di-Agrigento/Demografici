@@ -21,5 +21,5 @@ class DepagVoceCosto extends WspaVoceCosto {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Anno_accertamento, Etichette.Numero_accertamento]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Anno_accertamento"), Etichette.getEtichetta("Numero_accertamento")]
 }

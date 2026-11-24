@@ -26,8 +26,13 @@ w_xml_risposta		clob;
 begin
    :new.d_data_reg := nvl(:new.d_data_reg, sysdate);
 
+   if INSERTING or UPDATING then
+      :new.INFO_WS := f_ANSC_get_html(:new.SERVIZIO,:new.INFO_WS);
+   end if;
+
 << ins_ansmcu>>
 null;
+
    if INSERTING or UPDATING then
       begin
         insert into ansmcu 

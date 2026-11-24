@@ -1,8 +1,9 @@
 package it.finmatica.de4gsdzk.certificazione.emissione
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.GsdAnagrafeBaseDomain
+import it.finmatica.de4gsdzk.AnagrafeBaseDomain
 import it.finmatica.de4gsdzk.GsdMenuDittaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.anagrafe.*
 import it.finmatica.de4gsdzk.anpr.AnpAnagrafe
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
@@ -14,7 +15,6 @@ import it.finmatica.de4gsdzk.integrazioni.ad4.UtenteCustomService
 import it.finmatica.de4gsdzk.integrazioni.documentale.EModelloGdm
 import it.finmatica.de4gsdzk.statocivile.CivAnnotazioneAttoService
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.FileUtils
 import it.finmatica.smartdoc.api.DocumentaleRuntimeException
@@ -40,7 +40,7 @@ class EmissioneCertificatoService {
     private final AnaDocumentoAllegatoService anaDocumentoAllegatoService
     private final ArcParametroService arcParametroService
     private final GsdMenuDittaService gsdMenuDittaService
-    private final StatoCivileService statoCivileService
+    private final GsdService gsdService
     private final UtenteCustomService utenteCustomService
 
     EmissioneCertificatoService(GenerazioneCertificatoServiceFactory generazioneCertificatoServiceFactory,
@@ -59,7 +59,7 @@ class EmissioneCertificatoService {
                                 AnaDocumentoAllegatoService anaDocumentoAllegatoService,
                                 ArcParametroService arcParametroService,
                                 GsdMenuDittaService gsdMenuDittaService,
-                                StatoCivileService statoCivileService,
+                                GsdService gsdService,
                                 UtenteCustomService utenteCustomService) {
         this.generazioneCertificatoServiceFactory = generazioneCertificatoServiceFactory
         this.generazioneCertificatoParamsFactory = generazioneCertificatoParamsFactory
@@ -77,7 +77,7 @@ class EmissioneCertificatoService {
         this.anaDocumentoAllegatoService = anaDocumentoAllegatoService
         this.arcParametroService = arcParametroService
         this.gsdMenuDittaService = gsdMenuDittaService
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
         this.utenteCustomService = utenteCustomService
     }
 
@@ -89,7 +89,7 @@ class EmissioneCertificatoService {
         return cerTipoRichiedenteService.get(CerTipoRichiedente.ISTANZA_DI_PARTE)
     }
 
-    Beneficiario createBeneficiario(GsdAnagrafeBaseDomain ana) {
+    Beneficiario createBeneficiario(AnagrafeBaseDomain ana) {
         Beneficiario beneficiario = new Beneficiario()
         beneficiario.nome = ana.nome
         beneficiario.cognome = ana.cognome
@@ -104,7 +104,7 @@ class EmissioneCertificatoService {
         return beneficiario
     }
 
-    Richiedente createRichiedente(GsdAnagrafeBaseDomain ana) {
+    Richiedente createRichiedente(AnagrafeBaseDomain ana) {
         Richiedente richiedente = new Richiedente()
         richiedente.nome = ana.nome
         richiedente.cognome = ana.cognome
@@ -134,6 +134,10 @@ class EmissioneCertificatoService {
             certificato.richiedente = createRichiedente(emissioneCertificatoState.beneficiarioState.anagrafe)
         }
 
+        if (emissioneCertificatoState.tipoRichiedente.isAttivaSezioneEnte()) {
+            certificato.enteRichiedente = emissioneCertificatoState.enteRichiedenteState.enteRichiedente
+        }
+
         certificato.tipoRichiedente = emissioneCertificatoState.tipoRichiedente
         certificato.tipoCertificato = emissioneCertificatoState.tipoCertificato
         certificato.dataStorico = emissioneCertificatoState.dataStorico
@@ -143,7 +147,7 @@ class EmissioneCertificatoService {
         certificato.terminalista = emissioneCertificatoState.terminalista
         certificato.cognomeNomeTerminalista = emissioneCertificatoState.cognomeNomeTerminalista
         certificato.qualificaTerminalista = emissioneCertificatoState.qualificaTerminalista
-        certificato.flagInStampaTerminalista = emissioneCertificatoState.flagInStampaTerminalista
+        certificato.flagInStampaTerminalista = emissioneCertificatoState.flagInStampaTerminalista ? 'S' : 'N'
         certificato.segreteria = emissioneCertificatoState.diritti.segreteria.importo
         certificato.statoCivile = emissioneCertificatoState.diritti.statoCivile.importo
         certificato.cartaIdentita = emissioneCertificatoState.diritti.cartaIdentita.importo
@@ -153,7 +157,7 @@ class EmissioneCertificatoService {
         return certificato
     }
 
-    boolean isDocumentoRichiedenteMandatory(ETipoGenerazioneCertificato tipoGenerazioneCertificato, GsdAnagrafeBaseDomain anagrafe) {
+    boolean isDocumentoRichiedenteMandatory(ETipoGenerazioneCertificato tipoGenerazioneCertificato, AnagrafeBaseDomain anagrafe) {
         if (tipoGenerazioneCertificato == ETipoGenerazioneCertificato.ANPR &&
                 !(anagrafe instanceof AnpAnagrafe)) {
             return true
@@ -275,8 +279,8 @@ class EmissioneCertificatoService {
 
         try {
             EModelloGdm modello = anaTipoDocumentoService.getModelloGdm(documento.tipoDocumento)
-            boolean checkCompetenza = anaTipoDocumentoService.shouldCheckCompetenza(documento.tipoDocumento)
-            anaDocumentoAllegatoService.saveAllegatoDocumentale(modello, checkCompetenza, allegato, certificatoGenerato.bytes)
+
+            anaDocumentoAllegatoService.saveAllegatoDocumentale(modello, allegato, certificatoGenerato.bytes)
         } catch (DocumentaleRuntimeException dre) {
             log.error(dre.message, dre)
 

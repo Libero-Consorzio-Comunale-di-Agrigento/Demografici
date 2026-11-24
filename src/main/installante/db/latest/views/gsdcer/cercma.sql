@@ -316,7 +316,7 @@ SELECT mat.ufficio,mat.anno, mat.atto,mat.parte,
 -- estremi_atto_ente_straniero	
        dpa.ente_straniero_estremi_atto,
 -- terminalista_atto
-        terminalista,
+        mat.terminalista,
 -- flag_comune_estero_res_m
         DECODE (SIGN (nvl(mat.cod_pro_res_m,0) - 199), -1, TO_CHAR (NULL), 'S'),
 -- flag_comune_estero_res_f

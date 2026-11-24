@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <groupbox closable="false">
+        <caption label="@load(vm.etichette['Timbri_CE'])"/>
+        <grid sclass="form">
+            <columns>
+                <column width="30px"/>
+                <column width="200px"/>
+                <column/>
+                <column width="90px"/>
+                <column width="150px"/>
+                <column width="90px"/>
+                <column width="110px"/>
+            </columns>
+            <rows>
+                <row if="${arg.sez eq true and vm.specifiche.timbroCommissioneCircondarialeAL ne null}" visible="@load(vm.specifiche.filtroCognome.id eq 'A')">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondarialeALCheck)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="true" hflex="1" value="@bind(vm.specifiche.timbroCommissioneCircondarialeAL.descrizione)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroCommissioneCircondarialeALCheck)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroCommissioneCircondarialeAL.testo)"  rows="3"/>
+                    </cell>
+                    <cell colspan="2"/>
+                    <cell colspan="2"/>
+                </row>
+                <row if="${arg.sez eq true and vm.specifiche.timbroCommissioneCircondarialeMZ ne null}" visible="@load(vm.specifiche.filtroCognome.id eq 'M')">
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondarialeMZCheck)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="true" hflex="1" value="@bind(vm.specifiche.timbroCommissioneCircondarialeMZ.descrizione)"/>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroCommissioneCircondarialeMZCheck)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroCommissioneCircondarialeMZ.testo)"  rows="3"/>
+                    </cell>
+                    <cell colspan="2"/>
+                    <cell colspan="2"/>
+                </row>
+                <row>
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale1Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale1Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale1Lista)" readonly="true" hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale1)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale1Lista)" readonly="true" hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale1)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroCommissioneCircondariale1Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroCommissioneCircondariale1.testo)"  rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.specifiche.verbaleCommissioneCircondariale1)" hflex="1"
+                                 readonly="@bind(not vm.specifiche.timbroCommissioneCircondariale1Check)"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Data_Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.specifiche.dataVerbaleCommissioneCircondariale1)" hflex="1"
+                                 disabled="@bind(not vm.specifiche.timbroCommissioneCircondariale1Check)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale2Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale2Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale2Lista)" readonly="true" hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale2)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale2Lista)" readonly="true" hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale2)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroCommissioneCircondariale2Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroCommissioneCircondariale2.testo)" rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <textbox value="@bind(vm.specifiche.verbaleCommissioneCircondariale2)" hflex="1"
+                                 readonly="@bind(not vm.specifiche.timbroCommissioneCircondariale2Check)"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Data_Verbale'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.specifiche.dataVerbaleCommissioneCircondariale2)" hflex="1"
+                                 disabled="@bind(not vm.specifiche.timbroCommissioneCircondariale2Check)"/>
+                    </cell>
+                </row>
+                <row>
+                    <cell align="right">
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale3Check)" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"/>
+                        <checkbox checked="@bind(vm.specifiche.timbroCommissioneCircondariale3Check)" if="${arg.sez ne true}"/>
+                    </cell>
+                    <cell>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale3Lista)" readonly="true"  hflex="1" if="${arg.sez eq true}" disabled="@load(vm.specifiche.filtroCognome.id eq 'A')"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale3)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                        <combobox model="@load(vm.timbriCommissioneCircondariale3Lista)" readonly="true"  hflex="1" if="${arg.sez ne true}"
+                                  selectedItem="@bind(vm.specifiche.timbroCommissioneCircondariale3)  @converter('it.finmatica.zk.utils.PropertyConverter', property='id')">
+                            <template name="model">
+                                <comboitem label="@load(each.descrizione)"
+                                           value="@load(each)"/>
+                            </template>
+                        </combobox>
+                    </cell>
+                    <cell>
+                        <textbox readonly="@bind(not vm.specifiche.timbroCommissioneCircondariale3Check)" hflex="1"
+                                 value="@bind(vm.specifiche.timbroCommissioneCircondariale3.testo)"  rows="3"/>
+                    </cell>
+                    <cell align="right">
+                        <label value="@load(vm.etichette['Alla_Data_Del'])"/>
+                    </cell>
+                    <cell>
+                        <datebox format="dd/MM/yyyy" value="@bind(vm.specifiche.dataCommissioneCircondariale3)" hflex="1"
+                                 disabled="@bind(not vm.specifiche.timbroCommissioneCircondariale3Check)"/>
+                    </cell>
+                    <cell colspan="2"/>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+
+</zk>

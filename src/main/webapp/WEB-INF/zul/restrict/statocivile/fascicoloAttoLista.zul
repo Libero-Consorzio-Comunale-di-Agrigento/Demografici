@@ -130,8 +130,8 @@
 												<listbox model="@load(vm.dettaglio.allegatiFascicolo)">
 													<listhead sizable="true">
 														<listheader label="@load(vm.etichette['Allegato'])"/>
-														<listheader label="@load(vm.etichette['Data_Registrazione'])"	width="110px"/>
 														<listheader label="@load(vm.etichette['Note'])"/>
+														<listheader label="" width="52px"/>
 														<listheader label="" width="52px"/>
 														<listheader label="" width="52px"/>
 													</listhead>
@@ -140,24 +140,28 @@
 															<listcell>
 																<label value="@load(subItem.nome)" tooltiptext="@load(subItem.nome)"/>
 															</listcell>
-															<listcell label="@load(empty subItem.lastUpdated? null:(c:formatDate(subItem.lastUpdated, 'dd/MM/yyyy')))"/>
 															<listcell>
 																<hlayout valign="middle" hflex="4">
 																	<label value="@load(subItem.note)" tooltiptext="@load(subItem.note)" multiline="true" hflex="3"/>
 																	<button image="/images/icon/action/18x18/note.png"
-																			onClick="@command('onEditaNote', allegatoFascicolo=subItem)"/>
+																			onClick="@command('onEditaNote', allegato=subItem)"/>
 																</hlayout>
 															</listcell>
 															<listcell>
 																<button image="/images/icon/action/18x18/import.png"
 																		tooltiptext="@load(vm.etichette['scarica_allegato_tooltip'])"
-																		onClick="@command('onDownloadAllegatoFascicolo', allegatoFascicolo=subItem)"/>
+																		onClick="@command('onDownloadAllegato', allegato=subItem)"/>
 															</listcell>
 															<listcell>
 																<button image="/images/icon/action/18x18/delete.png"
 																		tooltiptext="@load(vm.etichette['elimina_tooltip'])"
 																		disabled="@load(vm.dettaglio.fascicolo.archivioComunicazione.isProtocollato() or vm.dettaglio.fascicolo.archivioComunicazione.isInviatoAlbo())"
-																		onClick="@command('onEliminaAllegatoFascicolo', allegatoFascicolo=subItem)"/>
+																		onClick="@command('onEliminaAllegato', allegato=subItem)"/>
+															</listcell>
+                                                            <listcell>
+																<button image="/images/icon/action/18x18/info.png"
+																		tooltiptext="@load(vm.etichette['info_tooltip'])"
+																		onClick="@command('onShowInfo', allegato=subItem)"/>
 															</listcell>
 														</listitem>
 													</template>

@@ -2,12 +2,13 @@ package restrict.statocivile.nascita
 
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.ArcComuneBaseDomain
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.IEstremiAttoMatrimonioDomain
 import it.finmatica.de4gsdzk.IEstremiAttoNascitaSoggettiDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafe
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeBaseDomain
 import it.finmatica.de4gsdzk.anagrafe.AnaAnagrafeService
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.anpr.AnpAnagrafe
 import it.finmatica.de4gsdzk.archivi.ArcParametroService
 import it.finmatica.de4gsdzk.statocivile.*
@@ -72,7 +73,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
     private ArcParametroService arcParametroService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivNascitaService civNascitaService
@@ -87,29 +88,29 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
 
         List<Map> eList = []
         eList.addAll(CivNascita.etichetteDomain)
-        eList.addAll([Etichette.Richiedente, Etichette.Luogo_Nascita, Etichette.Comune, Etichette.Data_Redazione_Atto_Originale, Etichette.Numero_gemello,
-                      Etichette.di, Etichette.Dati_Dichiarante, Etichette.Consenso, Etichette.Riconoscimento_pre_natale,
-                      Etichette.Estremi_Centro_Nascita, Etichette.Dati_Richiesta, Etichette.Certificato_sanitario, Etichette.Estremi_Atto_Riconoscimento_Unico,
-                      Etichette.Estremi_Atto_Riconoscimento_Paterno, Etichette.Estremi_Atto_Assenso, Etichette.Dati_procura,
-                      Etichette.Atto_dichiarazione_anno, Etichette.Data_Richiesta, Etichette.Scelta_cambio_cognome,
-                      Etichette.Addetto_Dichiarazione, Etichette.Data_Dichiarazione, Etichette.Altri_Dati, Etichette.Tipo_Accertamento,
-                      Etichette.Tipo_consenso_madre, Etichette.Tipo_consenso_padre, Etichette.Tipo_dichiarazione_assenso,
-                      Etichette.Generalita_sanitario, Etichette.Generalita_procuratore_padre, Etichette.Generalita_procuratore_madre,
-                      Etichette.Dati_della_trascrizione, Etichette.Nuovo_nome, Etichette.Nuovo_cognome, Etichette.Motivo_richiesta])
+        eList.addAll([Etichette.getEtichetta("Richiedente"), Etichette.getEtichetta("Luogo_Nascita"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Data_Redazione_Atto_Originale"), Etichette.getEtichetta("Numero_gemello"),
+                      Etichette.getEtichetta("di"), Etichette.getEtichetta("Dati_Dichiarante"), Etichette.getEtichetta("Consenso"), Etichette.getEtichetta("Riconoscimento_pre_natale"),
+                      Etichette.getEtichetta("Estremi_Centro_Nascita"), Etichette.getEtichetta("Dati_Richiesta"), Etichette.getEtichetta("Certificato_sanitario"), Etichette.getEtichetta("Estremi_Atto_Riconoscimento_Unico"),
+                      Etichette.getEtichetta("Estremi_Atto_Riconoscimento_Paterno"), Etichette.getEtichetta("Estremi_Atto_Assenso"), Etichette.getEtichetta("Dati_procura"),
+                      Etichette.getEtichetta("Atto_dichiarazione_anno"), Etichette.getEtichetta("Data_Richiesta"), Etichette.getEtichetta("Scelta_cambio_cognome"),
+                      Etichette.getEtichetta("Addetto_Dichiarazione"), Etichette.getEtichetta("Data_Dichiarazione"), Etichette.getEtichetta("Altri_Dati"), Etichette.getEtichetta("Tipo_Accertamento"),
+                      Etichette.getEtichetta("Tipo_consenso_madre"), Etichette.getEtichetta("Tipo_consenso_padre"), Etichette.getEtichetta("Tipo_dichiarazione_assenso"),
+                      Etichette.getEtichetta("Generalita_sanitario"), Etichette.getEtichetta("Generalita_procuratore_padre"), Etichette.getEtichetta("Generalita_procuratore_madre"),
+                      Etichette.getEtichetta("Dati_della_trascrizione"), Etichette.getEtichetta("Nuovo_nome"), Etichette.getEtichetta("Nuovo_cognome"), Etichette.getEtichetta("Motivo_richiesta")])
 
         eList.addAll(CivDatiProvenienzaAtto.etichetteDomain)
 
         // Aggiungo label frammenti specifici
-        eList.addAll([Etichette.Filiazione, Etichette.Presentazione, Etichette.Circostanze_Particolari])
+        eList.addAll([Etichette.getEtichetta("Filiazione"), Etichette.getEtichetta("Presentazione"), Etichette.getEtichetta("Circostanze_Particolari")])
 
         // Aggiungo titoli sezioni
-        eList.addAll([Etichette.SEZIONE_INFORMAZIONI_ATTO, Etichette.SEZIONE_FILIAZIONE, Etichette.SEZIONE_GENITORI, Etichette.SEZIONE_DATI_NASCITA,
-                      Etichette.SEZIONE_ATTO_ORIGINALE, Etichette.SEZIONE_REDAZIONE, Etichette.SEZIONE_COMPOSIZIONE])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INFORMAZIONI_ATTO"), Etichette.getEtichetta("SEZIONE_FILIAZIONE"), Etichette.getEtichetta("SEZIONE_GENITORI"), Etichette.getEtichetta("SEZIONE_DATI_NASCITA"),
+                      Etichette.getEtichetta("SEZIONE_ATTO_ORIGINALE"), Etichette.getEtichetta("SEZIONE_REDAZIONE"), Etichette.getEtichetta("SEZIONE_COMPOSIZIONE")])
 
         // Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_parto_plurimo, EtichetteMessaggi.Errore_stato_civile_genitori, EtichetteMessaggi.Errore_data_futura,
-                      EtichetteMessaggi.Errore_data_nascita_vs_1A, EtichetteMessaggi.Errore_data_nascita_vs_1B,
-                      EtichetteMessaggi.Warn_Inserimento_In_Anagrafe])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_parto_plurimo"), Etichette.getEtichetta("Errore_stato_civile_genitori"), Etichette.getEtichetta("Errore_data_futura"),
+                      Etichette.getEtichetta("Errore_data_nascita_vs_1A"), Etichette.getEtichetta("Errore_data_nascita_vs_1B"),
+                      Etichette.getEtichetta("Warn_Inserimento_In_Anagrafe")])
 
         // Aggiungo etichette natura atto
         listaNatura = NaturaUtils.getValoriNascita()
@@ -131,7 +132,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
         eList.addAll((Arrays.asList(ETipoMancatoConsensoMadre.values()))*.etichettaDesc)
 
         // Aggiungo etichette sesso
-        eList.add(Etichette.Non_conosciuto)
+        eList.add(Etichette.getEtichetta("Non_conosciuto"))
         eList.addAll(Arrays.asList(ESesso.values())*.etichettaDesc)
 
         // Aggiungo etichette stato nascita
@@ -150,11 +151,11 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
         // Aggiungo etichette tipo accertamento
         eList.addAll((Arrays.asList(ETipoAccertamentoNascita.values()))*.etichettaDesc)
         //Aggiongo etichetta figlio di ignoti
-        eList.add(Etichette.Figlio_di_ingoti)
+        eList.add(Etichette.getEtichetta("Figlio_di_ingoti"))
 
         doInitAllAtti(eList)
 
-        msgTitle = getEtichetta(Etichette.Atto_Nascita)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Atto_Nascita"))
         tipoAttoLabel = getEtichettaEnum(ETipoAtto.NAS)
 
         listaFiliazione = [ETipoFiliazione.L, ETipoFiliazione.C]
@@ -358,7 +359,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
         }
         if (tipoOperazione.isUpdate() && (richiamo != null) ){
             log.info("Tento recupero ${chiave.toUpperCase()} per il record con id ${dettaglio.id}")
-            List<Map<String, Object>> formule = statoCivileService.listFormuleNascita(richiamo, params)
+            List<Map<String, Object>> formule = gsdService.listFormuleNascita(richiamo, params)
             creaFormulaDefault(chiave, richiamo, params)
             aggiornaFormulaFrammento(chiave, formule, salva, Boolean.FALSE)
         }
@@ -527,8 +528,8 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
             // refs #70404
             Boolean madreIta = Boolean.FALSE
             if ((ccr != null) && (cpr != null)) {
-                Boolean comuneResEstero = statoCivileService.checkComuneEstero(cpr, ccr)
-                madreIta = ((!(comuneResEstero)) || (comuneResEstero && (dettaglio.nazionalitaMadre?.id == AnaNazionalita.ID_ITALIA)))
+                Boolean comuneResEstero = gsdService.checkComuneEstero(cpr, ccr)
+                madreIta = ((!(comuneResEstero)) || (comuneResEstero && (dettaglio.nazionalitaMadre?.codCi == AnaCittadinanza.ID_ITALIA)))
             }
             if (madreIta) {
                 log.info('Assegno al nato la residenza della madre')
@@ -540,8 +541,8 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
                 spr = dettaglio.siglaProvinciaResidenzaPadre
                 Boolean padreIta = Boolean.FALSE
                 if ((ccr != null) && (cpr != null)) {
-                    Boolean comuneResEstero = statoCivileService.checkComuneEstero(cpr, ccr)
-                    padreIta = ((!(comuneResEstero)) || (comuneResEstero && (dettaglio.nazionalitaPadre?.id == AnaNazionalita.ID_ITALIA)))
+                    Boolean comuneResEstero = gsdService.checkComuneEstero(cpr, ccr)
+                    padreIta = ((!(comuneResEstero)) || (comuneResEstero && (dettaglio.nazionalitaPadre?.codCi == AnaCittadinanza.ID_ITALIA)))
                 }
                 if (padreIta) {
                     log.info('Assegno al nato la residenza del padre')
@@ -574,7 +575,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
 
     @Command void onSelectDataNascita(){
         if (DataUtils.isDataFutura(dettaglio.dataNascita)){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_data_futura), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_data_futura")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 
@@ -586,8 +587,8 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
             // 3. doppia cittadinanza entrambe di paese UE o entrambe non di paese non UE: sono i genitori a dichiarare per iscritto
             //    quale cittadinanza desiderano che sia attribuita al figlio.
             // N:B: I controlli valgono se le nazionalità sono valorizzate
-            Boolean madreIta = (dettaglio.nazionalitaMadre?.id == AnaNazionalita.ID_ITALIA)
-            Boolean padreIta = (dettaglio.nazionalitaPadre?.id == AnaNazionalita.ID_ITALIA)
+            Boolean madreIta = (dettaglio.nazionalitaMadre?.codCi == AnaCittadinanza.ID_ITALIA)
+            Boolean padreIta = (dettaglio.nazionalitaPadre?.codCi == AnaCittadinanza.ID_ITALIA)
             if (dettaglio.nazionalitaMadre && dettaglio.nazionalitaPadre && (madreIta || padreIta)) {
                 if (madreIta) {
                     dettaglio.nazionalita = dettaglio.nazionalitaMadre
@@ -596,8 +597,8 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
                 }
                 refreshUi()
             } else {
-                Boolean isMadreUE = dettaglio.nazionalitaMadre?.paeseUE
-                Boolean isPadreUE = dettaglio.nazionalitaPadre?.paeseUE
+                Boolean isMadreUE = dettaglio.nazionalitaMadre?.ue
+                Boolean isPadreUE = dettaglio.nazionalitaPadre?.ue
                 if (dettaglio.nazionalitaMadre && isMadreUE && dettaglio.nazionalitaPadre && (!(isPadreUE))) {
                     dettaglio.nazionalita = dettaglio.nazionalitaMadre
                     refreshUi()
@@ -608,7 +609,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
                     } else {
                         if (dettaglio.nazionalitaMadre && (!(isMadreUE)) && dettaglio.nazionalitaPadre && (!(isPadreUE))) {
                             // refs #61616
-                            dettaglio.nazionalita = ((dettaglio.nazionalitaMadre.id == dettaglio.nazionalitaPadre.id) ? dettaglio.nazionalitaMadre : null)
+                            dettaglio.nazionalita = ((dettaglio.nazionalitaMadre.codCi == dettaglio.nazionalitaPadre.codCi) ? dettaglio.nazionalitaMadre : null)
                             refreshUi()
                         }
                     }
@@ -675,7 +676,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
         // Se siamo nel matrimonio e il padre risulta coniugato
         if (dettaglio.tipoFiliazione.equals(ETipoFiliazione.L) && (ana.statoCivile == EStatoCivile.CN ) ) {
             if ((ana instanceof AnaAnagrafe) && ana.coniuge?.idAnagrafe != null) {
-                AnaAnagrafe anaM = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT]]])
+                AnaAnagrafe anaM = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT], [campo: 'coniuge.anagrafe', tipo: JoinType.LEFT]]])
                 caricaDatiMadreFromAnagrafe(anaM)
             } else {
                 // se il soggetto è stato recuperato da anpr oppure se coniuge.idAnagrafe = null
@@ -686,25 +687,26 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
                 if (ana instanceof AnpAnagrafe) {
                     if (ana.coniuge?.idAnagrafe != null) {
                         try{
-                            AnaAnagrafe anaMAnp = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT]]])
+                            AnaAnagrafe anaMAnp = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT], [campo: 'coniuge.anagrafe', tipo: JoinType.LEFT]]])
                             anagrafe.anagrafe2 = anaMAnp
                         } catch (EmptyResultDataAccessException e) {
                             log.warn("Errore in recupero matricola madre da anagrafe locale con matricola coniuge da ANPR")
                             anagrafe.anagrafe2 = null
                         }
                     }
-                    dettaglio.dataNascitaMadre = ana?.coniuge?.dataNascita
+                    dettaglio.dataNascitaMadre = anagrafe?.anagrafe2?.dataNascita ?: ana?.coniuge?.dataNascita
 
-                    dettaglio.comuneNascitaMadre.codice = ana?.coniuge?.comuneNascita?.codice
-                    dettaglio.comuneNascitaMadre.descrizione = ana?.coniuge?.comuneNascita?.descrizione
-                    dettaglio.comuneNascitaMadre.codiceProvincia = ana?.coniuge?.comuneNascita?.codiceProvincia
-                    dettaglio.comuneNascitaMadre.siglaProvincia = ana?.coniuge?.comuneNascita?.siglaProvincia
+                    dettaglio.comuneNascitaMadre.codice = anagrafe?.anagrafe2?.comuneNascita?.codice ?: ana?.coniuge?.comuneNascita?.codice
+                    dettaglio.comuneNascitaMadre.descrizione = anagrafe?.anagrafe2?.comuneNascita?.descrizione ?: ana?.coniuge?.comuneNascita?.descrizione
+                    dettaglio.comuneNascitaMadre.codiceProvincia = anagrafe?.anagrafe2?.comuneNascita?.codiceProvincia ?: ana?.coniuge?.comuneNascita?.codiceProvincia
+                    dettaglio.comuneNascitaMadre.siglaProvincia = anagrafe?.anagrafe2?.comuneNascita?.siglaProvincia ?: ana?.coniuge?.comuneNascita?.siglaProvincia
 
-                    dettaglio.nazionalitaMadre = ana?.coniuge?.nazionalita
-                    dettaglio.codiceComuneResidenzaMadre = ana?.coniuge?.comuneResidenza?.codice
-                    dettaglio.descrizioneComuneResidenzaMadre = ana?.coniuge?.comuneResidenza?.descrizione
-                    dettaglio.codiceProvinciaResidenzaMadre = ana?.coniuge?.comuneResidenza?.codiceProvincia
-                    dettaglio.siglaProvinciaResidenzaMadre = ana?.coniuge?.comuneResidenza?.siglaProvincia
+                    dettaglio.nazionalitaMadre = anagrafe?.anagrafe2?.nazionalita ?: ana?.coniuge?.nazionalita
+
+                    dettaglio.codiceComuneResidenzaMadre = anagrafe?.anagrafe2?.comuneResidenza?.codice ?: ana?.coniuge?.comuneResidenza?.codice
+                    dettaglio.descrizioneComuneResidenzaMadre = anagrafe?.anagrafe2?.comuneResidenza?.descrizione ?: ana?.coniuge?.comuneResidenza?.descrizione
+                    dettaglio.codiceProvinciaResidenzaMadre = anagrafe?.anagrafe2?.comuneResidenza?.codiceProvincia ?: ana?.coniuge?.comuneResidenza?.codiceProvincia
+                    dettaglio.siglaProvinciaResidenzaMadre = anagrafe?.anagrafe2?.comuneResidenza?.siglaProvincia ?: ana?.coniuge?.comuneResidenza?.siglaProvincia
                 }
             }
         }
@@ -745,7 +747,7 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
         // Se siamo nel matrimonio e la madre risulta coniugata
         if (dettaglio.tipoFiliazione.equals(ETipoFiliazione.L) && (ana.statoCivile == EStatoCivile.CN)){
             if ((ana instanceof AnaAnagrafe) && ana.coniuge?.idAnagrafe != null) {
-                AnaAnagrafe anaP = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT]]])
+                AnaAnagrafe anaP = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT], [campo: 'coniuge.anagrafe', tipo: JoinType.LEFT]]])
                 caricaDatiPadreFromAnagrafe(anaP)
             } else {
                 // se il soggetto è stato recuperato da anpr oppure se coniuge.idAnagrafe = null
@@ -756,25 +758,28 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
                 if (ana instanceof AnpAnagrafe) {
                     if (ana.coniuge?.idAnagrafe != null) {
                         try {
-                            AnaAnagrafe anaPAnp = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT]]])
+                            AnaAnagrafe anaPAnp = anaAnagrafeService.get(ana.coniuge.idAnagrafe, [fetch: [[campo: 'nazionalita', tipo: JoinType.LEFT], [campo: 'coniuge.anagrafe', tipo: JoinType.LEFT]]])
                             anagrafe.anagrafe1 = anaPAnp
                         } catch (EmptyResultDataAccessException e) {
                             log.warn("Errore in recupero matricola padre da anagrafe locale con matricola coniuge da ANPR")
                             anagrafe.anagrafe1 = null
                         }
                     }
-                    dettaglio.dataNascitaPadre = ana?.coniuge?.dataNascita
 
-                    dettaglio.comuneNascitaPadre.codice = ana?.coniuge?.comuneNascita?.codice
-                    dettaglio.comuneNascitaPadre.descrizione = ana?.coniuge?.comuneNascita?.descrizione
-                    dettaglio.comuneNascitaPadre.codiceProvincia = ana?.coniuge?.comuneNascita?.codiceProvincia
-                    dettaglio.comuneNascitaPadre.siglaProvincia = ana?.coniuge?.comuneNascita?.siglaProvincia
+                    dettaglio.dataNascitaPadre = anagrafe?.anagrafe1?.dataNascita ?: ana?.coniuge?.dataNascita
 
-                    dettaglio.nazionalitaPadre = ana?.coniuge?.nazionalita
-                    dettaglio.codiceComuneResidenzaPadre = ana?.coniuge?.comuneResidenza?.codice
-                    dettaglio.descrizioneComuneResidenzaPadre = ana?.coniuge?.comuneResidenza?.descrizione
-                    dettaglio.codiceProvinciaResidenzaPadre = ana?.coniuge?.comuneResidenza?.codiceProvincia
-                    dettaglio.siglaProvinciaResidenzaPadre = ana?.coniuge?.comuneResidenza?.siglaProvincia
+                    dettaglio.comuneNascitaPadre.codice = anagrafe?.anagrafe1?.comuneNascita?.codice ?: ana?.coniuge?.comuneNascita?.codice
+                    dettaglio.comuneNascitaPadre.descrizione = anagrafe?.anagrafe1?.comuneNascita?.descrizione ?: ana?.coniuge?.comuneNascita?.descrizione
+                    dettaglio.comuneNascitaPadre.codiceProvincia = anagrafe?.anagrafe1?.comuneNascita?.codiceProvincia ?: ana?.coniuge?.comuneNascita?.codiceProvincia
+                    dettaglio.comuneNascitaPadre.siglaProvincia = anagrafe?.anagrafe1?.comuneNascita?.siglaProvincia ?: ana?.coniuge?.comuneNascita?.siglaProvincia
+
+                    dettaglio.nazionalitaPadre = anagrafe?.anagrafe1?.nazionalita ?: ana?.coniuge?.nazionalita
+
+                    dettaglio.codiceComuneResidenzaPadre = anagrafe?.anagrafe1?.comuneResidenza?.codice ?: ana?.coniuge?.comuneResidenza?.codice
+                    dettaglio.descrizioneComuneResidenzaPadre = anagrafe?.anagrafe1?.comuneResidenza?.descrizione ?: ana?.coniuge?.comuneResidenza?.descrizione
+                    dettaglio.codiceProvinciaResidenzaPadre = anagrafe?.anagrafe1?.comuneResidenza?.codiceProvincia ?: ana?.coniuge?.comuneResidenza?.codiceProvincia
+                    dettaglio.siglaProvinciaResidenzaPadre = anagrafe?.anagrafe1?.comuneResidenza?.siglaProvincia ?: ana?.coniuge?.comuneResidenza?.siglaProvincia
+
                 }
             }
         }
@@ -1052,7 +1057,9 @@ abstract class NascitaDettaglioParentViewModel extends AttoSoggettiDettaglioPare
           se tipo_riconoscimento 'PD' o 'PDMD' il tipo_consenso deve essere disabilitato
           se tipo_riconoscimento resta vuoto, tipo_consenso viene manipolato come già previsto in partenza, e cioè in funzione del tipo_comparente*/
         listaTipoConsenso = [null]
-        boolean madreDichiaranteComparente = datiProvenienza?.tipoDichiarante?.equals(ETipoDichiaranteNascita.MD.name()) && datiProvenienza?.tipoComparente?.equals(ETipoDichiaranteNascita.MD.name())
+        boolean madreDichiaranteComparente = datiProvenienza?.tipoDichiarante?.equals(ETipoDichiaranteNascita.MD.name()) &&
+                                                datiProvenienza?.tipoComparente?.equals(ETipoDichiaranteNascita.MD.name()) &&
+                                                dettaglio?.tipoRiconoscimento == ETipoRiconoscimentoPrenatale.MD
         if (dettaglio.isTipoConsensoEnabled() && !madreDichiaranteComparente && (lCons.size() > 0)) {
             listaTipoConsenso.addAll(lCons)
         }

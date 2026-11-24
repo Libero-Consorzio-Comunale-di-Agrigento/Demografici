@@ -11,7 +11,7 @@ class AnaConvivenzaDiFattoSpec extends Specification {
 
         expect:
         convivenza.hasProperty("id")
-        convivenza.hasProperty("conviventi")
+        convivenza.hasProperty("convivente")
         convivenza.hasProperty("comuneInizio")
         convivenza.hasProperty("praticaInizio")
         convivenza.hasProperty("annoPraticaInizio")

@@ -61,9 +61,9 @@ class FirmatariANSCListaViewModel extends RiferimentiAttoListaParentViewModel{
         goToANSCEnabled = anscFlow == Boolean.TRUE
         saveANSCEnabled = true
 
-        List<Map> eList = [Etichette.Firmatari]
+        List<Map> eList = [Etichette.getEtichetta("Firmatari")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_salvataggio_dati_firmatari_incompleti_ANSC, EtichetteMessaggi.Salvataggio_Completato])
+        eList.addAll([Etichette.getEtichetta("Ask_salvataggio_dati_firmatari_incompleti_ANSC"), Etichette.getEtichetta("Salvataggio_Completato")])
         eList.addAll(ControlBarANSCAttributes.etichetteCbANSCDesc)
 
         //Aggiungo etichette firmatari
@@ -74,7 +74,7 @@ class FirmatariANSCListaViewModel extends RiferimentiAttoListaParentViewModel{
 
         doInit(eList, pkAtto, tipoAttoEnum) //carica anche atto e dati provenienza
 
-        msgTitle = getEtichetta(Etichette.Firmatari)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Firmatari"))
         formLabel = msgTitle?.toUpperCase()
 
         totalSizeLabel = ""
@@ -109,7 +109,7 @@ class FirmatariANSCListaViewModel extends RiferimentiAttoListaParentViewModel{
 
     @Command void onSalvaAnsc() {
         civFirmatarioAttoService.saveAll(lista, atto.getTipoAttoEnum(), atto.id)
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Salvataggio_Completato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Salvataggio_Completato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
         onRicarica()
     }
 
@@ -117,7 +117,7 @@ class FirmatariANSCListaViewModel extends RiferimentiAttoListaParentViewModel{
         if (atto && (!(wPreviewANSCOpen)) ) {
             if (atto?.idAtto) {
                 if (civFirmatarioAttoService.existsFirmatarioNonValido(atto.idAtto)){
-                     Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_salvataggio_dati_firmatari_incompleti_ANSC), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+                     Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_salvataggio_dati_firmatari_incompleti_ANSC")), msgTitle, Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                             new org.zkoss.zk.ui.event.EventListener(){
                                 void onEvent(Event e){
                                     if (Messagebox.ON_YES.equals(e.getName())){

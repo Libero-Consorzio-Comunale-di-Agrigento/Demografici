@@ -8,6 +8,7 @@ IS
 
 w_integrazione_ansc 	varchar2(1) := upper(f_valore_inp('ANSC',1,1,'X','S'));
 w_ambiente_ansc		varchar2(255);
+w_ambiente_anpr		varchar2(255);
 w_codice_cliente	varchar2(255);
 
 w_return		varchar2(4000);
@@ -28,8 +29,9 @@ begin
      end;
 
      if nvl(w_ambiente_ansc,'PROD') = 'PRE' then
+        w_ambiente_anpr  := f_ANPR_valore_inp('TIPO_INVIO',1,10,'X','S');
         w_codice_cliente := f_get_comune_cliente('COD_COMUNE');
-        if w_codice_cliente in ('039010','025006') then	-- ambienti SVI e TST
+        if w_ambiente_ANPR = 'TEST' and w_codice_cliente in ('039010','025006') then	-- ambienti SVI e TST
            w_return := 'S';
         end if;
 

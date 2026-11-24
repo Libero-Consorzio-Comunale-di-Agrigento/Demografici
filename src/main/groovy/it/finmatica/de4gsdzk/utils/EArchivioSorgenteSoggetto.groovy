@@ -6,9 +6,9 @@ enum EArchivioSorgenteSoggetto {
 
     Map getEtichettaDesc() {
         switch (this) {
-            case ANA: return Etichette.Anagrafe
-            case CIV: return Etichette.Stato_Civile
-            case ANP: return Etichette.ANPR
+            case ANA: return Etichette.getEtichetta("Anagrafe")
+            case CIV: return Etichette.getEtichetta("Stato_Civile")
+            case ANP: return Etichette.getEtichetta("ANPR")
         }
         return null
     }

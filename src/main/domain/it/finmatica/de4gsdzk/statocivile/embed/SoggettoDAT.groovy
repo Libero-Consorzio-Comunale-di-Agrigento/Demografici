@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile.embed
 
 import it.finmatica.de4gsdzk.ISoggettoCollegato
-import it.finmatica.de4gsdzk.anagrafe.AnaEnte
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnte
 import it.finmatica.de4gsdzk.anagrafe.AnaTipoDocumento
 import it.finmatica.de4gsdzk.utils.ESesso
 import it.finmatica.de4gsdzk.utils.ETipoSN
@@ -178,10 +178,10 @@ class SoggettoDAT implements ISoggettoCollegato{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Cognome, Etichette.Nome, Etichette.Matricola, Etichette.Sottoscrizione_DAT,
-                                              Etichette.Sesso, Etichette.Data_Nascita, Etichette.Comune_Nascita, Etichette.Codice_Fiscale,
-                                              Etichette.Indirizzo, Etichette.Comune_Residenza, Etichette.CAP, Etichette.Numero_telefono,
-                                              Etichette.Email, Etichette.Numero, Etichette.Data_Scadenza, Etichette.Data_Rilascio, Etichette.Comune,
-                                              Etichette.Documento_identita, Etichette.Ente_Rilascio, Etichette.Consenso_Trattamento_Dati]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Matricola"), Etichette.getEtichetta("Sottoscrizione_DAT"),
+                                              Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Data_Nascita"), Etichette.getEtichetta("Comune_Nascita"),Etichette.getEtichetta("Codice_Fiscale"),
+                                              Etichette.getEtichetta("Indirizzo"), Etichette.getEtichetta("Comune_Residenza"), Etichette.getEtichetta("CAP"), Etichette.getEtichetta("Numero_telefono"),
+                                              Etichette.getEtichetta("Email"), Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Data_scadenza"), Etichette.getEtichetta("Data_Rilascio"), Etichette.getEtichetta("Comune"),
+                                              Etichette.getEtichetta("Documento_identita"), Etichette.getEtichetta("Ente_Rilascio"), Etichette.getEtichetta("Consenso_Trattamento_Dati")]
 
 }

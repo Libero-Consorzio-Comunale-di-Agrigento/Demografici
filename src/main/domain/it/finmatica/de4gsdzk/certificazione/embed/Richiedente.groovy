@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.certificazione.embed
 
 
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.anagrafe.AnaTipoDocumento
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.ESesso
@@ -71,7 +71,7 @@ class Richiedente {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NAZIONALITA_RICHIEDENTE", nullable = true)
-    AnaNazionalita nazionalita
+    AnaCittadinanza nazionalita
 
     @Column(name = "COGNOME_RICHIEDENTE", nullable = true)
     String cognome

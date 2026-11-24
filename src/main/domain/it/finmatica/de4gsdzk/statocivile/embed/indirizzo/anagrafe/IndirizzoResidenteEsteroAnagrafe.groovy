@@ -14,13 +14,13 @@ import javax.persistence.Embeddable
 @Embeddable
 class IndirizzoResidenteEsteroAnagrafe implements IIndirizzoResidenteEstero, IIndirizzoAnagrafe {
 
-    @Column(name = "INDIRIZZO_RES", nullable = false)
+    @Column(name = "INDIRIZZO_RES", nullable = false, updatable = false, insertable = false)
     String via
 
     @AttributeOverrides([
-            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_RES")),
+            @AttributeOverride(name = "codice", column = @Column(name = "COD_COM_RES", updatable = false, insertable = false)),
             @AttributeOverride(name = "descrizione", column = @Column(name = "DES_COM_RES", updatable = false, insertable = false)),
-            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_RES")),
+            @AttributeOverride(name = "codiceProvincia", column = @Column(name = "COD_PRO_RES", updatable = false, insertable = false)),
             @AttributeOverride(name = "siglaProvincia", column = @Column(name = "SIGLA_PRO_RES", updatable = false, insertable = false))
     ])
     private Comune comune
@@ -36,7 +36,7 @@ class IndirizzoResidenteEsteroAnagrafe implements IIndirizzoResidenteEstero, IIn
         this.comune = c
     }
 
-    @Column(name = "CAP_RES", nullable = true)
+    @Column(name = "CAP_RES", nullable = true, updatable = false, insertable = false)
     String zipcode
 
     @Override
@@ -49,17 +49,17 @@ class IndirizzoResidenteEsteroAnagrafe implements IIndirizzoResidenteEstero, IIn
         return this.zipcode
     }
 
-    @Column(name = "PROVINCIA_CONTEA_AIR", nullable = true)
+    @Column(name = "PROVINCIA_CONTEA_AIR", nullable = true, updatable = false, insertable = false)
     String provinciaContea
 
-    @Column(name = "PRESSO_AIR", nullable = true)
+    @Column(name = "PRESSO_AIR", nullable = true, updatable = false, insertable = false)
     String presso
 
-    @Column(name = "COD_CONSOLATO_AIR", nullable = true)
+    @Column(name = "COD_CONSOLATO_AIR", nullable = true, updatable = false, insertable = false)
     String codiceConsolato
 
-    @Column(name = "SEDE_CONSOLATO_AIR", nullable = true)
+    @Column(name = "SEDE_CONSOLATO_AIR", nullable = true, updatable = false, insertable = false)
     String sedeConsolato
 
-    static final List<Map> etichetteDomain = [Etichette.Via, Etichette.Comune, Etichette.Zipcode, Etichette.Provincia_Contea, Etichette.Presso, Etichette.Consolato, Etichette.Sede]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Via"), Etichette.getEtichetta("Comune"), Etichette.getEtichetta("Zipcode"), Etichette.getEtichetta("Provincia_Contea"), Etichette.getEtichetta("Presso"), Etichette.getEtichetta("Consolato"), Etichette.getEtichetta("Sede")]
 }

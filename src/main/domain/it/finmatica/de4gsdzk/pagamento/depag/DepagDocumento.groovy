@@ -26,5 +26,5 @@ class DepagDocumento extends GsdBaseDomain {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Certificato, Etichette.Servizio]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Certificato"), Etichette.getEtichetta("Servizio")]
 }

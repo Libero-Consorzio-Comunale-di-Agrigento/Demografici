@@ -84,6 +84,6 @@ class CivFascicoloAtto extends GsdDocumentoEsternoBaseDomain implements IRiferim
     ////////////////////////////////// GENERALI /////////////////////////////
     /////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Documento, Etichette.Categoria, Etichette.Note, Etichette.Data]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Categoria"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Data")]
 
 }

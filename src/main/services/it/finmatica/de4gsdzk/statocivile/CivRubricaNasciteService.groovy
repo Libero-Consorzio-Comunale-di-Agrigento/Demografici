@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.errors.ErroreDatiAttoRuntimeException
 import it.finmatica.de4gsdzk.errors.RecordDuplicatoRuntimeException
@@ -19,11 +20,11 @@ class CivRubricaNasciteService {
 
     CivRubricaNasciteRepository civRubricaNasciteRepository
 
-    StatoCivileService statoCivileService
+    GsdService gsdService
 
-    CivRubricaNasciteService(CivRubricaNasciteRepository civRubricaNasciteRepository, StatoCivileService statoCivileService) {
+    CivRubricaNasciteService(CivRubricaNasciteRepository civRubricaNasciteRepository, GsdService gsdService) {
         this.civRubricaNasciteRepository = civRubricaNasciteRepository
-        this.statoCivileService = statoCivileService
+        this.gsdService = gsdService
     }
 
     CivRubricaNascite create(Map params) {
@@ -40,7 +41,7 @@ class CivRubricaNasciteService {
         if ( (params.annoRegistrazioneDa != null) || (params.annoRegistrazioneA != null) || (params.dataRegistrazioneDa) || (params.dataRegistrazioneA) || (params.dataNascitaDa) || (params.dataNascitaA) ) {
             return listAll(params, pr)
         }
-        throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori)
+        throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori"))
     }
 
     Page<CivRubricaNascite> listAll(RicercaRubricaNascite params, Pageable pageable) {
@@ -64,7 +65,7 @@ class CivRubricaNasciteService {
 
     void validaDati(CivRubricaNascite obj, boolean force) {
         if (DataUtils.isDataFutura(obj.dataNascita)){
-            throw new ErroreDatiAttoRuntimeException(EtichetteMessaggi.Errore_data_futura)
+            throw new ErroreDatiAttoRuntimeException(Etichette.getEtichetta("Errore_data_futura"))
         }
 
         ValidationUtils.validaDatiObbligatori(obj)
@@ -79,7 +80,7 @@ class CivRubricaNasciteService {
         ValidationUtils.validaEstremiAttoComune(dvc, "Estremi Atto di Nascita")
 
         if ((!(force)) && civRubricaNasciteRepository.existsByUkAtto(obj.id, obj.attoNascita.anno, obj.attoNascita.atto, obj.attoNascita.parte, obj.attoNascita.serie, obj.attoNascita.ufficio, obj.attoNascita.idAttoAnsc, obj.codiceComuneAttoNascita, obj.codiceProvinciaAttoNascita)) {
-            throw new RecordDuplicatoRuntimeException(EtichetteMessaggi.Errore_Inserimento_Record_Rubrica_Duplicato)
+            throw new RecordDuplicatoRuntimeException(Etichette.getEtichetta("Errore_Inserimento_Record_Rubrica_Duplicato"))
         }
     }
 
@@ -87,7 +88,7 @@ class CivRubricaNasciteService {
         validaDati(obj, force)
 
         if (obj.id == null) {
-            obj.id = statoCivileService.getIdFromSequence(obj)
+            obj.id = gsdService.getIdFromSequence(obj)
         }
 
         return civRubricaNasciteRepository.save(obj)

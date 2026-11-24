@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?link rel="stylesheet" type="text/css" href="/css/de4gsdzk.css" ?>
+<?xel-method prefix="c" name="westWidth" class="it.finmatica.de4gsdzk.utils.ConfigurazioneUtils" signature="String getWestWidth()"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:w="http://www.zkoss.org/2005/zk/client"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<window closable="false"
+			apply="org.zkoss.bind.BindComposer"
+			width="100%" height="100%"
+            onClientInfo="@command('onUpdateClientInfo', width=event.desktopWidth, height=event.desktopHeight, orientation=event.orientation)"
+			viewModel="@id('vm') @init('restrict.toponomastica.ToponomasticaIndexViewModel')">
+
+		<borderlayout height="100%">
+			<north>
+				<include hflex="1" vflex="1" src="/north.zul"/>
+			</north>
+
+			<west autoscroll="true" width="@load(c:westWidth())">
+				<vlayout children="@load(vm.sezioni)" sclass="scroll" spacing="0">
+					<template name="children" var="s">
+						<vlayout spacing="0">
+							<button tooltiptext="@load(s.tooltip)" label="@load(s.label)" hflex="1" height="25px"
+									onClick="@command('onSelectSezione', sezione = s)" style="font-weight: bold;">
+								<custom-attributes valore="${s}"/>
+							</button>
+							<listbox model="@load(s.subSezioni)"
+									 visible="@load(s.value eq vm.selectedSezione.value)"
+									 selectedItem="@bind(vm.selectedSubSezione) @converter('it.finmatica.zk.utils.PropertyConverter', property='value')">
+								<template name="model">
+									<listitem label="@load(each.label)" value="@load(each)" tooltiptext="@load(each.tooltip)" sclass="testo-al-centro"/>
+								</template>
+							</listbox>
+						</vlayout>
+					</template>
+				</vlayout>
+			</west>
+
+			<center autoscroll="true">
+				<include id="inner" hflex="1" vflex="1" src="@load(vm.selectedSubSezione.uri)"/>
+			</center>
+
+			<south style="border-top: 1px solid #c5c5c5; margin-top:-1;">
+				<include hflex="1" vflex="1" src="/south.zul"/>
+			</south>
+
+		</borderlayout>
+	</window>
+
+
+</zk>

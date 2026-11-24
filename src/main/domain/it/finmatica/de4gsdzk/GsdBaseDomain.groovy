@@ -9,7 +9,9 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class GsdBaseDomain {
 
-    protected String getTableName() {
+    abstract Object getId()
+
+    String getTableName() {
         return DomainUtils.getTableName(this)
     }
 
@@ -20,6 +22,16 @@ abstract class GsdBaseDomain {
         }
         @Override Boolean convertToEntityAttribute(String value) {
             return "S".equals(value)
+        }
+    }
+
+    @Converter
+    static class BooleanToIntegerConverter implements AttributeConverter<Boolean, Integer> {
+        @Override Integer convertToDatabaseColumn(Boolean value) {
+            return (value != null && value) ? 1 : null
+        }
+        @Override Boolean convertToEntityAttribute(Integer value) {
+            return value == 1
         }
     }
 

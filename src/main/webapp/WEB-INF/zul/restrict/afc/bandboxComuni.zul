@@ -23,7 +23,11 @@
 						   sclass="toolbar-mini-button"/>
 				</hlayout>
 			</hlayout>
-		</hlayout>
+            <hlayout style="padding:3px 5px">
+                <checkbox id="chkEscludiSoppressi"/>
+            </hlayout>
+        </hlayout>
+
 
 		<listbox width="750px" height="250px" multiple="false">
 			<listhead>

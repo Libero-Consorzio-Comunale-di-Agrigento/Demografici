@@ -47,7 +47,7 @@ class CivMinuta {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Codice, Etichette.Descrizione, Etichette.Descrizione_Estesa,
-                                              Etichette.Categoria, Etichette.Tipo_Atto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Codice"), Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Descrizione_Estesa"),
+                                              Etichette.getEtichetta("Categoria"), Etichette.getEtichetta("Tipo_Atto")]
 
 }

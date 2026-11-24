@@ -27,5 +27,5 @@ class CivRichiamoComposizione extends CivRichiamoBaseDomain {
     ///////////////////////////////// GENERALI /////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Descrizione, Etichette.Numero_righe]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Numero_righe")]
 }

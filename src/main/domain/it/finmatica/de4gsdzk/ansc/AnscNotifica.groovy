@@ -59,9 +59,9 @@ class AnscNotifica extends GsdBaseDomain{
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Stato, Etichette.Genere, Etichette.Cognome_Nome, Etichette.Data,
-                                              Etichette.Descrizione, Etichette.Comune_Formazione, Etichette.Dal, Etichette.Al, Etichette.Testo,
-                                              Etichette.Evento_Primario, Etichette.Estremi_Atto, Etichette.Tipo_Atto, Etichette.Comune_Atto]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Genere"), Etichette.getEtichetta("Cognome_Nome"), Etichette.getEtichetta("Data"),
+                                              Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Comune_Formazione"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"), Etichette.getEtichetta("Testo"),
+                                              Etichette.getEtichetta("Evento_Primario"), Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Comune_Atto")]
 
     @Converter
     static class EnumStatoToIntConverter implements AttributeConverter<EStatoFlussoNotifica, Integer> {

@@ -19,6 +19,10 @@ class GestioneTestiGsdModello {
 
     public static final String PREFISSO_MODELLI_STANDARD = "CIVW"
     public static final String PREFISSO_MODELLI_TIPO_CERTIFICATO = "CERW"
+    public static final String PREFISSO_MODELLI_COMUNICAZIONI_ANA = "SCAW"
+    public static final String PREFISSO_MODELLI_ADEMPIMENTI_ANA = "TPR_"
+    public static final String PREFISSO_MODELLI_CDF_ANA = "CDF_"
+    public static final String PREFISSO_MODELLI_ETICHETTE_ANA = "ANA"
     public static final String SUFFISSO_MODELLI_DEFAULT = "_modello"
     public static final String TIPO_MODELLI_DEFAULT = "odt"
 
@@ -112,5 +116,5 @@ class GestioneTestiGsdModello {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map<String, String>> etichetteDomain = [Etichette.Descrizione, Etichette.Modello, Etichette.Formato_testo]
+    static final List<Map<String, String>> etichetteDomain = [Etichette.getEtichetta("Descrizione"), Etichette.getEtichetta("Modello"), Etichette.getEtichetta("Formato_testo")]
 }

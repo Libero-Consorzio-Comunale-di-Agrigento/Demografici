@@ -24,10 +24,10 @@ class MatrimonioD3DettaglioViewModel extends IstatDettaglioParentViewModel{
 
         saveRecordEnabled = true
 
-        List<Map> eList = [Etichette.SEZIONE_MODELLO_D3, Etichette.SEZIONE_DATI_MATRIMONIO,
-                           Etichette.SEZIONE_MARITO, Etichette.SEZIONE_MOGLIE]
+        List<Map> eList = [Etichette.getEtichetta("SEZIONE_MODELLO_D3"), Etichette.getEtichetta("SEZIONE_DATI_MATRIMONIO"),
+                           Etichette.getEtichetta("SEZIONE_MARITO"), Etichette.getEtichetta("SEZIONE_MOGLIE")]
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D3, Etichette.SEZIONE_MODELLO_D3)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.D3, Etichette.getEtichetta("SEZIONE_MODELLO_D3"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita1', tipo: JoinType.LEFT], [campo:'nazionalita2', tipo: JoinType.LEFT]]])

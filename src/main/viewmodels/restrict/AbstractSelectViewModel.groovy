@@ -17,7 +17,7 @@ abstract class AbstractSelectViewModel extends AbstractListaViewModel{
     private GsdEtichettaService gsdEtichettaService
 
     void doInitEtichette(List<Map<String, String>> eList=[]) {
-        eList.addAll([Etichette.Seleziona, Etichette.seleziona_tooltip, Etichette.seleziona_salva_tooltip, Etichette.Chiudi])
+        eList.addAll([Etichette.getEtichetta("Seleziona"), Etichette.getEtichetta("seleziona_tooltip"), Etichette.getEtichetta("seleziona_salva_tooltip"), Etichette.getEtichetta("Chiudi")])
 
         eList.addAll(etichetteListaDefault)
 

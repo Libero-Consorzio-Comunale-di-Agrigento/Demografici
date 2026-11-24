@@ -1,7 +1,7 @@
 package it.finmatica.de4gsdzk.utils
 
 import groovy.util.logging.Slf4j
-import it.finmatica.de4gsdzk.anagrafe.AnaNazionalita
+import it.finmatica.de4gsdzk.anagrafe.AnaCittadinanza
 import it.finmatica.de4gsdzk.archivi.ArcComune
 import it.finmatica.de4gsdzk.statocivile.*
 
@@ -501,7 +501,7 @@ class FormulaUtils {
         // per cui il controllo va svincolato dal valore del tipoOperazione (deve essere fatto anche in insert)
         switch (chiave) {
             case FORMULA_MARGINE_LIBRETTO:
-                add = ( ( (obj.natura == ENaturaAtto.O) || (obj.natura == ENaturaAtto.T) ) && ( obj.isPartePrima() || obj.isSecondaA() || obj.isSecondaC() ) && ( (obj.nazionalita1?.id == AnaNazionalita.ID_ITALIA) || (obj.nazionalita2?.id == AnaNazionalita.ID_ITALIA) ) )
+                add = ( ( (obj.natura == ENaturaAtto.O) || (obj.natura == ENaturaAtto.T) ) && ( obj.isPartePrima() || obj.isSecondaA() || obj.isSecondaC() ) && ( (obj.nazionalita1?.codCi == AnaCittadinanza.ID_ITALIA) || (obj.nazionalita2?.codCi == AnaCittadinanza.ID_ITALIA) ) )
                 break
         }
         if (tipoOperazione.isUpdate()){

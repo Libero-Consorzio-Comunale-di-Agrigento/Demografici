@@ -78,9 +78,9 @@ class RicercaAtto implements IRicercaAtto{
         String.format("COGNOME: %, NOME: %s, ANNO: %s, ATTO: %s",cognome,nome,anno,atto)
     }
 
-    static final List<Map> etichetteRicercaDesc = [Etichette.Parte, Etichette.Serie, Etichette.Ufficio,
-                                                   Etichette.Cognome, Etichette.Nome, Etichette.Id_Atto_Ansc,
-                                                   Etichette.Stato, Etichette.Tipo, Etichette.Comunicazioni_pendenti,
-                                                   Etichette.Effettua_Ricerca, Etichette.CONSOLIDATO, Etichette.PROVVISORIO, Etichette.IN_INSERIMENTO, Etichette.Tutti]
+    static final List<Map> etichetteRicercaDesc = [Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Numero"),
+                                                   Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Id_Atto_Ansc"),
+                                                   Etichette.getEtichetta("Stato"), Etichette.getEtichetta("Tipo"), Etichette.getEtichetta("Comunicazioni_pendenti"),
+                                                   Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("CONSOLIDATO"), Etichette.getEtichetta("PROVVISORIO"), Etichette.getEtichetta("IN_INSERIMENTO"), Etichette.getEtichetta("Tutti")]
 
 }

@@ -103,9 +103,9 @@ class CivSoggettoAnnotazione {
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Ufficio, Etichette.Anno, Etichette.Tipo_Atto, Etichette.Id_Atto_Ansc,
-                                              Etichette.Numero_Atto, Etichette.Parte, Etichette.Serie, Etichette.Natura_Atto,
-                                              Etichette.Cognome, Etichette.Nome, Etichette.Sesso, Etichette.Data_Evento,
-                                              Etichette.Cognome_Sposo, Etichette.Nome_Sposo, Etichette.Cognome_Sposa, Etichette.Nome_Sposa]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Ufficio"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Tipo_Atto"), Etichette.getEtichetta("Id_Atto_Ansc"),
+                                              Etichette.getEtichetta("Numero_Atto"), Etichette.getEtichetta("Parte"), Etichette.getEtichetta("Serie"), Etichette.getEtichetta("Natura_Atto"),
+                                              Etichette.getEtichetta("Cognome"), Etichette.getEtichetta("Nome"), Etichette.getEtichetta("Sesso"), Etichette.getEtichetta("Data_Evento"),
+                                              Etichette.getEtichetta("Cognome_Sposo"), Etichette.getEtichetta("Nome_Sposo"), Etichette.getEtichetta("Cognome_Sposa"), Etichette.getEtichetta("Nome_Sposa")]
 
 }

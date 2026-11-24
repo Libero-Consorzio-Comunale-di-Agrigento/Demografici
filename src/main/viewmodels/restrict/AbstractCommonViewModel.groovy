@@ -2,7 +2,6 @@ package restrict
 
 
 import it.finmatica.de4gsdzk.utils.Etichette
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
 import org.zkoss.bind.BindUtils
 import org.zkoss.bind.annotation.Command
 import org.zkoss.zk.ui.event.Events
@@ -55,7 +54,7 @@ abstract class AbstractCommonViewModel extends AbstractResizedViewModel {
         return codice ? etichetteCustom[codice] : ""
     }
 
-    static final List<Map<String, String>> etichetteDettaglioDefault = [EtichetteMessaggi.Compilare_campi_obbligatori, EtichetteMessaggi.Ask_Modifiche_In_Sospeso,
-                                                                        EtichetteMessaggi.Salvataggio_Completato, Etichette.Chiusura]
+    static final List<Map<String, String>> etichetteDettaglioDefault = [Etichette.getEtichetta("Compilare_campi_obbligatori"), Etichette.getEtichetta("Ask_Modifiche_In_Sospeso"),
+                                                                        Etichette.getEtichetta("Salvataggio_Completato"), Etichette.getEtichetta("Chiusura")]
 
 }

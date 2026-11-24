@@ -1,8 +1,8 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.ErroreCaricamentoDatiRuntimeException
-import it.finmatica.de4gsdzk.statocivile.IstMp4Repository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,7 +13,7 @@ import javax.persistence.criteria.JoinType
 @Service
 class IstMp4Service {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final IstMp4Repository istMp4Repository
 
@@ -21,12 +21,12 @@ class IstMp4Service {
 
 	private final CivNascitaService civNascitaService
 
-    IstMp4Service(IstMp4Repository istMp4Repository, StatoCivileService statoCivileService,
-				  CivValidazioneModelloIstatService civValidazioneModelloIstatService, CivNascitaService civNascitaService) {
+    IstMp4Service(IstMp4Repository istMp4Repository, GsdService gsdService,
+                  CivValidazioneModelloIstatService civValidazioneModelloIstatService, CivNascitaService civNascitaService) {
 
 		this.istMp4Repository = istMp4Repository
         this.civNascitaService = civNascitaService
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 		this.civValidazioneModelloIstatService = civValidazioneModelloIstatService
 	}
 
@@ -49,13 +49,13 @@ class IstMp4Service {
 			if ((nas.dataNascitaMadre != null) && (obj.dataNascitaMadre != null) && (nas.dataNascitaMadre != obj.dataNascitaMadre)) {
 				msg += "- Risulta un'incongruenza sulla data di nascita della madre\n"
 			}
-			if ((nas.nazionalitaMadre != null) && (obj.nazionalitaMadre != null) && (nas.nazionalitaMadre.id.compareTo(obj.nazionalitaMadre.id) != 0)) {
+			if ((nas.nazionalitaMadre != null) && (obj.nazionalitaMadre != null) && (nas.nazionalitaMadre.codCi.compareTo(obj.nazionalitaMadre.codCi) != 0)) {
 				msg += "- Risulta un'incongruenza sulla cittadinanza della madre\n"
 			}
 			if ((nas.dataNascitaPadre != null) && (obj.dataNascitaPadre != null) && (nas.dataNascitaPadre != obj.dataNascitaPadre)) {
 				msg += "- Risulta un'incongruenza sulla data di nascita del padre\n"
 			}
-			if ((nas.nazionalitaPadre != null) && (obj.nazionalitaPadre != null) && (nas.nazionalitaPadre.id.compareTo(obj.nazionalitaPadre.id) != 0)) {
+			if ((nas.nazionalitaPadre != null) && (obj.nazionalitaPadre != null) && (nas.nazionalitaPadre.codCi.compareTo(obj.nazionalitaPadre.codCi) != 0)) {
 				msg += "- Risulta un'incongruenza sulla cittadinanza del padre\n"
 			}
 			if (msg) {
@@ -69,7 +69,7 @@ class IstMp4Service {
 		validaDati(obj, pkAtto, force)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		log.info("Lancio salvataggio su ISTMP4 per id " + obj.id)
 		return  istMp4Repository.save(obj)

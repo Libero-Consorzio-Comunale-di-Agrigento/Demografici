@@ -45,7 +45,7 @@
 						</cell>
 					</zk>
 					<cell align="right" width="@load(vm.ricercaAtto.hasParte()?'45px':(vm.ricercaAtto.hasSerie()?'45px':'65px'))">
-						<label value="@load(vm.etichette['Numero_Atto'])"/>
+						<label value="@load(vm.etichette['Numero'])"/>
 					</cell>
 					<cell width="70px">
 						<intbox value="@bind(vm.ricercaAtto.atto)" onOK="@command('onRicerca')" hflex="1"/>

@@ -28,10 +28,10 @@ class NascitaP4DettaglioViewModel extends IstatDettaglioParentViewModel{
         List<Map> eList = []
         eList.addAll(IstMp4.etichetteDomain)
 
-        eList.addAll([Etichette.SEZIONE_INTESTATARIO, Etichette.SEZIONE_NATO_A,
-                      Etichette.SEZIONE_PADRE, Etichette.SEZIONE_MADRE, Etichette.SEZIONE_MODELLO_P4])
+        eList.addAll([Etichette.getEtichetta("SEZIONE_INTESTATARIO"), Etichette.getEtichetta("SEZIONE_NATO_A"),
+                      Etichette.getEtichetta("SEZIONE_PADRE"), Etichette.getEtichetta("SEZIONE_MADRE"), Etichette.getEtichetta("SEZIONE_MODELLO_P4")])
 
-        doInit(eList, tipoAttoEnum, ETipoModelloIstat.P4, Etichette.SEZIONE_MODELLO_P4)
+        doInit(eList, tipoAttoEnum, ETipoModelloIstat.P4, Etichette.getEtichetta("SEZIONE_MODELLO_P4"))
 
         if (pkAtto){
             caricaAtto(tipoAttoEnum, pkAtto, [fetch:[[campo:'nazionalita', tipo: JoinType.LEFT]]])

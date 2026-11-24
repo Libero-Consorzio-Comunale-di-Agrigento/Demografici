@@ -39,11 +39,12 @@ class PopupImportAllegatiViewModel extends AbstractSelectViewModel implements Tr
         ricercaProtocollo = new RicercaProtocollo()
         ricercaProtocollo.anno = DataUtils.getAnnoCorrente()
 
-        List<Map<String, String>> eList = [Etichette.Effettua_Ricerca, Etichette.Protocolli, Etichette.Importa, Etichette.Oggetto,
-                                           Etichette.Anno, Etichette.Numero, Etichette.Da, Etichette.A, Etichette.Data]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Effettua_Ricerca"), Etichette.getEtichetta("Protocolli"), Etichette.getEtichetta("Importa"),
+                                           Etichette.getEtichetta("Oggetto"), Etichette.getEtichetta("Anno"), Etichette.getEtichetta("Numero"), Etichette.getEtichetta("Da"), 
+                                           Etichette.getEtichetta("A"), Etichette.getEtichetta("Data")]
         doInitEtichette(eList)
 
-        msgTitle = getEtichetta(Etichette.Protocolli)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Protocolli"))
     }
 
     void caricaLista(){
@@ -74,7 +75,7 @@ class PopupImportAllegatiViewModel extends AbstractSelectViewModel implements Tr
             Events.sendEvent(CustomEvents.ON_SELECT_RECORD, self, dettagli)
             onChiudi()
         } else {
-            Messagebox.show(getEtichetta(Etichette.Nessun_dato_disponibile), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_dato_disponibile")), msgTitle, Messagebox.OK, Messagebox.EXCLAMATION)
         }
     }
 

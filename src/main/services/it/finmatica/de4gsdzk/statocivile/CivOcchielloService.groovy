@@ -1,10 +1,10 @@
 package it.finmatica.de4gsdzk.statocivile
 
 import groovy.util.logging.Slf4j
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
-import it.finmatica.de4gsdzk.statocivile.CivOcchielloRepository
 import it.finmatica.de4gsdzk.utils.ETipoAtto
-import it.finmatica.de4gsdzk.utils.EtichetteMessaggi
+import it.finmatica.de4gsdzk.utils.Etichette
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CivOcchielloService {
 
-	private final StatoCivileService statoCivileService
+	private final GsdService gsdService
 
 	private final CivOcchielloRepository civOcchielloRepository
 
-    CivOcchielloService(CivOcchielloRepository civOcchielloRepository, StatoCivileService statoCivileService) {
+    CivOcchielloService(CivOcchielloRepository civOcchielloRepository, GsdService gsdService) {
 
 		this.civOcchielloRepository = civOcchielloRepository
-		this.statoCivileService = statoCivileService
+		this.gsdService = gsdService
 	}
 
 	CivOcchiello getByUkAtto(String identificativoAtto) {
@@ -41,7 +41,7 @@ class CivOcchielloService {
 				break
 		}
 		if (emptyMandatoryFields){
-			throw new CampoMandatoryRuntimeException(EtichetteMessaggi.Compilare_campi_obbligatori_occhiello)
+			throw new CampoMandatoryRuntimeException(Etichette.getEtichetta("Compilare_campi_obbligatori_occhiello"))
 		}
 	}
 
@@ -49,7 +49,7 @@ class CivOcchielloService {
 		validaDati(obj, tipoAttoEnumSource)
 
 		if (obj.id == null){
-			obj.id = statoCivileService.getIdFromSequence(obj)
+			obj.id = gsdService.getIdFromSequence(obj)
 		}
 		return  civOcchielloRepository.save(obj)
 	}

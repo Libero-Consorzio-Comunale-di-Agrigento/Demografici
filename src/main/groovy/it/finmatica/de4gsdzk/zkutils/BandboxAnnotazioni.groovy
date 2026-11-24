@@ -80,8 +80,8 @@ class BandboxAnnotazioni extends CustomBandbox {
 			c.bbParent = this
 		}
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {
@@ -98,7 +98,7 @@ class BandboxAnnotazioni extends CustomBandbox {
 		Page p = Holders.getApplicationContext().getBean(CivFormulaAnnotazioneService.class).list(params)
 		listbox.setModel(new ListModelList<CivFormulaAnnotazione>(p.getContent()))
 		paging.setTotalSize((int)p.getTotalElements())
-		label.value = (getEtichetta(etichette, Etichette.Numero_record_trovati)?:"") + paging.totalSize
+		label.value = (getEtichetta(etichette, Etichette.getEtichetta("Numero_record_trovati"))?:"") + paging.totalSize
 	}
 
 	@Listen("onSelect = combobox")

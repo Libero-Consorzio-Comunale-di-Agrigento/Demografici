@@ -65,10 +65,10 @@ class CivParametroProtocollo extends GsdBaseDomain{
     ////////////////////////////////////////////////////////////////////////
 
     static final List<Map> etichetteDomain = [
-            Etichette.Funzione, Etichette.Riferimento,
-            Etichette.Tipo_Documento, Etichette.Modalita, Etichette.Invio,
-            Etichette.Classificazione, Etichette.Numero_Fascicolo, Etichette.Anno_Fascicolo,
-            Etichette.Documentale, Etichette.Albo_Pretorio, Etichette.Comunicazione
+            Etichette.getEtichetta("Funzione"), Etichette.getEtichetta("Riferimento"),
+            Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Modalita"), Etichette.getEtichetta("Invio"),
+            Etichette.getEtichetta("Classificazione"), Etichette.getEtichetta("Numero_Fascicolo"), Etichette.getEtichetta("Anno_Fascicolo"),
+            Etichette.getEtichetta("Documentale"), Etichette.getEtichetta("Albo_Pretorio"), Etichette.getEtichetta("Comunicazione")
     ]
 
 }

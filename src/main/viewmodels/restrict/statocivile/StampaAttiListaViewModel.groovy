@@ -3,6 +3,7 @@ package restrict.statocivile
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.ExportService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.errors.CampoMandatoryRuntimeException
 import it.finmatica.de4gsdzk.export.ExportField
 import it.finmatica.de4gsdzk.export.ExportObject
@@ -18,6 +19,7 @@ import org.zkoss.bind.annotation.Init
 import org.zkoss.zk.ui.select.annotation.VariableResolver
 import org.zkoss.zk.ui.select.annotation.WireVariable
 import org.zkoss.zkplus.spring.DelegatingVariableResolver
+import org.zkoss.zul.Filedownload
 import org.zkoss.zul.Messagebox
 import org.zkoss.zul.Window
 
@@ -40,11 +42,13 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
     List<OrderBy> listaOrder = []
     OrderBy selectedOrder
 
+    boolean anscAttiva
+
     @Delegate
     ControlBarStampaAttributes cbStampa = new ControlBarStampaAttributes()
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivAttoService civAttoService
@@ -64,14 +68,15 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
 
         this.tipoAttoEnum = tipoAttoEnum
 
-        List<Map<String, String>> eList = [Etichette.Data_Processo_Verbale, Etichette.Data_Pubblicazione, Etichette.CONSOLIDATO, Etichette.IN_INSERIMENTO,
-                                           Etichette.Estremi_Atto_decrescente, Etichette.Estremi_Atto_crescente, Etichette.Data_Evento_decrescente, Etichette.Data_Evento_crescente,
-                                           Etichette.Stato, Etichette.FONTE, Etichette.STATO_CIVILE, Etichette.Tutti_gli_uffici, Etichette.Tipo,
-                                           Etichette.Residenza, Etichette.Dal, Etichette.Al, Etichette.ANNULLATO,
-                                           Etichette.Totale_Atti, Etichette.Di_cui_annullati, Etichette.Maschi, Etichette.Femmine, Etichette.Non_conosciuto]
+        List<Map<String, String>> eList = [Etichette.getEtichetta("Data_Processo_Verbale"), Etichette.getEtichetta("Data_Pubblicazione"), Etichette.getEtichetta("CONSOLIDATO"), Etichette.getEtichetta("IN_INSERIMENTO"),
+                                           Etichette.getEtichetta("Estremi_Atto_decrescente"), Etichette.getEtichetta("Estremi_Atto_crescente"), Etichette.getEtichetta("Data_Evento_decrescente"), Etichette.getEtichetta("Data_Evento_crescente"),
+                                           Etichette.getEtichetta("Stato"), Etichette.getEtichetta("FONTE"), Etichette.getEtichetta("STATO_CIVILE"), Etichette.getEtichetta("Tutti_gli_uffici"), Etichette.getEtichetta("Tipo"),
+                                           Etichette.getEtichetta("Residenza"), Etichette.getEtichetta("Dal"), Etichette.getEtichetta("Al"), Etichette.getEtichetta("ANNULLATO"), Etichette.getEtichetta("Id_Atto_Ansc"),
+                                           Etichette.getEtichetta("Totale_Atti"), Etichette.getEtichetta("Di_cui_annullati"), Etichette.getEtichetta("Maschi"), Etichette.getEtichetta("Femmine"), Etichette.getEtichetta("Non_conosciuto")]
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_campi_estrazione, EtichetteMessaggi.Errore_funzionalita_export])
+        eList.addAll([Etichette.getEtichetta("Compilare_campi_estrazione"), Etichette.getEtichetta("Errore_funzionalita_export")])
         eList.addAll(RicercaAttoStampa.etichetteRicercaStampaDesc)
+        eList.addAll(CivAttoBaseDomain.etichetteDomain)
         eList.addAll(CivNascita.etichetteDomain)
         eList.addAll(CivMorte.etichetteDomain)
         eList.addAll(CivMatrimonio.etichetteDomain)
@@ -108,22 +113,23 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
 
         msgTitle = getEtichetta(tipoAttoEnum.etichettaPluralDesc)
 
-        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.Estrazioni)?.toUpperCase() + ")"
+        formLabel = msgTitle?.toUpperCase() + " (" + getEtichetta(Etichette.getEtichetta("Estrazioni"))?.toUpperCase() + ")"
 
-        listaUffici = [null] + statoCivileService.listUffici()
+        listaUffici = [null] + gsdService.listUffici()
 
         ricerca = new RicercaAttoStampa(tipoAttoEnum)
         ricerca.tipoIndividuiAtto = ETipoIndividuiAtto.T
         ricerca.stato = EStatoAtto.CONSOLIDATO
         ricerca.escludiAnnullati = Boolean.TRUE
 
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_decrescente),    SortUtils.estremiAttoDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Estremi_Atto_crescente),      SortUtils.estremiAttoAsc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_decrescente),     SortUtils.dataEventoDesc))
-        listaOrder.add(new OrderBy(getEtichetta(Etichette.Data_Evento_crescente),       SortUtils.dataEventoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_decrescente")),    SortUtils.estremiAttoDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Estremi_Atto_crescente")),      SortUtils.estremiAttoAsc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_decrescente")),     SortUtils.dataEventoDesc))
+        listaOrder.add(new OrderBy(getEtichetta(Etichette.getEtichetta("Data_Evento_crescente")),       SortUtils.dataEventoAsc))
 
         //Default: estremi atto discendente
         selectedOrder = listaOrder[0]
+        anscAttiva = gsdService.getFlagAnsc()
     }
 
     @Override
@@ -162,7 +168,7 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
             p = civAttoService.search(tipoAttoEnum, getParams(usePaging))
         } catch (CampoMandatoryRuntimeException ex) {
             resetRicerca()
-            Messagebox.show((getEtichetta(ex.getEtichetta())?:getEtichetta(EtichetteMessaggi.Compilare_campi_estrazione)), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show((getEtichetta(ex.getEtichetta())?:getEtichetta(Etichette.getEtichetta("Compilare_campi_estrazione"))), msgTitle, Messagebox.OK, Messagebox.ERROR)
         }
         return new Paginazione((p?.getContent()?:[]), (p?.getTotalElements()?:0))
     }
@@ -170,14 +176,14 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
     void esporta(ETipoFile tipo) {
 
         if ( ((tipoAttoEnum == ETipoAtto.PVU) || (tipoAttoEnum == ETipoAtto.PUB)) && (tipo == ETipoFile.PDF) ){
-            Messagebox.show(getEtichetta(EtichetteMessaggi.Errore_funzionalita_export), msgTitle, Messagebox.OK, Messagebox.ERROR)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Errore_funzionalita_export")), msgTitle, Messagebox.OK, Messagebox.ERROR)
             return
         }
 
         // Popolo la lista nella form
         onRicarica()
         if ( (lista == null) || (lista.isEmpty()) ){
-            Messagebox.show(getEtichetta(Etichette.Nessun_record_trovato), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
+            Messagebox.show(getEtichetta(Etichette.getEtichetta("Nessun_record_trovato")), msgTitle, Messagebox.OK, Messagebox.INFORMATION)
             return
         }
 
@@ -193,14 +199,14 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
         if ( (tipo == ETipoFile.XLS) || (tipo == ETipoFile.CSV) ) {
 
             if (ricercaAttoStampa.isIMatrimonio()) {
-                exportFields.add(new ExportField("divorzio", getEtichetta(Etichette.Tipo_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportEnum))
+                exportFields.add(new ExportField("divorzio", getEtichetta(Etichette.getEtichetta("Tipo_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportEnumAtto))
             }
 
             exportFields.add(new ExportField("cognome1Lista", ((String) etichetteCustom.get('Cognome1'))))
             exportFields.add(new ExportField("nome1Lista", ((String) etichetteCustom.get('Nome1'))))
 
             if (ricercaAttoStampa.hasSesso()) {
-                exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.Sesso)))
+                exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.getEtichetta("Sesso"))))
             }
 
             if (ricercaAttoStampa.isDoppioSoggetto()) {
@@ -211,26 +217,38 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
             exportFields.add(new ExportField("dataEventoLista", ((String) etichetteCustom.get('DataEvento')), ExportUtils.DATE_FORMAT))
 
             if (tipo == ETipoFile.CSV) {
-                exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
-                exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportStringFromInteger))
+                exportFields.add(new ExportField("attoLista.anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
             } else {
-                exportFields.add(new ExportField("anno", getEtichetta(Etichette.Anno), ExportUtils.INTEGER_FORMAT))
-                exportFields.add(new ExportField("atto", getEtichetta(Etichette.Numero_Atto), ExportUtils.INTEGER_FORMAT))
+                exportFields.add(new ExportField("attoLista.anno", getEtichetta(Etichette.getEtichetta("Anno")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
             }
+            exportFields.add(new ExportField("attoLista.atto", getEtichetta(Etichette.getEtichetta("Numero_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportNumeroProvvisorio))
             if (ricercaAttoStampa.hasParte()) {
-                exportFields.add(new ExportField("parte", getEtichetta(Etichette.Parte), ExportUtils.INTEGER_FORMAT))
+                if (tipo == ETipoFile.CSV) {
+                    exportFields.add(new ExportField("attoLista.parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+                } else {
+                    exportFields.add(new ExportField("attoLista.parte", getEtichetta(Etichette.getEtichetta("Parte")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
+                }
             }
             if (ricercaAttoStampa.hasSerie()) {
-                exportFields.add(new ExportField("serie", getEtichetta(Etichette.Serie)))
+                exportFields.add(new ExportField("attoLista.serie", getEtichetta(Etichette.getEtichetta("Serie")),ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
             }
-            exportFields.add(new ExportField("ufficio", getEtichetta(Etichette.Ufficio), ExportUtils.INTEGER_FORMAT))
 
-            exportFields.add(new ExportField("natura", getEtichetta(Etichette.Natura_Atto), ExportUtils.STRING_FORMAT, calcolaValoreExportEnum))
+            if (tipo == ETipoFile.CSV) {
+                exportFields.add(new ExportField("attoLista.ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+            } else {
+                exportFields.add(new ExportField("attoLista.ufficio", getEtichetta(Etichette.getEtichetta("Ufficio")), ExportUtils.INTEGER_FORMAT, calcolaValoreExportAnnidato))
+            }
 
-            exportFields.add(new ExportField("dataRegistrazione", getEtichetta(Etichette.Data_Registrazione), ExportUtils.DATE_FORMAT, calcolaValoreExportLista))
+
+            if(tipoAttoEnum.isAttoAnsc()) {
+                exportFields.add(new ExportField("attoLista.idAttoAnsc", getEtichetta(Etichette.getEtichetta("Id_Atto_Ansc")), ExportUtils.STRING_FORMAT, calcolaValoreExportAnnidato))
+            }
+            exportFields.add(new ExportField("natura", getEtichetta(Etichette.getEtichetta("Natura_Atto")), ExportUtils.STRING_FORMAT, calcolaValoreExportEnumAtto))
+
+            exportFields.add(new ExportField("dataRegistrazione", getEtichetta(Etichette.getEtichetta("Data_Registrazione")), ExportUtils.DATE_FORMAT, calcolaValoreExportLista))
 
             if (ricercaAttoStampa.hasTipoLuogoEvento()) {
-                exportFields.add(new ExportField("eventoNelComuneLista", getEtichetta(Etichette.Luogo), ExportUtils.STRING_FORMAT, calcolaValoreExportEnum))
+                exportFields.add(new ExportField("eventoNelComuneLista", getEtichetta(Etichette.getEtichetta("Luogo")), ExportUtils.STRING_FORMAT, calcolaValoreExportEnumAtto))
             }
 
         }
@@ -240,10 +258,10 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
             exportFields.add(new ExportField("cognome1Lista", etichetteCustom.get("Cognome1")))
             exportFields.add(new ExportField("nome1Lista", etichetteCustom.get("Nome1")))
             exportFields.add(new ExportField("comuneResidenza1", etichetteCustom.get("Residenza1"),     ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.Sesso),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("codiceFiscale1", getEtichetta(Etichette.Codice_Fiscale),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("dataNascita1", getEtichetta(Etichette.Data_Nascita),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-            exportFields.add(new ExportField("comuneNascita1", getEtichetta(Etichette.Comune_Nascita),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("codiceSesso1Lista", getEtichetta(Etichette.getEtichetta("Sesso")),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("codiceFiscale1", getEtichetta(Etichette.getEtichetta("Codice_Fiscale")),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("dataNascita1", getEtichetta(Etichette.getEtichetta("Data_Nascita")),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+            exportFields.add(new ExportField("comuneNascita1", getEtichetta(Etichette.getEtichetta("Comune_Nascita")),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
             switch(tipoAttoEnum) {
                 case ETipoAtto.NAS:
                     exportFields.add(new ExportField("extra1Lista", etichetteCustom.get("Extra1"), ExportUtils.STRING_FORMAT, calcolaValoreExportPdf)) // cognomeNomePadre
@@ -265,41 +283,47 @@ class StampaAttiListaViewModel extends AbstractStampaAttiListaViewModel {
                     exportFields.add(new ExportField("cognome2Lista", etichetteCustom.get("Cognome2")))
                     exportFields.add(new ExportField("nome2Lista", etichetteCustom.get("Nome2")))
                     exportFields.add(new ExportField("comuneResidenza2", etichetteCustom.get("Residenza2"),     ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-                    exportFields.add(new ExportField("codiceSesso2Lista", getEtichetta(Etichette.Sesso),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-                    exportFields.add(new ExportField("codiceFiscale2", getEtichetta(Etichette.Codice_Fiscale),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-                    exportFields.add(new ExportField("dataNascita2", getEtichetta(Etichette.Data_Nascita),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
-                    exportFields.add(new ExportField("comuneNascita2", getEtichetta(Etichette.Comune_Nascita),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+                    exportFields.add(new ExportField("codiceSesso2Lista", getEtichetta(Etichette.getEtichetta("Sesso")),        ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+                    exportFields.add(new ExportField("codiceFiscale2", getEtichetta(Etichette.getEtichetta("Codice_Fiscale")),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+                    exportFields.add(new ExportField("dataNascita2", getEtichetta(Etichette.getEtichetta("Data_Nascita")),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
+                    exportFields.add(new ExportField("comuneNascita2", getEtichetta(Etichette.getEtichetta("Comune_Nascita")),  ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
                     exportFields.add(new ExportField("dataEventoLista", etichetteCustom.get("DataEvento"),      ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
                     exportFields.add(new ExportField("comuneMatrimonio", etichetteCustom.get("LuogoEvento"),    ExportUtils.STRING_FORMAT, calcolaValoreExportPdf))
                     break
             }
-            exportFields.add(new ExportField("estremiAttoLista", etichetteCustom.get("Atto"), ExportUtils.STRING_FORMAT))
+            if(anscAttiva) {
+                exportFields.add(new ExportField("estremiAttoListaPdf", etichetteCustom.get("Atto"), ExportUtils.STRING_FORMAT))
+            } else {
+                exportFields.add(new ExportField("estremiAttoListaPdf", etichetteCustom.get("Atto"), ExportUtils.STRING_FORMAT, calcolaValoreEstremiAttoNotAnscPdf))
+            }
+
         }
 
         StringBuilder b = new StringBuilder(msgTitle)
-        b.append(getNomeFileXAnno(getEtichetta(Etichette.Anno), ricercaAttoStampa.annoDa, ricercaAttoStampa.annoA))
-        b.append(getNomeFileXData(getEtichetta(Etichette.Data_Evento), ricercaAttoStampa.dataEventoDa, ricercaAttoStampa.dataEventoA))
-        b.append(getNomeFileXData(getEtichetta(Etichette.Data_Registrazione), ricercaAttoStampa.dataRegistrazioneDa, ricercaAttoStampa.dataRegistrazioneA))
-        b.append(getNomeFileXStato(getEtichetta(Etichette.Stato), getEtichetta(ricercaAttoStampa.stato.name())))
+        b.append(getNomeFileXAnno(getEtichetta(Etichette.getEtichetta("Anno")), ricercaAttoStampa.annoDa, ricercaAttoStampa.annoA))
+        b.append(getNomeFileXData(getEtichetta(Etichette.getEtichetta("Data_Evento")), ricercaAttoStampa.dataEventoDa, ricercaAttoStampa.dataEventoA))
+        b.append(getNomeFileXData(getEtichetta(Etichette.getEtichetta("Data_Registrazione")), ricercaAttoStampa.dataRegistrazioneDa, ricercaAttoStampa.dataRegistrazioneA))
+        b.append(getNomeFileXStato(getEtichetta(Etichette.getEtichetta("Stato")), getEtichetta(ricercaAttoStampa.stato.name())))
 
         Map reportParams = [
                 TIPO_ATTO: tipoAttoEnum.getId(),
-                ENTE: statoCivileService.getComuneCliente().getDescrizioneComune(),
+                ENTE: gsdService.getComuneCliente().getDescrizioneComune(),
                 TITOLO: (etichetteCustom.get("Elenco") + " - " + getNomeFileXUfficio() + (ricercaAttoStampa.stato == EStatoAtto.IN_INSERIMENTO?"\n" + getEtichetta(ricercaAttoStampa.stato.name()).toUpperCase():"") ),
-                FONTE: getEtichetta(Etichette.FONTE) + " " + getEtichetta(Etichette.STATO_CIVILE),
+                FONTE: getEtichetta(Etichette.getEtichetta("FONTE")) + " " + getEtichetta(Etichette.getEtichetta("STATO_CIVILE")),
                 PARAMETRI: getParametri([
-                        [label: getEtichetta(Etichette.Anno), da: ricercaAttoStampa.annoDa, a: ricercaAttoStampa.annoA],
-                        [label: getEtichetta(Etichette.Data_Evento), da: ricercaAttoStampa.dataEventoDa, a: ricercaAttoStampa.dataEventoA],
-                        [label: getEtichetta(Etichette.Data_Registrazione), da: ricercaAttoStampa.dataRegistrazioneDa, a: ricercaAttoStampa.dataRegistrazioneA]
+                        [label: getEtichetta(Etichette.getEtichetta("Anno")), da: ricercaAttoStampa.annoDa, a: ricercaAttoStampa.annoA],
+                        [label: getEtichetta(Etichette.getEtichetta("Data_Evento")), da: ricercaAttoStampa.dataEventoDa, a: ricercaAttoStampa.dataEventoA],
+                        [label: getEtichetta(Etichette.getEtichetta("Data_Registrazione")), da: ricercaAttoStampa.dataRegistrazioneDa, a: ricercaAttoStampa.dataRegistrazioneA]
                 ]),
-                TOTALE: getEtichetta(Etichette.Totale_Atti),
-                MASCHI: getEtichetta(Etichette.Maschi),
-                FEMMINE: getEtichetta(Etichette.Femmine),
-                ND: getEtichetta(Etichette.Non_conosciuto),
-                ANNULLATI: getEtichetta(Etichette.Di_cui_annullati)
+                TOTALE: getEtichetta(Etichette.getEtichetta("Totale_Atti")),
+                MASCHI: getEtichetta(Etichette.getEtichetta("Maschi")),
+                FEMMINE: getEtichetta(Etichette.getEtichetta("Femmine")),
+                ND: getEtichetta(Etichette.getEtichetta("Non_conosciuto")),
+                ANNULLATI: getEtichetta(Etichette.getEtichetta("Di_cui_annullati"))
         ]
         ExportObject eo = new ExportObject((ricercaAttoStampa.isDoppioSoggetto() ? "stampa_atti_doppi" : "stampa_atti"), exportFields, listaExport, reportParams, null, csvCharsetName)
-        exportService.export(tipo, eo, b.toString())
+        InputStream exportStream = exportService.export(tipo, eo)
+        Filedownload.save(exportStream, tipo.contentType, ExportService.buildFilename(b.toString(), tipo))
     }
 
     void resetLista(){

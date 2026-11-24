@@ -13,8 +13,8 @@ enum ETipoAccordo {
 
     Map getEtichettaDesc(){
         switch(this) {
-            case U: return Etichette.c_o_Ufficiale
-            case A: return Etichette.c_o_Avvocati
+            case U: return Etichette.getEtichetta("c_o_Ufficiale")
+            case A: return Etichette.getEtichetta("c_o_Avvocati")
         }
         return null
     }

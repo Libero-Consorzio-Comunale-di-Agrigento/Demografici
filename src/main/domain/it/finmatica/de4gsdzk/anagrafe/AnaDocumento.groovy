@@ -1,6 +1,7 @@
 package it.finmatica.de4gsdzk.anagrafe
 
 import it.finmatica.de4gsdzk.GsdDocumentoEsternoBaseDomain
+import it.finmatica.de4gsdzk.anagrafe.pratiche.comunicazioni.AnaEnte
 import it.finmatica.de4gsdzk.statocivile.embed.Comune
 import it.finmatica.de4gsdzk.utils.ENaturaDocumento
 import it.finmatica.de4gsdzk.utils.ETipoSN
@@ -70,11 +71,16 @@ class AnaDocumento extends GsdDocumentoEsternoBaseDomain implements IDownloadabl
     Boolean scadenzaIllimitata
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESPATRIO", nullable = true, updatable = false, insertable = false)
+    @Column(name = "ESPATRIO", nullable = true)
     ETipoSN espatrio
 
-    @Column(name = "CATEGORIA", nullable = true)
-    Long categoria
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORIA", nullable = true)
+    AnaCategoria categoria
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MOTIVO_DOCUMENTO", nullable = true)
+    AnaMotivoRilascio motivoRilascio
 
     @Column(name = "NOTE", nullable = false)
     String note
@@ -99,9 +105,10 @@ class AnaDocumento extends GsdDocumentoEsternoBaseDomain implements IDownloadabl
     ////////////////////////////////// GENERALI/////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    static final List<Map> etichetteDomain = [Etichette.Tipo_Documento, Etichette.Natura_Documento, Etichette.Del, Etichette.Numero,
-                                              Etichette.Data_emissione, Etichette.Data_Scadenza, Etichette.Scadenza_Illimitata,
-                                              Etichette.Espatrio, Etichette.Categoria, Etichette.Ente, Etichette.Comune_Ente, Etichette.Allegati,
-                                              Etichette.Note, Etichette.Data_Registrazione, Etichette.Altri_Dati]
+    static final List<Map> etichetteDomain = [Etichette.getEtichetta("Tipo_Documento"), Etichette.getEtichetta("Natura_Documento"), Etichette.getEtichetta("Del"), Etichette.getEtichetta("Numero"),
+                                              Etichette.getEtichetta("Data_emissione"), Etichette.getEtichetta("Data_Scadenza"), Etichette.getEtichetta("Scadenza_Illimitata"),
+                                              Etichette.getEtichetta("Espatrio"), Etichette.getEtichetta("Categoria"), Etichette.getEtichetta("Ente"), Etichette.getEtichetta("Comune_Ente"), Etichette.getEtichetta("Allegati"),
+                                              Etichette.getEtichetta("Note"), Etichette.getEtichetta("Data_Registrazione"), Etichette.getEtichetta("Altri_Dati"),Etichette.getEtichetta("Allegato"),
+                                              Etichette.getEtichetta("Nessun_Documento_Presente"), Etichette.getEtichetta("Progressivo"), Etichette.getEtichetta("Note"), Etichette.getEtichetta("Motivo_Rilascio")]
 
 }

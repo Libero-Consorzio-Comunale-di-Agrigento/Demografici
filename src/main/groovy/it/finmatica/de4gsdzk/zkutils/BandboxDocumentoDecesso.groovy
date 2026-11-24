@@ -29,13 +29,13 @@ class BandboxDocumentoDecesso extends CustomBandbox {
 			c.bbParent = this
 		}
 
-		List<Map> eList = [Etichette.Documento_i]
+		List<Map> eList = [Etichette.getEtichetta("Documento_i")]
 		eList.addAll(CustomBandbox.etichetteBB)
 
 		etichette = Holders.getApplicationContext().getBean(GsdEtichettaService.class).listAndInsertWhereIdIn(eList)
 
-		errorTitle = getEtichetta(etichette, Etichette.Validazione)
-		errorMsg = getEtichetta(etichette, Etichette.Dato_non_valido)
+		errorTitle = getEtichetta(etichette, Etichette.getEtichetta("Validazione"))
+		errorMsg = getEtichetta(etichette, Etichette.getEtichetta("Dato_non_valido"))
 	}
 	
 	protected void loadData(String filtro, Boolean searchEqual=Boolean.FALSE) {

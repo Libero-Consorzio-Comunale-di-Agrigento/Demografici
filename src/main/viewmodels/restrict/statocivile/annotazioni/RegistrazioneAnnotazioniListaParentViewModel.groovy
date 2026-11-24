@@ -3,10 +3,13 @@ package restrict.statocivile.annotazioni
 import groovy.util.logging.Slf4j
 import it.finmatica.de4gsdzk.CivAttoBaseDomain
 import it.finmatica.de4gsdzk.GsdEtichettaService
+import it.finmatica.de4gsdzk.GsdService
 import it.finmatica.de4gsdzk.statocivile.CivAttoService
 import it.finmatica.de4gsdzk.statocivile.CivSoggettoAnnotazione
-import it.finmatica.de4gsdzk.statocivile.StatoCivileService
-import it.finmatica.de4gsdzk.utils.*
+import it.finmatica.de4gsdzk.utils.ETipoAtto
+import it.finmatica.de4gsdzk.utils.Etichette
+import it.finmatica.de4gsdzk.utils.OrderBy
+import it.finmatica.de4gsdzk.utils.RicercaAtto
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarAnnotazioniAttributes
 import it.finmatica.de4gsdzk.utils.controlbar.ControlBarListaAttributes
 import org.springframework.dao.EmptyResultDataAccessException
@@ -44,7 +47,7 @@ abstract class RegistrazioneAnnotazioniListaParentViewModel extends AbstractList
     private GsdEtichettaService gsdEtichettaService
 
     @WireVariable
-    private StatoCivileService statoCivileService
+    private GsdService gsdService
 
     @WireVariable
     private CivAttoService civAttoService
@@ -55,12 +58,12 @@ abstract class RegistrazioneAnnotazioniListaParentViewModel extends AbstractList
         addAnnotazioneEnabled = false
         modifyAnnotazioneEnabled = true
 
-        eList.addAll([Etichette.Estremi_Atto, Etichette.Estremi_Atto_secondario,
-                      Etichette.Annotazioni, Etichette.Generata_da, Etichette.Generata_su, Etichette.Da_registrare_su,
-                      Etichette.Atto_non_in_Archivio, Etichette.Estremi_Atto_decrescente, Etichette.Estremi_Atto_crescente,
-                      Etichette.Generalita_decrescente, Etichette.Generalita_crescente])
+        eList.addAll([Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Estremi_Atto_secondario"),
+                      Etichette.getEtichetta("Annotazioni"), Etichette.getEtichetta("Generata_da"), Etichette.getEtichetta("Generata_su"), Etichette.getEtichetta("Da_registrare_su"),
+                      Etichette.getEtichetta("Atto_non_in_Archivio"), Etichette.getEtichetta("Estremi_Atto_decrescente"), Etichette.getEtichetta("Estremi_Atto_crescente"),
+                      Etichette.getEtichetta("Generalita_decrescente"), Etichette.getEtichetta("Generalita_crescente")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Compilare_tipo_atto, EtichetteMessaggi.Ask_Formato_etichette, EtichetteMessaggi.Ask_Inserimento_Annotazione])
+        eList.addAll([Etichette.getEtichetta("Compilare_tipo_atto"), Etichette.getEtichetta("Ask_Formato_etichette"), Etichette.getEtichetta("Ask_Inserimento_Annotazione")])
         eList.addAll(etichetteListaDefault)
 
         // Aggiungo etichette della Controlbar
@@ -73,10 +76,10 @@ abstract class RegistrazioneAnnotazioniListaParentViewModel extends AbstractList
 
         etichette = gsdEtichettaService.listAndInsertWhereIdIn(eList)
 
-        msgTitle = getEtichetta(Etichette.Annotazioni)
+        msgTitle = getEtichetta(Etichette.getEtichetta("Annotazioni"))
         totalSizeLabel = ""
 
-        listaUffici = [null] + statoCivileService.listUffici()
+        listaUffici = [null] + gsdService.listUffici()
     }
 
     void resetDettaglio(){
@@ -95,11 +98,11 @@ abstract class RegistrazioneAnnotazioniListaParentViewModel extends AbstractList
                 CivAttoBaseDomain atto = civAttoService.getAttoFromAnnotazione(sa.getTipoAtto(), sa.ufficio, sa.anno, sa.atto, sa.parte, sa.serie)
                 s = atto.getNominativoEstremiAtto(sa.tipoFormula, sa.tipoAttoAnnotazione)
                 if (sa.isAttoDiAltroComune()){
-                    s = s + " " + getEtichetta(Etichette.Generata_da) + " " + getEtichettaEnum(atto.getTipoAttoEnum()) + " "
+                    s = s + " " + getEtichetta(Etichette.getEtichetta("Generata_da")) + " " + getEtichettaEnum(atto.getTipoAttoEnum()) + " "
                 }
             } catch (EmptyResultDataAccessException e){
                 log.error(e.getMessage())
-                s = ("*** " + getEtichetta(Etichette.Atto_non_in_Archivio)+ " ***")
+                s = ("*** " + getEtichetta(Etichette.getEtichetta("Atto_non_in_Archivio"))+ " ***")
             }
         }
         return s
@@ -121,6 +124,10 @@ abstract class RegistrazioneAnnotazioniListaParentViewModel extends AbstractList
     Boolean isUserModifyEnabled(){
         //FIXME competenze
         //return competenzaService.hasRuolo(ConfigurazioneUtils.RUOLO_CIV_SU)
+        return true
+    }
+
+    boolean getCanSaveRecord() {
         return true
     }
 

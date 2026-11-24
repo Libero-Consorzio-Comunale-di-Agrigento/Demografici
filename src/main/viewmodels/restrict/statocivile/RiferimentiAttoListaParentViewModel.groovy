@@ -44,9 +44,9 @@ abstract class RiferimentiAttoListaParentViewModel extends AbstractListaViewMode
 
     void doInit(List<Map<String, String>> eList, Long pkAtto, ETipoAtto tipoAttoEnum, Map<String, ?> attoParams=null) {
 
-        eList.addAll([Etichette.Estremi_Atto, Etichette.Chiusura, Etichette.SEZIONE_DATI_ATTO, Etichette.SEZIONE_ATTO_ORIGINALE])
+        eList.addAll([Etichette.getEtichetta("Estremi_Atto"), Etichette.getEtichetta("Chiusura"), Etichette.getEtichetta("SEZIONE_DATI_ATTO"), Etichette.getEtichetta("SEZIONE_ATTO_ORIGINALE")])
         //Aggiungo messaggi
-        eList.addAll([EtichetteMessaggi.Ask_Modifiche_In_Sospeso, EtichetteMessaggi.Ask_Cancellazione_Record])
+        eList.addAll([Etichette.getEtichetta("Ask_Modifiche_In_Sospeso"), Etichette.getEtichetta("Ask_Cancellazione_Record")])
         eList.addAll(etichetteListaDefault)
 
         // Aggiungo etichette tipo atto
@@ -121,7 +121,7 @@ abstract class RiferimentiAttoListaParentViewModel extends AbstractListaViewMode
     }
 
     @Command void onBackFromList() {
-        Messagebox.show(getEtichetta(EtichetteMessaggi.Ask_Modifiche_In_Sospeso), getEtichetta(Etichette.Chiusura), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+        Messagebox.show(getEtichetta(Etichette.getEtichetta("Ask_Modifiche_In_Sospeso")), getEtichetta(Etichette.getEtichetta("Chiusura")), Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
                 new EventListener() {
                     void onEvent(Event e){
                         if (Messagebox.ON_YES.equals(e.getName())){
